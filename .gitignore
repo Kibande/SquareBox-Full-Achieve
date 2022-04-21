@@ -15,8 +15,11 @@ SquareBox/Zombie-Game/
 SquareBox/Zombie-Game 2 to be kept/
 SquareBox/Zombie-Game Oris/
 
-# text files
+# text files and Log Files
 *.txt
+*.log
+*.tlog
+*.lastbuildstate
 
 # zipped files
 *.zip
@@ -31,6 +34,7 @@ SquareBox/Zombie-Game Oris/
 
 # Compiled Dynamic libraries
 *.so
+*.so.recipe
 *.dylib
 *.dll
 
