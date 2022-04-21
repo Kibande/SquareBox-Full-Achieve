@@ -5,8 +5,8 @@
 
 
 Mobile/.vs/
-.Mobile/ARM/
-.Mobile/ARM64/
+Mobile/ARM/
+Mobile/ARM64/
 
 .SquareBox/.vs/
 .SquareBox/bin/
