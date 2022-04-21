@@ -8,12 +8,12 @@ Mobile/.vs/
 Mobile/ARM/
 Mobile/ARM64/
 
-.SquareBox/.vs/
-.SquareBox/bin/
-.SquareBox/bin-int/
-.SquareBox/Zombie-Game/
-.SquareBox/Zombie-Game 2 to be kept/
-.SquareBox/Zombie-Game Oris/
+SquareBox/.vs/
+SquareBox/bin/
+SquareBox/bin-int/
+SquareBox/Zombie-Game/
+SquareBox/Zombie-Game 2 to be kept/
+SquareBox/Zombie-Game Oris/
 
 # text files
 *.txt
