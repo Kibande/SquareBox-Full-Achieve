@@ -3,8 +3,8 @@
 
 # folders
 
-.Mobile\.vs\
-.Mobile/.vs/
+
+Mobile/.vs/
 .Mobile/ARM/
 .Mobile/ARM64/
 
