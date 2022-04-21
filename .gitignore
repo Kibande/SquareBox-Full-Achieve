@@ -1,0 +1,50 @@
+# Prerequisites
+*.d
+
+# folders
+
+.Mobile/.vs/
+.Mobile/.vs/
+.Mobile/ARM/
+.Mobile/ARM64/
+
+.SquareBox/.vs/
+.SquareBox/bin/
+.SquareBox/bin-int/
+.SquareBox/Zombie-Game/
+.SquareBox/Zombie-Game 2 to be kept/
+.SquareBox/Zombie-Game Oris/
+
+# text files
+*.txt
+
+# zipped files
+*.zip
+*.rar
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
