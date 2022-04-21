@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <SOLibPaths />
+  <AndroidLibPaths />
+  <OObjPaths />
+  <Configuration />
+  <Platform />
+  <AndroidArchitecture>x86</AndroidArchitecture>
+  <!--links to other recipe files-->
+  <RecipeFiles>D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libAI.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libAnimation_System.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libAudio_System.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libBox2D.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libCamera.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libGWOM.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libInput_Manager.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libLua.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libmain.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libMathLib.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libPhysics_Collision_Engine.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libRender_Engine.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSDL2.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libhidapi.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSDL2_image.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSDL2_mixer.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSDL2_ttf.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libShapes.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSquareBox_Core.so.recipe;D:\Programming\Projects\Cpp\SquareBox Full achieve\Mobile\x86\Debug\libSquareBox_Logger.so.recipe</RecipeFiles>
+</project>

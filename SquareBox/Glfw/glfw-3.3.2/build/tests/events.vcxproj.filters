@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\tests\events.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\deps\getopt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\deps\glad_gl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\deps\getopt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\deps\glad\gl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\SquareBox\SquareBox\Glfw\glfw-3.3.2\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5A738F09-63D1-3DA2-8D5D-A837F838E1E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{AE762192-EF2A-3264-A07D-57CA9786FE02}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

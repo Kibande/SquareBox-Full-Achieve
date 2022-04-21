@@ -1,0 +1,5 @@
+#pragma once
+const int WELCOME_SCREEN_INDEX = 0;
+const int LEVEL_EDITOR_SCREEN_INDEX = 1;
+const int DESKTOP_APP_EDITOR_SCREEN_INDEX = 2;
+const int MOBILE_APP_EDITOR_SCREEN_INDEX = 3;

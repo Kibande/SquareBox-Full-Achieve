@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Input-Manager\IInput.cpp" />
+    <ClCompile Include="..\..\SquareBox\Input-Manager\Keyboard.cpp" />
+    <ClCompile Include="..\..\SquareBox\Input-Manager\TouchScreen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Input-Manager\IInput.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\InputManager.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\Keyboard.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\TouchScreen.h" />
+  </ItemGroup>
+</Project>

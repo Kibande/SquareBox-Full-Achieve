@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|ARM">
+      <Configuration>Dist</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|ARM64">
+      <Configuration>Dist</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x86">
+      <Configuration>Dist</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9d8602b0-e87e-4f15-a522-d3a5eb880ed1}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>Render_Engine</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Glew/glew-2.2.0/include;$(SolutionDir)../SquareBox/Glfw/glfw-3.3.2/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Glew/glew-2.2.0/include;$(SolutionDir)../SquareBox/Glfw/glfw-3.3.2/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Glew/glew-2.2.0/include;$(SolutionDir)../SquareBox/Glfw/glfw-3.3.2/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Glew/glew-2.2.0/include;$(SolutionDir)../SquareBox/Glfw/glfw-3.3.2/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Render-Engine;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z;GLESv3</LibraryDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Asset-Manager\Asset-Manager.vcxproj">
+      <Project>{ec2eea7f-dc33-4100-ba90-27c5f2173d53}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2_ttf\SDL2_ttf.vcxproj">
+      <Project>{8572235c-b335-40dd-ba5f-9954bedc4bfc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
+      <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Render-Engine\DebugRenderer.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\GLSLProgram.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\ParticleBatch.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\ParticleEngine.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\SpriteBatch.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\SpriteFont.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\Timing.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ColorRGBA8.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\DebugRenderer.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\GLSLProgram.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ParticleBatch.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ParticleEngine.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\RenderingEngine.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\SpriteBatch.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\SpriteFont.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Timing.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Vertex.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Window.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

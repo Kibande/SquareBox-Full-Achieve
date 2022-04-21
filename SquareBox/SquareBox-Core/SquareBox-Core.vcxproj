@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|Win32">
+      <Configuration>Dist</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{75A40C59-6172-005F-4A06-71853673DCC3}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>SquareBox-Core</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\bin\libs\Debug-windows-x86\</OutDir>
+    <IntDir>..\bin-int\libs\Debug-windows-x86\x86\Debug\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\bin\libs\Debug-windows-x86_64\</OutDir>
+    <IntDir>..\bin-int\libs\Debug-windows-x86_64\x86_64\Debug\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\bin\libs\Release-windows-x86\</OutDir>
+    <IntDir>..\bin-int\libs\Release-windows-x86\x86\Release\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\bin\libs\Release-windows-x86_64\</OutDir>
+    <IntDir>..\bin-int\libs\Release-windows-x86_64\x86_64\Release\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
+    <OutDir>..\bin\libs\Dist-windows-x86\</OutDir>
+    <IntDir>..\bin-int\libs\Dist-windows-x86\x86\Dist\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <OutDir>..\bin\libs\Dist-windows-x86_64\</OutDir>
+    <IntDir>..\bin-int\libs\Dist-windows-x86_64\x86_64\Dist\SquareBox-Core\</IntDir>
+    <TargetName>SquareBox-Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86;$(SolutionDir)\vendor\lib\Debug\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86_64;$(SolutionDir)\vendor\lib\Debug\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86;$(SolutionDir)\vendor\lib\Release\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86_64;$(SolutionDir)\vendor\lib\Release\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86;$(SolutionDir)\vendor\lib\Dist\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;SQBCORE_PLATFORM_WINDOWS;_SILENCE_TR2_SYS_NAMESPACE_DEPRECATION_WARNING;SQBCORE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\vendor\include;$(SolutionDir)\Glew\glew-2.2.0\include;$(SolutionDir)\Glfw\glfw-3.3.2\include;$(SolutionDir)\vendor\include\ffmpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86_64;$(SolutionDir)\vendor\lib\Dist\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Essentials.h" />
+    <ClInclude Include="IGameScreen.h" />
+    <ClInclude Include="IMainGame.h" />
+    <ClInclude Include="IShape.h" />
+    <ClInclude Include="ScreenList.h" />
+    <ClInclude Include="SquareBoxGameEngine.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="enums.h" />
+    <ClInclude Include="macros.h" />
+    <ClInclude Include="sqbpch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IGameScreen.cpp" />
+    <ClCompile Include="IMainGame.cpp" />
+    <ClCompile Include="IShape.cpp" />
+    <ClCompile Include="ScreenList.cpp" />
+    <ClCompile Include="SquareBoxGameEngine.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sqbpch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AI\AI.vcxproj">
+      <Project>{EF725900-DBFE-870B-44AD-880B3058880B}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Animation-System\Animation-System.vcxproj">
+      <Project>{77F0FD13-63E9-1C66-8C1B-02EB7873FC71}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Audio-System\Audio-System.vcxproj">
+      <Project>{4922EAD7-3585-797C-DE0A-B232CA4C45FF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Camera\Camera.vcxproj">
+      <Project>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GWOM\GWOM.vcxproj">
+      <Project>{FF7A857C-EBB1-860D-949E-6C1080B4020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ImGui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.vcxproj">
+      <Project>{86BBB515-F29A-34B1-FBB2-BF8767119B12}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Input-Manager\Input-Manager.vcxproj">
+      <Project>{FD9186AA-6952-02E1-328D-4B5E9E0C47BD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Network-Manager\Network-Manager.vcxproj">
+      <Project>{F71B735A-63A7-E01E-6CB8-6313D8C23C1F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Shapes\Shapes.vcxproj">
+      <Project>{09400CD1-F5E1-36A7-DE9C-4AFBCADDBDF7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Media-Player\Media-Player.vcxproj">
+      <Project>{7F08F9D9-6B6B-887E-14F1-C03400335401}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
+      <Project>{2C11C0E3-180A-DF35-413C-C4BA2D94BE41}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Physics-Collision-Engine\Physics-Collision-Engine.vcxproj">
+      <Project>{44C21D30-30E7-6CB0-5932-524045B66BCE}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Render-Engine\Render-Engine.vcxproj">
+      <Project>{289DC166-945D-3D9D-5D98-861AC9178279}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Asset-Manager\Asset-Manager.vcxproj">
+      <Project>{8D26BC73-F9E6-37AA-C221-81272EA17C86}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Box2D\Box2D.vcxproj">
+      <Project>{A434E80C-1049-10BE-D9CA-B31D459E0CEF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Lua\Lua.vcxproj">
+      <Project>{A705880B-130F-887C-9C8A-9E7C0893937C}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

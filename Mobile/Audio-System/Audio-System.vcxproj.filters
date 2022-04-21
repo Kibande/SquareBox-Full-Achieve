@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8dc50513-92c6-4627-85e7-413368413e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{ff8fac20-5cf9-4dda-a211-bb827f508ac1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Audio-System\AudioEngine.cpp" />
+    <ClCompile Include="..\..\SquareBox\Audio-System\Music.cpp" />
+    <ClCompile Include="..\..\SquareBox\Audio-System\SoundBank.cpp" />
+    <ClCompile Include="..\..\SquareBox\Audio-System\SoundEffect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Audio-System\AudioEngine.h" />
+    <ClInclude Include="..\..\SquareBox\Audio-System\AudioSystem.h" />
+    <ClInclude Include="..\..\SquareBox\Audio-System\Music.h" />
+    <ClInclude Include="..\..\SquareBox\Audio-System\SoundBank.h" />
+    <ClInclude Include="..\..\SquareBox\Audio-System\SoundEffect.h" />
+  </ItemGroup>
+</Project>

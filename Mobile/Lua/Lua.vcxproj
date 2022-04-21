@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Lua\lapi.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lauxlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lbaselib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lcode.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lcorolib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lctype.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldblib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldebug.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldo.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldump.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lfunc.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lgc.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\linit.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\liolib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\llex.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lmathlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lmem.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\loadlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lobject.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lopcodes.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\loslib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lparser.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstate.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstring.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstrlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltable.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltablib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltm.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lundump.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lutf8lib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lvm.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lzio.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Lua\lapi.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lauxlib.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lcode.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lctype.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ldebug.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ldo.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lfunc.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lgc.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ljumptab.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\llex.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\llimits.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lmem.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lobject.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lopcodes.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lopnames.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lparser.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lprefix.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lstate.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lstring.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ltable.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ltm.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lua.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lua.hpp" />
+    <ClInclude Include="..\..\SquareBox\Lua\luaconf.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lualib.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lundump.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lvm.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lzio.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9fe7ba65-d057-4804-84c0-34aa7ce6a2d0}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>Lua</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Lua;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Input-Manager;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Lua;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Input-Manager;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Lua;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Input-Manager;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Lua;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/Input-Manager;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <EnableNeonCodegen>true</EnableNeonCodegen>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2;z</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

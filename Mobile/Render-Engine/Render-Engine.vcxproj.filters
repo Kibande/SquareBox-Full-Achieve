@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Render-Engine\Window.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\Timing.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\SpriteFont.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\SpriteBatch.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\ParticleEngine.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\ParticleBatch.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\GLSLProgram.cpp" />
+    <ClCompile Include="..\..\SquareBox\Render-Engine\DebugRenderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Window.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Vertex.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\Timing.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\SpriteFont.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\SpriteBatch.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\RenderingEngine.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ParticleEngine.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ParticleBatch.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\GLSLProgram.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\DebugRenderer.h" />
+    <ClInclude Include="..\..\SquareBox\Render-Engine\ColorRGBA8.h" />
+  </ItemGroup>
+</Project>

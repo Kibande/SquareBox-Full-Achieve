@@ -1,0 +1,10 @@
+// SquareBox NetworkMessage Schema
+
+namespace SquareBox.Network;
+
+table Message {
+    header:int;
+    body:[uint8];
+}
+
+root_type Message;

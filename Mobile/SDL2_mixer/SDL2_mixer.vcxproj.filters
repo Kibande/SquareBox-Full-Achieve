@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{cee2c560-1d05-48b7-bfa6-70e5b18da8d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{6bb62eb8-3006-467d-9126-ff24830f3baf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL_mixer\SDL_mixer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_wav.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_timidity.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_opus.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_ogg.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_nativemidi.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mpg123.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_modplug.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mikmod.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mad.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_fluidsynth.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_flac.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_cmd.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\mixer.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\load_voc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\load_aiff.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effects_internal.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effect_stereoreverse.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effect_position.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

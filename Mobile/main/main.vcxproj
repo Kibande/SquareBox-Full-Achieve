@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{b7f3a6f1-0359-4427-925d-4a6d1c979b61}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>main</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-26</AndroidAPILevel>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Sysroot)\usr\include;$(StlIncludeDirectories)%(AdditionalIncludeDirectories);$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;$(SolutionDir)../SquareBox/Zombie-Game</AdditionalIncludeDirectories>
+      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);m;dl;GLESv1_CM;GLESv2;log;android;SDL2</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AI\AI.vcxproj">
+      <Project>{def8c102-ba38-4dfc-8aaa-5dec3a13b826}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Animation-System\Animation-System.vcxproj">
+      <Project>{950cf702-c9f5-4908-ab28-3ebefc5f8219}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Asset-Manager\Asset-Manager.vcxproj">
+      <Project>{ec2eea7f-dc33-4100-ba90-27c5f2173d53}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Audio-System\Audio-System.vcxproj">
+      <Project>{c754f933-f8ec-49f9-b5d2-62ec1c4c41bb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Box2D\Box2D.vcxproj">
+      <Project>{9bf39260-f2d0-4348-a70c-9dd07bf16aed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Camera\Camera.vcxproj">
+      <Project>{391690bc-ef82-49b8-82fd-6e7c782fe62d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GWOM\GWOM.vcxproj">
+      <Project>{ba900633-113e-4364-9f01-72b7e1dccfa8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Input-Manager\Input-Manager.vcxproj">
+      <Project>{7270a291-bee9-40c0-a95e-82217ee47aab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Lua\Lua.vcxproj">
+      <Project>{9fe7ba65-d057-4804-84c0-34aa7ce6a2d0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.vcxproj">
+      <Project>{cf5cc0c6-c7d4-41b8-a134-1e515e8a2996}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Network-Manager\Network-Manager.vcxproj">
+      <Project>{0c3f57f7-8321-4b84-baca-996ee2ac2c22}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Physics-Collision-Engine\Physics-Collision-Engine.vcxproj">
+      <Project>{92dad146-a765-470b-a838-70badaed24ad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Render-Engine\Render-Engine.vcxproj">
+      <Project>{9d8602b0-e87e-4f15-a522-d3a5eb880ed1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2\SDL2.vcxproj">
+      <Project>{b7be417c-b6c5-4a69-a056-e0cb0c6a344c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2\src\hidapi\android\hidapi.vcxproj">
+      <Project>{654d6f15-267a-423d-8606-351c153c4e3d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2_image\SDL2_image.vcxproj">
+      <Project>{03a9401d-ceff-4f5e-a7b4-fc2a0d9f6c95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2_mixer\SDL2_mixer.vcxproj">
+      <Project>{17d4a1c1-4148-4f5c-8b92-b1e1b8f6c98c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2_net\SDL2_net.vcxproj">
+      <Project>{aad1ebd2-3466-4c26-bf29-8d91a55a8fc2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SDL2_ttf\SDL2_ttf.vcxproj">
+      <Project>{8572235c-b335-40dd-ba5f-9954bedc4bfc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Shapes\Shapes.vcxproj">
+      <Project>{207904c2-2c31-45bc-9c8b-68544968b7ca}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj">
+      <Project>{ebbe5cd8-ecf3-4438-a1ea-2ff3653e90d6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
+      <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\App.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\First_Screen.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\ScreenIndices.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\Second_Screen.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\Sprite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\App.cpp" />
+    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\First_Screen.cpp" />
+    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\main.cpp" />
+    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\Second_Screen.cpp" />
+    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\Sprite.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

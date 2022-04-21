@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Lua\lapi.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lauxlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lbaselib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lcode.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lcorolib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lctype.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldblib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldebug.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldo.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ldump.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lfunc.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lgc.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\linit.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\liolib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\llex.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lmathlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lmem.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\loadlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lobject.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lopcodes.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\loslib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lparser.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstate.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstring.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lstrlib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltable.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltablib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\ltm.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lundump.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lutf8lib.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lvm.c" />
+    <ClCompile Include="..\..\SquareBox\Lua\lzio.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Lua\lapi.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lauxlib.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lcode.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lctype.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ldebug.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ldo.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lfunc.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lgc.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ljumptab.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\llex.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\llimits.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lmem.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lobject.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lopcodes.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lopnames.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lparser.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lprefix.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lstate.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lstring.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ltable.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\ltm.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lua.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\luaconf.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lualib.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lundump.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lvm.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lzio.h" />
+    <ClInclude Include="..\..\SquareBox\Lua\lua.hpp" />
+  </ItemGroup>
+</Project>

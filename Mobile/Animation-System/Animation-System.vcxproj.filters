@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Animation-System\AnimationCreator.h" />
+    <ClInclude Include="..\..\SquareBox\Animation-System\AnimationSystem.h" />
+    <ClInclude Include="..\..\SquareBox\Animation-System\ForceDependantAnimation.h" />
+    <ClInclude Include="..\..\SquareBox\Animation-System\IAnimation.h" />
+    <ClInclude Include="..\..\SquareBox\Animation-System\PropertiesDependantAnimation.h" />
+    <ClInclude Include="..\..\SquareBox\Animation-System\TimeDependantAnimation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Animation-System\AnimationCreator.cpp" />
+    <ClCompile Include="..\..\SquareBox\Animation-System\ForceDependantAnimation.cpp" />
+    <ClCompile Include="..\..\SquareBox\Animation-System\IAnimation.cpp" />
+    <ClCompile Include="..\..\SquareBox\Animation-System\PropertiesDependantAnimation.cpp" />
+    <ClCompile Include="..\..\SquareBox\Animation-System\TimeDependantAnimation.cpp" />
+  </ItemGroup>
+</Project>

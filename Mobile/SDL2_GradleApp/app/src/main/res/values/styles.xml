@@ -1,0 +1,21 @@
+  <resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+      <item name="android:windowNoTitle">true</item>
+      <item name="android:windowFullscreen">true</item>
+      <item name="android:windowActionBar">false</item>
+      <item name="android:windowTranslucentStatus">true</item>
+      <item name="android:windowTranslucentNavigation">true</item>
+      <!--This is only avalible in android API 28 and above , before that notches were not something phones could have-->
+       <!--<item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>-->
+
+    </style>
+  
+      <!--<style name="ActivityTheme">
+     <item name="windowLayoutInDisplayCutoutMode">
+      shortEdges
+    </item><item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        --><!-- Customize your theme here. --><!--
+    </style>-->
+</resources>

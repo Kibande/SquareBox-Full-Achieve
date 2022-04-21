@@ -1,0 +1,783 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{d76c3edc-50e5-417f-a05f-e546ea1273b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{014df9c9-9bb1-428c-a0f0-8252ac379754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\atomic">
+      <UniqueIdentifier>{74ef4649-8adb-4493-98d6-0be3107e16b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\audio">
+      <UniqueIdentifier>{20378164-4d53-4400-837d-9abd6beb1fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{b932dc1e-c65d-4d82-87ed-9d9d8283832a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cpufeatures">
+      <UniqueIdentifier>{8255cbf9-7baf-4d74-856f-42d51346d33d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cpuinfo">
+      <UniqueIdentifier>{26c16850-289a-4b16-a188-aae126aab8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dynapi">
+      <UniqueIdentifier>{37469156-fd96-412e-8dc0-6bd06fa5b79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\events">
+      <UniqueIdentifier>{67dce105-9f83-4f78-9bc8-c4f7f8f8c8ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\file">
+      <UniqueIdentifier>{4af2e5b1-2577-4353-9872-670f7d735740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\filesystem">
+      <UniqueIdentifier>{edffc3a2-10bf-4341-b9a3-1d26405d3add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\haptic">
+      <UniqueIdentifier>{02f92d71-6552-45c3-b7e3-89912ecf0389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\hidapi">
+      <UniqueIdentifier>{5a3194bc-1cc4-49da-b859-ee9484ef3b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\joystick">
+      <UniqueIdentifier>{63b6b8af-e208-4a32-8982-108c403d51dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadso">
+      <UniqueIdentifier>{f8f0303e-d29d-4490-a29c-abaf0c25bfeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\locale">
+      <UniqueIdentifier>{5a12cade-b0bf-48da-aa60-245864e23a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\misc">
+      <UniqueIdentifier>{f40546c8-b125-4ecd-9507-f4957373baf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{3569dcef-6a50-4037-9948-12bf3ff23540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\power">
+      <UniqueIdentifier>{a1ddb114-fd8d-47b9-9563-9ae095a431f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sensor">
+      <UniqueIdentifier>{bf9d9365-49f3-41d3-871e-c480864c3a16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\stdlib">
+      <UniqueIdentifier>{3e3f1790-c06d-418b-8358-8981a6ab9b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\test">
+      <UniqueIdentifier>{6e33a1a0-19e3-4aad-8f29-95abc8461235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thread">
+      <UniqueIdentifier>{d545c170-17ad-4b26-b424-aeee261dac95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\timer">
+      <UniqueIdentifier>{cce0b14d-b601-4721-a786-070a78e60585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\video">
+      <UniqueIdentifier>{7b5226e6-678b-4429-9e72-78fb8d63742c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\joystick\hidapi">
+      <UniqueIdentifier>{fe9a86bd-01b9-4825-80ab-ac24ffbe0aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\joystick\virtual">
+      <UniqueIdentifier>{fdcdc4a4-6d15-4e2b-85eb-417c40eaeaf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thread\pthread">
+      <UniqueIdentifier>{3d67c058-8e67-4667-b759-98eed0651784}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\begin_code.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\close_code.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_assert.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_atomic.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_audio.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_bits.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_blendmode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_clipboard.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_android.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_iphoneos.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_macosx.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_minimal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_os2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_pandora.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_psp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_windows.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_winrt.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_config_wiz.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_copying.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_cpuinfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_egl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_endian.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_error.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_events.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_filesystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_gamecontroller.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_gesture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_haptic.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_hints.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_joystick.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_keyboard.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_keycode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_loadso.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_locale.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_log.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_main.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_messagebox.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_metal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_misc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_mouse.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_mutex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_name.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengl_glext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles2_gl2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles2_gl2ext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles2_gl2platform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_opengles2_khrplatform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_pixels.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_platform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_power.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_quit.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_rect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_render.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_revision.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_rwops.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_scancode.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_sensor.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_shape.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_stdinc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_surface.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_system.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_syswm.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_assert.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_common.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_compare.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_crc32.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_font.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_fuzzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_harness.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_images.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_log.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_md5.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_memory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_test_random.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_thread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_touch.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_types.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_version.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_video.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SquareBox\vendor\include\SDL\include\SDL_vulkan.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\atomic\SDL_atomic.c">
+      <Filter>src\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\atomic\SDL_spinlock.c">
+      <Filter>src\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_mixer.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_wave.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_audio.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_audiocvt.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_audiodev.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\SDL_audiotypecvt.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\android\SDL_androidaudio.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\dummy\SDL_dummyaudio.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\audio\openslES\SDL_openslES.c">
+      <Filter>src\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\core\android\SDL_android.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpufeatures\cpu-features.c">
+      <Filter>src\cpufeatures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\cpuinfo\SDL_cpuinfo.c">
+      <Filter>src\cpuinfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\dynapi\SDL_dynapi.c">
+      <Filter>src\dynapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_clipboardevents.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_displayevents.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_dropevents.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_events.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_gesture.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_keyboard.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_mouse.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_quit.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_touch.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\events\SDL_windowevents.c">
+      <Filter>src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\file\SDL_rwops.c">
+      <Filter>src\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\filesystem\android\SDL_sysfilesystem.c">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\hidapi\android\hid.cpp">
+      <Filter>src\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\haptic\SDL_haptic.c">
+      <Filter>src\haptic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\haptic\android\SDL_syshaptic.c">
+      <Filter>src\haptic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_gamecube.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_ps4.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_ps5.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_rumble.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_steam.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_switch.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_xbox360.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_xbox360w.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapi_xboxone.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\hidapi\SDL_hidapijoystick.c">
+      <Filter>src\joystick\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\virtual\SDL_virtualjoystick.c">
+      <Filter>src\joystick\virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\SDL_gamecontroller.c">
+      <Filter>src\joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\SDL_joystick.c">
+      <Filter>src\joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\joystick\android\SDL_sysjoystick.c">
+      <Filter>src\joystick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\loadso\dlopen\SDL_sysloadso.c">
+      <Filter>src\loadso</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\locale\SDL_locale.c">
+      <Filter>src\locale</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\locale\android\SDL_syslocale.c">
+      <Filter>src\locale</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\misc\SDL_url.c">
+      <Filter>src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\misc\android\SDL_sysurl.c">
+      <Filter>src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\power\SDL_power.c">
+      <Filter>src\power</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\power\android\SDL_syspower.c">
+      <Filter>src\power</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\SDL_yuv_sw.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\SDL_render.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\SDL_d3dmath.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_blendfillrect.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_blendline.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_blendpoint.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_drawline.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_drawpoint.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_render_sw.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\software\SDL_rotate.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\psp\SDL_render_psp.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\opengles2\SDL_render_gles2.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\opengles2\SDL_shaders_gles2.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\opengles\SDL_render_gles.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\opengl\SDL_render_gl.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\opengl\SDL_shaders_gl.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\direct3d11\SDL_render_d3d11.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\direct3d11\SDL_shaders_d3d11.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\direct3d\SDL_render_d3d.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\render\direct3d\SDL_shaders_d3d.c">
+      <Filter>src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\sensor\SDL_sensor.c">
+      <Filter>src\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\sensor\android\SDL_androidsensor.c">
+      <Filter>src\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_crc32.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_getenv.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_iconv.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_malloc.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_qsort.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_stdlib.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_string.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\stdlib\SDL_strtokr.c">
+      <Filter>src\stdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_assert.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_common.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_compare.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_crc32.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_font.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_fuzzer.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_harness.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_imageBlit.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_imageBlitBlend.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_imageFace.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_imagePrimitives.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_imagePrimitivesBlend.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_log.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_md5.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_memory.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\test\SDL_test_random.c">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\SDL_thread.c">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\pthread\SDL_syscond.c">
+      <Filter>src\thread\pthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\pthread\SDL_sysmutex.c">
+      <Filter>src\thread\pthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\pthread\SDL_syssem.c">
+      <Filter>src\thread\pthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\pthread\SDL_systhread.c">
+      <Filter>src\thread\pthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\thread\pthread\SDL_systls.c">
+      <Filter>src\thread\pthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\timer\SDL_timer.c">
+      <Filter>src\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_0.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_1.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_A.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_auto.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_copy.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_N.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_blit_slow.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_bmp.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_clipboard.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_egl.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_fillrect.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_pixels.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_rect.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_RLEaccel.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_shape.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_stretch.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_surface.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_video.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_vulkan_utils.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\SDL_yuv.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidclipboard.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidevents.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidgl.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidkeyboard.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidmessagebox.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidmouse.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidtouch.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidvideo.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidvulkan.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\android\SDL_androidwindow.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL_assert.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL_dataqueue.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL_error.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL_hints.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\SDL_log.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\video\yuv2rgb\yuv_rgb.c">
+      <Filter>src\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SquareBox\vendor\include\SDL\src\timer\unix\SDL_systimer.c">
+      <Filter>src\timer</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

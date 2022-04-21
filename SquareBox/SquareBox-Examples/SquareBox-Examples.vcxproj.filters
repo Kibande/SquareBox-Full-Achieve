@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{C196CD9C-2D76-4C38-368E-D70EA2ECB299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{89565304-F535-D29F-FE4D-5D766AAC3801}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BoostExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAppConsole.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ExampleHomeScreen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenIndices.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureRenderingExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoPlayerExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BoostExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleHomeScreen.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggerExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureRenderingExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoPlayerExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
