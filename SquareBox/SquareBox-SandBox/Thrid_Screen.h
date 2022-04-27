@@ -34,7 +34,7 @@ public:
 	int m_nextScreenIndex = SECOND_SCREEN_INDEX;
 	int m_previousScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
-	Editor_Assistant m_editor_assitant;
+	SquareBoxEditor::Editor_Assistant m_editor_assitant;
 	std::vector<SquareBox::GWOM::WorldCluster> m_world_cluster;
 };
 

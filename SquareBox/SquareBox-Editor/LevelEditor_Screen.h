@@ -51,6 +51,9 @@ namespace SquareBoxEditor {
 		1 - compound Shapes are shapes made from other shapes being combined , they are not really shapes , e.g
 		car
 		bicycle
+		A boat
+		A Moving machine , like the ones  that we have in meat boy
+		Compound shapes have not yet been implemented , since there has not yet been any need for them
 	*/
 
 	enum RightTabDisplayEnum {
@@ -58,12 +61,18 @@ namespace SquareBoxEditor {
 		LAYERS = 1,
 		LAYERPROPERTIES = 2
 	};
+
 	/*
-	0-Physics , properities of the currently active object
-	1-Layers , shows the layer arragments, visibility properties e.t.c
-	2-Layer Properties for a sepecific layers , mainly the layers tiling
+		0-Physics , properities of the currently active object
+		1-Layers , shows the layer arragements, visibility properties e.t.c
+		2-Layer Properties for a sepecific layers , mainly the layers tiling
 	*/
 
+	/*
+		The RightTabDisplay in a future upadte will be sub divided into
+		object properties [ physics , animation]
+		layering [ layer stack control , layer customization]
+	*/
 	enum EditorThemeEnum {
 		ClassicTheme = 0,
 		LightTheme = 1,
@@ -155,7 +164,8 @@ namespace SquareBoxEditor {
 		EditorThemeEnum m_theme_index = EditorThemeEnum::DarkTheme;
 		SquareBox::GWOM::Joint* m_current_joint_ptr = nullptr;
 		/*floats*/
-		int m_target_shift_to_layer_index = 0;
+		int m_target_shift_to_layer_index = 0;// when shifting cluster objects from one layer to 
+		// another
 		/*bools*/
 		//Imgui file handling dialogs
 		bool m_show_open_level_file_dialog = false;
@@ -196,13 +206,16 @@ namespace SquareBoxEditor {
 		bool m_show_update_layer_tiling_dialog = false;
 		bool m_always_draw_edges = true;//helps with makinjg edges act like lines
 		bool m_show_all_debug_lines = true;//alternative is showing only for the active layer
-		bool m_show_scaling_in_debug_mode = true;
+		bool m_show_scaling_in_debug_mode = true;		
+		bool m_show_grid_lines = false;
+		bool m_show_console = false;
+
 		/*vectors*/
 		std::vector<SquareBox::IShape*> m_vec_shapes_pointer;
 
 		std::vector<SquareBox::GWOM::WorldCluster> m_world_clusters;
 		std::vector<glm::vec2> m_vector_of_joint_ploting_points;
-		glm::vec2 clustermousepos;
+		glm::vec2 clustermousepos; // used when moving multiple cluster objects at once
 		std::vector<SquareBox::GWOM::Layer> m_layers;
 		std::vector<std::pair<int, int>> m_selected_cluster_objects;
 		std::vector<SquareBox::GWOM::Tile*> m_selected_tiles;//Used for tiling layer layout
@@ -243,6 +256,9 @@ namespace SquareBoxEditor {
 		SquareBox::AnimationSystem::AnimationCreator m_animation_creator;
 		std::string m_animation_script = "Assets/Animations/animations_file.lua";
 		std::string m_automation_script = "Assets/Animations/automation_file.lua";
+		/* 
+			it would be nice to add the ability to load animation and automation scripts from any where
+		*/
 		std::string m_level_file_extension = ".dat,.sbx";
 		std::string m_texture_file_extensions = ".png,.jpg";
 
@@ -251,9 +267,7 @@ namespace SquareBoxEditor {
 		//Assistant
 		SquareBox::Utilities m_utilities;
 		Editor_Assistant m_editor_assitant;
-		bool m_show_grid_lines = false;
 		SquareBoxEditor::CustomConsole m_console;
-		bool m_show_console = false;
 		/*
 			We should implement a cache friendly way of allocation all our
 			PhysicsEngines
@@ -263,6 +277,15 @@ namespace SquareBoxEditor {
 			new PhysicsEngines and Joints , this will ensure that we have continous memory , hence a cache friendly
 			approach
 
+			Known Bugs
+			if we have a tilesheet texture in the same index as a single texture during 
+			flat texturing, the tilesheet replaces the single texture when when we have single texture 
+			selected
+
+
+			TODOs
+			Fix the Joints System
+			Add an in buit animation system
 		*/
 	};
 }

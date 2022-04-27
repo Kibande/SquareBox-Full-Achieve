@@ -1065,7 +1065,6 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 				glm::vec4 drag_select_destRect(m_drag_select_origin, (mouse_in_world - m_drag_select_origin));
 				m_debug_renderer.drawBox(drag_select_destRect, m_drag_selection_box_color, 0.0f);
 			}
-
 			//drawing the scaling lines
 			if ((m_selected_cluster_objects.size() == 1) && m_show_scaling_in_debug_mode && m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT) {//dont show in freelance mode
 				SquareBox::GWOM::ClusterObject& cwobj = m_world_clusters[m_selected_cluster_objects[0].first].cluster_objects[m_selected_cluster_objects[0].second];
@@ -2349,6 +2348,8 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
 	{
 		int right_tab_subject = static_cast<int>(m_side_view);
+		ImGui::Text("FPS: %.2f", static_cast<float>(m_game_ptr->getFps()));
+		ImGui::NewLine();
 		ImGui::RadioButton("Physics", &right_tab_subject, 0); ImGui::SameLine();
 		ImGui::RadioButton("Layers ", &right_tab_subject, 1); ImGui::SameLine();
 		ImGui::RadioButton("Layer Properties ", &right_tab_subject, 2);

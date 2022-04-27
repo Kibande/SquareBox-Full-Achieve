@@ -44,5 +44,9 @@ namespace SquareBox {
 		{
 			m_texture_cache.setTextureTilingById(id_,tiling_);
 		}
+		void TextureManager::setTextureDisplayNameById(int id_, std::string display_name_)
+		{
+			m_texture_cache.setTextureDisplayNameById(id_, display_name_);
+		}
 	}
 }

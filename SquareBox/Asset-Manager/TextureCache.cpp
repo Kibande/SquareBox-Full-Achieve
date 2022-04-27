@@ -58,5 +58,24 @@ namespace SquareBox {
 				SBX_CORE_ERROR("Invalid Texture Id {} , no corresponding texture found",texture_id_);
 			}
 		}
+		void TextureCache::setTextureDisplayNameById(int texture_id_, std::string display_name_)
+		{
+			std::map<int, GLTexture>::iterator mit = m_id_texture_map.find(texture_id_);
+			if (mit != m_id_texture_map.end()) {
+				// it exists so lets edit its tiling
+				m_id_texture_map[texture_id_].display_name = display_name_;
+
+				//Edit the file path copy as well
+				std::map<std::string, GLTexture>::iterator mit_2 = m_file_path_texture_map.find(mit->second.asset_file_path);
+
+				if (mit_2 != m_file_path_texture_map.end()) {
+					m_file_path_texture_map[mit->second.asset_file_path].display_name = display_name_;
+				}
+
+			}
+			else {
+				SBX_CORE_ERROR("Invalid Texture Id {} , no corresponding texture found", texture_id_);
+			}
+		}
 	}
 }

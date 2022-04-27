@@ -17,6 +17,14 @@ Order of Methods Calling
 	De constructor
 
 */
+char *convertGLTextureDisplayNameToCstr(const SquareBox::GWOM::ClusterObject& clusterObject_)
+{
+	//this new here is never deleted, and is called alot, that is a problem to us 
+	auto retrived_texture=SquareBox::AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
+	char *pc = new char[retrived_texture.display_name.size() + 1];
+	std::strcpy(pc, retrived_texture.display_name.c_str());
+	return pc;
+}
 
 Second_Screen::Second_Screen(SquareBox::RenderEngine::Window* window_) :m_window(window_)
 {
@@ -40,8 +48,6 @@ void Second_Screen::onEntry()
 {
 	// this is where  stuff  the screen will use are  initialized from
 	m_sprite_font.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
-	//Init Cameras
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
 	//Init Shaders
 	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
@@ -59,18 +65,14 @@ void Second_Screen::onEntry()
 	m_debug_program.linkShaders();
 
 	m_debug_renderer.init();
-		
+
+
+	//Init Cameras
+	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_camera.setScale(m_camera_scale);//The Zoom of the Camera
 	glm::vec2 screen_dimensions = glm::vec2(m_window->getScreenWidth(), m_window->getScreenHeight());
-	m_camera_position = screen_dimensions * glm::vec2(0.5f);//Center the camera
-	m_camera.setPosition(m_camera_position);
-	//Seting up our object
-	m_texture_holder_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getVec4();
-	m_texture_holder_object.position = screen_dimensions * glm::vec2(0.5f);
-	m_texture_holder_object.shape = SquareBox::BodyShapeEnum::Box;
-	m_new_texture_tiling = glm::ivec2(5,2);
-	m_texture_holder_object.texture_info.texture_id = loadTexture(m_texture_file_path, m_new_texture_tiling).id;
-	m_texture_holder_object.texture_info.uv_rect = glm::vec4(0.0f,0.0f,1.0f,1.0f);
+	m_camera.setPosition(screen_dimensions * glm::vec2(0.5f));
+	
 	m_utilities.init();
 
 	m_grid_color_array[0] = 1.0f;
@@ -122,13 +124,15 @@ void Second_Screen::update(const float & deltaTime_)
 
 	glm::vec2 screen_dimensions(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	// maintaing the textures aspect ration
-	float x_to_y=SquareBox::MathLib::Float::divideAndGetFloat(m_original_texture_dimensions.x, m_original_texture_dimensions.y);
-	m_texture_holder_object.width = m_texture_holder_object.height*x_to_y;
-	m_texture_holder_object.height = screen_dimensions.y * m_screen_texture_height_ratio; // this 
-
+	// maintaing the textures aspect ratio
+	//retrive texture from the asset manager
+	if (m_vec_of_texture_objects.size() > m_active_texture_object_index) {
+		auto retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[m_active_texture_object_index].texture_info.texture_id);
+		float x_to_y = SquareBox::MathLib::Float::divideAndGetFloat(retrieved_texture.width, retrieved_texture.height);
+		m_vec_of_texture_objects[m_active_texture_object_index].width = m_vec_of_texture_objects[m_active_texture_object_index].height*x_to_y;
+		m_vec_of_texture_objects[m_active_texture_object_index].height = screen_dimensions.y * m_screen_texture_height_ratio; // this 
+	}
 	
-
 	//Called once every game loop , and updates what will be drawn
 	m_window->update();
 	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
@@ -138,86 +142,90 @@ void Second_Screen::update(const float & deltaTime_)
 
 void Second_Screen::draw()
 {
-	//Draw call
-	m_texture_program.use();
+	if (m_vec_of_texture_objects.size() > m_active_texture_object_index) {
+		//Draw call
+		m_texture_program.use();
 
-	IGameScreen::preUpdateShader(&m_texture_program, "mySampler");
+		IGameScreen::preUpdateShader(&m_texture_program, "mySampler");
 
-	IGameScreen::uploadCameraInfo(&m_texture_program, &m_camera, "P");
+		IGameScreen::uploadCameraInfo(&m_texture_program, &m_camera, "P");
 
-	m_sprite_batch.begin();
-	//m_sprite_font or m_sprite_batch draw
+		m_sprite_batch.begin();
+		//m_sprite_font or m_sprite_batch draw
 
-	//m_sprite_batch.draw();
-	m_utilities.setCurrentShapePointer(m_texture_holder_object.shape, &m_current_shape_ptr);
-	m_current_shape_ptr->draw(m_texture_holder_object, m_sprite_batch);
-	m_sprite_batch.end();
-	m_sprite_batch.renderBatch();
-	m_texture_program.unuse();
-	SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_texture_holder_object.texture_info.texture_id);
-	glm::vec4 rect_shape(m_texture_holder_object.position - (glm::vec2(m_texture_holder_object.width, m_texture_holder_object.height)*glm::vec2(0.5f)), m_texture_holder_object.width, m_texture_holder_object.height);
+		//m_sprite_batch.draw();
 
-if(m_show_grid_lines){
-	m_debug_renderer.begin();
+		const auto & active_texture_object = m_vec_of_texture_objects[m_active_texture_object_index];
+		m_utilities.setCurrentShapePointer(active_texture_object.shape, &m_current_shape_ptr);
+		m_current_shape_ptr->draw(active_texture_object, m_sprite_batch);
+		m_sprite_batch.end();
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
 
-	m_current_shape_ptr->debugDraw(m_texture_holder_object, m_debug_renderer, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[2] * 255));
-	//drawing the grid lines 
+		//hit the asset manager to retrive the target texture using the texture id
+		SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(active_texture_object.texture_info.texture_id);
+		glm::vec4 rect_shape(active_texture_object.position - (glm::vec2(active_texture_object.width, active_texture_object.height)*glm::vec2(0.5f)), active_texture_object.width, active_texture_object.height);
 
-	if (retrieved_texture.tiling.x > 1) {
-		float x_gap = m_texture_holder_object.width / retrieved_texture.tiling.x;
-		for (unsigned int i = 0; i < retrieved_texture.tiling.x; i++)
-		{
-			glm::vec2 top_point(rect_shape.x + (i * x_gap), rect_shape.y + rect_shape.w);
-			glm::vec2 bottom_point(rect_shape.x + (i * x_gap), rect_shape.y);
-			m_debug_renderer.drawLine(top_point, bottom_point, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[2] * 255));
-		}
-	}
+		if (m_show_grid_lines) {
+			m_debug_renderer.begin();
+			m_current_shape_ptr->debugDraw(active_texture_object, m_debug_renderer, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[3] * 255));
+			//drawing the grid lines 
 
-	if (retrieved_texture.tiling.y > 1) {
-		float y_gap = m_texture_holder_object.height / retrieved_texture.tiling.y;
-		for (unsigned int i = 0; i < retrieved_texture.tiling.y; i++)
-		{
-			glm::vec2 left_point(rect_shape.x, rect_shape.y + (i * y_gap));
-			glm::vec2 right_point(rect_shape.x + rect_shape.z, rect_shape.y + (i * y_gap));
-			m_debug_renderer.drawLine(left_point, right_point, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[2] * 255));
-		}
-	}
-	m_debug_renderer.end();
-	m_debug_program.use();
-	uploadCameraInfo(&m_debug_program, &m_camera, "P");
-	m_debug_renderer.render();
-	m_debug_program.unuse();
-}
-	//the numbering
-	m_sprite_batch.begin();
-	if (retrieved_texture.tiling.x >= 1 && retrieved_texture.tiling.y >= 1) {
-		float x_gap = m_texture_holder_object.width / retrieved_texture.tiling.x;
-		float y_gap = m_texture_holder_object.height / retrieved_texture.tiling.y;
-		//glm::vec2 top_left_corner_grid_center(rect_shape.x + (x_gap*0.5), rect_shape.y + rect_shape.w - (y_gap*0.5));
-		glm::vec2 bottom_left_corner_grid_center(rect_shape.x + (x_gap*0.5), rect_shape.y + (y_gap*0.5));
-		
-		int tile_index = 0;
-		for (unsigned int i = 0; i < retrieved_texture.tiling.y; i++)
-		{
-			for (unsigned int j = 0; j < retrieved_texture.tiling.x; j++)
-			{
-				std::ostringstream os;
-				os << tile_index;
-				auto temp_tiling_color = SquareBox::RenderEngine::ColorRGBA8(m_tiling_number_color_array[0] * 255, m_tiling_number_color_array[1] * 255, m_tiling_number_color_array[2] * 255, m_tiling_number_color_array[3] * 255);
-				m_sprite_font.draw(m_sprite_batch, os.str().c_str(), glm::vec2(bottom_left_corner_grid_center.x + (x_gap*j), bottom_left_corner_grid_center.y + (y_gap*i)), glm::vec2(m_tiling_numbers_scale), 1.0f, temp_tiling_color, SquareBox::JustificationEnum::MIDDLE);
-				tile_index++;
+			if (retrieved_texture.tiling.x > 1) {
+				float x_gap = active_texture_object.width / retrieved_texture.tiling.x;
+				for (unsigned int i = 0; i < retrieved_texture.tiling.x; i++)
+				{
+					glm::vec2 top_point(rect_shape.x + (i * x_gap), rect_shape.y + rect_shape.w);
+					glm::vec2 bottom_point(rect_shape.x + (i * x_gap), rect_shape.y);
+					m_debug_renderer.drawLine(top_point, bottom_point, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[3] * 255));
+				}
 			}
+
+			if (retrieved_texture.tiling.y > 1) {
+				float y_gap = active_texture_object.height / retrieved_texture.tiling.y;
+				for (unsigned int i = 0; i < retrieved_texture.tiling.y; i++)
+				{
+					glm::vec2 left_point(rect_shape.x, rect_shape.y + (i * y_gap));
+					glm::vec2 right_point(rect_shape.x + rect_shape.z, rect_shape.y + (i * y_gap));
+					m_debug_renderer.drawLine(left_point, right_point, SquareBox::RenderEngine::ColorRGBA8(m_grid_color_array[0] * 255, m_grid_color_array[1] * 255, m_grid_color_array[2] * 255, m_grid_color_array[3] * 255));
+				}
+			}
+			m_debug_renderer.end();
+			m_debug_program.use();
+			uploadCameraInfo(&m_debug_program, &m_camera, "P");
+			m_debug_renderer.render();
+			m_debug_program.unuse();
 		}
+		//the numbering
+		m_sprite_batch.begin();
+		if (retrieved_texture.tiling.x >= 1 && retrieved_texture.tiling.y >= 1) {
+			float x_gap = active_texture_object.width / retrieved_texture.tiling.x;
+			float y_gap = active_texture_object.height / retrieved_texture.tiling.y;
+			//glm::vec2 top_left_corner_grid_center(rect_shape.x + (x_gap*0.5), rect_shape.y + rect_shape.w - (y_gap*0.5));
+			glm::vec2 bottom_left_corner_grid_center(rect_shape.x + (x_gap*0.5), rect_shape.y + (y_gap*0.5));
+
+			int tile_index = 0;
+			for (unsigned int i = 0; i < retrieved_texture.tiling.y; i++)
+			{
+				for (unsigned int j = 0; j < retrieved_texture.tiling.x; j++)
+				{
+					std::ostringstream os;
+					os << tile_index;
+					auto temp_tiling_color = SquareBox::RenderEngine::ColorRGBA8(m_tiling_number_color_array[0] * 255, m_tiling_number_color_array[1] * 255, m_tiling_number_color_array[2] * 255, m_tiling_number_color_array[3] * 255);
+					m_sprite_font.draw(m_sprite_batch, os.str().c_str(), glm::vec2(bottom_left_corner_grid_center.x + (x_gap*j), bottom_left_corner_grid_center.y + (y_gap*i)), glm::vec2(m_tiling_numbers_scale), 1.0f, temp_tiling_color, SquareBox::JustificationEnum::MIDDLE);
+					tile_index++;
+				}
+			}
 
 
+		}
+		m_sprite_batch.end();
+
+		m_texture_program.use();
+		uploadCameraInfo(&m_texture_program, &m_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
 	}
-	m_sprite_batch.end();
-
-	m_texture_program.use();
-	uploadCameraInfo(&m_texture_program, &m_camera, "P");
-	m_sprite_batch.renderBatch();
-	m_texture_program.unuse();
-
 	drawGUI();
 }
 
@@ -292,24 +300,25 @@ void Second_Screen::drawGUI()
 
 	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
 	{
-		ImGui::InputFloat("Camera Scale ", &m_camera_scale,0.01f,0.1f,"%.3f");
-		ImGui::InputFloat("Indicies Scale", &m_tiling_numbers_scale,0.01f,0.1f,"%.3f");
+		ImGui::InputFloat("Camera Scale ", &m_camera_scale, 0.01f, 0.1f, "%.3f");
+		ImGui::InputFloat("Indicies Scale", &m_tiling_numbers_scale, 0.01f, 0.1f, "%.3f");
 		ImGui::Checkbox("Show Grid", &m_show_grid_lines);
 		ImGui::ColorEdit4("Background color", m_window_back_ground_color_array);
 
 		ImGui::ColorEdit4("Grid color", m_grid_color_array);
 		ImGui::ColorEdit4("Indicies color", m_tiling_number_color_array);
 
+		if(m_vec_of_texture_objects.size()>m_active_texture_object_index){
 		//Retreiving a particular indicies uv coordinates
 		ImGui::InputInt("UV React", &m_target_tile_index, 1, 1);
-		SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_texture_holder_object.texture_info.texture_id);
+		SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[m_active_texture_object_index].texture_info.texture_id);
 		SquareBox::AssetManager::TileSheet tileSheet;
 		tileSheet.readGrid(retrieved_texture);
-		int retrieved_texture_max_index  = retrieved_texture.tiling.x* retrieved_texture.tiling.y;
+		int retrieved_texture_max_index = retrieved_texture.tiling.x* retrieved_texture.tiling.y;
 		if (m_target_tile_index < 0) {
 			m_target_tile_index = 0;
 		}
-		else if (m_target_tile_index>=retrieved_texture_max_index) {
+		else if (m_target_tile_index >= retrieved_texture_max_index) {
 			m_target_tile_index = retrieved_texture_max_index - 1;
 		}
 		glm::vec4 uvRect = tileSheet.getUVCords(m_target_tile_index);
@@ -318,29 +327,60 @@ void Second_Screen::drawGUI()
 		ImGui::Text("Y : %.3f", uvRect.y);
 		ImGui::Text("Z : %.3f", uvRect.z);
 		ImGui::Text("W : %.3f", uvRect.w);
+
+		
+		ImGui::NewLine();
+		
+		ImGui::Text("Name : ");
+		ImGui::SameLine();
+		std::vector<char*>  vc;
+		vc.reserve(m_vec_of_texture_objects.size());
+		std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), convertGLTextureDisplayNameToCstr);
+
+		ImGui::Combo("", &m_active_texture_object_index, &vc[0], m_vec_of_texture_objects.size());
+
+		//Drop down menu
+		ImGui::Text("cols : "); ImGui::SameLine();
+		ImGui::InputInt("###c_cols", &m_current_texture_object_tiling.x);
+		if (m_current_texture_object_tiling.x < 1) {
+			m_current_texture_object_tiling.x = 1;
+		}
+		ImGui::Text("rows : "); ImGui::SameLine();
+		ImGui::InputInt("###c_rows", &m_current_texture_object_tiling.y);
+		if (m_current_texture_object_tiling.y < 1) {
+			m_current_texture_object_tiling.y = 1;
+		}
+
+		if (m_vec_of_texture_objects.size() > m_active_texture_object_index) {
+			if (ImGui::Button("Update Tiling ")) {
+				SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[m_active_texture_object_index].texture_info.texture_id);
+				SquareBox::AssetManager::TextureManager::setTextureTilingById(retrieved_texture.id, m_current_texture_object_tiling);
+			}
+		}
+		ImGui::NewLine();
+		}else{
+			ImGui::Text("No Texture Object loaded");
+		}
+
 		ImGui::NewLine();
 		ImGui::Text("New  TileSheet Tiling:");
 		ImGui::Text("cols : "); ImGui::SameLine();
-		ImGui::InputInt("###cols", &m_new_texture_tiling.x);
+		ImGui::InputInt("###n_cols", &m_new_texture_tiling.x);
 		if (m_new_texture_tiling.x <1) {
 			m_new_texture_tiling.x = 1;
 		}
 		ImGui::Text("rows : "); ImGui::SameLine();
-		ImGui::InputInt("###rows", &m_new_texture_tiling.y);
+		ImGui::InputInt("###n_rows", &m_new_texture_tiling.y);
 		if (m_new_texture_tiling.y < 1) {
 			m_new_texture_tiling.y = 1;
 		}
 
-		if (ImGui::Button("Get File Path")) {
+		if (ImGui::Button("Get Texture ")) {
 			m_show_open_tile_sheet_file_dialog = true;
 		}
-		ImGui::Text(m_texture_file_path.c_str());
 
-		if (ImGui::Button("Update Texture")) {
-			auto new_texture = loadTexture(m_texture_file_path, m_new_texture_tiling);
-			m_texture_holder_object.texture_info.texture_id = new_texture.id;
-			m_texture_holder_object.texture_info.uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-		}
+	
+
 		ImGui::Text("%.2f",static_cast<float>(m_game_ptr->getFps()));
 		if (m_show_open_tile_sheet_file_dialog) {
 			ImGui::OpenPopup("Open TileSheet File");
@@ -352,7 +392,8 @@ void Second_Screen::drawGUI()
 
 		if (m_file_dialog.showFileDialog("Open TileSheet File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".png"))
 		{
-			m_texture_file_path = m_file_dialog.selected_path;
+			loadTextureObject(m_file_dialog.selected_path, m_file_dialog.selected_fn, m_new_texture_tiling);
+			
 		}
 
 		if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -425,16 +466,34 @@ void Second_Screen::showMenuMain()
 
 			if (ImGui::BeginMenu("Open Recent"))
 			{
-				for (unsigned int i = 0; i < m_recent_open_texture_paths.size(); i++)
+				for (unsigned int i = 0; i < m_vec_of_texture_objects.size(); i++)
 				{
-					if (ImGui::MenuItem(m_recent_open_texture_paths[i].c_str(), NULL, false, true)) {
-						auto new_texture = loadTexture(m_recent_open_texture_paths[i], m_new_texture_tiling);
-						m_texture_holder_object.texture_info.texture_id = new_texture.id;
-						m_texture_holder_object.texture_info.uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+					auto & retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[i].texture_info.texture_id);
+					if (ImGui::MenuItem(retrieved_texture.asset_file_path.c_str(), NULL, false, true)) {
+						m_active_texture_object_index = i;
+						m_current_texture_object_tiling = retrieved_texture.tiling;
 					};
 				}
 				
 				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("Delete Current Texture",NULL)) {
+				int counter = 0;
+				for (auto it = m_vec_of_texture_objects.begin(); it !=m_vec_of_texture_objects.end(); it++)
+				{
+					if (counter == m_active_texture_object_index) {
+						m_vec_of_texture_objects.erase(it);
+
+						// adjust the m_active_object_index
+						m_active_texture_object_index--;
+						if (m_active_texture_object_index < 0) {
+							m_active_texture_object_index = 0;
+						}
+						break; // using return here caused an out of access memory leaked else where in 
+						// the program
+					}
+					counter++;
+				}
 			}
 			if (ImGui::MenuItem("About", NULL)) { 
 				 m_show_about_dialog = true;
@@ -448,26 +507,26 @@ void Second_Screen::showMenuMain()
 		ImGui::EndMainMenuBar();
 	}
 }
-SquareBox::AssetManager::GLTexture Second_Screen::loadTexture(std::string file_path_, glm::vec2 tiling_)
+void Second_Screen::loadTextureObject(std::string file_path_,std::string file_name_, glm::vec2 tiling_)
 {
 	SquareBox::AssetManager::GLTexture loaded_texture=SquareBox::AssetManager::TextureManager::getTextureByFilePath(file_path_);
 	SquareBox::AssetManager::TextureManager::setTextureTilingById(loaded_texture.id, tiling_);
+	SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(loaded_texture.id, file_name_);
 	auto retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(loaded_texture.id);
-	m_original_texture_dimensions = glm::ivec2(retrieved_texture.width, retrieved_texture.height);
-	bool not_found = true;
 
-	for (unsigned int i = 0; i < m_recent_open_texture_paths.size(); i++)
-	{
-		if (m_recent_open_texture_paths[i] == file_path_) {
-			not_found = false;
-		}
-	}
+	m_vec_of_texture_objects.emplace_back();
+	auto & new_texture_object = m_vec_of_texture_objects.back();
+	//Setting up our object
+	new_texture_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getVec4();
+	glm::vec2 screen_dimensions = glm::vec2(m_window->getScreenWidth(), m_window->getScreenHeight());
+	new_texture_object.position = screen_dimensions * glm::vec2(0.5f); //position the texture at the center 
+	//of the screen
+	new_texture_object.shape = SquareBox::BodyShapeEnum::Box;
+	new_texture_object.texture_info.uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	new_texture_object.texture_info.texture_id = retrieved_texture.id;
 
-	if (not_found && retrieved_texture.id>0) {
-		m_recent_open_texture_paths.push_back(file_path_);
-	}
-
-	return retrieved_texture;
+	m_active_texture_object_index = m_vec_of_texture_objects.size() - 1;
+	m_current_texture_object_tiling = tiling_;
 }
 
 Second_Screen::~Second_Screen()
