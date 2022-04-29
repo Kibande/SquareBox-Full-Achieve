@@ -17,7 +17,7 @@ SquareBox::AnimationSystem::TimeDependantAnimation::TimeDependantAnimation(std::
 	}
 }
 
-bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_)
+bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 {
 	float perFrameSpeedGain = 0.0f;
 
@@ -33,20 +33,18 @@ bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	if (m_animeTime > m_currentAnimationSquence.numTiles) {
 		m_animeTime = 0.0f;//when the animation is done we should just reset , which will loop stuff
 	}
-
+	auto retrieved_texture = AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
 	//Apply Animation
 	m_currentTileIndex = m_currentAnimationSquence.startTile + (int)m_animeTime;
 	//get the uvCoords
-	SquareBox::AssetManager::TileSheet tileSheet;
-	//tileSheet.readGrid(clusterObject_.texture);
 	SBX_CORE_ERROR("We need to update the the TimeDependantAnimation System");
-	glm::vec4 uvRect = tileSheet.getUVCords(m_currentTileIndex);
+	glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_currentTileIndex);
 
 	//change spriteDirection
 	if (!m_is_forward_direction)
 	{
 		//flip the uv
-		uvRect.x += 1.0f / tileSheet.getDimensions().x;
+		uvRect.x += 1.0f / retrieved_texture.tiling.x;
 		uvRect.z *= -1;
 	}
 

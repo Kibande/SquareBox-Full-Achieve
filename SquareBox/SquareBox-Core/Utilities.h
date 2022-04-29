@@ -17,8 +17,8 @@ namespace SquareBox {
 	{
 	public:
 		struct creationDetails {
-			std::pair<int, int> settlementCoordinates;
-			std::pair<int, int> shellCoordinates;
+			std::pair<int, int> settlementCoordinates; // where the cluster objects has been placed
+			std::pair<int, int> shellCoordinates; // where the next slot for a cluster object is
 		};
 		Utilities();
 		~Utilities();
@@ -53,10 +53,10 @@ namespace SquareBox {
 		//create world objects
 		creationDetails createClusterObjectIntoWorld(
 			bool drawingPlotedCords,/*
-									this is set to true only when we are now actually submiting the ploted points
-									that we have been acumulating
+									this is set to true only when we are now actually submiting the plotted coordinates
+									that we have been accumulating
 									*/
-			bool rebirth,   // wether we are recreating object , most likey with edited attributes
+			bool rebirth,   // whether we are recreating object , most likey with edited attributes
 			bool editPosition,/*
 								do we want to change the clusterObjects position to the one supplied?
 								this is usually only true for dragging objects,and none plotted shapes
@@ -64,14 +64,22 @@ namespace SquareBox {
 			glm::vec2 newPosition_,
 
 			SquareBox::GWOM::ClusterObject * ClusterObject_,/*
+															 -----old comment-----
 															 the cluster Object we are acting upon , if autoNewCluster Object is enabled
 															 this clusterObject pointer will then point to a new clusterObject*/
+															/* 
+															---new comment----
+															the old comment is not clear but this is what i was
+															able to pick from it.
+															this points to the cluster object that we are acting upon , either adding to worldClusters
+															vector or rebirthing.
+															*/
 
 			std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_,
 			int shellWorldClusterIndex_,
 			SquareBox::PhysicsCollisionEngine::PhysicsWorld* targetPhysicsWorld_,
 			bool autoNewClusterObjectCreation,/*
-													Contols weather if a new cluster Objects should be added to the worldCluster once
+													Controls whether if a new cluster Objects should be added to the worldCluster once
 													the current clusterObject has been created , this is by default expected to be true
 													Except for when we are loading in a level,this becomes false when rebirth is true
 													*/

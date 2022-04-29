@@ -862,16 +862,22 @@ namespace SquareBox {
 		creationDetails detials;
 		std::pair<int, int> settlement = std::pair<int, int>(-1, -1);
 		/* 
-		   this  settlement pair here is just to show that things went through smoothly
-		   if the caller of this function edits the cluster objects cluster_index , index 
-		   there will be no effect here ,
-		   this function does not change a cluster Objects locatiojn in the vector of world clusters
-		   it simply gives the all clear that an object is really alive and also puts the object into the physcis world
+		  this function takes in a clusterObject
 
-		   if the cluster object is given the all clear the settlement pair will be a pure clear each of the clusterindex and index that \
-		   entered into this clusterObject
+		  this clusterObject , at  the time it is handed over to this function is already a member in the 
+		  worldCluster vector.
 
-		   */
+		  so meaning that this function doesn not have a power to fix a cluster object into a specific worldCluster
+		  system.
+
+		  the only power it has is if , antoNewClusterObjectCreation is set to true, then at the end of
+		  handling the object pointed at by clusterObject, it inserts another clusterObject at the end of 
+		  the cluster objects vec in the world cluster pointed at by shellWorldClusterIndex_
+
+		  This functions only roles are to enable smooth
+		  adding physics objects to the world.
+		  object rebirths with editied attributes like position
+		 */
 		std::pair<int, int> shell = std::pair<int, int>(-1, -1);
 
 		SquareBox::GWOM::ClusterObject ancestor;

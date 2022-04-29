@@ -13,7 +13,7 @@ SquareBox::AnimationSystem::ForceDependantAnimation::ForceDependantAnimation(std
 	}
 }
 
-bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & deltaTime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_)
+bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & deltaTime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 {
 	//Update Our Animation State
 	glm::vec2 linerVelocity;
@@ -143,16 +143,16 @@ bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & d
 		//std::cout << "SpeedGain : " << perFrameSpeedGain << " m_animeTime " << m_animeTime << " numtiles " << m_currentAnimationSquence.numTiles<<" index "<<m_currentTileIndex << '\n';
 
 		//get the uvCoords
-		SquareBox::AssetManager::TileSheet tileSheet;
-		//tileSheet.readGrid(clusterObject_.texture);
+		auto retrieved_texture = AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
+
 		SBX_CORE_ERROR("We need to update the the ForceDependantAnimation System");
-		glm::vec4 uvRect = tileSheet.getUVCords(m_currentTileIndex);
+		glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_currentTileIndex);
 
 		//change spriteDirection
 		if (!m_is_forward_direction)
 		{
 			//flip the uv
-			uvRect.x += 1.0f / tileSheet.getDimensions().x;
+			uvRect.x += 1.0f / retrieved_texture.tiling.x;
 			uvRect.z *= -1;
 		}
 

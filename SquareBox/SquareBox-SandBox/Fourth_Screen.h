@@ -19,7 +19,7 @@ private:
 	SquareBox::RenderEngine::Window * m_window_ptr = nullptr;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
-	SquareBox::InputManager::IInput * m_input_handler;
+	SquareBox::InputManager::IInputDevice * m_input_handler;
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::DebugRenderer m_debug_renderer;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;

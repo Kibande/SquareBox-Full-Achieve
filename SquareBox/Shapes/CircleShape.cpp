@@ -1,5 +1,5 @@
 #include "CircleShape.h"
-#include<Input-Manager/IInput.h>
+#include<Input-Manager/IInputDevice.h>
 
 namespace SquareBox {
 	namespace Shapes {
@@ -34,7 +34,7 @@ namespace SquareBox {
 			debugRender_.drawCircle(mouseinworld, borderColor_, clusterObject_.radius);
 		}
 
-		void CircleShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInput * input_)
+		void CircleShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInputDevice * input_)
 		{
 			//we are relying on the results of keepTrackOfPosition();
 			glm::vec2 center = clusterObject_.position;

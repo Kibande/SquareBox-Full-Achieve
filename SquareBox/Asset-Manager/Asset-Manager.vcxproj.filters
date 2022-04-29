@@ -27,9 +27,6 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TileSheet.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="imageResizer.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="TileSheet.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="stb_image.cpp">

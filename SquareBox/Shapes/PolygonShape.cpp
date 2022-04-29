@@ -1,5 +1,5 @@
 #include "PolygonShape.h"
-#include<Input-Manager/IInput.h>
+#include<Input-Manager/IInputDevice.h>
 
 namespace SquareBox {
 	namespace Shapes {
@@ -35,7 +35,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PolygonShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInput * input_)
+		void PolygonShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInputDevice * input_)
 
 		{
 			//this is so far only implemented for Shapes with properly defined dimensions

@@ -267,13 +267,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="IInput.h" />
+    <ClInclude Include="IInputDevice.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="TouchScreen.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IInput.cpp" />
+    <ClCompile Include="IInputDevice.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="TouchScreen.cpp" />
   </ItemGroup>

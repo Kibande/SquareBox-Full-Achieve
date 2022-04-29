@@ -168,7 +168,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 		on the WorldCluster Objects vector
 	*/
 
-	if (active_layer.tile_system.getTiling() != SquareBox::LayerTilingEnum::None && active_layer.tile_system.isInitialised()) {
+	if (active_layer.tile_system.isInitialised()) {
 		if (m_game_ptr->isProcessingInput()) {
 			//where the mouse currently is at in our world
 			glm::vec2& mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
@@ -723,7 +723,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 		SquareBox::GWOM::Layer& layer = m_layers[h];
 		if (layer.is_visible) {
 			//get the vector of alive cluster objects to draw
-			if (layer.tile_system.getTiling() != SquareBox::LayerTilingEnum::None && layer.tile_system.isInitialised()) {
+			if (layer.tile_system.isInitialised()) {
 			//fix up the draw calls
 			glm::vec2 camera_center = layer.camera.getPosition();
 			float camera_width = layer.camera.getCameraDimensions().x;
@@ -752,17 +752,14 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 							}else if(target_sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET){
 								texture_id = layer.tiled_textures[target_sub_texture.parent_texture_index].texture.id;
 								//Get the uvCoordinates
-								SquareBox::AssetManager::TileSheet tile_sheet;
-								tile_sheet.readGrid(layer.tiled_textures[target_sub_texture.parent_texture_index].texture);
-								texture_uvRect = tile_sheet.getUVCords(target_sub_texture.tiling_index);
+								texture_uvRect = layer.tiled_textures[target_sub_texture.parent_texture_index].texture.getUVReactAtIndex(target_sub_texture.tiling_index);
 							}
 
 						}
 						//we need ot figure these out using the key that this tile has 
 						m_sprite_batch.draw(glm::vec4((*it).second->position, glm::vec2(layer.tile_system.getTileSize())), texture_uvRect,texture_id,1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
 					}
-					}
-					
+				}
 					
 				m_sprite_batch.end();
 
@@ -1285,11 +1282,11 @@ void SquareBoxEditor::LevelEditor_Screen::initGUI()
 	io.Fonts->AddFontDefault();
 	ImFont* font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/Roboto-Medium.ttf", 16.0f);
 	if (font == NULL) {
-		SBX_CORE_INFO("Failed to load font Roboto-Medium.ttf ");
+		SBX_INFO("Failed to load font Roboto-Medium.ttf ");
 	}
 	font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/chintzy.ttf", 16.0f);
 	if (font == NULL) {
-		SBX_CORE_INFO("Failed to load font chintzy.ttf ");
+		SBX_INFO("Failed to load font chintzy.ttf ");
 	}
 
 	IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context. Refer to examples app!");
@@ -1537,11 +1534,9 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 
 				if (ImGui::Button("Ok", ImVec2(120, 0))) {
 					if (static_cast<SquareBox::LayerTilingEnum>(world_tiling) != SquareBox::LayerTilingEnum::None) {
-						m_layers[m_active_layer_index].tile_system.setTiling(static_cast<SquareBox::LayerTilingEnum>(world_tiling));
-						m_layers[m_active_layer_index].tile_system.init(layer_x_origin, layer_y_origin, layer_width, layer_height, layer_tile_size);
+						m_layers[m_active_layer_index].tile_system.init(layer_x_origin, layer_y_origin, layer_width, layer_height, layer_tile_size, static_cast<SquareBox::LayerTilingEnum>(world_tiling));
 					}
 					else {
-						m_layers[m_active_layer_index].tile_system.setTiling(static_cast<SquareBox::LayerTilingEnum>(world_tiling));
 						m_layers[m_active_layer_index].tile_system.resetTileSystem();
 					}
 					m_show_update_layer_tiling_dialog = false;
@@ -2192,14 +2187,11 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 					
 						float zoom = 4.0f;
 						ImGui::Text("Preview");
-						//get the uvCoords
-						SquareBox::AssetManager::TileSheet tileSheet;
-						tileSheet.readGrid(selected_tile_sheet_texture);
+
 						/*
 						we update the cluster objects uv coords here .if it is a freelance cluster Object
-
 						*/
-						glm::vec4 uvRect = tileSheet.getUVCords(m_current_cluster_object_ptr->texture_info.tile_sheet_index);
+						glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_cluster_object_ptr->texture_info.tile_sheet_index);
 
 						if (m_current_cluster_object_ptr->controller_type == SquareBox::ControlledTypeEnum::freelance) {
 							m_current_cluster_object_ptr->texture_info.uv_rect = uvRect;
@@ -3571,12 +3563,8 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 		 */
 		if (m_file_dialog.showFileDialog("Open Level File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), m_level_file_extension))//".txt,.dat"
 		{
-			std::cout << m_file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
-			std::cout << m_file_dialog.selected_path << std::endl;    // The absolute path to the selected file
-			std::cout << m_file_dialog.ext << std::endl;    // The absolute path to the selected file
-
-			
-				SBX_INFO("Loading {} Level", m_level_file_extension);
+				SBX_INFO("Starting Level Loading.");
+				SBX_INFO("Loading {} .", m_file_dialog.selected_fn);
 				//clean out the current world
 				for (size_t i = 0; i < m_world_clusters.size(); i++)
 				{
@@ -3596,7 +3584,8 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 				}
 
 				//clean out the layers
-		//clear out all layers
+				//clear out all layers
+
 				for each (auto & layer in m_layers) {
 					if (layer.tile_system.getTiling() == SquareBox::LayerTilingEnum::None) {
 						for (unsigned int i = 0; i < layer.alive_cluster_objects.size(); i++)
@@ -3622,10 +3611,9 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 					we need a temp WorldCluster vec because create ClusterObject handles adding new cluster objects
 					to the currentActiveWorld by its self , so we have to do some logic to make sure we are were are always in the cluster_object array
 				*/
-				
 				m_level_reader_writer.loadWorldAsBinary(m_file_dialog.selected_path, m_world_clusters,m_layers,m_universal_camera_scale,m_universal_camera_position,m_active_layer_index);
 
-				
+				// setting up the layers and their textures , both the singles and the tiled
 				for (unsigned int i = 0; i < m_layers.size(); i++)
 				{
 					SquareBox::GWOM::Layer& layer = m_layers[i];
@@ -3646,8 +3634,9 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 						SquareBox::GWOM::ParentTexture tmp_single_parent_texture;
 						tmp_single_parent_texture.texture_index = j;//if this causes errors then we have a bug somewhere
 						tmp_single_parent_texture.texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_single_parent_texture.texture.display_name, m_window->getDDPI());
-						tmp_single_parent_texture.texture.asset_file_path = current_single_parent_texture.texture.asset_file_path;
 						tmp_single_parent_texture.texture.display_name = current_single_parent_texture.texture.display_name;
+						//set the textures display name , in the asset manager for future use for future use
+						SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(tmp_single_parent_texture.texture.id, current_single_parent_texture.texture.display_name);
 						layer.single_textures.push_back(tmp_single_parent_texture);
 					}
 				
@@ -3663,6 +3652,8 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 						tmp_tiled_parent_texture.texture.asset_file_path = current_tiled_parent_texture.texture.asset_file_path;
 						tmp_tiled_parent_texture.texture.display_name = current_tiled_parent_texture.texture.display_name;
 						tmp_tiled_parent_texture.texture.tiling = current_tiled_parent_texture.texture.tiling;
+						//set the textures display name , in the asset manager for future use for future use
+						SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(tmp_tiled_parent_texture.texture.id, current_tiled_parent_texture.texture.display_name);
 						layer.tiled_textures.push_back(tmp_tiled_parent_texture);
 					}
 				}
@@ -3674,27 +3665,31 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 						m_current_world_cluster_ptr = &m_world_clusters[i];
 						if (m_world_clusters[i].cluster_objects.size() > 0)
 						{
-							printf("THIS WORLD HAS %d cluster Objects \n", m_world_clusters[i].cluster_objects.size());
-							unsigned int numWorldClusterObjects = m_world_clusters[i].cluster_objects.size();//so that its not baised as we add new cwcobj
-							for (unsigned int j = 0; j < numWorldClusterObjects; j++)
+							SBX_INFO("This world has {} cluster Objects .", m_world_clusters[i].cluster_objects.size());
+							unsigned int num_world_cluster_objects = m_world_clusters[i].cluster_objects.size();//so that its not baised as we add new cwcobj
+							for (unsigned int j = 0; j < num_world_cluster_objects; j++)
 							{
 								m_current_active_cluster_object_index = j;
-								bool lastClusterObjectMemberinLastWorldCluster = (i == m_world_clusters.size() - 1) && (j == numWorldClusterObjects - 1) ? true : false;
+								bool is_last_cluster_object_in_last_world_cluster = (i == m_world_clusters.size() - 1) && (j == num_world_cluster_objects - 1) ? true : false;
 								SquareBox::GWOM::ClusterObject* cobj = &m_world_clusters[i].cluster_objects[j];
 								m_utilities.setCurrentShapePointer(cobj->shape, &m_current_shape_ptr);
 
 								m_current_cluster_object_ptr = cobj;
 
-								if (!lastClusterObjectMemberinLastWorldCluster) {
+								if (!is_last_cluster_object_in_last_world_cluster) {
 									if (m_current_shape_ptr->is_plotted) {
-										printf("Create a plotted Shape Called with %d vertices and index id %d \n", cobj->vertices.size(), cobj->index);
+										
+										SBX_INFO("Created a plotted Shape Called with %d vertices and index id %d .\n", cobj->vertices.size(), cobj->index);
 										SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(true, false, false, glm::vec2(0), m_current_cluster_object_ptr, m_world_clusters, m_current_cluster_object_ptr->cluster_index, &m_physics_world, false, false);
-										if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
+										if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) { 
+											/* i think the settlement index should be the same as what this cluster object came with , since its 
+											being reloaded from a file , so it feels like we should be checking for equality instead!!!
+											*/
 											if (m_world_clusters[details.settlementCoordinates.first].cluster_objects[details.settlementCoordinates.second].is_alive) {
 												m_is_all_work_saved = false;
 											}
 											else {
-												SBX_ERROR("Failed to recreate a cluster object on loading level");
+												SBX_ERROR("Failed to recreate a cluster object on loading level.");
 											}
 										}
 									}
@@ -3707,21 +3702,21 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 												m_is_all_work_saved = false;
 											}
 											else {
-												SBX_ERROR("Failed to recreate a cluster object on loading level");
+												SBX_ERROR("Failed to recreate a cluster object on loading level.");
 											}
 										}
 									}
 								}
 								else {
 									if (m_current_shape_ptr->is_plotted) {
-										printf("Create a ploted Shape Called with %d vertices and index id %d \n", cobj->vertices.size(), cobj->index);
+										SBX_INFO("Created a ploted Shape Called with %d vertices and index id %d .\n", cobj->vertices.size(), cobj->index);
 										SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(true, false, false, glm::vec2(0), m_current_cluster_object_ptr, m_world_clusters, m_current_cluster_object_ptr->cluster_index, &m_physics_world, true, false);
 										if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
 											if (m_world_clusters[details.settlementCoordinates.first].cluster_objects[details.settlementCoordinates.second].is_alive) {
 												m_is_all_work_saved = false;
 											}
 											else {
-												SBX_ERROR("Failed to recreate a cluster object on loading level");
+												SBX_ERROR("Failed to recreate a cluster object on loading level.");
 											}
 										}
 										//get a pointer to the shell
@@ -3743,7 +3738,7 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 												m_is_all_work_saved = false;
 											}
 											else {
-												SBX_ERROR("Failed to recreate a cluster object on loading level");
+												SBX_ERROR("Failed to recreate a cluster object on loading level.");
 											}
 										}
 										//get a pointer to the shell
@@ -3764,13 +3759,13 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 						}
 					}
 
-					SBX_INFO("Creating Joints");
+					SBX_INFO("Creating Joints.");
 					m_utilities.createWorldClusterJoints(m_world_clusters, m_physics_world);
-					SBX_INFO("Finished Creating Joints");
-					SBX_INFO("Loaded {} Level", m_level_file_extension);
+					SBX_INFO("Finished Creating Joints.");
+					SBX_INFO("Finised Level Loading.");
 				}
 				else {
-					SBX_INFO("Restoring empty world");
+					SBX_INFO("Restoring empty world.");
 					//This was an empty world saved , just restore the defaults
 					//first WorldCluster
 					m_world_clusters.emplace_back();
@@ -3826,7 +3821,7 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 				new_parent_texture.texture = m_texture;
 				m_layers[m_active_layer_index].single_textures.push_back(new_parent_texture);
 
-				//add to the sub_textures_table for all layers , since a none tiled can become tiled
+				//add to the sub_textures_table for all layers , since a none tiled can become tiled layer
 					SquareBox::GWOM::SubTexture new_sub_texture;
 					new_sub_texture.parent_texture_index = new_parent_texture.texture_index;
 					new_sub_texture.parent_type = SquareBox::TextureEnum::SINGLE;

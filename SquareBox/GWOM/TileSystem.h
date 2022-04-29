@@ -19,8 +19,8 @@ namespace SquareBox {
 			TileSystem();
 			~TileSystem();
 		
-			void init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_);
-			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, std::vector<std::vector<int>> & layer_data_);
+			void init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_);
+			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_, std::vector<std::vector<int>> & layer_data_);
 			void resetTileSystem();
 			Tile * getTile(const glm::vec2& pos_);
 			Tile * getTile(unsigned row_,unsigned col_);
@@ -43,11 +43,6 @@ namespace SquareBox {
 			float getOriginX() const { return m_orign_x; }
 
 			float getOriginY() const { return m_orign_y; }
-
-			void setTiling(SquareBox::LayerTilingEnum tiling_) {
-
-				m_tiling = tiling_;
-			}
 
 			SquareBox::LayerTilingEnum getTiling() const {
 				return m_tiling;

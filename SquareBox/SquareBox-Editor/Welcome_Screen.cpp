@@ -129,11 +129,11 @@ void Welcome_Screen::initGUI()
 	io.Fonts->AddFontDefault();
 	ImFont* font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/Roboto-Medium.ttf", 16.0f);
 	if (font == NULL) {
-		SBX_CORE_ERROR("Failed to load font Roboto-Medium.ttf ");
+		SBX_ERROR("Failed to load font Roboto-Medium.ttf ");
 	}
 	font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/chintzy.ttf", 16.0f);
 	if (font == NULL) {
-		SBX_CORE_ERROR("Failed to load font Roboto-Medium.ttf ");
+		SBX_ERROR("Failed to load font Roboto-Medium.ttf ");
 	}
 
 	IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context. Refer to examples app!");

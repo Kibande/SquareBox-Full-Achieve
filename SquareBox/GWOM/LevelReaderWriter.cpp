@@ -457,7 +457,6 @@ namespace SquareBox {
 				layer.is_visible = fb_layer->is_visible();
 				layer.is_locked = fb_layer->is_locked();
 				//getting the alive cluster objects back
-				layer.tile_system.setTiling(static_cast<SquareBox::LayerTilingEnum>(fb_layer->tiling()));
 				//Textures
 				//Singles
 				auto fb_single_textures = fb_layer->single_textures();
@@ -518,7 +517,7 @@ namespace SquareBox {
 				}
 
 				//initiliase the tile system while Adpoting the layer data
-				layer.tile_system.init(fb_layer->tile_system_orign_x(), fb_layer->tile_system_orign_y(), fb_layer->tile_system_width(), fb_layer->tile_system_height(), fb_layer->tile_system_tile_size(),tile_system_data_vec);
+				layer.tile_system.init(fb_layer->tile_system_orign_x(), fb_layer->tile_system_orign_y(), fb_layer->tile_system_width(), fb_layer->tile_system_height(), fb_layer->tile_system_tile_size(), static_cast<SquareBox::LayerTilingEnum>(fb_layer->tiling()),  tile_system_data_vec);
 
 				auto fb_layer_alive_cluster_objects = fb_layer->alive_cluster_objects();
 				for (unsigned int j = 0; j < fb_layer_alive_cluster_objects->size(); j++)

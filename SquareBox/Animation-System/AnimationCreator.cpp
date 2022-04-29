@@ -203,7 +203,7 @@ namespace SquareBox {
 			}
 			return true;
 		}
-		void AnimationCreator::update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const std::vector<std::pair<int, int>>& aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_)
+		void AnimationCreator::update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const std::vector<std::pair<int, int>>& aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 		{
 			//Update the Manipulators
 			for (unsigned int i = 0; i < limboAnimations.size(); i++)

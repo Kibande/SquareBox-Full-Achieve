@@ -1,5 +1,5 @@
 #include "TopCapsuleShape.h"
-#include <Input-Manager/IInput.h>
+#include <Input-Manager/IInputDevice.h>
 namespace SquareBox {
 	namespace Shapes {
 		void TopCapsuleShape::draw(const SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::SpriteBatch & spriteBatch_, int opacity_)
@@ -37,7 +37,7 @@ namespace SquareBox {
 			debugRender_.drawCapsule(glm::vec4(mouseBorderCenter, clusterObject_.width, clusterObject_.height), borderColor_, clusterObject_.angle, false, true);
 		}
 
-		void TopCapsuleShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInput * input_)
+		void TopCapsuleShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInputDevice * input_)
 
 		{
 			//we are relying on the results of keepTrackOfPosition();

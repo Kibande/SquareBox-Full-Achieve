@@ -9,7 +9,7 @@
 
 namespace SquareBox {
 	namespace InputManager {
-		class IInput;
+		class IInputDevice;
 	}
 }
 
@@ -28,7 +28,7 @@ namespace SquareBox {
 		virtual bool containtsPoint(SquareBox::GWOM::ClusterObject& clusterObject_, const glm::vec2& coordinates_) = 0;
 		virtual void debugDraw(const SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const SquareBox::RenderEngine::ColorRGBA8 borderColor_) = 0;
 		virtual void traceDraw(const SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2& mouseinworld, const SquareBox::RenderEngine::ColorRGBA8& borderColor_, const float cameraScale_) = 0;
-		virtual void scalingDraw(SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2& mouseinworld_, SquareBox::InputManager::IInput * input_) = 0;
+		virtual void scalingDraw(SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2& mouseinworld_, SquareBox::InputManager::IInputDevice * input_) = 0;
 		virtual glm::vec2 localCoordinatesToWorldCoordinates(const SquareBox::GWOM::ClusterObject & clusterObject_, const glm::vec2 & localCoordinates_) = 0;
 		SquareBox::BodyShapeEnum body_shape;
 		bool needs_height_width = false;

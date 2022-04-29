@@ -10,7 +10,7 @@ SquareBox::AnimationSystem::PropertiesDependantAnimation::PropertiesDependantAni
 	}
 }
 
-bool SquareBox::AnimationSystem::PropertiesDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_)
+bool SquareBox::AnimationSystem::PropertiesDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 {
 	/*
 		The properties we are going to edit should not depend on the physics engine

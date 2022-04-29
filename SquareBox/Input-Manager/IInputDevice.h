@@ -20,7 +20,7 @@ namespace SquareBox {
 			glm::vec2 coordinates = {0,0};
 		};
 		//this is the input interface
-		class IInput
+		class IInputDevice
 		{
 		public:
 			friend Keyboard;

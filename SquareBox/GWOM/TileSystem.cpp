@@ -1,39 +1,45 @@
 #include "TileSystem.h"
 
-void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_)
+void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_)
 {
 	if (width_ > 0 && height_ > 0 && tile_size_ > 0) {
-		m_width = width_;
-		m_height = height_;
-		m_tile_size = tile_size_;
-
-		m_orign_x = orign_x_;
-		m_orign_y = orign_y_;
-		m_num_rows = (int)std::ceil((float)m_width / m_tile_size);
-		m_num_cols = (int)std::ceil((float)m_height / m_tile_size);
-
-		//Some cache friendliness 
-		m_tiles.resize(m_num_cols);
-
-		for (unsigned int y = 0; y < m_num_cols; y++)
+		if (tiling_ != SquareBox::LayerTilingEnum::None)
 		{
-			m_tiles[y].resize(m_num_rows);
-		}
-	
-		int current_tile_index = 0;
-			for (unsigned row = 0; row < m_num_rows; row++)
-		{
-		for (unsigned col = 0; col < m_num_cols; col++)
+			m_width = width_;
+			m_height = height_;
+			m_tile_size = tile_size_;
+			m_tiling = tiling_;
+			m_orign_x = orign_x_;
+			m_orign_y = orign_y_;
+			m_num_rows = (int)std::ceil((float)m_width / m_tile_size);
+			m_num_cols = (int)std::ceil((float)m_height / m_tile_size);
+
+			//Some cache friendliness 
+			m_tiles.resize(m_num_cols);
+
+			for (unsigned int y = 0; y < m_num_cols; y++)
 			{
-				auto* tile = getTile(row, col);
-
-				tile->position = glm::vec2(getTileSystemOrigin().x + (row * getTileSize()), getTileSystemOrigin().y + (col * getTileSize()));
-				tile->index = current_tile_index;
-				current_tile_index += 1;
+				m_tiles[y].resize(m_num_rows);
 			}
 
+			int current_tile_index = 0;
+			for (unsigned row = 0; row < m_num_rows; row++)
+			{
+				for (unsigned col = 0; col < m_num_cols; col++)
+				{
+					auto* tile = getTile(row, col);
+
+					tile->position = glm::vec2(getTileSystemOrigin().x + (row * getTileSize()), getTileSystemOrigin().y + (col * getTileSize()));
+					tile->index = current_tile_index;
+					current_tile_index += 1;
+				}
+
+			}
+			m_is_initialised = true;
 		}
-		m_is_initialised = true;
+		else {
+			SBX_CORE_ERROR("Can not initialise a tiling system set to SquareBox::LayerTilingEnum::None");
+		}
 	}
 	else {
 		SBX_CORE_ERROR("Invalid Grid Dimensions width : {} height : {} tileSize : {}", width_, height_, tile_size_);
@@ -41,9 +47,11 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 }
 
 
-void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_ , std::vector<std::vector<int>>& layer_data_)
+void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_ ,SquareBox::LayerTilingEnum tiling_, std::vector<std::vector<int>>& layer_data_)
 {
 	if (width_ > 0 && height_ > 0 && tile_size_ > 0) {
+		
+		if (tiling_ != SquareBox::LayerTilingEnum::None){
 		m_width = width_;
 		m_height = height_;
 		m_tile_size = tile_size_;
@@ -76,6 +84,10 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 
 		}
 		m_is_initialised = true;
+		}
+		else {
+			SBX_CORE_ERROR("Can not initialise a tiling system set to SquareBox::LayerTilingEnum::None");
+		}
 	}
 	else {
 		SBX_CORE_ERROR("Invalid Grid Dimensions width : {} height : {} tileSize : {}", width_, height_, tile_size_);
@@ -91,6 +103,7 @@ void SquareBox::GWOM::TileSystem::resetTileSystem()
 	m_orign_y = 0.0f;
 	m_num_rows = 0;
 	m_num_cols = 0;
+	m_tiling = SquareBox::LayerTilingEnum::None;
 	m_is_initialised = false;
 	/* we are not reseting the tiling system because the way we set it is external from the whole tiling grid*/
 }

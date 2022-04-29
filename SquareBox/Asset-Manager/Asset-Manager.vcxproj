@@ -273,7 +273,6 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="TileSheet.h" />
     <ClInclude Include="imageResizer.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_resize.h" />
@@ -283,7 +282,6 @@
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="TileSheet.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="stb_image_resize.cpp" />
   </ItemGroup>

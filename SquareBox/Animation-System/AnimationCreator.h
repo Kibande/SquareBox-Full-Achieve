@@ -27,7 +27,7 @@ namespace SquareBox {
 		public:
 			void init();
 			bool loadAnimationScript(std::string filePath_);
-			void update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const  std::vector<std::pair<int, int >> & aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_);
+			void update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const  std::vector<std::pair<int, int >> & aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_);
 			void dispose();
 		private:
 			lua_State *L = nullptr;

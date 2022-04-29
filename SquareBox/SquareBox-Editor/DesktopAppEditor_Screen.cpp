@@ -74,10 +74,7 @@ void DesktopAppEditor_Screen::onEntry()
 	box.is_hidden = false;
 	box.angle = 0.0f;
 
-	//Setting up our layers grid
-	m_layer.tile_system.setTiling(SquareBox::LayerTilingEnum::FlatTiling);
-
-	//m_layer.tiling_system.init(-200, -200, 400, 400, 0.5f);
+	//m_layer.tiling_system.init(-200, -200, 400, 400, 0.5f,SquareBox::LayerTilingEnum::FlatTiling);
 
 	m_utilities.init();
 }

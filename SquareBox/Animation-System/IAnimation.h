@@ -39,7 +39,7 @@ namespace SquareBox {
 		public:
 			~IAnimation() {};
 			std::string animationObjectName;
-			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInput * input_) = 0;
+			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) = 0;
 			void defineSequence(AnimationSquence animationSequence_);
 			void resetAnimation();
 

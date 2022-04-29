@@ -28,15 +28,13 @@ namespace SquareBox {
 					new_tile = texture_index_cap;
 					manipulation_complete = true;
 				}
-				const SquareBox::AssetManager::GLTexture & object_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
+				SquareBox::AssetManager::GLTexture & object_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
 				if (static_cast<int>(object_texture.id) <= 0) {
 					SBX_CORE_ERROR("{} texture id of {} did not return a valid texture", cluster_object_.name, cluster_object_.texture_info.texture_id);
 				}
-				SquareBox::AssetManager::TileSheet tilesheet;
-				tilesheet.readGrid(object_texture);
 				//now actually sending our updated texture tiling
 				cluster_object_.texture_info.tile_sheet_index = new_tile;
-				cluster_object_.texture_info.uv_rect = tilesheet.getUVCords(new_tile);
+				cluster_object_.texture_info.uv_rect = object_texture.getUVReactAtIndex(new_tile);
 			}
 
 

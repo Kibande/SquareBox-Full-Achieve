@@ -764,11 +764,11 @@
 //	io.Fonts->AddFontDefault();
 //	ImFont* font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/Roboto-Medium.ttf", 16.0f);
 //	if (font == NULL) {
-//		SBX_CORE_INFO("Failed to load font Roboto-Medium.ttf ");
+//		SBX_INFO("Failed to load font Roboto-Medium.ttf ");
 //	}
 //	font = io.Fonts->AddFontFromFileTTF("Assets/Fonts/chintzy.ttf", 16.0f);
 //	if (font == NULL) {
-//		SBX_CORE_INFO("Failed to load font chintzy.ttf ");
+//		SBX_INFO("Failed to load font chintzy.ttf ");
 //	}
 //
 //	IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing dear imgui context. Refer to examples app!");

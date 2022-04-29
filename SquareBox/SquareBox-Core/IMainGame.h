@@ -25,7 +25,7 @@ namespace SquareBox {
 			return m_game_loop_elapsed_seconds;
 		}
 		
-		SquareBox::InputManager::IInput * getInputManager() { return m_input_manager; }
+		SquareBox::InputManager::IInputDevice * getInputManager() { return m_input_manager; }
 #ifndef SQB_PLATFORM_ANDROID
 
 		SquareBox::MediaPlayer::IPlayer * getVideoPlayer(unsigned int index = 0) {
@@ -82,7 +82,7 @@ namespace SquareBox {
 		bool m_is_running = false;
 		Uint32 m_fps = 60;
 		SquareBox::RenderEngine::Window m_window;
-		SquareBox::InputManager::IInput *m_input_manager = nullptr;
+		SquareBox::InputManager::IInputDevice *m_input_manager = nullptr;
 #ifndef SQB_PLATFORM_ANDROID
 		std::vector<SquareBox::MediaPlayer::IPlayer *>m_vec_of_media_players;
 #endif

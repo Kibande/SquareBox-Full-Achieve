@@ -1,5 +1,5 @@
 #include "EdgeShape.h"
-#include<Input-Manager/IInput.h>
+#include<Input-Manager/IInputDevice.h>
 
 namespace SquareBox {
 	namespace Shapes {
@@ -29,7 +29,7 @@ namespace SquareBox {
 			}
 		}
 
-		void EdgeShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInput * input_)
+		void EdgeShape::scalingDraw(SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const glm::vec2 & mouseinworld_, SquareBox::InputManager::IInputDevice * input_)
 		{
 			//this is so far only implemented for Shapes with properly difined dimensions
 
