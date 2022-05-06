@@ -312,8 +312,6 @@ void Second_Screen::drawGUI()
 		//Retreiving a particular indicies uv coordinates
 		ImGui::InputInt("UV React", &m_target_tile_index, 1, 1);
 		SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[m_active_texture_object_index].texture_info.texture_id);
-		SquareBox::AssetManager::TileSheet tileSheet;
-		tileSheet.readGrid(retrieved_texture);
 		int retrieved_texture_max_index = retrieved_texture.tiling.x* retrieved_texture.tiling.y;
 		if (m_target_tile_index < 0) {
 			m_target_tile_index = 0;
@@ -321,7 +319,7 @@ void Second_Screen::drawGUI()
 		else if (m_target_tile_index >= retrieved_texture_max_index) {
 			m_target_tile_index = retrieved_texture_max_index - 1;
 		}
-		glm::vec4 uvRect = tileSheet.getUVCords(m_target_tile_index);
+		glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_target_tile_index);
 
 		ImGui::Text("X : %.3f", uvRect.x);
 		ImGui::Text("Y : %.3f", uvRect.y);

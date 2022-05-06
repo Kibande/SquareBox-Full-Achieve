@@ -5,14 +5,17 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 	if (width_ > 0 && height_ > 0 && tile_size_ > 0) {
 		if (tiling_ != SquareBox::LayerTilingEnum::None)
 		{
+			//adopt all the initialization properties
 			m_width = width_;
 			m_height = height_;
 			m_tile_size = tile_size_;
-			m_tiling = tiling_;
+
 			m_orign_x = orign_x_;
 			m_orign_y = orign_y_;
 			m_num_rows = (int)std::ceil((float)m_width / m_tile_size);
 			m_num_cols = (int)std::ceil((float)m_height / m_tile_size);
+			m_tiling = tiling_;
+
 
 			//Some cache friendliness 
 			m_tiles.resize(m_num_cols);
@@ -28,7 +31,7 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 				for (unsigned col = 0; col < m_num_cols; col++)
 				{
 					auto* tile = getTile(row, col);
-
+					tile->coordinates = std::pair<int, int>(row, col);
 					tile->position = glm::vec2(getTileSystemOrigin().x + (row * getTileSize()), getTileSystemOrigin().y + (col * getTileSize()));
 					tile->index = current_tile_index;
 					current_tile_index += 1;
@@ -52,6 +55,7 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 	if (width_ > 0 && height_ > 0 && tile_size_ > 0) {
 		
 		if (tiling_ != SquareBox::LayerTilingEnum::None){
+			//adopt all the initialization properties
 		m_width = width_;
 		m_height = height_;
 		m_tile_size = tile_size_;
@@ -60,6 +64,7 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 		m_orign_y = orign_y_;
 		m_num_rows = (int)std::ceil((float)m_width / m_tile_size);
 		m_num_cols = (int)std::ceil((float)m_height / m_tile_size);
+		m_tiling = tiling_;
 
 		//Some cache friendliness 
 		m_tiles.resize(m_num_cols);
@@ -75,10 +80,13 @@ void SquareBox::GWOM::TileSystem::init(float orign_x_, float orign_y_, float wid
 			for (unsigned col = 0; col < m_num_cols; col++)
 			{
 				auto* tile = getTile(row, col);
-
+				tile->coordinates = std::pair<int, int>(row, col);
 				tile->position = glm::vec2(getTileSystemOrigin().x + (row * getTileSize()), getTileSystemOrigin().y + (col * getTileSize()));
 				tile->index = current_tile_index;
 				tile->key = layer_data_[row][col];
+				if (tile->key != -1) {
+					active_tiles.push_back(tile->coordinates);
+				}
 				current_tile_index += 1;
 			}
 
@@ -104,6 +112,7 @@ void SquareBox::GWOM::TileSystem::resetTileSystem()
 	m_num_rows = 0;
 	m_num_cols = 0;
 	m_tiling = SquareBox::LayerTilingEnum::None;
+	active_tiles.clear();
 	m_is_initialised = false;
 	/* we are not reseting the tiling system because the way we set it is external from the whole tiling grid*/
 }
@@ -130,6 +139,7 @@ SquareBox::GWOM::Tile* SquareBox::GWOM::TileSystem::getTile(unsigned row_, unsig
 
 	return &m_tiles[row_][col_];
 }
+
 bool SquareBox::GWOM::TileSystem::isInTileSystem(const glm::vec2 pos_)
 {
 	const float x_coordinate = pos_.x;
@@ -143,7 +153,7 @@ bool SquareBox::GWOM::TileSystem::isInTileSystem(const glm::vec2 pos_)
 	return (x_coordinate > x1 && x_coordinate<x2&& y_coordinate>y1 && y_coordinate < y2);
 }
 
-std::map<int, SquareBox::GWOM::Tile*> SquareBox::GWOM::TileSystem::getAllTilesInBox(glm::vec4& dest_rect_)
+std::map<int, SquareBox::GWOM::Tile*> SquareBox::GWOM::TileSystem::getAllTilesInBox(glm::vec4& dest_rect_,bool only_active_tiles_)
 {
 	//figure our which tiles are in our box while looping through all tiles
 	float tile_size = getTileSize();
@@ -158,31 +168,67 @@ std::map<int, SquareBox::GWOM::Tile*> SquareBox::GWOM::TileSystem::getAllTilesIn
 			glm::vec4 destRect(glm::vec2(dest_rect_.x + (x * tile_size), dest_rect_.y + (y * tile_size)), glm::vec2(tile_size));
 			//left bottom corner
 			auto  left_bottom_tile = getTile(glm::vec2(destRect.x, destRect.y));
-			tiles_in_box[left_bottom_tile->index] = left_bottom_tile;
+			if (only_active_tiles_) {
+				if (left_bottom_tile->key != -1) {
+					tiles_in_box[left_bottom_tile->index] = left_bottom_tile;
+				}
+			}
+			else {
+					tiles_in_box[left_bottom_tile->index] = left_bottom_tile;
+			}
 
 			//only do these other checks when they are needed
 
 			if (x == 0 && y == num_y_tiles - 1) {
 				//left top corner
 				auto  left_top_tile = getTile(glm::vec2(destRect.x, destRect.y + tile_size));
-				tiles_in_box[left_top_tile->index] = left_top_tile;
+				if (only_active_tiles_)
+				{
+					if (left_top_tile->key != -1) {
+						tiles_in_box[left_top_tile->index] = left_top_tile;
+					}
+				}
+				else {
+					tiles_in_box[left_top_tile->index] = left_top_tile;
+				}
 			}
 			else if ((x == num_x_tiles - 1 && y == num_y_tiles - 1) || (x == num_x_tiles - 1 && y == 0)) {
 				//right bottom corner
 				auto  right_bottom_tile = getTile(glm::vec2(destRect.x + tile_size, destRect.y));
-				tiles_in_box[right_bottom_tile->index] = right_bottom_tile;
+				if (only_active_tiles_) {
+					if (right_bottom_tile->key != -1) {
+						tiles_in_box[right_bottom_tile->index] = right_bottom_tile;
+					}
+				}
+				else {
+					tiles_in_box[right_bottom_tile->index] = right_bottom_tile;
+				}
 			}
 
 			if (x == num_x_tiles - 1) {
 				//right bottom corner
 				auto  right_top_tile = getTile(glm::vec2(destRect.x + tile_size, destRect.y + tile_size));
-				tiles_in_box[right_top_tile->index] = right_top_tile;
+				if (only_active_tiles_) {
+					if (right_top_tile->key != -1) {
+						tiles_in_box[right_top_tile->index] = right_top_tile;
+					}
+				}
+				else {
+					tiles_in_box[right_top_tile->index] = right_top_tile;
+				}
 			}
 
 
 			if (x >= 0 && x < num_x_tiles && y == num_y_tiles - 1) {
 				auto  left_top_tile = getTile(glm::vec2(destRect.x, destRect.y + tile_size));
-				tiles_in_box[left_top_tile->index] = left_top_tile;
+				if (only_active_tiles_) {
+					if (left_top_tile->key != -1) {
+						tiles_in_box[left_top_tile->index] = left_top_tile;
+					}
+				}
+				else {
+					tiles_in_box[left_top_tile->index] = left_top_tile;
+				}
 			}
 
 		}

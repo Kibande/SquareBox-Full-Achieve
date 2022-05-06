@@ -201,8 +201,8 @@ tile_system_width:float;
 tile_system_height:float;
 tile_system_tile_size:float;
 tile_system_data:[VectorOfInt];
-alive_cluster_objects:[PairOfInt];
-
+alive_cluster_objects:[PairOfInt]; //stored because the ordering of cluster objects is kept here
+world_clusters: [WorldCluster];
 }
 
 table SquareBoxLevel{
@@ -210,7 +210,6 @@ table SquareBoxLevel{
 	camera_position:Vec2;
 	active_camera_index:int;
 	layers:[Layer];
-	world_clusters: [WorldCluster];
 }
 
 root_type SquareBoxLevel;

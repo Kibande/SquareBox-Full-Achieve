@@ -6,7 +6,8 @@
 namespace SquareBox {
 	namespace GWOM {
 		struct Cell {
-			std::vector<std::pair<int, int>> member_cordinates;
+			std::vector<std::pair<int, std::pair<int,int>>> member_cordinates;
+			glm::ivec2 coordinates;
 			glm::vec2 position;
 			int index = -1;
 		};
@@ -28,8 +29,7 @@ namespace SquareBox {
 			///Get Cell based on window coordinates
 			Cell* getCell(const glm::vec2& pos_);
 			bool isInGrid(const glm::vec2 pos_);
-			std::map<int, SquareBox::GWOM::Cell*> getAllCellsInBox(glm::vec4 & dest_rect_);
-			std::map<int, SquareBox::GWOM::Cell*> getPopulatedCellsInBox(glm::vec4 & dest_rect_);
+			std::map<int, SquareBox::GWOM::Cell*> getAllCellsInBox(glm::vec4 & dest_rect_, bool only_populated_cells_=false);
 			void updateObjectGridLocation(SquareBox::GWOM::ClusterObject& cluster_object_);
 
 			///Getters
@@ -45,8 +45,8 @@ namespace SquareBox {
 			std::vector<Cell>& getGridCells() { return m_cells; }
 			bool isInitialised() const { return m_is_initialised;}
 			void dispose();
-		private:
 			std::vector<Cell> m_cells;
+		private:
 			float m_cell_size = 0.0f;
 			float m_width = 0.0f;
 			float m_height = 0.0f;

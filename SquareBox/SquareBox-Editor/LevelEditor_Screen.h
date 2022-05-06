@@ -13,8 +13,6 @@
 #include "CustomConsole.h"
 #include "FolderChangeTracker.h"
 #include <fstream>
-
-
 namespace SquareBoxEditor {
 	//TODO
 	enum SelectModeEnum
@@ -36,7 +34,7 @@ namespace SquareBoxEditor {
 			FREESELECT - Free Select,used to select multiple objects
 			JOINTSSELECT - Joints Select,used to create joints
 		*/
-	enum ModeEnum {
+	enum EditorModeEnum {
 		PLACE = 0,
 		SELECT = 1
 	};
@@ -57,11 +55,19 @@ namespace SquareBoxEditor {
 	*/
 
 	enum RightTabDisplayEnum {
-		PHYSICS = 0,
-		LAYERS = 1,
-		LAYERPROPERTIES = 2
+		OBJECTPROPERTIES = 0,
+		LAYERING = 1
 	};
 
+	enum ObjectPropertiesEnum {
+		PHYSICS=0,
+		ANIMATION=1
+	};
+
+	enum LayeringEnum {
+		LAYERSTACK = 0,
+		LAYERPROPERTIES = 1
+	};
 	/*
 		0-Physics , properities of the currently active object
 		1-Layers , shows the layer arragements, visibility properties e.t.c
@@ -83,7 +89,7 @@ namespace SquareBoxEditor {
 	{
 	public:
 
-		LevelEditor_Screen(SquareBox::RenderEngine::Window* window);
+		LevelEditor_Screen(SquareBox::RenderEngine::Window* window_ptr_);
 
 	private:
 		/*methods*/
@@ -105,7 +111,7 @@ namespace SquareBoxEditor {
 		virtual int getPreviousScreenIndex() const override;
 		void createNewLayer();
 		void createNewProject();
-
+		void cleanOutEditor();
 		// GUI
 		void initGUI();
 		void drawGUI();
@@ -140,26 +146,30 @@ namespace SquareBoxEditor {
 		2 - Kinematic
 		*/
 
-		RightTabDisplayEnum m_side_view = RightTabDisplayEnum::PHYSICS;
-
+		RightTabDisplayEnum m_side_view = RightTabDisplayEnum::OBJECTPROPERTIES;
+		ObjectPropertiesEnum m_object_properties_enum = ObjectPropertiesEnum::PHYSICS;
+		LayeringEnum m_layering_enum = LayeringEnum::LAYERSTACK;
 		int m_selected_family = 1; //	families are used to filter out collisions
 
 		int m_selected_single_texture_index = 0;//	the single texture index we are currently on
 		int m_selected_tile_sheet_texture_index = 0;//	the tile Sheet texture index we are currently on
 
+
+		//in reference to the active layer
 		//	current index of the world cluster we are hovering over
 		int m_current_hovered_world_cluster_index = 0;
-
 		//	current index of the cluster object we are hovering over
 		int m_current_hovered_cluster_object_index = 0;
 
-		int m_current_active_world_cluster_index = 0;//the WorldIndex that we are auto placing in new ClusterObjects
+		int m_place_mode_current_active_world_cluster_index = 0;//the WorldIndex that we are auto placing in new ClusterObjects
+		/*
+		Note: A cluster Object is a shell from the point it is pushed back in the cluster object vector 
+			  till the point when it is set to being alive i.e is_alive = true;
 
-		int m_current_active_cluster_object_index = 0;//The index of the new ClusterObject shell
-
+			  A cluster object that was once alive and gets deleted, setting its is_alive to flase is 
+			  also considered to be a shell.
+		*/
 			//current pointer to the  WorldCluster and Clusterobjects we are working on
-		SquareBox::GWOM::WorldCluster* m_current_world_cluster_ptr = nullptr;//this is not really needed and even removing it seems like a really wise decission
-		SquareBox::GWOM::ClusterObject* m_current_cluster_object_ptr = nullptr;
 
 		EditorThemeEnum m_theme_index = EditorThemeEnum::DarkTheme;
 		SquareBox::GWOM::Joint* m_current_joint_ptr = nullptr;
@@ -173,14 +183,14 @@ namespace SquareBoxEditor {
 		bool m_show_open_tile_sheet_file_dialog = false;
 		bool m_show_save_level_file_dialog = false;
 		//Modes
-		bool m_place_mode = false;
-		ShapeTypeEnum m_place_mode_index = ShapeTypeEnum::SINGLESHAPE;
+		EditorModeEnum m_editor_mode_enum = EditorModeEnum::SELECT;
+		ShapeTypeEnum m_place_mode_shape_type = ShapeTypeEnum::SINGLESHAPE;
 
-		bool m_select_mode = false;
 		glm::ivec2 m_new_tiled_texture_tiling{ 0,0 };
 		SelectModeEnum m_selection_mode_index = SelectModeEnum::CLUSTEROBJECT;
 		TiledLayerSelectModeEnum m_tiled_layer_selection_mode_index = TiledLayerSelectModeEnum::SINGLETILE;
 		int m_active_sub_texture_key = 0;//This is the texture that is being applied to the next tile when we click
+		// leave the default set to 0 so that we can have some black sub textures if we want to
 		bool m_debug_mode = false;
 
 		bool m_respect_ancestor = false;
@@ -213,7 +223,7 @@ namespace SquareBoxEditor {
 		/*vectors*/
 		std::vector<SquareBox::IShape*> m_vec_shapes_pointer;
 
-		std::vector<SquareBox::GWOM::WorldCluster> m_world_clusters;
+		
 		std::vector<glm::vec2> m_vector_of_joint_ploting_points;
 		glm::vec2 clustermousepos; // used when moving multiple cluster objects at once
 		std::vector<SquareBox::GWOM::Layer> m_layers;
@@ -230,6 +240,7 @@ namespace SquareBoxEditor {
 		SquareBox::RenderEngine::ColorRGBA8 m_not_physics_body_color = SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255);
 		SquareBox::RenderEngine::ColorRGBA8 m_unknown_body_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::violet);
 		SquareBox::RenderEngine::ColorRGBA8 m_drag_selection_box_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon);
+		SquareBox::RenderEngine::ColorRGBA8 m_layer_grid_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white);
 		SquareBox::RenderEngine::ColorRGBA8 m_border_color;
 		SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 		SquareBox::RenderEngine::SpriteFont m_sprite_font;
@@ -245,7 +256,7 @@ namespace SquareBoxEditor {
 
 		/*poiners*/
 		SquareBox::IShape* m_current_shape_ptr = nullptr;// a pointer to the current world shape
-
+		SquareBox::GWOM::ClusterObject* m_current_cluster_object_ptr = nullptr;
 		SquareBox::RenderEngine::Window* m_window = nullptr;
 		//the physics simulation engine
 		SquareBox::PhysicsCollisionEngine::PhysicsWorld m_physics_world;
@@ -256,6 +267,8 @@ namespace SquareBoxEditor {
 		SquareBox::AnimationSystem::AnimationCreator m_animation_creator;
 		std::string m_animation_script = "Assets/Animations/animations_file.lua";
 		std::string m_automation_script = "Assets/Animations/automation_file.lua";
+		std::vector<std::pair<int,std::pair<int,int>>> m_cluster_objects_to_delete; //[layer_index[world_cluster_index,cluster_object_index]]
+		std::vector<std::pair<int,int>> m_world_clusters_to_delete;
 		/* 
 			it would be nice to add the ability to load animation and automation scripts from any where
 		*/
@@ -268,6 +281,7 @@ namespace SquareBoxEditor {
 		SquareBox::Utilities m_utilities;
 		Editor_Assistant m_editor_assitant;
 		SquareBoxEditor::CustomConsole m_console;
+		const char** shapes_labels_ptr = nullptr;
 		/*
 			We should implement a cache friendly way of allocation all our
 			PhysicsEngines
@@ -287,6 +301,67 @@ namespace SquareBoxEditor {
 			Fix the Joints System
 			Add an in buit animation system
 		*/
+
+
+
+
+		//Controls
+
+			//select mode handles selecting things and dragging them
+//	tiled layers
+									/* Place Mode */
+		int tiled_layer_place_mode_fill_tile = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+		/* Selection Mode */
+		int tiled_layer_select_mode_select_tile = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+
+		//	no tiled
+											/* Selection Mode */
+		int world_cluster_selection_input_key = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+		int cluster_object_selection_input_key = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+		int free_selection_input_key = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+		int joint_selection_input_key = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+
+
+
+		// free drag selecting box draging input keys combo
+		// we need to draw a debug box for this !!
+		int free_selection_drag_input_key_1 = static_cast<int>(SquareBox::KeyBoardEnum::SAPCE);
+		int free_selection_drag_input_key_2 = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
+
+
+		//	world cluster selection and free selection dragging activation input key
+		int world_cluster_and_free_selection_dragging_activation_input_key = static_cast<int>(SquareBox::KeyBoardEnum::SAPCE); // i want to remove this 
+		//control in future
+		//	world cluster selection and free selection dragging  input key
+		int world_cluster_and_free_selection_dragging_input_key = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+
+		// world cluster and free selection copying combo
+		int left_ctrl_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_CTRL);
+		int right_ctrl_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_CTRL);
+		int c_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEY_c);
+
+		//cluster object drag select mode 
+		int cluster_object_drag_selection_input_key = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
+
+		/* Place Mode */
+		int non_tiled_layer_placement_input_ley = static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK);
+
+
+
+
+		/* Use full key board short cuts */
+
+		//clearing selection modes excpet when in cluster object select
+		int clear_selection_input_key_1 = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_SHIFT);
+		int clear_selection_input_key_2 = static_cast<int>(SquareBox::KeyBoardEnum::KEY_c);
+
+		//deletion key
+		int delete_selection_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYBOARD_DELETE);
+
+		int bridge_plotting_input_key = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
+		int pulley_plotting_input_key = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
+
+
 	};
 }
 

@@ -10,7 +10,7 @@ namespace SquareBox {
 			ParallelCamera();
 			~ParallelCamera();
 			void init(unsigned camera_width_, unsigned camera_height_);
-			void update(unsigned new_camera_width_, unsigned new_camera_height_);
+			void update(unsigned screen_width_, unsigned screen_height_);
 
 			bool isBoxInView(const glm::vec2 & position_, const glm::vec2& dimensions_);
 
@@ -26,8 +26,8 @@ namespace SquareBox {
 			//getters
 			glm::vec2 convertScreenToWorld(glm::vec2 screen_coords_);
 			glm::vec2 getPosition() { return m_position; }
-			glm::vec2 getCameraDimensions() { return glm::vec2(m_camera_width, m_camera_height) * (1 / getScale()); }
-			unsigned int getAspectRatio() const { return m_camera_width / m_camera_height; }
+			glm::vec2 getCameraDimensions() { return glm::vec2(m_screen_width, m_screen_height) * (1 / m_scale); }
+			unsigned int getAspectRatio() const { return m_screen_width / m_screen_height; }
 
 			float getScale() { return m_scale; }
 			glm::mat4 getModalViewProjectionMatrix() { return m_camera_matrix; }
@@ -35,14 +35,13 @@ namespace SquareBox {
 
 			void dispose() {};
 		private:
-			unsigned int m_camera_width, m_camera_height;
+			unsigned int m_screen_width, m_screen_height;
 			bool m_needs_matrix_update;
 			float m_scale;
 			glm::vec2 m_rotation;//rotation in x coordinate and rotation  in y cooridinate
 			glm::vec2 m_position; //This is the same as the GLSM vec2
 			glm::mat4 m_camera_matrix;//this is the ModalViewProjectionMatrix
 			glm::mat4 m_ortho_matrix;//The View Matrix
-			glm::vec2  m_scaled_screen_dimensions;
 		};
 	}
 }

@@ -41,14 +41,15 @@ namespace SquareBox {
 		void nameClusterObjectByIndex(SquareBox::GWOM::ClusterObject & cluster_object);
 
 		void nameClusterObjectByGivenName(SquareBox::GWOM::ClusterObject & cluster_object_, const std::string new_name_);
+		void nameLayerByIndex(SquareBox::GWOM::Layer & layer_);
 
-		void worldIndiciesCleanUp(std::vector<SquareBox::GWOM::WorldCluster>& world_clusters_, std::vector<SquareBox::GWOM::Layer>& layers_);
+		void worldIndiciesCleanUp(std::vector<SquareBox::GWOM::Layer>& layers_);
 		void showPlottedVertices(bool onlyshowStartAndEnd_, SquareBox::RenderEngine::DebugRenderer& debugRenderer_, const SquareBox::GWOM::ClusterObject& clusterObject_, float pointRadius_, SquareBox::RenderEngine::ColorRGBA8 color_ = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
-		void deactivateClusterObjectJoints(std::vector<SquareBox::GWOM::WorldCluster>& world_clusters_, SquareBox::GWOM::ClusterObject & clusterObject_);
-		void destroryClusterObjectJoints(std::vector<SquareBox::GWOM::WorldCluster>& world_clusters_, SquareBox::GWOM::ClusterObject & clusterObject_);
-		void reactivateClusterObjectJoints(std::vector<SquareBox::GWOM::WorldCluster>& world_clusters_, SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::PhysicsCollisionEngine::PhysicsWorld& physics_world_);
-		void destroyClusterObjectJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_);
-		void createWorldClusterJoints(std::vector<SquareBox::GWOM::WorldCluster>& world_clusters_, SquareBox::PhysicsCollisionEngine::PhysicsWorld& physics_world_);
+		void deactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_);
+		void destroryClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_);
+		void reactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::PhysicsCollisionEngine::PhysicsWorld& physics_world_);
+		void destroyClusterObjectJoint(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_);
+		void createWorldClusterJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld& physics_world_);
 		bool isInBox(const  glm::vec2& testCoordinates_, const glm::vec4& testBoxDestRect_);
 		//create world objects
 		creationDetails createClusterObjectIntoWorld(
@@ -75,8 +76,7 @@ namespace SquareBox {
 															vector or rebirthing.
 															*/
 
-			std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_,
-			int shellWorldClusterIndex_,
+			std::vector<SquareBox::GWOM::Layer>& layers_,
 			SquareBox::PhysicsCollisionEngine::PhysicsWorld* targetPhysicsWorld_,
 			bool autoNewClusterObjectCreation,/*
 													Controls whether if a new cluster Objects should be added to the worldCluster once
@@ -85,8 +85,11 @@ namespace SquareBox {
 													*/
 			bool respectAncestor_					/* should the new created shell copy its ancestors attributes*/
 		);
+
+		bool deleteClusterObjectFromWorld(std::vector<SquareBox::GWOM::Layer> & layers_, SquareBox::GWOM::ClusterObject cluster_object_);
 		void setCurrentShapePointer(SquareBox::BodyShapeEnum enum_, SquareBox::IShape** currentShape_);//used to prevent us from calling a wrong shapes
 		float scaleFloatAccordingToScreen(float original, glm::ivec2 orignalMaxWindow_,glm::ivec2 currentMaxWindow_);
+		void loadLayerTextures(SquareBox::GWOM::Layer& layer_,float dpi_);
 		void dispose();
 	private:
 		std::vector<SquareBox::IShape*> m_vec_shapes_pointer;

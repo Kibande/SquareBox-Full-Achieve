@@ -280,6 +280,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="LevelReaderWriter.cpp" />
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>

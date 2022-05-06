@@ -41,7 +41,7 @@ void GamePlayeScreen::draw()
 {
 	m_texture_program.use();
 
-	preUpdateShader(&m_texture_program, "mySampler", m_game->getWindowBGColor());
+	preUpdateShader(&m_texture_program, "mySampler", m_game_ptr->getWindowBGColor());
 	preUpdateCamera(&m_texture_program, &m_camera, "P");
 
 	m_texture_program.unuse();

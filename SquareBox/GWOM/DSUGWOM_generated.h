@@ -1859,7 +1859,8 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TILE_SYSTEM_HEIGHT = 26,
     VT_TILE_SYSTEM_TILE_SIZE = 28,
     VT_TILE_SYSTEM_DATA = 30,
-    VT_ALIVE_CLUSTER_OBJECTS = 32
+    VT_ALIVE_CLUSTER_OBJECTS = 32,
+    VT_WORLD_CLUSTERS = 34
   };
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
@@ -1906,6 +1907,9 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *>(VT_ALIVE_CLUSTER_OBJECTS);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *>(VT_WORLD_CLUSTERS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
@@ -1934,6 +1938,9 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ALIVE_CLUSTER_OBJECTS) &&
            verifier.VerifyVector(alive_cluster_objects()) &&
            verifier.VerifyVectorOfTables(alive_cluster_objects()) &&
+           VerifyOffset(verifier, VT_WORLD_CLUSTERS) &&
+           verifier.VerifyVector(world_clusters()) &&
+           verifier.VerifyVectorOfTables(world_clusters()) &&
            verifier.EndTable();
   }
 };
@@ -1987,6 +1994,9 @@ struct LayerBuilder {
   void add_alive_cluster_objects(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects) {
     fbb_.AddOffset(Layer::VT_ALIVE_CLUSTER_OBJECTS, alive_cluster_objects);
   }
+  void add_world_clusters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters) {
+    fbb_.AddOffset(Layer::VT_WORLD_CLUSTERS, world_clusters);
+  }
   explicit LayerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2014,8 +2024,10 @@ inline flatbuffers::Offset<Layer> CreateLayer(
     float tile_system_height = 0.0f,
     float tile_system_tile_size = 0.0f,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>>> tile_system_data = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters = 0) {
   LayerBuilder builder_(_fbb);
+  builder_.add_world_clusters(world_clusters);
   builder_.add_alive_cluster_objects(alive_cluster_objects);
   builder_.add_tile_system_data(tile_system_data);
   builder_.add_tile_system_tile_size(tile_system_tile_size);
@@ -2050,13 +2062,15 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
     float tile_system_height = 0.0f,
     float tile_system_tile_size = 0.0f,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>> *tile_system_data = nullptr,
-    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects = nullptr) {
+    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects = nullptr,
+    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto single_textures__ = single_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>(*single_textures) : 0;
   auto tiled_textures__ = tiled_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>(*tiled_textures) : 0;
   auto sub_textures__ = sub_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>>(*sub_textures) : 0;
   auto tile_system_data__ = tile_system_data ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>>(*tile_system_data) : 0;
   auto alive_cluster_objects__ = alive_cluster_objects ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>(*alive_cluster_objects) : 0;
+  auto world_clusters__ = world_clusters ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>(*world_clusters) : 0;
   return SquareBox::DSUGWOM::CreateLayer(
       _fbb,
       name__,
@@ -2073,7 +2087,8 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
       tile_system_height,
       tile_system_tile_size,
       tile_system_data__,
-      alive_cluster_objects__);
+      alive_cluster_objects__,
+      world_clusters__);
 }
 
 struct SquareBoxLevel FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2082,8 +2097,7 @@ struct SquareBoxLevel FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_CAMERA_SCALE = 4,
     VT_CAMERA_POSITION = 6,
     VT_ACTIVE_CAMERA_INDEX = 8,
-    VT_LAYERS = 10,
-    VT_WORLD_CLUSTERS = 12
+    VT_LAYERS = 10
   };
   float camera_scale() const {
     return GetField<float>(VT_CAMERA_SCALE, 0.0f);
@@ -2097,9 +2111,6 @@ struct SquareBoxLevel FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>> *layers() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>> *>(VT_LAYERS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *>(VT_WORLD_CLUSTERS);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<float>(verifier, VT_CAMERA_SCALE) &&
@@ -2108,9 +2119,6 @@ struct SquareBoxLevel FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_LAYERS) &&
            verifier.VerifyVector(layers()) &&
            verifier.VerifyVectorOfTables(layers()) &&
-           VerifyOffset(verifier, VT_WORLD_CLUSTERS) &&
-           verifier.VerifyVector(world_clusters()) &&
-           verifier.VerifyVectorOfTables(world_clusters()) &&
            verifier.EndTable();
   }
 };
@@ -2131,9 +2139,6 @@ struct SquareBoxLevelBuilder {
   void add_layers(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>>> layers) {
     fbb_.AddOffset(SquareBoxLevel::VT_LAYERS, layers);
   }
-  void add_world_clusters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters) {
-    fbb_.AddOffset(SquareBoxLevel::VT_WORLD_CLUSTERS, world_clusters);
-  }
   explicit SquareBoxLevelBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2150,10 +2155,8 @@ inline flatbuffers::Offset<SquareBoxLevel> CreateSquareBoxLevel(
     float camera_scale = 0.0f,
     const SquareBox::DSUGWOM::Vec2 *camera_position = 0,
     int32_t active_camera_index = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>>> layers = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>>> layers = 0) {
   SquareBoxLevelBuilder builder_(_fbb);
-  builder_.add_world_clusters(world_clusters);
   builder_.add_layers(layers);
   builder_.add_active_camera_index(active_camera_index);
   builder_.add_camera_position(camera_position);
@@ -2166,17 +2169,14 @@ inline flatbuffers::Offset<SquareBoxLevel> CreateSquareBoxLevelDirect(
     float camera_scale = 0.0f,
     const SquareBox::DSUGWOM::Vec2 *camera_position = 0,
     int32_t active_camera_index = 0,
-    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>> *layers = nullptr,
-    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters = nullptr) {
+    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>> *layers = nullptr) {
   auto layers__ = layers ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>>(*layers) : 0;
-  auto world_clusters__ = world_clusters ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>(*world_clusters) : 0;
   return SquareBox::DSUGWOM::CreateSquareBoxLevel(
       _fbb,
       camera_scale,
       camera_position,
       active_camera_index,
-      layers__,
-      world_clusters__);
+      layers__);
 }
 
 inline const SquareBox::DSUGWOM::SquareBoxLevel *GetSquareBoxLevel(const void *buf) {

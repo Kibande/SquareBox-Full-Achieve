@@ -51,7 +51,6 @@ void First_Screen::build()
 
 	layer.is_visible = true;
 	layer.is_locked = false;
-	layer.tile_system.setTiling(SquareBox::LayerTilingEnum::None);
 	m_active_layer_index = 0;
 	m_utilities.init();
 
@@ -125,10 +124,7 @@ void First_Screen::onEntry()
 	house.texture_info.texture_type = SquareBox::TextureEnum::TILESHEET;
 	house.texture_info.tile_sheet_index = 0;
 	//extracting the appropriate uvRect
-	SquareBox::AssetManager::TileSheet tile_sheet;
-	tile_sheet.readGrid(SquareBox::AssetManager::TextureManager::getTextureById(loaded_houses_texture.id));
-
-	house.texture_info.uv_rect = tile_sheet.getUVCords(0);
+	house.texture_info.uv_rect = SquareBox::AssetManager::TextureManager::getTextureById(loaded_houses_texture.id).getUVReactAtIndex(0);
 
 	house.shape = SquareBox::BodyShapeEnum::Box;
 	house.is_alive = true;

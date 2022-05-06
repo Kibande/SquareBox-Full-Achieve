@@ -2319,7 +2319,7 @@
 //				/*we need a temp WorldCluster vec because create ClusterObject handles adding new cluster objects
 //				to the currentActiveWorld by its self , so we have to do some logic to make sure we are were are always in the cluster_object array
 //				*/
-//				m_level_reader_writer.loadWorldAsBinary(m_file_dialog.selected_path, m_world_clusters);
+//				m_level_reader_writer.loadLevelDataAsBinary(m_file_dialog.selected_path, m_world_clusters);
 //
 //				for (unsigned int i = 0; i < m_world_clusters.size(); i++)
 //				{
@@ -2551,7 +2551,7 @@
 //				m_alive_cluster_objects.clear();
 //				m_selected_cluster_objects.clear();
 //				m_utilities.worldIndiciesCleanUp(m_world_clusters);
-//				if (m_level_reader_writer.saveWorldAsBinary(m_file_path + m_file_dialog.ext, m_world_clusters))
+//				if (m_level_reader_writer.saveLevelDataAsBinary(m_file_path + m_file_dialog.ext, m_world_clusters))
 //				{
 //					SBX_INFO("Level Saved");
 //				}

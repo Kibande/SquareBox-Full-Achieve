@@ -86,7 +86,7 @@ namespace SquareBox {
 			bool is_last_selected = false;
 			bool is_hidden = false;//controls of the ClusterObject is visible or not
 			bool is_fixed_rotation = false;
-			bool is_alive = false;//only used when loading or storing the game level
+			bool is_alive = false;// whether the object is just a shell or a real cluster object
 			bool allow_sleep = true;//can the body sleep
 			bool awake = true;
 			bool is_bullet = false;
