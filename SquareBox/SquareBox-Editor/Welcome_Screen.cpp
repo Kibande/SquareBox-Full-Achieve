@@ -77,7 +77,7 @@ void Welcome_Screen::update(const float & deltaTime_)
 	}
 	m_window->update();
 	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
-	if (m_game_ptr->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 		std::cout << "Mouse Click \n";
 	}
 }

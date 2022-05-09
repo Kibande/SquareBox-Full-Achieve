@@ -33,18 +33,19 @@ namespace SquareBox {
 			return;
 		}
 
-		SquareBox::RenderEngine::FpsLimiter limiter;
-		limiter.setMaxFPS(m_fps);
+
 
 		// Some helpful constants.
-
+		const float DESRED_FPS = m_fps; // FPS the game was designed to run at 
 		const int & MAX_UPATE_LOOPS = 8; // Max number of physics steps per frame
 		const float & MS_PER_SECOND = 1000; // Number of milliseconds in a second
-		const float & DESIRED_FRAMETIME = MS_PER_SECOND / m_fps; // The desired frame time per frame
-
+		const float & DESIRED_FRAMETIME = MS_PER_SECOND / DESRED_FPS; // The desired frame time per frame
+		
+		SquareBox::RenderEngine::FpsLimiter limiter;
+		limiter.setMaxFPS(DESRED_FPS);
+		
 		// Start our previousTicks variable
 		Uint32 previousTicks = SDL_GetTicks();
-
 		//Game loop
 		m_is_running = true;
 		while (m_is_running)
@@ -56,12 +57,12 @@ namespace SquareBox {
 				continue;
 			}
 			else {
-				limiter.begin();
 				m_window.update();
 				m_window_width = m_window.getScreenWidth();
 				m_window_height = m_window.getScreenHeight();
 
 				// Calculate the frameTime in milliseconds
+				limiter.begin();
 				const Uint32 & newTicks = SDL_GetTicks();
 				const Uint32 & frameTime = newTicks - previousTicks;
 				previousTicks = newTicks; // Store newTicks in previousTicks so we can use it next frame

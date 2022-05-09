@@ -158,15 +158,15 @@ void First_Screen::update(const float & deltaTime_)
 
 #ifdef SQB_PLATFORM_ANDROID
 	//get screen motion coordinates from the input manager
-	m_num_fingers_on_screen = m_game_ptr->getInputManager()->getScreenLocations().size();
+	m_num_fingers_on_screen = m_game_ptr->getInputDevice()->getScreenLocations().size();
 
 	if (m_num_fingers_on_screen > 0) {
-		glm::vec2 point_on_screen = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates*screen_dimensions);
+		glm::vec2 point_on_screen = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates*screen_dimensions);
 		active_cluster_object.position = point_on_screen;
 	}
 #else
-	if (m_game_ptr->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
-		glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+		glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 		active_cluster_object.position = mouse_in_world;
 
 }

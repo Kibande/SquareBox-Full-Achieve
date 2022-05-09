@@ -425,26 +425,26 @@ void Second_Screen::cameraControls(SquareBox::Camera::ParallelCamera & camera_, 
 	float calculated_movement_speed = 1 / camera_.getScale();
 
 	//camera panning
-	if (gamePtr_->getInputManager()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_ALT) && gamePtr_->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+	if (gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_ALT) && gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 
-		auto relation_motion = gamePtr_->getInputManager()->getScreenLocations()[1].coordinates;
+		auto relation_motion = gamePtr_->getInputDevice()->getScreenLocations()[1].coordinates;
 		camera_.offsetPosition(glm::vec2(-relation_motion.x, relation_motion.y * camera_.getAspectRatio()) * calculated_movement_speed);
 	}
 	//zoom
-	if (gamePtr_->getInputManager()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_ALT)) {
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+	if (gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_ALT)) {
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float scale_offset = mouse_wheel.y;
 		camera_.offsetScale(scale_offset);
 	}
-	else if (gamePtr_->getInputManager()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_CTRL)) {
+	else if (gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_CTRL)) {
 		//check for movement in x axis first
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float offset_in_x = mouse_wheel.y * calculated_movement_speed;
 		camera_.offsetPosition(glm::vec2(offset_in_x, 0));
 	}
 	else {
 		//all movement is in the y axis
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float offset_in_y = mouse_wheel.y * calculated_movement_speed;
 		camera_.offsetPosition(glm::vec2(0, offset_in_y));
 	}

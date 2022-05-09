@@ -6,16 +6,16 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 		std::vector<SquareBox::GWOM::Tile *> duplicates;
 
 		if (
-			m_game->getInputManager()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
+			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
 			&&
 			(
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
 				)
 
 			) {
@@ -24,7 +24,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 			{
 				auto & focus_tile = selected_tiles_ref_[i];
 
-				if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
+				if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
 					//duplicate into the tile on the left
 					int new_tile_row = focus_tile->coordinates.first - 1;
 					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
@@ -36,7 +36,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						duplicates.push_back(target_tile);
 					}
 				}
-				else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
 					//duplicate into the tile on the left
 					int new_tile_row = focus_tile->coordinates.first + 1;
 					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
@@ -48,7 +48,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						duplicates.push_back(target_tile);
 					}
 				}
-				else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
 					//duplicate into the tile on the left
 					int new_tile_col = focus_tile->coordinates.second + 1;
 					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
@@ -60,7 +60,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						duplicates.push_back(target_tile);
 					}
 				}
-				else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
 					//duplicate into the tile on the left
 					int new_tile_col = focus_tile->coordinates.second - 1;
 					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
@@ -97,16 +97,16 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 	if (m_currentClusterObject_ptr != nullptr && !layers_[m_currentClusterObject_ptr->layer_index].tile_system.isInitialised()) {
 		auto & current_layer = layers_[m_currentClusterObject_ptr->layer_index];
 		if (
-			m_game->getInputManager()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
+			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
 			&&
 			(
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
 				||
-				m_game->getInputManager()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
 				)
 
 			) {
@@ -123,30 +123,30 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 				m_utilities.nameClusterObjectByIndex(dup);
 
 				if (m_currentShape_ptr->needs_height_width) {
-					if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
+					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
 						dup.position.x -= orignals_properties_copy.width;
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
 						dup.position.x += orignals_properties_copy.width;
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
 						dup.position.y += orignals_properties_copy.height;
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
 						dup.position.y -= orignals_properties_copy.height;
 					}
 				}
 				else {
-					if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
+					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
 						dup.position.x -= (orignals_properties_copy.radius * 2);
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
 						dup.position.x += (orignals_properties_copy.radius * 2);
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
 						dup.position.y += (orignals_properties_copy.radius * 2);
 					}
-					else if (m_game->getInputManager()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
 						dup.position.y -= (orignals_properties_copy.radius * 2);
 					}
 				}
@@ -181,40 +181,40 @@ void SquareBoxEditor::Editor_Assistant::cameraControls(SquareBox::Camera::Parall
 	//camera panning
 	if (
 		(
-			gamePtr_->getInputManager()->isInputIdBeingReceived(camera_panning_1_of_or_input_key)
+			gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_1_of_or_input_key)
 			||
-			gamePtr_->getInputManager()->isInputIdBeingReceived(camera_panning_2_of_or_input_key)
+			gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_2_of_or_input_key)
 			)
 		&&
-		gamePtr_->getInputManager()->isInputIdBeingReceived(camera_panning_master_input_key)
+		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_master_input_key)
 		) {
 
-		auto relation_motion = gamePtr_->getInputManager()->getScreenLocations()[1].coordinates;
+		auto relation_motion = gamePtr_->getInputDevice()->getScreenLocations()[1].coordinates;
 		camera_.offsetPosition(glm::vec2(-relation_motion.x, relation_motion.y * camera_.getAspectRatio()) * calculated_movement_speed);
 	}
 	//zoom
 	if (
-		gamePtr_->getInputManager()->isInputIdBeingReceived(camera_zooming_1_of_or_input_key)
+		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_zooming_1_of_or_input_key)
 		||
-		gamePtr_->getInputManager()->isInputIdBeingReceived(camera_zooming_2_of_or_input_key)
+		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_zooming_2_of_or_input_key)
 		) {
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float scale_offset = mouse_wheel.y;
 		camera_.offsetScale(scale_offset);
 	}
 	else if (
-		gamePtr_->getInputManager()->isInputIdBeingReceived(camera_motion_1_of_or_input_key)
+		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_1_of_or_input_key)
 		||
-		gamePtr_->getInputManager()->isInputIdBeingReceived(camera_motion_2_of_or_input_key)
+		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_2_of_or_input_key)
 		) {
 		//check for movement in x axis first
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float offset_in_x = mouse_wheel.y * calculated_movement_speed;
 		camera_.offsetPosition(glm::vec2(offset_in_x, 0));
 	}
 	else {
 		//all movement is in the y axis
-		auto mouse_wheel = gamePtr_->getInputManager()->getPivotMotion();
+		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float offset_in_y = mouse_wheel.y * calculated_movement_speed;
 		camera_.offsetPosition(glm::vec2(0, offset_in_y));
 	}

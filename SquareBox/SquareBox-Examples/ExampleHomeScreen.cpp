@@ -230,24 +230,24 @@ void ExampleHomeScreen::update()
 		float cZS = (m_kContstantForScaleAndZoom / m_cameraPaningSpeed);
 
 		//Camera Controls
-		if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_LEFT))
+		if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_LEFT))
 		{
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x + cMS, m_camera.getPosition().y));
 		}
-		else if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_RIGHT)) {
+		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_RIGHT)) {
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x - cMS, m_camera.getPosition().y));
 		}
-		else if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_DOWN))
+		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_DOWN))
 		{
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y + cMS));
 		}
-		else if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_UP)) {
+		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_UP)) {
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y - cMS));
 		}
-		else if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_q)) {
+		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_q)) {
 			m_camera.setScale(m_camera.getScale() + cZS);
 		}
-		else if (m_game->getInputManager().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_e)) {
+		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_e)) {
 			m_camera.setScale(m_camera.getScale() - cZS);
 		}
 	}

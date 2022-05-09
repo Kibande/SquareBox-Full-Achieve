@@ -224,7 +224,7 @@ public:
 				//testing mouse presense
 				if (isInBox(mouseinworld_, destRect)) {
 					hovered = true;
-					if (gamePtr_->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+					if (gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 						clicked = true;
 						if (m.hasChildren()) {
 							returnie=&m;

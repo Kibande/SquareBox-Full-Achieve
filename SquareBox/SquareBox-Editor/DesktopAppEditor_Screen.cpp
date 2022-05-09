@@ -93,7 +93,7 @@ void DesktopAppEditor_Screen::update(const float & deltaTime_)
 	m_layer.camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_assistant.cameraControls(m_layer.camera, m_game_ptr);
 	//Get the mouse coordinates
-	glm::vec2 mouse_in_world = m_layer.camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+	glm::vec2 mouse_in_world = m_layer.camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 	box.position = mouse_in_world-glm::vec2(box.width,box.height)*0.5f;
 }
 

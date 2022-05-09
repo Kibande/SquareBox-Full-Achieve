@@ -134,14 +134,14 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 	if (active_layer.tile_system.isInitialised()) {
 		if (m_game_ptr->isProcessingInput()) {
 			//where the mouse currently is at in our world
-			glm::vec2& mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+			glm::vec2& mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
             
 			if (m_editor_mode_enum==EditorModeEnum::SELECT) {
 				//figure out if we are in the tile system
 				if (active_layer.tile_system.isInTileSystem(mouse_in_world)) {
 
 					//get the tile being hovered
-					if (m_game_ptr->getInputManager()->isInputIdReceived(tiled_layer_select_mode_select_tile)) {
+					if (m_game_ptr->getInputDevice()->isInputIdReceived(tiled_layer_select_mode_select_tile)) {
 						SquareBox::GWOM::Tile* selected_tile = active_layer.tile_system.getTile(mouse_in_world);
 						if (selected_tile->key != -1) {
 							
@@ -162,7 +162,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 					}
 				
 				    // deleting tiles
-					if (m_game_ptr->getInputManager()->isInputIdReceived(delete_selection_input_key)) {
+					if (m_game_ptr->getInputDevice()->isInputIdReceived(delete_selection_input_key)) {
 						for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
 						{
 							m_selected_tiles[i]->key = -1;
@@ -178,7 +178,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 			else if (m_editor_mode_enum==EditorModeEnum::PLACE) {
 				if (active_layer.tile_system.isInTileSystem(mouse_in_world)) {
 					SquareBox::GWOM::Tile* hovered_tile = active_layer.tile_system.getTile(mouse_in_world);
-					if (m_game_ptr->getInputManager()->isInputIdReceived(tiled_layer_place_mode_fill_tile)) {
+					if (m_game_ptr->getInputDevice()->isInputIdReceived(tiled_layer_place_mode_fill_tile)) {
 						//we have to edit the hovered tile and give it a texture to display
 						hovered_tile->key = m_active_sub_texture_key;
 						m_utilities.addPairToVector(active_layer.tile_system.active_tiles, hovered_tile->coordinates, false);
@@ -201,7 +201,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 	
 			//where the mouse currently is at in our world
 			auto & active_layer = m_layers[m_active_layer_index];
-			glm::vec2& mouse_in_world = active_layer.camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+			glm::vec2& mouse_in_world = active_layer.camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
 			if (m_editor_mode_enum==EditorModeEnum::SELECT) {
 				bool hoveringOverCluster = false;
@@ -222,7 +222,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 				//selection implementation
 				if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER) {
 					//if we are hovering over a cluster object and we Left click let that objects' whole cluster become selected in our world scene
-					if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived(world_cluster_selection_input_key)) {
+					if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived(world_cluster_selection_input_key)) {
 						m_selected_cluster_objects.clear();
 						//loop through our alive Objects and select this HoveredWorld Cluster
 						for (size_t i = 0; i < active_layer_alive_cluster_objects.size(); i++)
@@ -235,14 +235,14 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 							keep track of where the mouse was in the world cluster when we selected this world
 							cluster , we shall use this while dragging the world cluster later
 						*/
-						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 					}
 				}
 				else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT) {
 					//Cluster object Selection
 					//this is the only place where we actually set the active worldClusters and Objects
 					//if we are hovering over a cluster object and we Left click let that object become the current active object in our world scene
-					if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived(cluster_object_selection_input_key)) {
+					if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived(cluster_object_selection_input_key)) {
 						m_current_cluster_object_ptr = &active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
 						updateStates();//this updates the imGui variables
 						m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
@@ -276,17 +276,17 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 				}
 				else if (m_selection_mode_index == SelectModeEnum::FREESELECT) {
 					//Free selection
-					if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived(free_selection_input_key)) {
+					if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived(free_selection_input_key)) {
 						m_utilities.addPairToVector(m_selected_cluster_objects, std::pair<int, int>(m_current_hovered_world_cluster_index, m_current_hovered_cluster_object_index));
 						/*
 							keep track of where the mouse was in the world cluster when we selected this
 							cluster object , we shall use this while dragging the world cluster later
 						*/
-						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 					}
 
 					//drag select
-					if (m_game_ptr->getInputManager()->isInputIdBeingReceived(free_selection_drag_input_key_1) && m_game_ptr->getInputManager()->isInputIdBeingReceived(free_selection_drag_input_key_2)) {
+					if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_1) && m_game_ptr->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_2)) {
 						//if we are currently not drag selection
 						if (!m_is_drag_selecting) {
 							m_drag_select_origin = mouse_in_world;
@@ -307,7 +307,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 							keep track of where the mouse was in the world cluster when we selected this
 							cluster object , we shall use this while dragging the world cluster later
 						*/
-						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+						clustermousepos = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 					}
 					else {
 						m_is_drag_selecting = false;
@@ -317,7 +317,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 					//Joint Creation
 					//only two objects can be selected at once
 					//and only one joint can exit between two bodies
-					if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived(joint_selection_input_key)) {
+					if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived(joint_selection_input_key)) {
 						//clicked on object
 						SquareBox::GWOM::ClusterObject& clicked_on_object = active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
 						if (clicked_on_object.physics_properties != nullptr) {
@@ -338,9 +338,9 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 				}
 
 				//dragging and copying implementations
-					if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER || m_selection_mode_index == SelectModeEnum::FREESELECT && !(m_game_ptr->getInputManager()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_activation_input_key))) {
+					if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER || m_selection_mode_index == SelectModeEnum::FREESELECT && !(m_game_ptr->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_activation_input_key))) {
 						//dont drag and drag select at the same time
-						if (m_game_ptr->getInputManager()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_input_key))
+						if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_input_key))
 						{
 							float diplacementinX = mouse_in_world.x - clustermousepos.x;
 							float diplacementinY = mouse_in_world.y - clustermousepos.y;
@@ -382,11 +382,11 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 							m_selected_cluster_objects.size() > 0
 							&& 
 							(
-								m_game_ptr->getInputManager()->isInputIdBeingReceived(left_ctrl_input_key) ||
-								m_game_ptr->getInputManager()->isInputIdBeingReceived(right_ctrl_input_key)
+								m_game_ptr->getInputDevice()->isInputIdBeingReceived(left_ctrl_input_key) ||
+								m_game_ptr->getInputDevice()->isInputIdBeingReceived(right_ctrl_input_key)
 							)
 							&&
-							m_game_ptr->getInputManager()->isInputIdReceived(c_input_key)
+							m_game_ptr->getInputDevice()->isInputIdReceived(c_input_key)
 							)
 						{
 							m_is_all_work_saved = false;
@@ -489,7 +489,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 					else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT && m_current_cluster_object_ptr != nullptr) {
 						//ClusterObject Mode
 						if (m_utilities.isPairVectorMember(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index))) {
-							if (m_game_ptr->getInputManager()->isInputIdBeingReceived(cluster_object_drag_selection_input_key))
+							if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(cluster_object_drag_selection_input_key))
 							{
 								m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
 
@@ -515,7 +515,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 					}
 			}
 			else if (m_editor_mode_enum == EditorModeEnum::PLACE) {
-				if (m_game_ptr->getInputManager()->isInputIdReceived(non_tiled_layer_placement_input_ley)) {
+				if (m_game_ptr->getInputDevice()->isInputIdReceived(non_tiled_layer_placement_input_ley)) {
 						//place plotting points for the ploted shapes , and draw the other objects
 						SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(false, false, true, mouse_in_world, m_current_cluster_object_ptr, m_layers, &m_physics_world, true, m_respect_ancestor);
 						//add to m_alive_cluster_objects Objects if its alive
@@ -631,12 +631,12 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 			m_physics_world.update();//update our physics
 			for each (auto & layer in m_layers) {
 				m_automation.update(active_layer.world_clusters, layer.alive_cluster_objects, deltaTime_);
-			//	m_animation_creator.update(1.0f, m_world_clusters, layer.alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds(), m_game_ptr->getInputManager());
+			//	m_animation_creator.update(1.0f, m_world_clusters, layer.alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds(), m_game_ptr->getInputDevice());
 			}
 		}
 
 		//usefull key board short cuts
-		if (m_game_ptr->getInputManager()->isInputIdBeingReceived(clear_selection_input_key_1) && m_game_ptr->getInputManager()->isInputIdBeingReceived(clear_selection_input_key_2)) {
+		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(clear_selection_input_key_1) && m_game_ptr->getInputDevice()->isInputIdBeingReceived(clear_selection_input_key_2)) {
 			//Clear selected
 			if (m_editor_mode_enum==EditorModeEnum::SELECT && m_selection_mode_index != SelectModeEnum::CLUSTEROBJECT) {
 				m_selected_cluster_objects.clear();
@@ -645,7 +645,7 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 			}
 		}
 
-		if (m_game_ptr->getInputManager()->isInputIdBeingReceived(delete_selection_input_key)) {
+		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(delete_selection_input_key)) {
 			//Delete selected
 			if (m_editor_mode_enum==EditorModeEnum::SELECT) {
 				for (unsigned i = 0; i < m_selected_cluster_objects.size(); i++)
@@ -990,7 +990,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 	//draw the place mode sketch
 	auto & active_layer = m_layers[m_active_layer_index];
 	if (m_editor_mode_enum==EditorModeEnum::PLACE) {
-		glm::vec2 mouse_in_world = active_layer.camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+		glm::vec2 mouse_in_world = active_layer.camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 		
 		if (active_layer.tile_system.isInitialised()) {
 			//Draw a view of the tile below us
@@ -1020,7 +1020,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 				m_utilities.setCurrentShapePointer(cwobj.shape, &m_current_shape_ptr);
 				m_current_shape_ptr->debugDraw(cwobj, m_debug_renderer, m_selected_body_color);
 			}
-			glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+			glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
 			//are we drag selecting
 			if (m_is_drag_selecting) {
@@ -1031,7 +1031,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 			//drawing the scaling lines
 			if ((m_selected_cluster_objects.size() == 1) && m_show_scaling_in_debug_mode && m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT) {//dont show in freelance mode
 				SquareBox::GWOM::ClusterObject& cwobj = active_layer.world_clusters[m_selected_cluster_objects[0].first].cluster_objects[m_selected_cluster_objects[0].second];
-				m_current_shape_ptr->scalingDraw(cwobj, m_debug_renderer, mouse_in_world, m_game_ptr->getInputManager());
+				m_current_shape_ptr->scalingDraw(cwobj, m_debug_renderer, mouse_in_world, m_game_ptr->getInputDevice());
 			}
 			//for Joint Creation selection Mode
 			//ploting the plotted points
@@ -2879,9 +2879,9 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 					}
 					//for the bridgeWrapper
 					if (plot_joints) {
-						if (m_game_ptr->getInputManager()->isInputIdReceived(bridge_plotting_input_key)) {
+						if (m_game_ptr->getInputDevice()->isInputIdReceived(bridge_plotting_input_key)) {
 							SBX_INFO("RIGHT CLICK RECEIVED!");
-							const glm::vec2 & mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+							const glm::vec2 & mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 							if (m_vector_of_joint_ploting_points.size() < 2) {
 								m_vector_of_joint_ploting_points.push_back(mouse_in_world);
 							}
@@ -2932,8 +2932,8 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 					//for the pulley Joint
 					if (m_current_joint_ptr != nullptr) {
 						if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
-							if (m_game_ptr->getInputManager()->isInputIdReceived(pulley_plotting_input_key)) {
-								glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+							if (m_game_ptr->getInputDevice()->isInputIdReceived(pulley_plotting_input_key)) {
+								glm::vec2 mouse_in_world = m_layers[m_active_layer_index].camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 								if (m_current_joint_ptr->vec_of_points.size() < 2) {
 									m_current_joint_ptr->vec_of_points.push_back(mouse_in_world);
 								}

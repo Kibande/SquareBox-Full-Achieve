@@ -123,7 +123,7 @@ void MobileAppEditor_Screen::update(const float & deltaTime_)
 	m_window->update();
 	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	if (m_game_ptr->getInputManager()->isInputIdReceived((int)(SquareBox::KeyBoardEnum::BACKSAPCE))) {
+	if (m_game_ptr->getInputDevice()->isInputIdReceived((int)(SquareBox::KeyBoardEnum::BACKSAPCE))) {
 		
 		if (menu_manager_vec.size() > 1) {
 			menu_manager_vec.pop_back();
@@ -133,7 +133,7 @@ void MobileAppEditor_Screen::update(const float & deltaTime_)
 
 void MobileAppEditor_Screen::draw()
 {
-	glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+	glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
 
 	m_textureProgram.use();

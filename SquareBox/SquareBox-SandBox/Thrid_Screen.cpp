@@ -83,7 +83,7 @@ void Thrid_Screen::update(const float& deltaTime_)
 	//m_window->update();
 	//m_layer.camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
 	//m_editor_assitant.cameraControls(m_layer.camera, m_game_ptr);
-	//if (m_game_ptr->getInputManager()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+	//if (m_game_ptr->getInputDevice()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 	//	//place the object in the world
 	//	m_world_cluster.back().cluster_objects.push_back(m_placing_object);
 	//	m_placing_object.index = m_world_cluster.back().cluster_objects.size() - 1;
@@ -169,7 +169,7 @@ void Thrid_Screen::draw()
 
 	//	for (auto it = cells_in_camera_view.begin(); it != cells_in_camera_view.end(); it++)
 	//	{
-	//		glm::vec2 mouse_in_world = m_layer.camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+	//		glm::vec2 mouse_in_world = m_layer.camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
 	//		ConvertIsoTo2D(mouse_in_world);
 

@@ -130,7 +130,7 @@
 //		m_editor_assitant.cameraMovement(m_camera, cMS, m_game_ptr);
 //
 //		//where the mouse currently is at in our world
-//		glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+//		glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 //
 //		if (m_select_mode) {
 //			bool hoveringOverCluster = false;
@@ -157,7 +157,7 @@
 //			if (m_selection_mode_index == 0) {
 //				//World cluster selection
 //				//if we are hovering over a cluster object and we Left click let that objects' whole cluster become selected in our world scene
-//				if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+//				if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 //					m_selected_cluster_objects.clear();
 //					//loop through our alive Objects and select this HoveredWorld Cluster
 //					for (size_t i = 0; i < m_alive_cluster_objects.size(); i++)
@@ -170,14 +170,14 @@
 //						keep track of where the mouse was in the world cluster when we selected this world
 //						cluster , we shall use this while dragging the world cluster later
 //					*/
-//					clustermousepos = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+//					clustermousepos = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 //				}
 //			}
 //			else if (m_selection_mode_index == 1) {
 //				//Cluster object Selection
 //				//this is the only place where we actually set the active worldClusters and Objects
 //				//if we are hovering over a cluster object and we Left click let that object become the current active object in our world scene
-//				if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+//				if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 //					m_current_world_cluster_ptr = &m_world_clusters[m_current_hovered_world_cluster_index];
 //					m_current_cluster_object_ptr = &m_current_world_cluster_ptr->cluster_objects[m_current_hovered_cluster_object_index];
 //					updateStates();//this updates the imGui variables
@@ -214,7 +214,7 @@
 //				//Joint Creation
 //				//only two objects can be selected at once
 //				//and only one joint can exit between two bodies
-//				if (hoveringOverClusterObject && m_game_ptr->getInputManager()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+//				if (hoveringOverClusterObject && m_game_ptr->getInputDevice()->isInputIdReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 //					//clicked on object
 //					SquareBox::GWOM::ClusterObject & clicked_on_object = m_world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
 //					if (clicked_on_object.physics_properties != nullptr) {
@@ -234,7 +234,7 @@
 //			//dragging implemetation
 //			if (m_selection_mode_index == 0) {
 //				//World Cluster Mode
-//				if (m_game_ptr->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::RIGHT_CLICK))
+//				if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::RIGHT_CLICK))
 //				{
 //					float diplacementinX = mouse_in_world.x - clustermousepos.x;
 //					float diplacementinY = mouse_in_world.y - clustermousepos.y;
@@ -271,7 +271,7 @@
 //			else if (m_selection_mode_index == 1 && m_current_cluster_object_ptr != nullptr) {
 //				//ClusterObject Mode
 //				if (m_utilities.isPairVectorMember(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index))) {
-//					if (m_game_ptr->getInputManager()->isInputIdBeingReceived((int)SquareBox::MouseEnum::RIGHT_CLICK))
+//					if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::RIGHT_CLICK))
 //					{
 //						//this should be okay to remove
 //						m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
@@ -296,7 +296,7 @@
 //			}
 //		}
 //		else if (m_place_mode) {
-//			if (m_game_ptr->getInputManager()->isInputIdReceived((int)SquareBox::MouseEnum::RIGHT_CLICK)) {
+//			if (m_game_ptr->getInputDevice()->isInputIdReceived((int)SquareBox::MouseEnum::RIGHT_CLICK)) {
 //				//place plotting points for the ploted shapes , and draw the other objects
 //				SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(false, false, true, mouse_in_world, m_current_cluster_object_ptr, m_world_clusters, m_auto_assign_world_cluster ? m_current_active_world_cluster_index : m_mannually_choosen_world_cluster_index, &m_physics_world, true, m_respect_ancestor);
 //				//add to m_alive_cluster_objects Objects if its alive
@@ -438,7 +438,7 @@
 //	if (m_play_simulation) {
 //		m_physics_world.update();//update our physics
 //		m_automation.update(m_world_clusters, m_alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds());
-//		m_animation_creator.update(1.0f, m_world_clusters, m_alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds(), m_game_ptr->getInputManager());
+//		m_animation_creator.update(1.0f, m_world_clusters, m_alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds(), m_game_ptr->getInputDevice());
 //	}
 //
 //	if (m_physics_world.isLocked()) {
@@ -597,7 +597,7 @@
 //		}
 //	}
 //
-//	glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+//	glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 //
 //	//draw the place mode sketch
 //	if (m_place_mode) {
@@ -1945,8 +1945,8 @@
 //			}
 //			//for the bridgeWrapper
 //			if (plot_joints) {
-//				if (m_game_ptr->getInputManager()->isInputIdReceived(static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK))) {
-//					glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+//				if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK))) {
+//					glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 //					if (m_vector_of_joint_ploting_points.size() < 2) {
 //						m_vector_of_joint_ploting_points.push_back(mouse_in_world);
 //					}
@@ -1996,8 +1996,8 @@
 //			//for the pulley Joint
 //			if (m_current_joint_ptr != nullptr) {
 //				if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
-//					if (m_game_ptr->getInputManager()->isInputIdReceived(static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK))) {
-//						glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputManager()->getScreenLocations()[0].coordinates);
+//					if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK))) {
+//						glm::vec2 mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 //						if (m_current_joint_ptr->vec_of_points.size() < 2) {
 //							m_current_joint_ptr->vec_of_points.push_back(mouse_in_world);
 //						}

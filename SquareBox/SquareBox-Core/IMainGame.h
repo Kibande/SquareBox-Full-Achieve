@@ -25,7 +25,7 @@ namespace SquareBox {
 			return m_game_loop_elapsed_seconds;
 		}
 		
-		SquareBox::InputManager::IInputDevice * getInputManager() { return m_input_manager; }
+		SquareBox::InputManager::IInputDevice * getInputDevice() { return m_input_manager; }
 #ifndef SQB_PLATFORM_ANDROID
 
 		SquareBox::MediaPlayer::IPlayer * getVideoPlayer(unsigned int index = 0) {
