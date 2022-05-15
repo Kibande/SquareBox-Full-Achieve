@@ -35,27 +35,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
+      <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\..\SquareBox\Asset-Manager\Asset-Manager.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\GLTexture.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\ImageLoader.h" />
+    <ClInclude Include="..\..\SquareBox\Asset-Manager\imageResizer.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\IOManager.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\stb_image.h" />
+    <ClInclude Include="..\..\SquareBox\Asset-Manager\stb_image_resize.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\TextureCache.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\TextureManager.h" />
-    <ClInclude Include="..\..\SquareBox\Asset-Manager\TileSheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\Asset-Manager\ImageLoader.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\IOManager.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\stb_image.cpp" />
+    <ClCompile Include="..\..\SquareBox\Asset-Manager\stb_image_resize.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\TextureCache.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\TextureManager.cpp" />
-    <ClCompile Include="..\..\SquareBox\Asset-Manager\TileSheet.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
-      <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ec2eea7f-dc33-4100-ba90-27c5f2173d53}</ProjectGuid>

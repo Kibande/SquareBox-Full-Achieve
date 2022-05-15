@@ -55,7 +55,6 @@
 */
 
 #pragma once
-
 #include "net_common.h"
 
 namespace SquareBox
@@ -81,6 +80,7 @@ namespace SquareBox
 			// Returns and maintains item at back of Queue
 			const T& back()
 			{
+				//i should try upgrading my ndk version to one that was atleast out by 2018
 				std::scoped_lock lock(muxQueue);
 				return deqQueue.back();
 			}

@@ -47,13 +47,15 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="LevelReaderWriter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="TileSystem.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Layer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DSUGWOM.fbs">

@@ -165,7 +165,7 @@ void Thrid_Screen::draw()
 	//	
 	//	m_debug_renderer.drawBox(camera_destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::pink), 0.0f);
 
-	//	auto cells_in_camera_view = m_layer.layer_grid.getAllCellsInBox(camera_destRect);
+	//	auto cells_in_camera_view = m_layer.layer_grid.getAllCellsInDestRect(camera_destRect);
 
 	//	for (auto it = cells_in_camera_view.begin(); it != cells_in_camera_view.end(); it++)
 	//	{

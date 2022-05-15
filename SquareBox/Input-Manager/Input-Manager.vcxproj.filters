@@ -9,6 +9,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IInputDevice.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -18,18 +21,15 @@
     <ClInclude Include="TouchScreen.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="IInputDevice.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IInputDevice.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="TouchScreen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="IInputDevice.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

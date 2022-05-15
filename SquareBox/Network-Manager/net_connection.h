@@ -50,7 +50,7 @@
 
 	Author
 	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019, 2020
+	David Barr, aka javidx9, ï¿½OneLoneCoder 2019, 2020
 
 */
 
@@ -59,7 +59,6 @@
 #include "net_common.h"
 #include "net_tsqueue.h"
 #include "net_message.h"
-
 
 namespace SquareBox
 {
@@ -81,7 +80,6 @@ namespace SquareBox
 				client
 			};
 
-		public:
 			// Constructor: Specify Owner, connect to context, transfer the socket
 			//				Provide reference to incoming message queue
 			connection(owner parent, asio::io_context& asioContext, asio::ip::tcp::socket socket, tsqueue<owned_message<T>>& qIn)
@@ -116,8 +114,7 @@ namespace SquareBox
 				return id;
 			}
 
-		public:
-			void ConnectToClient(SquareBox::net::server_interface<T> * server,uint32_t uid = 0)
+			void ConnectToClient(server_interface<T> * server,uint32_t uid = 0)
 			{
 				if (m_nOwnerType == owner::server)
 				{
@@ -181,7 +178,6 @@ namespace SquareBox
 
 			}
 
-		public:
 			// ASYNC - Send a message, connections are one-to-one so no need to specifiy
 			// the target, for a client, the target is the server and vice versa
 			void Send(const message<T>& msg)
@@ -391,7 +387,7 @@ namespace SquareBox
 				});
 			}
 
-			void ReadValidation(SquareBox::net::server_interface<T>* server = nullptr) {
+			void ReadValidation(server_interface<T>* server = nullptr) {
 				asio::async_read(m_socket, asio::buffer(&m_nHandShakeIn, sizeof(uint64_t)),
 					[this, server](std::error_code ec, std::size_t length) {
 

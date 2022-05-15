@@ -51,23 +51,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\Input-Manager\IInput.cpp" />
-    <ClCompile Include="..\..\SquareBox\Input-Manager\Keyboard.cpp" />
-    <ClCompile Include="..\..\SquareBox\Input-Manager\TouchScreen.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\SquareBox\Input-Manager\IInput.h" />
-    <ClInclude Include="..\..\SquareBox\Input-Manager\InputManager.h" />
-    <ClInclude Include="..\..\SquareBox\Input-Manager\Keyboard.h" />
-    <ClInclude Include="..\..\SquareBox\Input-Manager\TouchScreen.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SDL2\SDL2.vcxproj">
       <Project>{b7be417c-b6c5-4a69-a056-e0cb0c6a344c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
       <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\SquareBox\Input-Manager\IInputDevice.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\InputManager.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\Keyboard.h" />
+    <ClInclude Include="..\..\SquareBox\Input-Manager\TouchScreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Input-Manager\IInputDevice.cpp" />
+    <ClCompile Include="..\..\SquareBox\Input-Manager\Keyboard.cpp" />
+    <ClCompile Include="..\..\SquareBox\Input-Manager\TouchScreen.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7270a291-bee9-40c0-a95e-82217ee47aab}</ProjectGuid>

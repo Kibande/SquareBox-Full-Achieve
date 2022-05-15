@@ -93,8 +93,8 @@ namespace SquareBox {
 			glm::vec2 distVec = centerPos - centerCameraPos;
 
 			// Get the depth of the collision
-			float xDepth = MIN_DISTANCE_X - abs(distVec.x);
-			float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+			float xDepth = MIN_DISTANCE_X - std::abs(distVec.x);
+			float yDepth = MIN_DISTANCE_Y - std::abs(distVec.y);
 
 			// If both the depths are > 0, then we collided
 			if (xDepth > 0 && yDepth > 0) {

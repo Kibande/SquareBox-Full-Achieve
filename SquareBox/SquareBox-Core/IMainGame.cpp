@@ -1,4 +1,3 @@
-#pragma once
 #include "IMainGame.h"
 #include <iostream>
 #include <memory>

@@ -1,81 +1,48 @@
-/*
-	MMO Client/Server Framework using ASIO
-	"Happy Birthday Mrs Javidx9!" - javidx9
-
-	Videos:
-	Part #1: https://youtu.be/2hNdkYInj4g
-	Part #2: https://youtu.be/UbjxGvrDrbw
-
-	License (OLC-3)
-	~~~~~~~~~~~~~~~
-
-	Copyright 2018 - 2020 OneLoneCoder.com
-
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions
-	are met:
-
-	1. Redistributions or derivations of source code must retain the above
-	copyright notice, this list of conditions and the following disclaimer.
-
-	2. Redistributions or derivative works in binary form must reproduce
-	the above copyright notice. This list of conditions and the following
-	disclaimer must be reproduced in the documentation and/or other
-	materials provided with the distribution.
-
-	3. Neither the name of the copyright holder nor the names of its
-	contributors may be used to endorse or promote products derived
-	from this software without specific prior written permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-	A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-	HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-	LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-	Links
-	~~~~~
-	YouTube:	https://www.youtube.com/javidx9
-	Discord:	https://discord.gg/WhwHUMV
-	Twitter:	https://www.twitter.com/javidx9
-	Twitch:		https://www.twitch.tv/javidx9
-	GitHub:		https://www.github.com/onelonecoder
-	Homepage:	https://www.onelonecoder.com
-
-	Author
-	~~~~~~
-	David Barr, aka javidx9, ©OneLoneCoder 2019, 2020
-
-*/
 
 #pragma once
-
-#pragma once
+#ifdef SQB_PLATFORM_ANDROID
+#include <experimental/optional>
+#else
+#include <optional>
+#endif // SQB_PLATFORM_ANDROID
 
 #include <memory>
 #include <thread>
 #include <mutex>
 #include <deque>
-#include <optional>
 #include <condition_variable>
+#include <exception>
+
 #include <vector>
 #include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <cstdint>
+#include <cstddef>
+#include <system_error>
+#include <string>
+#include <type_traits>
 
-#ifdef _WIN32
-#define _WIN32_WINNT 0x0A00
+#ifndef SQB_PLATFORM_ANDROID
+    // this is a windows only problem
+	// but if excluded , it defaults to something
+	//#ifdef _WIN32
+	//#define _WIN32_WINNT 0x0A00
+	//#endif
 #endif
 
 #define ASIO_STANDALONE
+#define ASIO_HAS_STD_ADDRESSOF
+#define ASIO_HAS_STD_ARRAY
+#define ASIO_HAS_CSTDINT
+#define ASIO_HAS_STD_SHARED_PTR
+#define ASIO_HAS_STD_TYPE_TRAITS
+#define ASIO_DISABLE_NOEXCEPT
+#define ASIO_ERROR_CATEGORY_NOEXCEPT noexcept(true)
+
 
 #include <asio/asio.hpp>
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
+
+

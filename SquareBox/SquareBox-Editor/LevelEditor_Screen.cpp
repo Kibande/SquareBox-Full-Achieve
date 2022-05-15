@@ -144,29 +144,34 @@ void SquareBoxEditor::LevelEditor_Screen::update(const float & deltaTime_)
 					if (m_game_ptr->getInputDevice()->isInputIdReceived(tiled_layer_select_mode_select_tile)) {
 						SquareBox::GWOM::Tile* selected_tile = active_layer.tile_system.getTile(mouse_in_world);
 						if (selected_tile->key != -1) {
-							
+							std::pair<int, int> selected_tile_coordinates = std::pair<int, int>(active_layer.index, selected_tile->index);
 							if (m_tiled_layer_selection_mode_index == TiledLayerSelectModeEnum::SINGLETILE) {
 								m_selected_tiles.clear();
-								m_selected_tiles.push_back(selected_tile);
+								m_utilities.addPairToVector(m_selected_tiles, selected_tile_coordinates);
 							}
 							else if (m_tiled_layer_selection_mode_index == TiledLayerSelectModeEnum::MULTIPLETILES) {
-								/* 
-									if we change m_selected_tiles to be a vector of pairs we shall get all the 
-									m_utilities functionality
-									and hence will be able to easily remove a tile from this vector 
-									if it is pushed back twice.
-								*/
-								m_selected_tiles.push_back(selected_tile);
+								if (m_utilities.isPairVectorMember(m_selected_tiles, selected_tile_coordinates)) {
+									m_utilities.removePairFromVector(m_selected_tiles, selected_tile_coordinates);
+								}
+								else {
+									m_utilities.addPairToVector(m_selected_tiles, selected_tile_coordinates);
+								}
 							}
 						}
 					}
 				
 				    // deleting tiles
+					/* 
+					 since we are deleting a tile according to its stored attributes , 
+					 this function has the ability to delete tiles that are on other layers
+					 as long as they are among the selected tiles
+					*/
 					if (m_game_ptr->getInputDevice()->isInputIdReceived(delete_selection_input_key)) {
 						for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
 						{
-							m_selected_tiles[i]->key = -1;
-							m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, m_selected_tiles[i]->coordinates);
+							SquareBox::GWOM::Tile * focus_tile = m_layers[m_selected_tiles[i].first].tile_system.getTileByIndex(m_selected_tiles[i].second);
+							focus_tile->key = -1;
+							m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, focus_tile->coordinates);
 						}
 						m_selected_tiles.clear();
 					}
@@ -730,10 +735,10 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 			glm::vec4 camera_destRect(layer_camera_center - glm::vec2(layer_camera_width, layer_camera_height)*0.5f, glm::vec2(layer_camera_width, layer_camera_height));
 			std::map<int, SquareBox::GWOM::Tile*> vector_of_visible_tiles;
 			if (m_debug_mode && m_show_grid_lines) {
-				vector_of_visible_tiles = layer.tile_system.getAllTilesInBox(camera_destRect,false);// since we are drawing debug lines from this
+				vector_of_visible_tiles = layer.tile_system.getAllTilesInDestRect(camera_destRect,false);// since we are drawing debug lines from this
 			}
 			else {
-				vector_of_visible_tiles = layer.tile_system.getAllTilesInBox(camera_destRect,true);
+				vector_of_visible_tiles = layer.tile_system.getAllTilesInDestRect(camera_destRect,true);
 			}
 				//TEXTURES
 				m_sprite_batch.begin(); 
@@ -744,7 +749,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 						glm::vec4 texture_uvRect=specific_texturing_details.second;
 						int texture_id = specific_texturing_details.first;
 						//we need ot figure these out using the key that this tile has 
-						m_sprite_batch.draw(glm::vec4((*it).second->position, glm::vec2(layer.tile_system.getTileSize())), texture_uvRect,texture_id,1.0f, SquareBox::RenderEngine::ColorRGBA8(255,255,255,255*(layer.opacity*0.01)));
+						m_sprite_batch.draw(glm::vec4((*it).second->position-glm::vec2(layer.tile_system.getTileSize())*0.5f, glm::vec2(layer.tile_system.getTileSize())), texture_uvRect,texture_id,1.0f, SquareBox::RenderEngine::ColorRGBA8(255,255,255,255*(layer.opacity*0.01)));
 					}
 				}
 					
@@ -774,7 +779,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 
 					for (auto it = vector_of_visible_tiles.begin(); it != vector_of_visible_tiles.end(); it++)
 					{
-						m_debug_renderer.drawBox(glm::vec4((*it).second->position, glm::vec2(layer.tile_system.getTileSize())), m_layer_grid_color, 0.0f);
+						m_debug_renderer.drawBox(glm::vec4((*it).second->position - glm::vec2(layer.tile_system.getTileSize())*0.5f, glm::vec2(layer.tile_system.getTileSize())), m_layer_grid_color, 0.0f);
 					}
 
 					m_debug_renderer.end();
@@ -996,7 +1001,7 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 			//Draw a view of the tile below us
 			if (active_layer.tile_system.isInTileSystem(mouse_in_world)) {
 				auto hovered_tile = active_layer.tile_system.getTile(mouse_in_world);
-				m_debug_renderer.drawBox(glm::vec4(hovered_tile->position, glm::vec2(active_layer.tile_system.getTileSize())), m_place_mode_sketch_color, 0.0f);
+				m_debug_renderer.drawBox(glm::vec4(hovered_tile->position - glm::vec2(active_layer.tile_system.getTileSize())*0.5f, glm::vec2(active_layer.tile_system.getTileSize())), m_place_mode_sketch_color, 0.0f);
 			}
 		}
 		else {
@@ -1008,7 +1013,8 @@ void SquareBoxEditor::LevelEditor_Screen::draw() {
 		if (m_layers[m_active_layer_index].tile_system.isInitialised()) {
 			for (auto it = m_selected_tiles.begin(); it != m_selected_tiles.end(); it++)
 			{
-				m_debug_renderer.drawBox(glm::vec4((*it)->position, glm::vec2(active_layer.tile_system.getTileSize())), m_selected_body_color, 0.0f);
+				SquareBox::GWOM::Tile * focus_tile = m_layers[(*it).first].tile_system.getTileByIndex((*it).second);
+				m_debug_renderer.drawBox(glm::vec4(focus_tile->position - glm::vec2(active_layer.tile_system.getTileSize())*0.5f, glm::vec2(active_layer.tile_system.getTileSize())), m_selected_body_color, 0.0f);
 			}
 		}
 		else {
@@ -1674,8 +1680,7 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 							if (ImGui::Button("OK", ImVec2(120, 0))) {
 								for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
 								{
-									SquareBox::GWOM::Tile * orign_grid_tile = m_selected_tiles[i];
-
+									SquareBox::GWOM::Tile * orign_grid_tile = m_layers[m_selected_tiles[i].first].tile_system.getTileByIndex(m_selected_tiles[i].second);
 									//take to the target layer
 									SquareBox::GWOM::Tile * destination_grid_tile = m_layers[m_target_shift_to_layer_index].tile_system.getTile(orign_grid_tile->coordinates.first, orign_grid_tile->coordinates.second);
 									destination_grid_tile->key = orign_grid_tile->key; // wrong !!! and can crush the application if the 
@@ -3772,10 +3777,6 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 		if (m_file_dialog.showFileDialog("Save Level File", imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, ImVec2(700, 310), m_level_file_extension))
 		{
 			
-			std::cout << m_file_dialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
-			std::cout << m_file_dialog.selected_path << std::endl;    // The absolute path to the selected file
-			std::cout << m_file_dialog.ext << std::endl;              // Access ext separately (For SAVE mode)
-
 				SBX_INFO("Saving Level as {} File", m_level_file_extension);
 				//eliminate all the file extensions just incase the user included an extra file extension
 				//e.g level.txt.txt
@@ -3794,7 +3795,7 @@ void SquareBoxEditor::LevelEditor_Screen::drawGUI()
 				m_utilities.worldIndiciesCleanUp(m_layers);
 				if (m_level_reader_writer.saveLevelDataAsBinary(filePath + m_file_dialog.ext,m_layers,m_universal_camera_scale,m_universal_camera_position,m_active_layer_index))
 				{
-					SBX_INFO("Level Data Saved");
+					SBX_INFO("Level Data Saved at {}.{}", m_file_dialog.selected_path,m_file_dialog.ext);
 					m_is_all_work_saved = true;
 				}
 				else {

@@ -1901,8 +1901,8 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float tile_system_tile_size() const {
     return GetField<float>(VT_TILE_SYSTEM_TILE_SIZE, 0.0f);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>> *tile_system_data() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>> *>(VT_TILE_SYSTEM_DATA);
+  const flatbuffers::Vector<int32_t> *tile_system_data() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_TILE_SYSTEM_DATA);
   }
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *>(VT_ALIVE_CLUSTER_OBJECTS);
@@ -1934,7 +1934,6 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<float>(verifier, VT_TILE_SYSTEM_TILE_SIZE) &&
            VerifyOffset(verifier, VT_TILE_SYSTEM_DATA) &&
            verifier.VerifyVector(tile_system_data()) &&
-           verifier.VerifyVectorOfTables(tile_system_data()) &&
            VerifyOffset(verifier, VT_ALIVE_CLUSTER_OBJECTS) &&
            verifier.VerifyVector(alive_cluster_objects()) &&
            verifier.VerifyVectorOfTables(alive_cluster_objects()) &&
@@ -1988,7 +1987,7 @@ struct LayerBuilder {
   void add_tile_system_tile_size(float tile_system_tile_size) {
     fbb_.AddElement<float>(Layer::VT_TILE_SYSTEM_TILE_SIZE, tile_system_tile_size, 0.0f);
   }
-  void add_tile_system_data(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>>> tile_system_data) {
+  void add_tile_system_data(flatbuffers::Offset<flatbuffers::Vector<int32_t>> tile_system_data) {
     fbb_.AddOffset(Layer::VT_TILE_SYSTEM_DATA, tile_system_data);
   }
   void add_alive_cluster_objects(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects) {
@@ -2023,7 +2022,7 @@ inline flatbuffers::Offset<Layer> CreateLayer(
     float tile_system_width = 0.0f,
     float tile_system_height = 0.0f,
     float tile_system_tile_size = 0.0f,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>>> tile_system_data = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> tile_system_data = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters = 0) {
   LayerBuilder builder_(_fbb);
@@ -2061,14 +2060,14 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
     float tile_system_width = 0.0f,
     float tile_system_height = 0.0f,
     float tile_system_tile_size = 0.0f,
-    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>> *tile_system_data = nullptr,
+    const std::vector<int32_t> *tile_system_data = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto single_textures__ = single_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>(*single_textures) : 0;
   auto tiled_textures__ = tiled_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>(*tiled_textures) : 0;
   auto sub_textures__ = sub_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>>(*sub_textures) : 0;
-  auto tile_system_data__ = tile_system_data ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>>(*tile_system_data) : 0;
+  auto tile_system_data__ = tile_system_data ? _fbb.CreateVector<int32_t>(*tile_system_data) : 0;
   auto alive_cluster_objects__ = alive_cluster_objects ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>(*alive_cluster_objects) : 0;
   auto world_clusters__ = world_clusters ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>(*world_clusters) : 0;
   return SquareBox::DSUGWOM::CreateLayer(

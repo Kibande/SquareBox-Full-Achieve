@@ -1,17 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\App.h" />
-    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\First_Screen.h" />
-    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\ScreenIndices.h" />
-    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\Second_Screen.h" />
-    <ClInclude Include="..\..\SquareBox\SquareBox-SandBox\Sprite.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\App.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Brick.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\GameHUDandGUI.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\GameLogic.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Human.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\LayerIndicies.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Player.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\ScreenIndicies.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\App.cpp" />
-    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\First_Screen.cpp" />
-    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\main.cpp" />
-    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\Second_Screen.cpp" />
-    <ClCompile Include="..\..\SquareBox\SquareBox-SandBox\Sprite.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\App.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Brick.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\GameHUDandGUI.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\GameLogic.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Human.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\LayerIndicies.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\main.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Player.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Zombie.cpp" />
   </ItemGroup>
 </Project>

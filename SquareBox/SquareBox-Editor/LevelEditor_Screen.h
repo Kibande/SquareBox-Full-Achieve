@@ -228,7 +228,7 @@ namespace SquareBoxEditor {
 		glm::vec2 clustermousepos; // used when moving multiple cluster objects at once
 		std::vector<SquareBox::GWOM::Layer> m_layers;
 		std::vector<std::pair<int, int>> m_selected_cluster_objects;
-		std::vector<SquareBox::GWOM::Tile*> m_selected_tiles;//Used for tiling layer layout
+		std::vector<std::pair<int,int>> m_selected_tiles; // Used for tiling layer layout (layer_index_tile_index)
 		/*Externals*/
 		//debug colors
 		SquareBox::RenderEngine::ColorRGBA8 m_debug_static_body_color = SquareBox::RenderEngine::ColorRGBA8(255, 0, 0, 255);

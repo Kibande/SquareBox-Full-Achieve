@@ -1,4 +1,5 @@
-#version 130
+#version 300 es
+precision mediump float;
 //The fragment shader operates on each pixel in a given polygon
 
 in vec2 fragmentPosition;

@@ -48,6 +48,7 @@ include "SquareBox-SandBox"
 include "SquareBox-Examples"
 include "Zombie-Game"
 include "Ball-Game"
+include "Platformer"
 
 
 
@@ -104,6 +105,7 @@ include "SquareBox-SandBox"
 include "SquareBox-Examples"
 include "Zombie-Game"
 include "Ball-Game"
+include "Platformer"
 
 
 

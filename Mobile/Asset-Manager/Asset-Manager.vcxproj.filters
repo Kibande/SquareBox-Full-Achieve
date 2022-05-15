@@ -4,18 +4,19 @@
     <ClInclude Include="..\..\SquareBox\Asset-Manager\Asset-Manager.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\GLTexture.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\ImageLoader.h" />
+    <ClInclude Include="..\..\SquareBox\Asset-Manager\imageResizer.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\IOManager.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\stb_image.h" />
+    <ClInclude Include="..\..\SquareBox\Asset-Manager\stb_image_resize.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\TextureCache.h" />
     <ClInclude Include="..\..\SquareBox\Asset-Manager\TextureManager.h" />
-    <ClInclude Include="..\..\SquareBox\Asset-Manager\TileSheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\Asset-Manager\ImageLoader.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\IOManager.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\stb_image.cpp" />
+    <ClCompile Include="..\..\SquareBox\Asset-Manager\stb_image_resize.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\TextureCache.cpp" />
     <ClCompile Include="..\..\SquareBox\Asset-Manager\TextureManager.cpp" />
-    <ClCompile Include="..\..\SquareBox\Asset-Manager\TileSheet.cpp" />
   </ItemGroup>
 </Project>

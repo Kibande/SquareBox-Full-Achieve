@@ -28,7 +28,7 @@ namespace SquareBox {
 					new_tile = texture_index_cap;
 					manipulation_complete = true;
 				}
-				SquareBox::AssetManager::GLTexture & object_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
+				SquareBox::AssetManager::GLTexture object_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
 				if (static_cast<int>(object_texture.id) <= 0) {
 					SBX_CORE_ERROR("{} texture id of {} did not return a valid texture", cluster_object_.name, cluster_object_.texture_info.texture_id);
 				}

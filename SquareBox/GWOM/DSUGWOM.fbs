@@ -200,7 +200,7 @@ tile_system_orign_y:float;
 tile_system_width:float;
 tile_system_height:float;
 tile_system_tile_size:float;
-tile_system_data:[VectorOfInt];
+tile_system_data:[int];
 alive_cluster_objects:[PairOfInt]; //stored because the ordering of cluster objects is kept here
 world_clusters: [WorldCluster];
 }

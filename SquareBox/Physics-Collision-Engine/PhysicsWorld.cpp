@@ -614,10 +614,8 @@ namespace SquareBox {
 					return joint_ptr->IsLimitEnabled();
 				}
 			}
-			else {
-				SBX_CORE_INFO("This joint does not support Limits");
-				return false;
-			}
+			SBX_CORE_INFO("This joint does not support Limits");
+			return false;
 		}
 
 		bool PhysicsWorld::isMotorLimitEnabled(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
@@ -796,7 +794,7 @@ namespace SquareBox {
 			fixtureDef.filter.groupIndex = clusterObject_.group_index;
 			fixtureDef.filter.categoryBits = static_cast<unsigned int>(clusterObject_.family);
 
-			uint16 tempcategoryBits;
+			uint16 tempcategoryBits = 0;
 			for (unsigned int i = 0; i < clusterObject_.vec_of_mask_bits.size(); i++)
 			{
 				tempcategoryBits |= clusterObject_.vec_of_mask_bits[i];

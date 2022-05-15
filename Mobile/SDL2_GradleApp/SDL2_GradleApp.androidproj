@@ -106,26 +106,7 @@
     <JavaCompile Include="app\src\main\java\org\libsdl\app\SDLControllerManager.java" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AI\AI.vcxproj" />
-    <ProjectReference Include="..\Animation-System\Animation-System.vcxproj" />
-    <ProjectReference Include="..\Audio-System\Audio-System.vcxproj" />
-    <ProjectReference Include="..\Box2D\Box2D.vcxproj" />
-    <ProjectReference Include="..\Camera\Camera.vcxproj" />
-    <ProjectReference Include="..\GWOM\GWOM.vcxproj" />
-    <ProjectReference Include="..\Input-Manager\Input-Manager.vcxproj" />
-    <ProjectReference Include="..\Lua\Lua.vcxproj" />
     <ProjectReference Include="..\main\main.vcxproj" />
-    <ProjectReference Include="..\MathLib\MathLib.vcxproj" />
-    <ProjectReference Include="..\Physics-Collision-Engine\Physics-Collision-Engine.vcxproj" />
-    <ProjectReference Include="..\Render-Engine\Render-Engine.vcxproj" />
-    <ProjectReference Include="..\SDL2\SDL2.vcxproj" />
-    <ProjectReference Include="..\SDL2\src\hidapi\android\hidapi.vcxproj" />
-    <ProjectReference Include="..\SDL2_image\SDL2_image.vcxproj" />
-    <ProjectReference Include="..\SDL2_mixer\SDL2_mixer.vcxproj" />
-    <ProjectReference Include="..\SDL2_ttf\SDL2_ttf.vcxproj" />
-    <ProjectReference Include="..\Shapes\Shapes.vcxproj" />
-    <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj" />
-    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj" />
   </ItemGroup>
   <Import Project="$(AndroidTargetsPath)\Android.targets" />
   <ImportGroup Label="ExtensionTargets" />

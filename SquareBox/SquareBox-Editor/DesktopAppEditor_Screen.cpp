@@ -126,7 +126,7 @@ void DesktopAppEditor_Screen::draw()
 	//	m_debugRender.drawBox(camera_destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::pink), 0.0f);
 	//	
 	//		
-	//	auto cells_in_camera_view = m_layer.layer_grid.getAllCellsInBox(camera_destRect);
+	//	auto cells_in_camera_view = m_layer.layer_grid.getAllCellsInDestRect(camera_destRect);
 
 	//	for (auto it = cells_in_camera_view.begin(); it != cells_in_camera_view.end(); it++)
 	//	{
@@ -134,7 +134,7 @@ void DesktopAppEditor_Screen::draw()
 	//	}
 
 
-	//	auto cells_in_box = m_layer.layer_grid.getAllCellsInBox(glm::vec4(box.position, box.width, box.height));
+	//	auto cells_in_box = m_layer.layer_grid.getAllCellsInDestRect(glm::vec4(box.position, box.width, box.height));
 
 	//	for (auto it = cells_in_box.begin(); it != cells_in_box.end(); it++)
 	//	{

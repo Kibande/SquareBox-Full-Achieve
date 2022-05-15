@@ -4,7 +4,7 @@ namespace SquareBoxEditor {
 	class Editor_Assistant
 	{
 	public:
-		void currentTileDuplicator(SquareBox::GWOM::Layer & active_layer_ref_, std::vector<SquareBox::GWOM::Tile *> & selected_tiles_ref_, SquareBox::IMainGame * m_game_ptr_, SquareBox::Utilities & m_utilities_ref_);
+		void currentTileDuplicator(SquareBox::GWOM::Layer & active_layer_ref_, std::vector<std::pair<int,int>> & selected_tiles_vec_, SquareBox::IMainGame * m_game_ptr_, SquareBox::Utilities & m_utilities_ref_);
 		std::pair<int, int> currentClusterObjectDuplicator(SquareBox::PhysicsCollisionEngine::PhysicsWorld & m_physicsWorld, std::vector<SquareBox::GWOM::Layer>&  layers_, std::vector<std::pair<int, int>> & m_selectedClusterObjects, SquareBox::GWOM::ClusterObject * m_currentClusterObject_ptr, SquareBox::IShape* m_currentShape_ptr, SquareBox::IMainGame * m_game, SquareBox::Utilities & m_utilities);
 		void cameraControls(SquareBox::Camera::ParallelCamera & camera_, SquareBox::IMainGame * gamePtr_);
 	private:

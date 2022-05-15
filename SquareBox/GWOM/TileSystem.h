@@ -21,25 +21,25 @@ namespace SquareBox {
 			~TileSystem();
 		
 			void init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_);
-			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_, std::vector<std::vector<int>> & layer_data_);
+			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_, std::vector<int> & layer_data_);
 			void resetTileSystem();
 			Tile * getTile(const glm::vec2& pos_);
-			Tile * getTile(unsigned row_,unsigned col_);
+			Tile * getTile(unsigned x_,unsigned y_);
 			bool isInTileSystem(const glm::vec2 pos_);
-			std::map<int, SquareBox::GWOM::Tile*>  getAllTilesInBox(glm::vec4& dest_rect_,bool only_active_tiles_=false);
+			std::map<int, SquareBox::GWOM::Tile*>  getAllTilesInDestRect(glm::vec4& dest_rect_,bool only_active_tiles_=false);
 
 			///Getters
-			int getNumXCells() const { return m_num_rows; }
-			int getNumYCells() const { return m_num_cols; }
+			int getNumXCells() const { return m_num_x_tiles; }
+			int getNumYCells() const { return m_num_y_tiles; }
 			float getWidth() const { return m_width; }
 			float getHeight() const { return m_height; }
 			float getTileSize() const { return m_tile_size; }
 			glm::vec2 getTileSystemOrigin() const { return glm::vec2(m_orign_x, m_orign_y); }
-
-			std::vector<std::vector<Tile>>& getAllTileSystemTiles() { return m_tiles; }
+			Tile * getTileByIndex(const int index_) { return &m_tiles[index_]; }
+			std::vector<Tile>& getAllTileSystemTiles() { return m_tiles; }
 			bool isInitialised() const { return m_is_initialised; }
 			void dispose() {};
-			std::vector<std::vector<Tile>> m_tiles;//this is what is actually stored;
+			std::vector<Tile> m_tiles;//this is what is actually stored;
 
 			float getOriginX() const { return m_orign_x; }
 
@@ -55,8 +55,8 @@ namespace SquareBox {
 			float m_height = 0.0f;
 			float m_orign_x = 0.0f;
 			float m_orign_y = 0.0f;
-			unsigned m_num_rows = 0;
-			unsigned m_num_cols = 0;
+			unsigned m_num_y_tiles = 0;
+			unsigned m_num_x_tiles = 0;
 			bool m_is_initialised = false;
 			SquareBox::LayerTilingEnum m_tiling = SquareBox::LayerTilingEnum::None;
 

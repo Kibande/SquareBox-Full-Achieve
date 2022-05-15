@@ -30,7 +30,7 @@ namespace SquareBox {
 						SquareBox::GWOM::Cell* current_cell = getCell(x, y);
 						current_cell->coordinates = glm::ivec2(x,y);
 						current_cell->member_cordinates.reserve(MEMBERS_TO_RESERVE);
-						current_cell->position = glm::vec2(getGridOrigin().x + (x * getCellSize()), getGridOrigin().y + (y * getCellSize()));
+						current_cell->position = glm::vec2(getGridOrigin().x + (x * getCellSize()), getGridOrigin().y + (y * getCellSize())) + (glm::vec2(getCellSize())*0.5f);
 						current_cell->index = current_cell_index;
 						current_cell_index += 1;
 					}
@@ -98,12 +98,10 @@ namespace SquareBox {
 			}
 		}
 
-		Cell* Grid::getCell(int x_, int y_)
+		Cell* Grid::getCell(unsigned x_, unsigned y_)
 		{
-			//just fix in either first or last cell if things refuse
-			if (x_ < 0) x_ = 0;
+			//just fix in either first or last cell if out of range
 			if (x_ >= m_num_x_cells) x_ = m_num_x_cells - 1;
-			if (y_ < 0) y_ = 0;
 			if (y_ >= m_num_y_cells) y_ = m_num_y_cells - 1;
 			return &m_cells[y_ * m_num_x_cells + x_];
 		}
@@ -130,10 +128,10 @@ namespace SquareBox {
 		}
 
 
-		std::map<int, SquareBox::GWOM::Cell*> Grid::getAllCellsInBox(glm::vec4& dest_rect_, bool only_populated_cells_)
+		std::map<int, SquareBox::GWOM::Cell*> Grid::getAllCellsInDestRect(glm::vec4& dest_rect_, bool only_populated_cells_)
 		{
 			/*
-				Because we are using std::cell, the total virtual grid cells arrangement is going to over flow on the right 
+				Because we are using std::ceil, the total virtual grid cells arrangement is going to over flow on the right 
 				and top , since while using dest rect , the increase in size are felt in those directions
 			*/
 			std::map<int, SquareBox::GWOM::Cell*> cells_in_box;

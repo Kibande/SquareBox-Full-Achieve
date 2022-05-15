@@ -210,6 +210,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -225,6 +226,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -240,6 +242,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -255,6 +258,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -270,6 +274,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -285,6 +290,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -300,6 +306,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
@@ -315,6 +322,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(SolutionDir)$(Platform)\$(Configuration)</AdditionalLibraryDirectories>

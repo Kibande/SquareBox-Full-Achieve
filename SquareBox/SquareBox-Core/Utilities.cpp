@@ -758,10 +758,11 @@ namespace SquareBox {
 
 	void Utilities::createWorldClusterJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld & physics_world_)
 	{
-		for each (SquareBox::GWOM::Layer layer in layers_)
+		for (unsigned int i = 0; i < layers_.size(); i++)
 		{
-			for (int i = 0; i < layer.active_joints_body_a_objects.size(); i++) {
-				std::pair<int, int>  cobj_pair = layer.active_joints_body_a_objects[i];
+			SquareBox::GWOM::Layer & layer = layers_[i];
+			for (int j = 0; j < layer.active_joints_body_a_objects.size(); j++) {
+				std::pair<int, int>  cobj_pair = layer.active_joints_body_a_objects[j];
 				SquareBox::GWOM::ClusterObject& ccobj = layer.world_clusters[cobj_pair.first].cluster_objects[cobj_pair.second];
 				reactivateClusterObjectJoints(layers_, ccobj, physics_world_);
 			}

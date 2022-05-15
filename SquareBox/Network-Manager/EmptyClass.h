@@ -10,6 +10,6 @@ namespace SquareBox {
 			int uselessFunction(int a, int b);
 		};
 
-	}
-}
+	};
+};
 

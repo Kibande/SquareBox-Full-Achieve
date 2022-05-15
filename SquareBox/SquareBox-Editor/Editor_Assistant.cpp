@@ -1,9 +1,9 @@
 #include "Editor_Assistant.h"
-void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::Layer & active_layer_ref_, std::vector<SquareBox::GWOM::Tile *>& selected_tiles_ref_, SquareBox::IMainGame * m_game, SquareBox::Utilities & m_utilities)
+void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::Layer & active_layer_ref_, std::vector<std::pair<int, int>> & selected_tiles_vec_, SquareBox::IMainGame * m_game, SquareBox::Utilities & m_utilities)
 {
 	if (active_layer_ref_.tile_system.isInitialised()) {
 		// we are going to loop through , duplicating tile by tile
-		std::vector<SquareBox::GWOM::Tile *> duplicates;
+		std::vector<std::pair<int,int>> duplicates;
 
 		if (
 			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
@@ -20,9 +20,9 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 			) {
 
-			for (unsigned int i = 0; i < selected_tiles_ref_.size(); i++)
+			for (unsigned int i = 0; i < selected_tiles_vec_.size(); i++)
 			{
-				auto & focus_tile = selected_tiles_ref_[i];
+				auto * focus_tile = active_layer_ref_.tile_system.getTileByIndex(selected_tiles_vec_[i].second);
 
 				if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
 					//duplicate into the tile on the left
@@ -33,7 +33,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
 						target_tile->key = focus_tile->key;
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
-						duplicates.push_back(target_tile);
+						duplicates.push_back(std::pair<int,int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
@@ -45,7 +45,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
 						target_tile->key = focus_tile->key;
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
-						duplicates.push_back(target_tile);
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
@@ -57,7 +57,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
 						target_tile->key = focus_tile->key;
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
-						duplicates.push_back(target_tile);
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
@@ -69,13 +69,13 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
 						target_tile->key = focus_tile->key;
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
-						duplicates.push_back(target_tile);
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 			}
 			if (duplicates.size() > 0) {
-				selected_tiles_ref_.clear();
-				selected_tiles_ref_ = duplicates;
+				selected_tiles_vec_.clear();
+				selected_tiles_vec_ = duplicates;
 			}
 
 		}

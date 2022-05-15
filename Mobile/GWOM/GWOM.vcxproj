@@ -65,11 +65,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\GWOM\Grid.cpp" />
-    <ClCompile Include="..\..\SquareBox\GWOM\LevelReaderWriter.cpp" />
-    <ClCompile Include="..\..\SquareBox\GWOM\TileSystem.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\SquareBox\GWOM\ClusterObject.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOM_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Entities.h" />
@@ -80,6 +75,12 @@
     <ClInclude Include="..\..\SquareBox\GWOM\LevelReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TileSystem.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\WorldCluster.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\GWOM\Grid.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\Layer.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\LevelReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\TileSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ba900633-113e-4364-9f01-72b7e1dccfa8}</ProjectGuid>
@@ -278,7 +279,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++14</CppLanguageStandard>

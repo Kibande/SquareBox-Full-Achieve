@@ -1,14 +1,19 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <Render-Engine/ColorRGBA8.h>
-#include <Render-Engine/ParticleEngine.h>
 #include <Asset-Manager/Asset-Manager.h>
-#include<Camera/ParallelCamera.h>
+#include <Camera/ParallelCamera.h>
 #include "WorldCluster.h"
-#include<vector>
+#include <vector>
 #include <string>
 #include "TileSystem.h"
 #include <algorithm>
+
+namespace SquareBox {
+	namespace RenderEngine {
+		class ParticleEngine;
+	};
+};
 
 namespace SquareBox {
 	namespace GWOM {
@@ -59,7 +64,23 @@ namespace SquareBox {
 			/*
 			 Joints system is not fully tested, there is need to make a game just about joints in order to test it out
 			*/
-			std::vector<SquareBox::RenderEngine::ParticleEngine> particle_engines;
+
+			/*
+			 android ndk wont let me create a vector of particle engine objects, it is only allowing
+			 a vector of particle engine pointer
+
+
+			 when i try creating the object versionot throws this error
+			 In function `void std::_Destroy<SquareBox::RenderEngine::ParticleEngine>(SquareBox::RenderEngine::ParticleEngine*)':
+			2>C:\\Microsoft\AndroidNDK64\android-ndk-r15c\sources\cxx-stl\gnu-libstdc++\4.9\include\bits/stl_construct.h:93: undefined reference to `SquareBox::RenderEngine::ParticleEngine::~ParticleEngine()'
+			2>clang.exe: error: linker command failed with exit code 1 (use -v to see invocation)
+
+			so am going with the pointers because with that approach , i wont even need to  the 
+			the header file to the partcle engine but just forward declare the class
+
+			
+			*/
+			std::vector<SquareBox::RenderEngine::ParticleEngine*> vec_of_particle_engines_ptr;
 			SquareBox::Camera::ParallelCamera camera;
 
 			//helper functions

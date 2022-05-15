@@ -23,16 +23,11 @@ namespace SquareBox {
 				}
 				
 				//tiling system data
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::VectorOfInt>> fb_tile_system_data;
 				const auto  & tiled_system_data = layer.tile_system.m_tiles;
+				std::vector<int> fb_tile_system_int_data;
 				for (unsigned int k = 0; k < tiled_system_data.size(); k++)
 				{
-					std::vector<int> fb_single_tile_system_row;
-					for (unsigned int l = 0; l < tiled_system_data[k].size(); l++)
-					{
-						fb_single_tile_system_row.push_back(tiled_system_data[k][l].key);
-					}
-					fb_tile_system_data.push_back(SquareBox::DSUGWOM::CreateVectorOfInt(builder, builder.CreateVector(fb_single_tile_system_row)));
+					fb_tile_system_int_data.push_back(tiled_system_data[k].key);
 				}
 
 				//Textures
@@ -218,8 +213,7 @@ namespace SquareBox {
 					}
 					vec_of_fb_layer_world_clusters.push_back(SquareBox::DSUGWOM::CreateWorldCluster(builder, cwcobj.index, cwcobj.deletionIndex, builder.CreateString(std::string(cwcobj.name)), cwcobj.isSelected, builder.CreateVector(vec_of_fb_cluster_objects)));
 				}
-				int saved_tiling = (int)layer.tile_system.getTiling();
-				auto fb_layer = SquareBox::DSUGWOM::CreateLayer(builder,builder.CreateString(layer.name),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.tile_system.getTiling()),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_fb_layer_world_clusters));
+				auto fb_layer = SquareBox::DSUGWOM::CreateLayer(builder,builder.CreateString(layer.name),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.tile_system.getTiling()),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_int_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_fb_layer_world_clusters));
 			
 				fb_layers.push_back(fb_layer);
 			}
@@ -311,17 +305,12 @@ namespace SquareBox {
 					layer.sub_textures_table[tmp_sub_texture.sub_texture_key] = tmp_sub_texture;
 				}
 
-				std::vector<std::vector<int>> tile_system_data_vec;
+				std::vector<int> tile_system_data_vec;
 				auto fb_layer_tile_system_data = fb_layer->tile_system_data();
+				tile_system_data_vec.reserve(fb_layer_tile_system_data->size());
 				for (unsigned j = 0; j < fb_layer_tile_system_data->size(); j++)
 				{
-					auto fb_layer_tile_row = fb_layer_tile_system_data->Get(j)->data();
-					std::vector<int> tile_system_row;
-					for (unsigned int k = 0; k < fb_layer_tile_row->size(); k++) {
-
-						tile_system_row.push_back(fb_layer_tile_row->Get(k));
-					}
-					tile_system_data_vec.push_back(tile_system_row);
+					tile_system_data_vec.push_back(fb_layer_tile_system_data->Get(j));
 				}
 
 				//initiliase the tile system while Adpoting the layer data

@@ -9,12 +9,10 @@ namespace SquareBox {
 				//A box
 				const glm::vec2 boxDims(clusterObject_.width, clusterObject_.height);
 				glm::vec2  boxOrigin = glm::vec2(clusterObject_.position) - boxDims * 0.5f;
-				//when drawing we are going to add 0.01 padding around the box to catter for physics boxes
-				//this should be done for all polygons
-				const float padding = 0.01f;
-				const float doublePadding = 0.02f;
-				boxOrigin -= glm::vec2(padding, padding);
-				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.width + doublePadding, clusterObject_.height + doublePadding), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((clusterObject_.color.x), (clusterObject_.color.y), (clusterObject_.color.z), (clusterObject_.color.w)*(0.01*opacity_)), clusterObject_.angle);
+				/* the box padding of 0.01 has been removed from here
+				 for boxes  and capsules, we shall just be submitting smaller dimensions to the physics engine
+				*/
+				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.width, clusterObject_.height), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((clusterObject_.color.x), (clusterObject_.color.y), (clusterObject_.color.z), (clusterObject_.color.w)*(0.01*opacity_)), clusterObject_.angle);
 			}
 		}
 
