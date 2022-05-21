@@ -216,7 +216,8 @@ namespace SquareBox {
 				exitGame();
 				break;
 			case ScreenState::NONE:
-				//this is not a common use case
+				//this is not a common use case 
+				// when is it used ??
 				break;
 			default:
 				SBX_CORE_CRITICAL("Unknown Screen State");

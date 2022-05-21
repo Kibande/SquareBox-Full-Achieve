@@ -166,7 +166,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             "hidapi",
             "SDL2",
             "SDL2_ttf",
-            "SDL2_image",
             "SDL2_mixer",
             "SquareBox_Logger",
             "Asset_Manager",
@@ -174,6 +173,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             "Render_Engine",
 			"Audio_System",
 			"MathLib",
+			"Network_Manager",
 			"Lua",
 			"Box2D",
 			"Physics_Collision_Engine",
@@ -183,7 +183,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 			"Animation_System",
 			"Camera",
 			"SquareBox_Core",
-            // "SDL2_net",
             "main"
         };
     }

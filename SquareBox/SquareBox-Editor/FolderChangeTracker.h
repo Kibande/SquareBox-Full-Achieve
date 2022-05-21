@@ -4,7 +4,7 @@
 #include <efsw/FileSystem.hpp>
 #include <iostream>
 #include <thread>
-
+#include<functional>
 /// Processes a file action
 class UpdateListener : public efsw::FileWatchListener
 {

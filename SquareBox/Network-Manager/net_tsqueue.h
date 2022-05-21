@@ -56,7 +56,7 @@
 
 #pragma once
 #include "net_common.h"
-
+#include <functional>
 namespace SquareBox
 {
 	namespace net

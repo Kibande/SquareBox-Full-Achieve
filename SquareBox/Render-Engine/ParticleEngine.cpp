@@ -9,8 +9,7 @@ namespace SquareBox {
 		ParticleEngine::~ParticleEngine()
 		{
 		}
-		void ParticleEngine::init(std::string engineName_) {
-			engine_name=engineName_;
+		void ParticleEngine::init() {
 			m_is_initilised = true;
 		}
 		void ParticleEngine::dispose() {

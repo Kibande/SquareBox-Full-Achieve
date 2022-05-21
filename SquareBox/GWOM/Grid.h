@@ -45,8 +45,8 @@ namespace SquareBox {
 			std::vector<Cell>& getGridCells() { return m_cells; }
 			bool isInitialised() const { return m_is_initialised;}
 			void dispose();
-			std::vector<Cell> m_cells;
 		private:
+			std::vector<Cell> m_cells;
 			float m_cell_size = 0.0f;
 			float m_width = 0.0f;
 			float m_height = 0.0f;

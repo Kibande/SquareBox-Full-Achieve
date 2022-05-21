@@ -10,7 +10,7 @@ namespace SquareBox {
 		public:
 			ParticleEngine();
 			~ParticleEngine();
-			void init(std::string engineName_);
+			void init();
 			//add a New Partilce Batch
 			void addParticleBatch(ParticleBatch* particleBatch);
 

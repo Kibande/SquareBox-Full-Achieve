@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <Render-Engine/ColorRGBA8.h>
 #include <Asset-Manager/Asset-Manager.h>
+#include <Render-Engine/ParticleEngine.h>
 #include <Camera/ParallelCamera.h>
 #include "WorldCluster.h"
 #include <vector>
@@ -9,11 +10,7 @@
 #include "TileSystem.h"
 #include <algorithm>
 
-namespace SquareBox {
-	namespace RenderEngine {
-		class ParticleEngine;
-	};
-};
+
 
 namespace SquareBox {
 	namespace GWOM {
@@ -80,7 +77,7 @@ namespace SquareBox {
 
 			
 			*/
-			std::vector<SquareBox::RenderEngine::ParticleEngine*> vec_of_particle_engines_ptr;
+			SquareBox::RenderEngine::ParticleEngine particle_engine;
 			SquareBox::Camera::ParallelCamera camera;
 
 			//helper functions

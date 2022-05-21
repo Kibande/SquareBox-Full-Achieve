@@ -9,4 +9,7 @@
     <ClInclude Include="..\..\SquareBox\Network-Manager\net_tsqueue.h" />
     <ClInclude Include="..\..\SquareBox\Network-Manager\NetworkManager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Network-Manager\EmptyClass.cpp" />
+  </ItemGroup>
 </Project>

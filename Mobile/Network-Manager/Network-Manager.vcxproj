@@ -35,9 +35,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SDL2_net\SDL2_net.vcxproj">
-      <Project>{aad1ebd2-3466-4c26-bf29-8d91a55a8fc2}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
       <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
     </ProjectReference>
@@ -50,6 +47,9 @@
     <ClInclude Include="..\..\SquareBox\Network-Manager\net_message.h" />
     <ClInclude Include="..\..\SquareBox\Network-Manager\net_server.h" />
     <ClInclude Include="..\..\SquareBox\Network-Manager\net_tsqueue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\Network-Manager\EmptyClass.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0c3f57f7-8321-4b84-baca-996ee2ac2c22}</ProjectGuid>
