@@ -7,6 +7,12 @@
 Mobile/.vs/
 Mobile/ARM/
 Mobile/ARM64/
+Mobile/x86/
+Mobile/SDL2_GradleApp/ARM/
+Mobile/SDL2_GradleApp/ARM64/
+Mobile/SDL2_GradleApp/x64/
+Mobile/SDL2_GradleApp/x86/
+
 
 SquareBox/.vs/
 SquareBox/bin/
