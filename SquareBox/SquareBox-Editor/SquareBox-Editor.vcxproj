@@ -270,22 +270,32 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="CustomConsole.h" />
     <ClInclude Include="DesktopAppEditor_Screen.h" />
+    <ClInclude Include="EditorEnums.h" />
     <ClInclude Include="Editor_Assistant.h" />
+    <ClInclude Include="FlatLayer.h" />
     <ClInclude Include="FolderChangeTracker.h" />
+    <ClInclude Include="IsometricLayer.h" />
+    <ClInclude Include="LayerTypeInterface.h" />
+    <ClInclude Include="LevelEditor.h" />
     <ClInclude Include="LevelEditor_Screen.h" />
     <ClInclude Include="MenuObject.h" />
     <ClInclude Include="MobileAppEditor_Screen.h" />
     <ClInclude Include="ScreenIndices.h" />
+    <ClInclude Include="TiledLayer.h" />
     <ClInclude Include="Welcome_Screen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DesktopAppEditor_Screen.cpp" />
     <ClCompile Include="Editor_Assistant.cpp" />
+    <ClCompile Include="FlatLayer.cpp" />
     <ClCompile Include="FolderChangeTracker.cpp" />
+    <ClCompile Include="IsometricLayer.cpp" />
+    <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="LevelEditor_Screen.cpp" />
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="MobileAppEditor_Screen.cpp" />
+    <ClCompile Include="TiledLayer.cpp" />
     <ClCompile Include="Welcome_Screen.cpp" />
     <ClCompile Include="guicpp.cpp" />
     <ClCompile Include="main.cpp" />

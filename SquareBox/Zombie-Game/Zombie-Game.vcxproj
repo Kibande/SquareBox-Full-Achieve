@@ -269,6 +269,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="FireButtonTexture.h" />
     <ClInclude Include="GameHUDandGUI.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GamePlayScreen.h" />
@@ -283,6 +284,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="FireButtonTexture.cpp" />
     <ClCompile Include="GameHUDandGUI.cpp" />
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GamePlayScreen.cpp" />

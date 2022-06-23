@@ -1,16 +1,21 @@
 #pragma once
 #include "App.h"
+unsigned windowFlags = 0;
 int main(int argc, char** argv) {
 	App app;
 	SquareBox::InputDevicesEnum input_device;
 #ifdef SQB_PLATFORM_ANDROID
 	input_device = SquareBox::InputDevicesEnum::TouchScreen;
+	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
+	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_BORDERLESS;
+	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN_DESKTOP;
+	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_MAXIMIZED;
+
 #else
 	input_device = SquareBox::InputDevicesEnum::KeyBoardAndMouse;
-#endif // SQB_PLATFORM_ANDROID
-	unsigned windowFlags = 0;
-	// windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
 	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_RESIZABLE;
+#endif // SQB_PLATFORM_ANDROID
+	
 	app.run("Zombie Game",800, 600, windowFlags, 30, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255), "test/SquareBox-Editor.txt", true);
 }
 

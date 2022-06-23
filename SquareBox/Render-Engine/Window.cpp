@@ -271,6 +271,8 @@ namespace SquareBox {
 
 		void Window::destory()
 		{
+			SDL_GL_DeleteContext(m_gl_context_ptr);
+			SDL_DestroyWindow(m_sdl_window);
 			SDL_Quit();
 		}
 	}

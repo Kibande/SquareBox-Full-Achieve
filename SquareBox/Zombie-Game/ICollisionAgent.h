@@ -17,5 +17,6 @@ protected:
 	SquareBox::Utilities m_utilities;
 private:
 	void collideWithTile(const float delta_time_, SquareBox::GWOM::ClusterObject& cluster_object_,float tile_width_, SquareBox::GWOM::Tile* tile_);
+	std::vector<SquareBox::GWOM::Tile* >collided_tiles = {nullptr,nullptr,nullptr,nullptr};
 };
 

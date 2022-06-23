@@ -23,5 +23,10 @@ private:
 
 	//our layer
 	SquareBox::GWOM::Layer m_layer;
+
+	// Level storage
+	std::string sLevel;
+	int nLevelWidth;
+	int nLevelHeight;
 };
 

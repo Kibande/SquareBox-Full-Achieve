@@ -285,6 +285,7 @@
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DSUGWOM _V2.fbs" />
     <None Include="DSUGWOM.fbs" />
     <None Include="NetworkMessage.fbs" />
   </ItemGroup>

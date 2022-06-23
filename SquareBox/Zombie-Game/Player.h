@@ -11,6 +11,6 @@ public:
 	virtual void dispose() override;
 private:
 	//The players speed will be controlled from here
-	float m_speed = 0.05f;
+	float m_speed = 1.5f;
 };
 

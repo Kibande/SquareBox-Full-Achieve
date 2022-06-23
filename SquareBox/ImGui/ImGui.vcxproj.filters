@@ -39,6 +39,9 @@
     <ClInclude Include="imstb_truetype.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3_loader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGuiFileBrowser.cpp">
@@ -60,6 +63,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

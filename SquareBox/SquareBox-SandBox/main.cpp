@@ -11,9 +11,9 @@ int main(int argc, char** argv) {
 	input_device = SquareBox::InputDevicesEnum::KeyBoardAndMouse;
 	FreeConsole();
 #endif // SQB_PLATFORM_ANDROID
-	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
+	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
 	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_RESIZABLE;
-	app.run("TileSheet Visualizer", 1300, 700, windowFlags, 60, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255),"tilesheet_visualizer_logs.logs",true);
+	app.run("TileSheet Visualizer", 600, 600, windowFlags, 60, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255),"tilesheet_visualizer_logs.logs",true);
 
 	exit(0);
 }

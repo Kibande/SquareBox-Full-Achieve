@@ -80,6 +80,35 @@ void Welcome_Screen::update(const float & deltaTime_)
 	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 		std::cout << "Mouse Click \n";
 	}
+	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_SHIFT) && m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::TAB)) {
+		std::cout << "SHift and Tab are being pressed"<<std::endl;
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_1)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_1);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_2)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_2);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_3)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_3);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_4)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_4);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_6)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_6);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_7)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_7);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_8)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_8);
+	}
+	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_9)) {
+		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_9);
+	}
+	
+	
 }
 
 void Welcome_Screen::draw()
@@ -148,7 +177,7 @@ void Welcome_Screen::drawGUI()
 
 
 	{
-		ImGui::Begin("");
+		ImGui::Begin("Route Panel");
 
 		// Buttons
 
@@ -161,6 +190,7 @@ void Welcome_Screen::drawGUI()
 			m_nextScreenIndex = DESKTOP_APP_EDITOR_SCREEN_INDEX;
 			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
 		}
+
 
 		if (ImGui::Button("Level Editor")) {
 			m_nextScreenIndex = LEVEL_EDITOR_SCREEN_INDEX;

@@ -7,13 +7,7 @@
 #include "Bullet.h"
 #include "Gun.h"
 #include "LayerIndicies.h"
-enum LayerContentsEnum {
-	ROOFTOPS = 0,
-	HUMANS = 1,
-	ZOMBIES = 2,
-	GRASS =3,
-	BRICKS =4
-};
+
 class GameLogic
 {
 public:
@@ -62,6 +56,5 @@ private:
 	Bullet m_bullet;
 	Gun m_gun;
   /* layer indicies*/
-	LayerContentsEnum type_of_layer;
 	ICollisionAgent * m_collision_agent_ptr = nullptr;
 };

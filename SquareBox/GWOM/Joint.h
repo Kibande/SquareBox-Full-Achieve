@@ -39,6 +39,7 @@ namespace SquareBox {
 			float motor_speed = 0.0f;
 			bool enable_motor = false;
 			bool enable_limit = true;
+			void* physics_world_joint_ptr = nullptr;
 			glm::ivec4 color = glm::ivec4(255,255,255,255);
 			float thickness = 1.0f;
 			float pulley_ratio = 1.0f;

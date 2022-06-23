@@ -48,7 +48,7 @@ namespace SquareBox {
 
 			glm::vec2  getPivotMotion() const & { return m_pivot_motion; }
 			void processInput();
-			virtual void update() = 0;
+			virtual void update(int screen_width_,int screen_height_) = 0;
 			virtual void dispose() = 0;
 
 		private:

@@ -19,17 +19,14 @@ void GamePlayScreen::build()
 void GamePlayScreen::onEntry()
 {
 	//initailising the GUI camera
-	glm::vec2 screen_dimensions;
-	screen_dimensions.x = std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	screen_dimensions.y = std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
 
-	m_hud_gui_camera.init(screen_dimensions.x, screen_dimensions.y);
-	m_game_play_camera.init(screen_dimensions.x, screen_dimensions.y);
+	m_hud_gui_camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+	m_game_play_camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
 
+	m_hud_gui_camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth() * 0.5f, m_window_ptr->getScreenHeight() * 0.5f));
+	m_game_play_camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth() *0.5f, m_window_ptr->getScreenHeight() *0.5f));
 	m_hud_gui_camera.setScale(1.0f);
-	m_hud_gui_camera.setPosition(glm::vec2(screen_dimensions.x*0.5f, screen_dimensions.y*0.5f));
 	m_game_play_camera.setScale(1.0f);
-	m_game_play_camera.setPosition(screen_dimensions*glm::vec2(0.5f));
 
 	//Intialize our sprite Batch
 	m_sprite_batch.init();
@@ -62,12 +59,49 @@ void GamePlayScreen::onEntry()
 	m_utilities.init();
 
 	#ifdef SQB_PLATFORM_ANDROID
-		m_sprite_font.init("fonts/Comfortaa-Regular.ttf", 64);
+		m_sprite_font.init("fonts/Comfortaa-Regular.ttf", screen_dimensions.y * 0.05f);
 	#else
-		m_sprite_font.init("Assets/Fonts/Comfortaa-Regular.ttf", 64);
+		m_sprite_font.init("Assets/Fonts/Comfortaa-Regular.ttf", m_window_ptr->getScreenHeight() * 0.05f);
 	#endif
 
-	m_game_play_camera.setScale(160);
+
+	//setup the audio engine
+		m_audio_engine_ptr = new SquareBox::AudioSystem::AudioEngine();
+		int audio_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
+		m_audio_engine_ptr->init(audio_flags, 22050, SquareBox::AudioOutputFormatEnum::U8_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::MONO, 4096);
+		SDL_GetNumAudioDevices(SDL_FALSE);
+		auto music_raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
+		m_music_1 = SquareBox::AudioSystem::Music("", SquareBox::FallOffEnum::INVERSE, 10.0f, 50.0f, glm::vec2(0.0f), music_raw_data.first, music_raw_data.second);
+		//lets load our music from here
+		m_audio_engine_ptr->loadMusic(m_music_1);
+		m_music_1.play();
+		auto raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/rifle.wav");
+		m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("", raw_data.first, raw_data.second));
+
+		m_audio_engine_ptr->loadSoundBank(m_sound_bank);
+		//m_sound_bank.play();
+
+		auto sound_effect1 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
+		auto sound_effect2 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Patoranking-Love-You-Die-ft.-Diamond-Platnumz.mp3");
+		auto sound_effect3 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/prettyboydo, Wani - Mentally (320).mp3");
+		auto sound_effect4 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Reminisce-ft-Fireboy-DML-Ogaranya.mp3");
+		auto sound_effect5 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
+		auto sound_effect6 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Tion Wayne feat. Afro B - Cant Go Broke.mp3");
+		//m_sound_bank = SquareBox::AudioSystem::SoundBank(SquareBox::FallOffEnum::LINEAR, 5.0f, 30.0f, glm::vec2(0.0f));
+		//m_sound_bank.sound_effects.push_back(sound_effect1);
+		//m_sound_bank.sound_effects.push_back(sound_effect2);
+		//m_sound_bank.sound_effects.push_back(sound_effect3);
+		//m_sound_bank.sound_effects.push_back(sound_effect4);
+		//m_sound_bank.sound_effects.push_back(sound_effect5);
+
+		//m_audio_engine_ptr->loadSoundBank(m_sound_bank);
+		//m_sound_bank.play();
+	m_game_play_camera.setScale(3.5f);
 	//m_object_show_coordinates = true;
 	//m_show_grid = true;
 }
@@ -88,12 +122,10 @@ void GamePlayScreen::update(const float & deltaTime_)
 	
 
 
-	glm::ivec2 screen_dimensions;
-	screen_dimensions.x = std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	screen_dimensions.y = std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+
 	// update the huds and GUI camera
-	m_hud_gui_camera.update(screen_dimensions.x, screen_dimensions.y);
-	m_game_play_camera.update(screen_dimensions.x, screen_dimensions.y);
+	m_hud_gui_camera.update(m_window_ptr->getScreenWidth() ,m_window_ptr->getScreenHeight());
+	m_game_play_camera.update(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
 
 	//set the game play camera to always be at the players location
 
@@ -104,16 +136,24 @@ void GamePlayScreen::update(const float & deltaTime_)
 		//update the layers particle engines
 		focus_layer.particle_engine.update(deltaTime_);
 	}
+	SquareBox::GWOM::ClusterObject & player_cluster_object = m_layers[m_player_coordinates.first].world_clusters[m_player_coordinates.second.first].cluster_objects[m_player_coordinates.second.second];
 
 	bool player_set_to_move = false;
 	bool player_set_to_fire = false;
-	glm::vec2 player_direction;
+	glm::vec2 player_direction =player_cluster_object.direction; //since mobile player position is only set when he moves
 	
-	SquareBox::GWOM::ClusterObject & player_cluster_object = m_layers[m_player_coordinates.first].world_clusters[m_player_coordinates.second.first].cluster_objects[m_player_coordinates.second.second];
 
 	//huds and GUI update
 	m_game_huds_and_gui.update(m_game_play_camera, player_cluster_object.position, player_set_to_move, player_direction, player_set_to_fire);
 
+	if (!player_cluster_object.is_alive) {
+		// never fire
+		player_set_to_fire = false;
+	}
+
+	if (player_set_to_fire) {
+		m_sound_bank.play();
+	}
 	//Game logic update
 	m_game_logic.update(deltaTime_, player_set_to_fire, player_set_to_move, player_direction, m_layers);
 
@@ -141,6 +181,8 @@ void GamePlayScreen::update(const float & deltaTime_)
 	}
 
 	m_game_play_camera.setPosition(new_camera_position);
+	m_audio_engine_ptr->update(glm::vec2(0.0f));
+
 }
 
 void GamePlayScreen::draw()
@@ -148,37 +190,36 @@ void GamePlayScreen::draw()
 	/*
 		  since  according to the physics of this game
 		  a grid can not hold two objects in the same area.
-		  we are going to draw the game basing on the grid
+		  we are going to draw the game basing on the grid for the chase of objects that can be in a collision grid
+
+		  those that can not will be drawn appropriatley
 	*/
 	char buffer[256];
 	// draw world
+
+
+	// concerate layer
+	SquareBox::GWOM::Layer& concerate_layer = m_layers[LayerIndicies::concerate_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, concerate_layer);
+
+
+	// roads_layer
+	SquareBox::GWOM::Layer& roads_layer = m_layers[LayerIndicies::roads_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, roads_layer);
+
+
+	// grass layer
+	SquareBox::GWOM::Layer& grass_layer = m_layers[LayerIndicies::grass_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, grass_layer);
+
+
+	//// walls layer
+	//SquareBox::GWOM::Layer& bricks_layer = m_layers[LayerIndicies::bricks_layer_index];
+	//drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, bricks_layer);
+
 	float camera_width = m_game_play_camera.getCameraDimensions().x;
 	float camera_height = m_game_play_camera.getCameraDimensions().y;
 	glm::vec4 camera_destRect(m_game_play_camera.getPosition() - (glm::vec2(camera_width, camera_height)*0.5f), glm::vec2(camera_width, camera_height));
-
-	// bricks tops
-	SquareBox::GWOM::Layer & bricks_layer = m_layers[LayerIndicies::bricks_layer_index];
-	std::map<int, SquareBox::GWOM::Tile*> vector_of_visible_bricks_tiles = bricks_layer.tile_system.getAllTilesInDestRect(camera_destRect, true);
-	m_texture_program.use();
-	preUpdateShader(&m_texture_program, "mySampler");
-	uploadCameraInfo(&m_texture_program, &m_game_play_camera, "P");
-	m_sprite_batch.begin();
-
-	for (auto it = vector_of_visible_bricks_tiles.begin(); it != vector_of_visible_bricks_tiles.end(); it++)
-	{
-		if ((*it).second->key != -1) {
-			auto specific_texturing_details = bricks_layer.getTextureIdAndUvReactFromKey((*it).second->key);
-			glm::vec4 texture_uvRect = specific_texturing_details.second;
-			int texture_id = specific_texturing_details.first;
-			//we need ot figure these out using the key that this tile has 
-			m_sprite_batch.draw(glm::vec4((*it).second->position - glm::vec2(bricks_layer.tile_system.getTileSize())*0.5f, glm::vec2(bricks_layer.tile_system.getTileSize())), texture_uvRect, texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * (bricks_layer.opacity*0.01)));
-		}
-	}
-
-	m_sprite_batch.end();
-	m_sprite_batch.renderBatch();
-	m_texture_program.unuse();
-
 
 
 	// The contents of the collision grid
@@ -226,38 +267,19 @@ void GamePlayScreen::draw()
 	m_sprite_batch.renderBatch();
 	m_texture_program.unuse();
 
+	// house tops layer
+	SquareBox::GWOM::Layer& house_tops_layer = m_layers[LayerIndicies::house_tops_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, house_tops_layer);
 
-
-	// roof tops
-	SquareBox::GWOM::Layer & house_roofs_layer = m_layers[LayerIndicies::house_tops_layer_index];
-	auto vector_of_visible_roof_tops_tiles = house_roofs_layer.tile_system.getAllTilesInDestRect(camera_destRect, true);
-	m_texture_program.use();
-	preUpdateShader(&m_texture_program, "mySampler");
-	uploadCameraInfo(&m_texture_program, &m_game_play_camera, "P");
-	m_sprite_batch.begin();
-
-	for (auto it = vector_of_visible_roof_tops_tiles.begin(); it != vector_of_visible_roof_tops_tiles.end(); it++)
-	{
-		if ((*it).second->key != -1) {
-			auto specific_texturing_details = house_roofs_layer.getTextureIdAndUvReactFromKey((*it).second->key);
-			glm::vec4 texture_uvRect = specific_texturing_details.second;
-			int texture_id = specific_texturing_details.first;
-			//we need ot figure these out using the key that this tile has 
-			m_sprite_batch.draw(glm::vec4((*it).second->position - glm::vec2(house_roofs_layer.tile_system.getTileSize())*0.5f, glm::vec2(house_roofs_layer.tile_system.getTileSize())), texture_uvRect, texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * (house_roofs_layer.opacity*0.01)));
-		}
-	}
-
-	m_sprite_batch.end();
-	m_sprite_batch.renderBatch();
-	m_texture_program.unuse();
-
-
+	// trees layer
+	SquareBox::GWOM::Layer& trees_layer = m_layers[LayerIndicies::trees_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, trees_layer);
 
 	//draw the huds and gui
 	m_texture_program.use();
 	preUpdateShader(&m_texture_program, "mySampler");
-	uploadCameraInfo(&m_texture_program, &m_hud_gui_camera, "P");
-	m_sprite_batch.begin();
+	uploadCameraInfo(&m_texture_program, &m_game_play_camera, "P");
+	m_sprite_batch.begin(SquareBox::RenderEngine::NONE);
 	m_game_huds_and_gui.draw(m_sprite_batch,m_sprite_font, m_layers);
 	m_sprite_batch.end();
 	m_sprite_batch.renderBatch();
@@ -305,4 +327,36 @@ void GamePlayScreen::destroy()
 	m_utilities.dispose();
 
 	m_sprite_font.dispose();
+
+	m_audio_engine_ptr->dispose();
+	delete m_audio_engine_ptr;
+}
+
+void GamePlayScreen::drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_,SquareBox::GWOM::Layer & layer_)
+{
+	float camera_width = camera_.getCameraDimensions().x;
+	float camera_height = camera_.getCameraDimensions().y;
+	glm::vec4 camera_destRect(camera_.getPosition() - (glm::vec2(camera_width, camera_height) * 0.5f), glm::vec2(camera_width, camera_height));
+
+	auto vector_of_visible_roof_tops_tiles = layer_.tile_system.getAllTilesInDestRect(camera_destRect, true);
+
+	sprite_batch_.begin();
+
+	for (auto it = vector_of_visible_roof_tops_tiles.begin(); it != vector_of_visible_roof_tops_tiles.end(); it++)
+	{
+		if ((*it).second->key != -1) {
+			auto specific_texturing_details = layer_.getTextureIdAndUvReactFromKey((*it).second->key);
+			glm::vec4 texture_uvRect = specific_texturing_details.second;
+			int texture_id = specific_texturing_details.first;
+			//we need ot figure these out using the key that this tile has 
+			sprite_batch_.draw(glm::vec4((*it).second->position - glm::vec2(layer_.tile_system.getTileSize()) * 0.5f, glm::vec2(layer_.tile_system.getTileSize())), texture_uvRect, texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * (layer_.opacity * 0.01)));
+		}
+	}
+
+	sprite_batch_.end();
+	texture_program_.use();
+	preUpdateShader(&texture_program_, "mySampler");
+	uploadCameraInfo(&texture_program_, &camera_, "P");
+	sprite_batch_.renderBatch();
+	texture_program_.unuse();
 }

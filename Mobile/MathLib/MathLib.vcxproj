@@ -36,10 +36,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\MathLib\Float.cpp" />
+    <ClCompile Include="..\..\SquareBox\MathLib\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\MathLib\Float.h" />
     <ClInclude Include="..\..\SquareBox\MathLib\MathLib.h" />
+    <ClInclude Include="..\..\SquareBox\MathLib\Random.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{cf5cc0c6-c7d4-41b8-a134-1e515e8a2996}</ProjectGuid>

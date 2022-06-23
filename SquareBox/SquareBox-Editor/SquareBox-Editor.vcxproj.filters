@@ -39,6 +39,12 @@
     <ClInclude Include="Welcome_Screen.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="LayerTypeInterface.h" />
+    <ClInclude Include="TiledLayer.h" />
+    <ClInclude Include="LevelEditor.h" />
+    <ClInclude Include="FlatLayer.h" />
+    <ClInclude Include="IsometricLayer.h" />
+    <ClInclude Include="EditorEnums.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -71,5 +77,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="TiledLayer.cpp" />
+    <ClCompile Include="LevelEditor.cpp" />
+    <ClCompile Include="FlatLayer.cpp" />
+    <ClCompile Include="IsometricLayer.cpp" />
   </ItemGroup>
 </Project>

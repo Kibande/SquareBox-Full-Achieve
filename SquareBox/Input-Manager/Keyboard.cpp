@@ -53,7 +53,7 @@ void SquareBox::InputManager::Keyboard::dispose()
 {
 }
 
-void SquareBox::InputManager::Keyboard::update()
+void SquareBox::InputManager::Keyboard::update(int screen_width_, int screen_height_)
 {
 	//loop through the previous keys and set it to the current key
 	//goo through each of the key states in our key map

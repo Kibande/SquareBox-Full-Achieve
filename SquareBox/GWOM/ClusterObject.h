@@ -100,7 +100,7 @@ namespace SquareBox {
 			/*glm::vecs*/
 			std::vector<std::pair<glm::vec2, glm::vec2>> vec_of_edges;
 			std::vector<glm::vec2> vertices;
-			std::vector<Joint*> joints;
+			std::vector<Joint> joints;
 			glm::vec2 off_set = glm::vec2(0.0f);
 			glm::vec2 position = glm::vec2(0);
 			glm::vec2 init_linear_velocity = glm::vec2(0.0f);
@@ -118,12 +118,15 @@ namespace SquareBox {
 			//some POD
 			/*
 				We have to store these in our levels
+
 			*/
 			void* pod_ptr = nullptr;
 
 			float pod_float = 0.0f;
 
 			int pod_int = 0;
+
+			bool pod_bool = false;
 
 			glm::vec2 pod_vec2;
 			std::pair<int, int> pod_pair;

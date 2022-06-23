@@ -50,7 +50,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/bricks_light_top"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
 
@@ -66,6 +66,7 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:resizeableActivity="true"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

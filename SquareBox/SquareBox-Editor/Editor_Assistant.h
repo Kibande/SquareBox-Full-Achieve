@@ -12,12 +12,22 @@ namespace SquareBoxEditor {
 		//Controls
 		//cluster object selection duplicating combo
 		int cluster_object_selection_duplication_input_key_1 = static_cast<int>(SquareBox::KeyBoardEnum::TAB);
+		int cluster_object_selection_super_duplicate_input_key_1 = static_cast<int>(SquareBox::KeyBoardEnum::F1);
+		/*
+		 wish the supper key was something like shift but shit can not work with the keypad and alt was already taken by 
+		 another service
+		*/
+		
 		//duplication direction keys
-		int cluster_object_selection_north_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::ARROW_UP);
-		int cluster_object_selection_south_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::ARROW_DOWN);
-		int cluster_object_selection_left_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::ARROW_LEFT);
-		int cluster_object_selection_right_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::ARROW_RIGHT);
-
+		int cluster_object_selection_north_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_8);
+		int cluster_object_selection_south_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_2);
+		int cluster_object_selection_west_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_4);
+		int cluster_object_selection_east_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_6);
+		
+		int cluster_object_selection_north_west_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_7);
+		int cluster_object_selection_north_east_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_9);
+		int cluster_object_selection_south_east_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_3);
+		int cluster_object_selection_south_west_duplication_input_key = static_cast<int>(SquareBox::KeyBoardEnum::KEYPAD_NUM_1);
 
 		//camera controls
 		int camera_panning_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_ALT);

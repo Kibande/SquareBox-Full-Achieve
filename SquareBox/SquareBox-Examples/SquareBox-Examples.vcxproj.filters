@@ -12,12 +12,6 @@
     <ClInclude Include="App.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="BoostExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Box2DExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CustomAppConsole.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -27,49 +21,21 @@
     <ClInclude Include="IExample.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LoggerExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenIndices.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TextureRenderingExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="VideoPlayerExample.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
+    <ClInclude Include="ParticleSystemExample.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="BoostExample.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Box2DExample.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="ExampleHomeScreen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="LoggerExample.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="LuaExample.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureRenderingExample.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="VideoPlayerExample.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystemExample.cpp" />
   </ItemGroup>
 </Project>

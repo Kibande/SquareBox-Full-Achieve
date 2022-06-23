@@ -43,6 +43,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Gun.h" />
+    <ClInclude Include="FireButtonTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -79,5 +80,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="FireButtonTexture.cpp" />
   </ItemGroup>
 </Project>

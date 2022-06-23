@@ -1,6 +1,8 @@
 #pragma once
 #include <SquareBox-Core/SquareBoxGameEngine.h>
 #include "Editor_Assistant.h"
+
+
 class DesktopAppEditor_Screen :public SquareBox::IGameScreen
 {
 public:
@@ -27,11 +29,11 @@ private:
 	virtual void draw() override;
 
 private:
-	SquareBox::RenderEngine::SpriteBatch m_spriteBatch;
-	SquareBox::RenderEngine::SpriteFont m_spriteFont;
-	SquareBox::RenderEngine::DebugRenderer m_debugRender;
+	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
+	SquareBox::RenderEngine::SpriteFont m_sprite_font;
+	SquareBox::RenderEngine::DebugRenderer m_debug_render;
 	SquareBox::RenderEngine::Window* m_window;
-	SquareBox::RenderEngine::GLSLProgram m_textureProgram;
+	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
 	SquareBox::Camera::ParallelCamera m_camera;
 

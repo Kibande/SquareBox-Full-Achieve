@@ -8,7 +8,7 @@ Order of Methods Calling
 
 	//game loop
 	 (while ScreenState::RUNNING){
-		 Update
+		 Update(float deltaTime_)
 		 Draw
 	   }
 
@@ -63,17 +63,10 @@ void ExampleHomeScreen::onEntry()
 
 	//this is where the screens default paramiters are set
 	m_camera.setScale(1.0f);//The Zoom of the Camera
-	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2));//Center the camera
-	m_window->resizable(true);
+	m_camera.setPosition(glm::vec2(m_window->getScreenWidth()* 0.5f, m_window->getScreenHeight() * 0.5f));//Center the camera
 
-	/*
-	the default state is true due to our main.cpp
-	this can be disabled using
-	m_window->resizable(false);
-	*/
 
-	m_vec_examples_pointer.push_back(new SquareBox::Example::TextureRenderingExample());
-	m_vec_examples_pointer.push_back(new SquareBox::Example::VideoPlayerExample());
+	m_vec_examples_pointer.push_back(new SquareBox::Example::ParticleSystemExample());
 	initGUI();
 }
 
@@ -197,14 +190,14 @@ void ExampleHomeScreen::showMainMenu()
 	}
 }
 
-void ExampleHomeScreen::update()
+void ExampleHomeScreen::update(const float& deltaTime_)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	SDL_Event evnt;
 	if (io.WantCaptureMouse == 1 || io.WantCaptureKeyboard == 1)
 	{
 		//stop our game engine from processing input
-		m_game->setProcessingInput(false);
+		m_game_ptr->setProcessingInput(false);
 		while (SDL_PollEvent(&evnt))
 		{
 			//hand over all the events to imGUI
@@ -212,7 +205,7 @@ void ExampleHomeScreen::update()
 		}
 	}
 	else {
-		m_game->setProcessingInput(true);
+		m_game_ptr->setProcessingInput(true);
 	}
 
 	/*
@@ -221,33 +214,32 @@ void ExampleHomeScreen::update()
 	 If an operation does not depend on us processing input then is should join its similar friends below this if
 	 //statement
 	*/
-	if (m_game->isProcessingInput()) {
+	if (m_game_ptr->isProcessingInput()) {
 		//zooming and moving the camera in our world
 		//Calculated movement Speed
 		float cMS = (m_kContstantForScaleAndZoom / m_camera.getScale());
 
 		//Calculated Zooming Speed
 		float cZS = (m_kContstantForScaleAndZoom / m_cameraPaningSpeed);
-
 		//Camera Controls
-		if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_LEFT))
+		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_LEFT))
 		{
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x + cMS, m_camera.getPosition().y));
 		}
-		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_RIGHT)) {
+		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_RIGHT)) {
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x - cMS, m_camera.getPosition().y));
 		}
-		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_DOWN))
+		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_DOWN))
 		{
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y + cMS));
 		}
-		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::ARROW_UP)) {
+		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_UP)) {
 			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y - cMS));
 		}
-		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_q)) {
+		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEY_q)) {
 			m_camera.setScale(m_camera.getScale() + cZS);
 		}
-		else if (m_game->getInputDevice().isKeyDown((int)SquareBox::KeyBoardEnum::KEY_e)) {
+		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEY_e)) {
 			m_camera.setScale(m_camera.getScale() - cZS);
 		}
 	}
@@ -261,7 +253,8 @@ void ExampleHomeScreen::update()
 		}
 
 		else if (m_active_example->isExampleInitialised) {
-			m_active_example->onUpdate();
+			// for a PC screen we always have mouse coordinates
+			m_active_example->onUpdate(deltaTime_,m_game_ptr,m_camera);
 		}
 	}
 }
@@ -280,20 +273,20 @@ void ExampleHomeScreen::setActiveExample(int index)
 
 void ExampleHomeScreen::draw()
 {
-	//Draw call
-	m_textureProgram.use();
-
-	IGameScreen::preUpdateShader(&m_textureProgram, "mySampler", m_game->getWindowBGColor());
-	//maintaining our backGround Color
-
-	IGameScreen::preUpdateCamera(&m_textureProgram, &m_camera, "P");
-
+	// fill up the sprite batch
 	m_spriteBatch.begin();
 	//m_sprite_font or m_sprite_batch draw
 	if (m_active_example != nullptr && m_active_example->isExampleInitialised) {
 		m_active_example->onDraw(&m_spriteBatch, &m_spriteFont, nullptr);
 	}
 	m_spriteBatch.end();
+
+
+	//Draw call
+	m_textureProgram.use();
+	IGameScreen::preUpdateShader(&m_textureProgram, "mySampler");
+	//maintaining our backGround Color
+	IGameScreen::uploadCameraInfo(&m_textureProgram, &m_camera, "P");
 	m_spriteBatch.renderBatch();
 	m_textureProgram.unuse();
 	drawGUI();

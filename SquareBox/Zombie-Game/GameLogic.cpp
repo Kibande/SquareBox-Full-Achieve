@@ -8,18 +8,19 @@ void GameLogic::init(SquareBox::IMainGame * game_ptr_, SquareBox::AudioSystem::A
 	m_window_ptr = window_ptr_;
 	m_collision_grid_ptr = collision_grid_ptr_;
 	m_utilities.init();
-	loadLevel("Assets/Levels/updated zombie game test level.dat", layers_,game_play_camera_,player_coordinates_, true);
+	loadLevel("Assets/Levels/Zombie Level v4.dat", layers_,game_play_camera_,player_coordinates_, true);
 	m_human.init();
 	m_player.init();
 	m_zombie.init();
 	auto bullets_texture = SquareBox::AssetManager::TextureManager::getTextureByName("circle.png", window_ptr_->getDDPI());
 	auto blood_texture = SquareBox::AssetManager::TextureManager::getTextureByName("particle.png", window_ptr_->getDDPI());
-	const float bullet_speed = 0.05f;
-	const float bullet_size = 0.01f;
+	const float bullet_speed = 4.0f;
+	const float bullet_size = 0.8f;
 	const float bullet_damage = 5.0f;
 	const int blood_partcles = 50;
-	const float blood_particles_width = 0.01f;
-	m_bullet.init(bullets_texture, bullet_size, bullet_speed,bullet_damage, blood_partcles,blood_particles_width);
+	const float blood_particles_width = 1.0f;
+	const float bullet_decay_rate = 0.1f;
+	m_bullet.init(bullets_texture, bullet_size, bullet_speed,bullet_damage, bullet_decay_rate, blood_partcles,blood_particles_width);
 
 	//set up the ammunition layers blood_particle_batch
 
@@ -150,7 +151,7 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 	if (first_empty_world_) {
 		layers_.clear();
 		m_collision_grid_ptr->resetGrid();
-		m_collision_grid_ptr->init(-2.5, -2.5, 5, 5, 1);
+		m_collision_grid_ptr->init(-540, -540, 1080, 1080, 200);
 	}
 	SquareBox::GWOM::LevelReaderWriter level_loader;
 	int active_layer_index = 0;
@@ -179,33 +180,39 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 			bool discard_tile_system = false;
 
 
-			if (std::string(focus_layer.name) == "House Tops") {
-				type_of_layer = LayerContentsEnum::ROOFTOPS;
-				target_layer_world_cluster = LayerIndicies::house_tops_layer_index;
+			if (
+				(std::string(focus_layer.name) == LayerIndicies::concerate_layer_name)
+				||
+				(std::string(focus_layer.name) == LayerIndicies::roads_layer_name)
+				||
+				(std::string(focus_layer.name) == LayerIndicies::grass_layer_name)
+				||
+				(std::string(focus_layer.name) == LayerIndicies::house_tops_layer_name)
+				||
+				(std::string(focus_layer.name) == LayerIndicies::trees_layer_name)
+				||
+				(std::string(focus_layer.name) == LayerIndicies::bricks_layer_name)
+				)
+			{
+				/* 
+				No need to specify anything here since we are not going to be adding this to the collsion grid
+				*/
 			}
-			else if (std::string(focus_layer.name) == "Players") {
+			else if (std::string(focus_layer.name) == LayerIndicies::player_layer_name) {
 				found_player_coordinates = true;
 				discard_tile_system = true;
 				m_collision_agent_ptr = &m_player;
-				type_of_layer = LayerContentsEnum::HUMANS;
-				target_layer_world_cluster = LayerIndicies::humans_layer_index;
+				target_layer_world_cluster = LayerIndicies::humans_layer_index; // forging index
 			}
-			else if (std::string(focus_layer.name) == "Zombies") {
+			else if (std::string(focus_layer.name) == LayerIndicies::zombie_layer_name) {
 				m_collision_agent_ptr = &m_zombie;
 				discard_tile_system = true;
-				type_of_layer = LayerContentsEnum::ZOMBIES;
 				target_layer_world_cluster = LayerIndicies::zombies_layer_index;
 			}
-			else if (std::string(focus_layer.name) == "Humans") {
+			else if (std::string(focus_layer.name) == LayerIndicies::humans_layer_name) {
 				m_collision_agent_ptr = &m_human;
 				discard_tile_system = true;
-				type_of_layer = LayerContentsEnum::HUMANS;
 				target_layer_world_cluster = LayerIndicies::humans_layer_index;
-
-			}
-			else if (std::string(focus_layer.name) == "Bricks") {
-				type_of_layer = LayerContentsEnum::BRICKS;
-				target_layer_world_cluster = LayerIndicies::bricks_layer_index;
 			}
 			else {
 				SBX_CRITICAL("Unidentified layer {} ",focus_layer.name);
@@ -213,7 +220,7 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 
 			if (discard_tile_system) {
 				/*
-					turn the tile system tiles into worl clusters
+					turn the tile system tiles into world clusters and add to the collsion grid
 				*/
 
 				SquareBox::GWOM::Layer & target_destination_layer = layers_[target_layer_world_cluster];
@@ -260,42 +267,23 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 						m_utilities.addPairToVector(layers_[new_cluster_object_ref.layer_index].alive_cluster_objects, std::pair<int, int>(new_cluster_object_ref.cluster_index, new_cluster_object_ref.index));
 						//adding setting the allow dups specifier here would be a wast of resources
 						//setting up the shape
-						if (
-							type_of_layer == LayerContentsEnum::HUMANS
-							||
-							type_of_layer == LayerContentsEnum::ZOMBIES
-							) {
-							new_cluster_object_ref.shape = SquareBox::BodyShapeEnum::Circle;
-						}
-						else if (
-							type_of_layer == LayerContentsEnum::ROOFTOPS
-							||
-							type_of_layer == LayerContentsEnum::BRICKS
-							) {
-							new_cluster_object_ref.shape = SquareBox::BodyShapeEnum::Box;
-						}
+
+						new_cluster_object_ref.shape = SquareBox::BodyShapeEnum::Circle;
+						/* taking shape as to always be a circle because currently 
+						 all memebers of our collision grid, (Zombie, Humans and Players are all circle shaped)
+						*/
 
 						//initialisation
 						// add to the collision grid
-						if (
-							type_of_layer == LayerContentsEnum::HUMANS
-							||
-							type_of_layer == LayerContentsEnum::ZOMBIES
-							||
-							type_of_layer == LayerContentsEnum::BRICKS
-							) {
-							m_collision_agent_ptr->setUp(new_cluster_object_ref);
-							m_collision_grid_ptr->addObject(new_cluster_object_ref);
+						m_collision_agent_ptr->setUp(new_cluster_object_ref);
+						m_collision_grid_ptr->addObject(new_cluster_object_ref);
 
-							if (found_player_coordinates) {
-								m_player_coordinates.first = new_cluster_object_ref.layer_index;
-								m_player_coordinates.second.first = new_cluster_object_ref.cluster_index;
-								m_player_coordinates.second.second = new_cluster_object_ref.index;
-								player_coordinates_ = m_player_coordinates;
-							}
-						}
-						else if (type_of_layer == LayerContentsEnum::ROOFTOPS) {
-							//m_non_collision_grid_ptr->addObject(new_cluster_object_ref);
+						if (found_player_coordinates) {
+							m_player_coordinates.first = new_cluster_object_ref.layer_index;
+							m_player_coordinates.second.first = new_cluster_object_ref.cluster_index;
+							m_player_coordinates.second.second = new_cluster_object_ref.index;
+							player_coordinates_ = m_player_coordinates;
+							game_play_camera_.setPosition(new_cluster_object_ref.position);
 						}
 					}
 				}
@@ -313,6 +301,7 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 	m_utilities.nameLayerByIndex(ammunition_layer);
 	ammunition_layer.index = layers_.size()-1;
 	LayerIndicies::ammunition_layer_index = ammunition_layer.index;
+	LayerIndicies::ammunition_layer_name = std::string(ammunition_layer.name);
 	ammunition_layer.world_clusters.emplace_back();
 	ammunition_layer.world_clusters.back().index = 0;
 

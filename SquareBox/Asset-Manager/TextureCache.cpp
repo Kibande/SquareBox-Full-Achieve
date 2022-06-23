@@ -23,8 +23,11 @@ namespace SquareBox {
 				//insert the new texture into our map
 				m_file_path_texture_map.insert(make_pair(texture_path_, new_texture));
 				m_id_texture_map[new_texture.id] = new_texture;// keep the ids map upto date
-				SBX_CORE_INFO("Loaded  Texture  {} ", texture_path_);
+				SBX_CORE_INFO("Live Loaded  Texture  {} ", texture_path_);
 				return new_texture;
+			}
+			else {
+				SBX_CORE_INFO("Cache Loaded  Texture  {} ", texture_path_);
 			}
 			return mit->second;//the element that the pointer is pointing to , which is the Texture
 		}

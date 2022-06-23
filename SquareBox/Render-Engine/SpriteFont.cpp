@@ -15,25 +15,24 @@ int closestPow2(int i) {
 
 namespace SquareBox {
 	namespace RenderEngine {
-		void SpriteFont::init(const char* font, int size) {
-			init(font, size, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
+		void SpriteFont::init(const char* font, int height_) {
+			init(font, height_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
 		}
-
-		void SpriteFont::init(const char* font, int size, char cs, char ce) {
+		// the font size considers a camera scale of 1
+		void SpriteFont::init(const char* font, int height_, char cs, char ce) {
 			// Initialize SDL_ttf
 			if (!TTF_WasInit()) {
 				TTF_Init();
 			}
-			TTF_Font* f = TTF_OpenFont(font, size);
+			TTF_Font* f = TTF_OpenFont(font, height_);
 			if (f == nullptr) {
-				SBX_CORE_ERROR("Failed to open TTF font {} ", font);
-				fflush(stderr);
-				throw 281;
+				SBX_CORE_CRITICAL("Failed to open TTF font {} ", font);
+				return;
 			}
 			_fontHeight = TTF_FontHeight(f);
 			_regStart = cs;
 			_regLength = ce - cs + 1;
-			int padding = size / 8;
+			int padding = height_ / 8;
 
 			// First measure all the regions
 			glm::ivec4* glyphRects = new glm::ivec4[_regLength];
@@ -83,9 +82,8 @@ namespace SquareBox {
 
 			// Can a bitmap font be made?
 			if (!bestPartition) {
-				fprintf(stderr, "Failed to Map TTF font %s to texture. Try lowering resolution.\n", font);
-				fflush(stderr);
-				throw 282;
+				SBX_CORE_CRITICAL("Failed to Map TTF font {} to texture. Try lowering resolution.\n",font);
+				return;
 			}
 			// Create the texture
 
@@ -161,6 +159,7 @@ namespace SquareBox {
 			SBX_GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 			delete[] glyphRects;
 			delete[] bestPartition;
+			m_is_initialised = true;
 			TTF_CloseFont(f);
 		}
 		SpriteFont::SpriteFont()
@@ -172,6 +171,7 @@ namespace SquareBox {
 
 		void SpriteFont::dispose()
 		{
+			if (!m_is_initialised) return;
 			if (_texID != 0) {
 				SBX_GLCall(glDeleteTextures(1, &_texID));
 				_texID = 0;
@@ -181,6 +181,7 @@ namespace SquareBox {
 				delete[] _glyphs;
 				_glyphs = nullptr;
 			}
+			m_is_initialised = false;
 		}
 
 		glm::vec2 SpriteFont::measure(const char * s)
@@ -209,24 +210,26 @@ namespace SquareBox {
 			return size;
 		}
 
-		void SpriteFont::draw(SpriteBatch & batch, const char * s, glm::vec2 position, glm::vec2 scaling, float depth, ColorRGBA8 tint, SquareBox::JustificationEnum justification_)
+		void SpriteFont::draw(SpriteBatch & batch, const char * c_str_, glm::vec2 position, glm::vec2 camera_to_font_height_scaling_, float depth, ColorRGBA8 tint, SquareBox::JustificationEnum justification_)
 		{
+			if (!m_is_initialised) return;
+
 			glm::vec2 tp = position;
 			//Apply justification
 			if (justification_ == SquareBox::JustificationEnum::MIDDLE)
 			{
-				tp.x -= measure(s).x*scaling.x / 2;
+				tp.x -= measure(c_str_).x*camera_to_font_height_scaling_.x / 2;
 			}
 			else if (justification_ == SquareBox::JustificationEnum::RIGHT) {
-				tp.x -= measure(s).x*scaling.x;
+				tp.x -= measure(c_str_).x* camera_to_font_height_scaling_.x;
 			}
 
-			for (int si = 0; s[si] != 0; si++)
+			for (int si = 0; c_str_[si] != 0; si++)
 			{
-				char c = s[si];
-				if (s[si] == '\n')
+				char c = c_str_[si];
+				if (c_str_[si] == '\n')
 				{
-					tp.y += _fontHeight * scaling.y;
+					tp.y += _fontHeight * camera_to_font_height_scaling_.y;
 					tp.x = position.x;
 				}
 				else
@@ -235,9 +238,9 @@ namespace SquareBox {
 					int gi = c - _regStart;
 					if (gi < 0 || gi >= _regLength)
 						gi = _regLength;
-					glm::vec4 destRect(tp, _glyphs[gi].size*scaling);
+					glm::vec4 destRect(tp, _glyphs[gi].size* camera_to_font_height_scaling_);
 					batch.draw(destRect, _glyphs[gi].uvRect, _texID, depth, tint);
-					tp.x += _glyphs[gi].size.x*scaling.x;
+					tp.x += _glyphs[gi].size.x* camera_to_font_height_scaling_.x;
 				}
 			}
 		}

@@ -2,9 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\MathLib\Float.cpp" />
+    <ClCompile Include="..\..\SquareBox\MathLib\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\MathLib\Float.h" />
     <ClInclude Include="..\..\SquareBox\MathLib\MathLib.h" />
+    <ClInclude Include="..\..\SquareBox\MathLib\Random.h" />
   </ItemGroup>
 </Project>

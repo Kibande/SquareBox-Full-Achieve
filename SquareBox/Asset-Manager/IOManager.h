@@ -19,8 +19,10 @@ namespace SquareBox {
 				int height = 0;
 				int bpp;
 			};
+			[[nodiscard]]
 			static std::pair<char *, int> getRawDataFromFile(std::string file_path_);
 			//Remember to call free pixels after this 
+			[[nodiscard]]
 			static  PixelData getPixelDataFromImageFile(std::string file_path_);
 			static  void freePixelData(PixelData& pixel_data_);
 			static bool copyFileFromLocationAtoLocationB(std::string location_a_, std::string location_b_);

@@ -58,10 +58,10 @@ this failed
 
 */
 // Core log macros
-#define SBX_CORE_TRACE(...)    ::SquareBox::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define SBX_CORE_INFO(...)     ::SquareBox::Log::GetCoreLogger()->info(__VA_ARGS__)
-#define SBX_CORE_WARN(...)     ::SquareBox::Log::GetCoreLogger()->warn(__VA_ARGS__)
-#define SBX_CORE_ERROR(...)    ::SquareBox::Log::GetCoreLogger()->error(__VA_ARGS__)
+#define SBX_CORE_TRACE(...)    ::SquareBox::Log::GetCoreLogger()->trace(__VA_ARGS__,__FILE__,__LINE__)
+#define SBX_CORE_INFO(...)     ::SquareBox::Log::GetCoreLogger()->info(__VA_ARGS__,__FILE__,__LINE__)
+#define SBX_CORE_WARN(...)     ::SquareBox::Log::GetCoreLogger()->warn(__VA_ARGS__,__FILE__,__LINE__)
+#define SBX_CORE_ERROR(...)    ::SquareBox::Log::GetCoreLogger()->error(__VA_ARGS__,__FILE__,__LINE__)
 #ifdef SQB_PLATFORM_ANDROID
 #define SBX_CORE_CRITICAL(...) ::SquareBox::Log::GetCoreLogger()->error(__VA_ARGS__)
 #else

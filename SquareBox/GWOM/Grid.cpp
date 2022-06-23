@@ -244,6 +244,9 @@ namespace SquareBox {
 
 		void Grid::dispose()
 		{
+			if (m_is_initialised) {
+				resetGrid();
+			}
 		}
 
 	};

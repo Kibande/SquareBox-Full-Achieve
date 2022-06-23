@@ -306,9 +306,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\Zombie-Game\App.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Bullet.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\FireButtonTexture.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\GameHUDandGUI.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\GameLogic.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Gun.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\Human.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\LayerIndicies.h" />
@@ -318,9 +321,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\Zombie-Game\App.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Bullet.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\FireButtonTexture.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\GameHUDandGUI.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\GameLogic.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Gun.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\Human.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\LayerIndicies.cpp" />

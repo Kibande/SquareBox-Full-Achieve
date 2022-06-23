@@ -36,7 +36,7 @@ namespace SquareBox {
 
 		void ParticleBatch::draw(SpriteBatch* spriteBatch)
 		{
-			glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);//we will have to change this if we get a sprite sheet
+			glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 			//loop  through all our particles and draw them
 			for (int i = 0; i < m_maxParticles; i++)

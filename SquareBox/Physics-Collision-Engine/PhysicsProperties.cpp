@@ -8,16 +8,11 @@ namespace SquareBox {
 		PhysicsProperties::~PhysicsProperties()
 		{
 		}
-		void PhysicsProperties::init(int numFixtures_, int numJoints_)
+		void PhysicsProperties::init(int numFixtures_)
 		{
 			if (numFixtures_ > 0) {
 				fixtures.reserve(numFixtures_);
 				fixtures = std::vector<b2Fixture*>(numFixtures_);
-			}
-			if (numJoints_ > 0) {//we dont have to always create joints
-				//plain joint pointers gave us errors
-				joints.reserve(numJoints_);
-				joints = std::vector<b2Joint*>(numJoints_);
 			}
 		}
 
@@ -297,11 +292,6 @@ namespace SquareBox {
 			return false;
 		}
 
-		void PhysicsProperties::destoryJoint(b2Joint *joint)
-		{
-			world->DestroyJoint(joint);
-			joint = nullptr;
-		}
 
 		void PhysicsProperties::dispose()
 		{
@@ -309,10 +299,6 @@ namespace SquareBox {
 
 			//when we destory a body all its joints and fixtures are atutmatically destoryed so no need for us to
 			//call destory for all
-			for (size_t i = 0; i < joints.size(); i++)
-			{
-				joints[i] = nullptr;
-			}
 
 			//destory the fixtures
 			for (size_t i = 0; i < fixtures.size(); i++)
@@ -328,8 +314,6 @@ namespace SquareBox {
 
 			fixtures.clear();
 			fixtures.resize(0);
-			joints.clear();
-			joints.resize(0);
 			shape = nullptr;
 		}
 	};

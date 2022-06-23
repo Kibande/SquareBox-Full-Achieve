@@ -16,7 +16,7 @@ public:
 	virtual void draw() override;
 	virtual void onExit() override;
 	virtual void destroy() override;
-
+	void drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_, SquareBox::GWOM::Layer& layer_);
 	//variables
 	SquareBox::RenderEngine::Window * m_window_ptr = nullptr;
 
@@ -63,7 +63,8 @@ public:
 	bool m_object_show_coordinates = false;
 	bool m_show_grid = false;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
-
+	SquareBox::AudioSystem::Music m_music_1;
+	SquareBox::AudioSystem::SoundBank m_sound_bank;
 
 	/* 
 		Known game issues , there is a lag when crossing from one cluster object to another

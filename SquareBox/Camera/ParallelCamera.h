@@ -1,7 +1,7 @@
 #pragma once
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
-
+#include <SquareBox-Logger/Logger.h>
 namespace SquareBox {
 	namespace Camera {
 		class ParallelCamera
@@ -19,8 +19,8 @@ namespace SquareBox {
 			void setScale(float new_scale_) { if (new_scale_ > 0.00001f) { m_scale = new_scale_; } m_needs_matrix_update = true; }
 			void setCameraRotation(glm::vec2 rotation_) { m_rotation = rotation_; m_needs_matrix_update = true; }
 
-			void offsetPosition(const glm::vec2& offset_) { m_position += offset_; m_needs_matrix_update = true; }
-			void offsetScale(float offset_) { m_scale += offset_; if (m_scale < 0.00001f) m_scale = 0.00001f; m_needs_matrix_update = true; }
+			void offsetPosition(const glm::vec2& offset_) { setPosition(m_position + offset_); }
+			void offsetScale(float offset_) { setScale(m_scale + offset_); }
 			void offsetCameraRotation(glm::vec2 offset_) { m_rotation += offset_; m_needs_matrix_update = true; }
 
 			//getters

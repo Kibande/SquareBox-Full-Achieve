@@ -37,7 +37,7 @@ namespace SquareBox {
 			m_world->ShiftOrigin(b2Vec2(newWorldOrigin_.x, newWorldOrigin_.y));
 		}
 
-		void PhysicsWorld::createObject(const SquareBox::GWOM::ClusterObject & clusterObject_)
+		void PhysicsWorld::createObject(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			//share our world pointer
 			clusterObject_.physics_properties->world = m_world;
@@ -61,45 +61,45 @@ namespace SquareBox {
 			switch (clusterObject_.shape)
 			{
 			case SquareBox::BodyShapeEnum::Circle:
-				clusterObject_.physics_properties->init(1, 0);//1 fixture and 0 joints
+				clusterObject_.physics_properties->init(1);//1 fixture
 				createBody(clusterObject_, bT);
 				createCircleShape(clusterObject_);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::Edge:
-				clusterObject_.physics_properties->init(0, 0);//0 fixture and 0 joints
+				clusterObject_.physics_properties->init(0);//0 fixture
 				//the fixtures will be created later and just pusgh back
 				createBody(clusterObject_, bT);
 				createEdgeShape(clusterObject_);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::Polygon:
-				clusterObject_.physics_properties->init(1, 0);//1 fixture and 0 joint
+				clusterObject_.physics_properties->init(1);//1 fixture
 				createBody(clusterObject_, bT);
 				createPolygonShape(clusterObject_);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::Box:
-				clusterObject_.physics_properties->init(1, 0);//1 fixture and 0 joints
+				clusterObject_.physics_properties->init(1);//1 fixture
 				createBody(clusterObject_, bT);
 				createBoxShape(clusterObject_);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::Chain:
-				clusterObject_.physics_properties->init(1, 0);//1 fixture and 0 joints
+				clusterObject_.physics_properties->init(1);//1 fixture
 				createBody(clusterObject_, bT);
 				createChainShape(clusterObject_);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::Capsule:
-				clusterObject_.physics_properties->init(3, 0);//3 fixture and 0 joints
+				clusterObject_.physics_properties->init(3);//3 fixture
 				//this is a multi fixture body , so it will create its own fixtures
 				//hence Do its own data Data Reset
 				createCapsule(clusterObject_, bT);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
 			case SquareBox::BodyShapeEnum::TopCapsule:
-				clusterObject_.physics_properties->init(2, 0);//2 fixture and 0 joints
+				clusterObject_.physics_properties->init(2);//2 fixture
 				createTopCapsule(clusterObject_, bT);
 				clusterObject_.physics_properties->m_isIntialised = true;
 				break;
@@ -111,29 +111,94 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::createJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_, SquareBox::GWOM::Joint & joint_)
+		void PhysicsWorld::createJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
 		{
 			//make the joint alive and add it to clusterObjectAs joints list
+			b2Joint* created_joint_ptr = nullptr;
 			if (joint_.joint_type == SquareBox::JointTypeEnum::distance_joint) {
-				createDistanceJoint(clusterObjectA_, clusterObjectB_, joint_);
+				created_joint_ptr = createDistanceJoint(clusterObjectA_, clusterObjectB_, joint_);
 			}
 			else if (joint_.joint_type == SquareBox::JointTypeEnum::revolute_joint) {
-				createRevoluteJoint(clusterObjectA_, clusterObjectB_, joint_);
+				created_joint_ptr = createRevoluteJoint(clusterObjectA_, clusterObjectB_, joint_);
 			}
 			else if (joint_.joint_type == SquareBox::JointTypeEnum::prismatic_joint) {
-				createPrismaticJoint(clusterObjectA_, clusterObjectB_, joint_);
+				created_joint_ptr = createPrismaticJoint(clusterObjectA_, clusterObjectB_, joint_);
 			}
 			else if (joint_.joint_type == SquareBox::JointTypeEnum::pulley_joint) {
-				createPulleyJoint(clusterObjectA_, clusterObjectB_, joint_);
+				created_joint_ptr = createPulleyJoint(clusterObjectA_, clusterObjectB_, joint_);
+			}
+
+			if (created_joint_ptr != nullptr) {
+				joint_.is_joint_alive = true;
+
+				joint_.physics_world_joint_ptr = created_joint_ptr;
+				clusterObjectA_.joints.push_back(joint_);
+				clusterObjectB_.joints.push_back(joint_);
+			}
+			else {
+				SBX_CORE_ERROR("Failed to create Joint");
 			}
 		}
 
-		bool PhysicsWorld::areObjectsTouching(const SquareBox::GWOM::ClusterObject & sensorBody_, const SquareBox::GWOM::ClusterObject & bodyToTest_)
+		void PhysicsWorld::destoryJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
+		{
+			if (joint_.physics_world_joint_ptr != nullptr) {
+
+				// delete from clusterObjectA
+				for (auto it = clusterObjectA_.joints.begin(); it != clusterObjectA_.joints.end();)
+				{
+					bool erased = false;
+					//check if this is our target joint
+					if ((*it).body_a_coordinates == joint_.body_a_coordinates && (*it).body_b_coordinates == joint_.body_b_coordinates) {
+						it = clusterObjectA_.joints.erase(it);
+						erased = true;
+						break;
+					}
+
+					if (!erased) {
+						++it;
+					}
+
+					/* the erase boolen is for if we in the future allow cluster objects to have
+					   more than one joint between them  which might be needed for complex shapes
+					*/
+				}
+
+				// delete from clusterObjectB
+				for (auto it = clusterObjectB_.joints.begin(); it != clusterObjectB_.joints.end();)
+				{
+					bool erased = false;
+					//check if this is our target joint
+					if ((*it).body_a_coordinates == joint_.body_a_coordinates && (*it).body_b_coordinates == joint_.body_b_coordinates) {
+						it = clusterObjectB_.joints.erase(it);
+						erased = true;
+						break;
+					}
+
+					if (!erased) {
+						++it;
+					}
+
+					/* the erase boolen is for if we in the future allow cluster objects to have
+					   more than one joint between them  which might be needed for complex shapes
+					*/
+				}
+
+				m_world->DestroyJoint((b2Joint*)joint_.physics_world_joint_ptr);
+				joint_.is_joint_alive = false;
+				joint_.physics_world_joint_ptr = nullptr;
+			}
+			else {
+				SBX_CORE_ERROR("Tried to delete a null joint");
+			}
+		}
+
+		bool PhysicsWorld::areObjectsTouching(const SquareBox::GWOM::ClusterObject& sensorBody_, const SquareBox::GWOM::ClusterObject& bodyToTest_)
 		{
 			b2Vec2 sensorPosition = sensorBody_.physics_properties->body->GetPosition();
 			b2Vec2 localPosition = bodyToTest_.physics_properties->body->GetLocalPoint(sensorPosition);
 
-			for (b2Fixture *fixture = bodyToTest_.physics_properties->body->GetFixtureList(); fixture != 0; fixture = fixture->GetNext())
+			for (b2Fixture* fixture = bodyToTest_.physics_properties->body->GetFixtureList(); fixture != 0; fixture = fixture->GetNext())
 			{
 				if (fixture->TestPoint(localPosition)) {
 					return true;
@@ -142,7 +207,7 @@ namespace SquareBox {
 			return false;
 		}
 
-		void PhysicsWorld::setJointMaxMotorSpeed(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const float speed_, const SquareBox::JointTypeEnum jointType_)
+		void PhysicsWorld::setJointMaxMotorSpeed(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const float speed_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -161,7 +226,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::setJointMaxMotorForce(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const float force_, const SquareBox::JointTypeEnum jointType_)
+		void PhysicsWorld::setJointMaxMotorForce(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const float force_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::prismatic_joint) {
 				b2PrismaticJoint* joint_ptr = static_cast<b2PrismaticJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -174,7 +239,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::setJointMaxMotorTorque(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const float torque_, const SquareBox::JointTypeEnum jointType_)
+		void PhysicsWorld::setJointMaxMotorTorque(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const float torque_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -187,7 +252,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::enableJointLimits(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		void PhysicsWorld::enableJointLimits(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -206,7 +271,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::setJointLimits(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const float upper_, const float lower_, const SquareBox::JointTypeEnum jointType_)
+		void PhysicsWorld::setJointLimits(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const float upper_, const float lower_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -225,7 +290,7 @@ namespace SquareBox {
 			}
 		}
 
-		void  PhysicsWorld::createBody(const SquareBox::GWOM::ClusterObject &clusterObject_, const b2BodyType bodyType_)
+		void  PhysicsWorld::createBody(const SquareBox::GWOM::ClusterObject& clusterObject_, const b2BodyType bodyType_)
 		{
 			b2BodyDef bodyDef;
 			bodyDef.type = bodyType_;
@@ -243,7 +308,7 @@ namespace SquareBox {
 			clusterObject_.physics_properties->body->SetAngularVelocity(clusterObject_.init_angular_velocity);
 			clusterObject_.physics_properties->body->SetLinearVelocity(b2Vec2(clusterObject_.init_linear_velocity.x, clusterObject_.init_linear_velocity.y));
 		}
-		void PhysicsWorld::createBoxShape(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void PhysicsWorld::createBoxShape(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			clusterObject_.physics_properties->dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
 			b2PolygonShape boxShape;
@@ -251,7 +316,7 @@ namespace SquareBox {
 			clusterObject_.physics_properties->shape = &boxShape;
 			createFixtureForBody(clusterObject_);
 		}
-		void  PhysicsWorld::createCircleShape(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void  PhysicsWorld::createCircleShape(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			b2CircleShape circleShape;
 			circleShape.m_radius = clusterObject_.radius;
@@ -259,10 +324,10 @@ namespace SquareBox {
 			clusterObject_.physics_properties->shape = &circleShape;
 			createFixtureForBody(clusterObject_);
 		}
-		void PhysicsWorld::createCapsule(const SquareBox::GWOM::ClusterObject & clusterObject_, const b2BodyType bodyType_)
+		void PhysicsWorld::createCapsule(const SquareBox::GWOM::ClusterObject& clusterObject_, const b2BodyType bodyType_)
 		{
-			const glm::vec2 & position = glm::vec2(clusterObject_.position.x, clusterObject_.position.y);
-			const glm::vec2 & dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
+			const glm::vec2& position = glm::vec2(clusterObject_.position.x, clusterObject_.position.y);
+			const glm::vec2& dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
 			//this is a regular capsule
 			clusterObject_.physics_properties->fixtures.resize(0);
 			clusterObject_.physics_properties->fixtures.reserve(3);
@@ -316,10 +381,10 @@ namespace SquareBox {
 			clusterObject_.physics_properties->fixtures[2] = clusterObject_.physics_properties->body->CreateFixture(&circleDef);
 			clusterObject_.physics_properties->body->ResetMassData();
 		}
-		void PhysicsWorld::createTopCapsule(const SquareBox::GWOM::ClusterObject & clusterObject_, const b2BodyType bodyType_)
+		void PhysicsWorld::createTopCapsule(const SquareBox::GWOM::ClusterObject& clusterObject_, const b2BodyType bodyType_)
 		{
-			const glm::vec2 & position = glm::vec2(clusterObject_.position.x, clusterObject_.position.y);
-			const glm::vec2 & dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
+			const glm::vec2& position = glm::vec2(clusterObject_.position.x, clusterObject_.position.y);
+			const glm::vec2& dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
 			//this is a regular capsule
 
 			clusterObject_.physics_properties->dimensions = dimensions;
@@ -339,7 +404,7 @@ namespace SquareBox {
 			b2PolygonShape boxShape;
 
 			//shrinck the box appropriatly, these measurements will be doubled behind the scenes
-			boxShape.SetAsBox(dimensions.x / 2.0f, (dimensions.y - dimensions.x*0.5f) / 2.0f);
+			boxShape.SetAsBox(dimensions.x / 2.0f, (dimensions.y - dimensions.x * 0.5f) / 2.0f);
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &boxShape;
@@ -367,13 +432,13 @@ namespace SquareBox {
 			clusterObject_.physics_properties->fixtures[1] = clusterObject_.physics_properties->body->CreateFixture(&circleDef);
 			clusterObject_.physics_properties->body->ResetMassData();
 		}
-		void PhysicsWorld::createCar(const SquareBox::GWOM::ClusterObject & clusterObject_, const b2BodyType bodyType_)
+		void PhysicsWorld::createCar(const SquareBox::GWOM::ClusterObject& clusterObject_, const b2BodyType bodyType_)
 		{
 		}
-		void PhysicsWorld::createBicycle(const SquareBox::GWOM::ClusterObject & clusterObject_, const b2BodyType bodyType_)
+		void PhysicsWorld::createBicycle(const SquareBox::GWOM::ClusterObject& clusterObject_, const b2BodyType bodyType_)
 		{
 		}
-		void PhysicsWorld::createPolygonShape(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void PhysicsWorld::createPolygonShape(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			b2PolygonShape polygonShape;
 
@@ -391,7 +456,7 @@ namespace SquareBox {
 			clusterObject_.physics_properties->shape = &polygonShape;
 			createFixtureForBody(clusterObject_);
 		}
-		void PhysicsWorld::createChainShape(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void PhysicsWorld::createChainShape(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			//createChainShape(vertices); //the chain refused, i dont knw why
 			//when i would pass it throu this function is world throw an error instead
@@ -412,7 +477,7 @@ namespace SquareBox {
 			createFixtureForBody(clusterObject_);
 		}
 
-		void PhysicsWorld::createEdgeShape(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void PhysicsWorld::createEdgeShape(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			std::vector<b2Vec2> vec2Vector;
 			vec2Vector.reserve(clusterObject_.vertices.size());//Resize so that all our pointers point to the right place
@@ -428,7 +493,7 @@ namespace SquareBox {
 			}
 		}
 
-		void PhysicsWorld::createRevoluteJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_, SquareBox::GWOM::Joint& joint_)
+		b2Joint* PhysicsWorld::createRevoluteJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
 		{
 			b2RevoluteJointDef jointDef;
 			if (joint_.body_a_coordinates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index)) {
@@ -454,16 +519,10 @@ namespace SquareBox {
 			jointDef.maxMotorTorque = joint_.max_motor_torque;
 			jointDef.collideConnected = joint_.collide_connected_bodies;
 			jointDef.referenceAngle = joint_.reference_angle;
-			b2Joint * joint_ptr = m_world->CreateJoint(&jointDef);
-			joint_.is_joint_alive = true;
-			clusterObjectA_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectA_.joints.push_back(&joint_);
-
-			clusterObjectB_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectB_.joints.push_back(&joint_);
+			return  m_world->CreateJoint(&jointDef);
 		}
 
-		void PhysicsWorld::createDistanceJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_, SquareBox::GWOM::Joint & joint_)
+		b2Joint* PhysicsWorld::createDistanceJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
 		{
 			b2DistanceJointDef jointDef;
 			if (joint_.body_a_coordinates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index)) {
@@ -485,16 +544,10 @@ namespace SquareBox {
 			jointDef.minLength = joint_.min_length;
 			b2LinearStiffness(jointDef.stiffness, jointDef.damping, joint_.frequency_hz, joint_.damping_ratio, jointDef.bodyA, jointDef.bodyB);
 			joint_.is_joint_alive = true;
-			b2Joint * joint_ptr = m_world->CreateJoint(&jointDef);
-
-			clusterObjectA_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectA_.joints.push_back(&joint_);
-
-			clusterObjectB_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectB_.joints.push_back(&joint_);
+			return  m_world->CreateJoint(&jointDef);
 		}
 
-		void PhysicsWorld::createPrismaticJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_, SquareBox::GWOM::Joint & joint_)
+		b2Joint* PhysicsWorld::createPrismaticJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
 		{
 			b2PrismaticJointDef jointDef;
 			if (joint_.body_a_coordinates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index)) {
@@ -522,15 +575,10 @@ namespace SquareBox {
 			jointDef.maxMotorForce = joint_.max_motor_force;
 			jointDef.collideConnected = joint_.collide_connected_bodies;
 			jointDef.referenceAngle = joint_.reference_angle;
-			b2Joint * joint_ptr = m_world->CreateJoint(&jointDef);
-			joint_.is_joint_alive = true;
-			clusterObjectA_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectA_.joints.push_back(&joint_);
-			clusterObjectB_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectB_.joints.push_back(&joint_);
+			return  m_world->CreateJoint(&jointDef);
 		}
 
-		void PhysicsWorld::createPulleyJoint(SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_, SquareBox::GWOM::Joint & joint_)
+		b2Joint* PhysicsWorld::createPulleyJoint(SquareBox::GWOM::ClusterObject& clusterObjectA_, SquareBox::GWOM::ClusterObject& clusterObjectB_, SquareBox::GWOM::Joint& joint_)
 		{
 			b2PulleyJointDef jointDef;
 			if (joint_.body_a_coordinates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index)) {
@@ -555,16 +603,10 @@ namespace SquareBox {
 			jointDef.ratio = joint_.pulley_ratio;
 
 			jointDef.collideConnected = joint_.collide_connected_bodies;
-			b2Joint * joint_ptr = m_world->CreateJoint(&jointDef);
-			joint_.is_joint_alive = true;
-			clusterObjectA_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectA_.joints.push_back(&joint_);
-
-			clusterObjectB_.physics_properties->joints.push_back(joint_ptr);
-			clusterObjectB_.joints.push_back(&joint_);
+			return  m_world->CreateJoint(&jointDef);
 		}
 
-		glm::vec2 PhysicsWorld::getJointsReactionForce(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_)
+		glm::vec2 PhysicsWorld::getJointsReactionForce(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_)
 		{
 			b2Joint* joint_ptr = getSharedJoint(clusterObjectA_, clusterObjectB_);
 			if (joint_ptr != nullptr) {
@@ -574,7 +616,7 @@ namespace SquareBox {
 			return glm::vec2(0.0f);
 		}
 
-		float PhysicsWorld::getJointsReactionTorque(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_)
+		float PhysicsWorld::getJointsReactionTorque(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_)
 		{
 			b2Joint* joint_ptr = getSharedJoint(clusterObjectA_, clusterObjectB_);
 			if (joint_ptr != nullptr) {
@@ -583,7 +625,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		glm::vec2 PhysicsWorld::getJointsAnchorPoint(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, bool getForBodyA)
+		glm::vec2 PhysicsWorld::getJointsAnchorPoint(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, bool getForBodyA)
 		{
 			b2Joint* joint_ptr = getSharedJoint(clusterObjectA_, clusterObjectB_);
 			if (joint_ptr != nullptr) {
@@ -600,7 +642,7 @@ namespace SquareBox {
 			return glm::vec2(0.0f);
 		}
 
-		bool PhysicsWorld::isJointLimitEnabled(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		bool PhysicsWorld::isJointLimitEnabled(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -618,7 +660,7 @@ namespace SquareBox {
 			return false;
 		}
 
-		bool PhysicsWorld::isMotorLimitEnabled(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		bool PhysicsWorld::isMotorLimitEnabled(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -636,7 +678,7 @@ namespace SquareBox {
 			return false;
 		}
 
-		float PhysicsWorld::getJointUpperLimit(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointUpperLimit(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -656,7 +698,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointLowerLimit(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointLowerLimit(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -676,7 +718,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointMotorSpeed(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointMotorSpeed(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -696,7 +738,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointMotorForce(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointMotorForce(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::prismatic_joint) {
 				b2PrismaticJoint* joint_ptr = static_cast<b2PrismaticJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -710,7 +752,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointMaxMotorForce(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointMaxMotorForce(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::prismatic_joint) {
 				b2PrismaticJoint* joint_ptr = static_cast<b2PrismaticJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -724,7 +766,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointMotorTorque(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointMotorTorque(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -739,7 +781,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointMaxMotorTorque(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointMaxMotorTorque(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::revolute_joint) {
 				b2RevoluteJoint* joint_ptr = static_cast<b2RevoluteJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -754,7 +796,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointLengthA(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointLengthA(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::pulley_joint) {
 				b2PulleyJoint* joint_ptr = static_cast<b2PulleyJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -769,7 +811,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		float PhysicsWorld::getJointLengthB(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
+		float PhysicsWorld::getJointLengthB(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_, const SquareBox::JointTypeEnum jointType_)
 		{
 			if (jointType_ == SquareBox::JointTypeEnum::pulley_joint) {
 				b2PulleyJoint* joint_ptr = static_cast<b2PulleyJoint*>(getSharedJoint(clusterObjectA_, clusterObjectB_));
@@ -784,7 +826,7 @@ namespace SquareBox {
 			return 0.0f;
 		}
 
-		void PhysicsWorld::createFixtureForBody(const SquareBox::GWOM::ClusterObject &clusterObject_)
+		void PhysicsWorld::createFixtureForBody(const SquareBox::GWOM::ClusterObject& clusterObject_)
 		{
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = clusterObject_.physics_properties->shape;
@@ -805,22 +847,25 @@ namespace SquareBox {
 			clusterObject_.physics_properties->fixtures[0] = clusterObject_.physics_properties->body->CreateFixture(&fixtureDef);
 			clusterObject_.physics_properties->body->ResetMassData();
 		}
-		b2Joint * PhysicsWorld::getSharedJoint(const SquareBox::GWOM::ClusterObject & clusterObjectA_, const SquareBox::GWOM::ClusterObject & clusterObjectB_)
+		b2Joint* PhysicsWorld::getSharedJoint(const SquareBox::GWOM::ClusterObject& clusterObjectA_, const SquareBox::GWOM::ClusterObject& clusterObjectB_)
 		{
 			//loop through bodyAs joints and find one where these two are members
-			for (unsigned int i = 0; i < clusterObjectA_.physics_properties->joints.size(); i++)
+			for (unsigned int i = 0; i < clusterObjectA_.joints.size(); i++)
 			{
-				if (
+				auto& focus_joint = clusterObjectA_.joints[i];
+				auto cluster_object_a_coordinates = std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index);
+				auto cluster_object_b_coordinates = std::pair<int, int>(clusterObjectB_.cluster_index, clusterObjectB_.index);
+				bool is_shared_joint = false;
+				if (focus_joint.body_a_coordinates == cluster_object_a_coordinates && focus_joint.body_b_coordinates == cluster_object_b_coordinates) {
+					is_shared_joint = true;
+				}
 
-					(clusterObjectA_.physics_properties->joints[i]->GetBodyA() == clusterObjectA_.physics_properties->body
-						&&
-						clusterObjectB_.physics_properties->joints[i]->GetBodyB() == clusterObjectB_.physics_properties->body)
-					||
-					(clusterObjectA_.physics_properties->joints[i]->GetBodyA() == clusterObjectB_.physics_properties->body
-						&&
-						clusterObjectB_.physics_properties->joints[i]->GetBodyB() == clusterObjectA_.physics_properties->body)
-					) {
-					return clusterObjectB_.physics_properties->joints[i];
+				if (focus_joint.body_a_coordinates == cluster_object_b_coordinates && focus_joint.body_b_coordinates == cluster_object_a_coordinates) {
+					is_shared_joint = true;
+				}
+
+				if (is_shared_joint) {
+					return (b2Joint*)focus_joint.physics_world_joint_ptr;
 				}
 			}
 			return nullptr;

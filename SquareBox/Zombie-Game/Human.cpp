@@ -33,13 +33,11 @@ void Human::update(float delta_time_, std::pair<int, std::pair<int, int>> & clus
 	human_cluster_object.position += human_cluster_object.direction * human_cluster_object.speed * delta_time_;
 
 	// Randomly change direction every 20 frames
-	if (m_frames == cut_off_frame_rate) {
+	float random_number = SquareBox::MathLib::Random::Float()*98682;
+	if ((random_number>20 && random_number<250)) {
 		human_cluster_object.direction = glm::rotate(human_cluster_object.direction, randRotate(randomEngine));
-		m_frames = 0;
 	}
-	else {
-		m_frames++;
-	}
+	
 	//collide with the tiles near us
 	if (collideWithTiles(delta_time_, human_cluster_object, LayerIndicies::bricks_layer_index, layers_)) {
 		human_cluster_object.direction = glm::rotate(human_cluster_object.direction, randRotate(randomEngine));

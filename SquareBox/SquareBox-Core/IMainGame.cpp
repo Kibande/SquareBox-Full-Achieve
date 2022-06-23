@@ -27,6 +27,7 @@ namespace SquareBox {
 		m_fps = desiredFPS_;
 		m_logs_file = log_file_name_;
 		SquareBox::Log::Init(log_file_name_, write_to_log_file_);// this should be intialised first
+		SquareBox::MathLib::Random::Init();
 		if (!init())
 		{
 			return;
@@ -82,7 +83,7 @@ namespace SquareBox {
 					if (m_use_get_input)
 					{
 						// update the input manager if we are processing input
-						m_input_manager->update();
+						m_input_manager->update(m_window_width,m_window_height);
 						m_input_manager->processInput();
 					}
 					// Since we just took a step that is length deltaTime, subtract from totalDeltaTime

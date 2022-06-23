@@ -6,8 +6,8 @@
 #include <ImGUI/imgui_impl_sdl.h>
 #include <ImGUI/imgui_impl_opengl3.h>
 #include <ImGui/ImGuiFileBrowser.h>
-#include "TextureRenderingExample.h"
-#include "VideoPlayerExample.h"
+#include "ParticleSystemExample.h"
+
 
 class ExampleHomeScreen :public SquareBox::IGameScreen
 {
@@ -20,7 +20,7 @@ public:
 	virtual int getPreviousScreenIndex() const override;
 	virtual void build() override;
 	virtual void onEntry() override;
-	virtual void update() override;
+	virtual void update(const float& deltaTime_) override;
 	void setActiveExample(int index);
 	virtual void draw() override;
 	virtual void onExit() override;
@@ -46,4 +46,6 @@ private:
 	bool m_autoClearLogs = false;//should the log be clear each time we switch examples
 	bool m_showAbout = false;
 	int m_selectedExampleIndex = 0;
+
+
 };

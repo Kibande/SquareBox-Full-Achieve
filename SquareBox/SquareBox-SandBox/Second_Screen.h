@@ -55,7 +55,7 @@ private:
 	bool m_show_open_tile_sheet_file_dialog = false;
 	bool m_show_about_dialog = false;
 	glm::vec2 m_camera_position;
-	int m_next_screen_index = SECOND_SCREEN_INDEX;
+	int m_next_screen_index = SCREEN_INDEX_NO_SCREEN;
 	int m_previous_screen_index = SCREEN_INDEX_NO_SCREEN;
 	bool m_show_grid_lines = true;
 	float m_screen_texture_height_ratio =0.8f; //got through trial and error on my pc
@@ -70,4 +70,29 @@ private:
 	glm::ivec2 m_current_texture_object_tiling;
 	glm::ivec2 m_new_texture_tiling;
 
+	//new_texture_object.pod_bool
+	/*
+		if a texture qualifies as a square grid, we are using camera curling
+		and utilizing the tile system to do the tiles
+	*/
+	SquareBox::GWOM::TileSystem m_tile_system;
+
+
+
+
+	//camera controls
+	int camera_panning_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_ALT);
+	int camera_panning_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_ALT);
+	int camera_panning_master_input_key = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
+
+
+	//camera zoom
+	int camera_zooming_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_ALT);
+	int camera_zooming_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_ALT);
+	//and the mouse wheel
+
+
+	//camera motion
+	int camera_motion_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_CTRL);
+	int camera_motion_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_CTRL);
 };

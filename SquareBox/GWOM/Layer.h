@@ -46,6 +46,7 @@ namespace SquareBox {
 			int	 opacity = 100;
 			bool is_visible = true;
 			bool is_locked = false;
+			SquareBox::LayerTypeEnum layer_type = SquareBox::LayerTypeEnum::FlatLayer;
 			std::vector<ParentTexture> single_textures;
 			std::vector<ParentTexture> tiled_textures;
 			std::map<int, SubTexture> sub_textures_table;//to be reconstructed on level loading
@@ -57,7 +58,7 @@ namespace SquareBox {
 			*/
 			std::vector<SquareBox::GWOM::WorldCluster> world_clusters;
 			std::vector<std::pair<int, int>> alive_cluster_objects;
-			std::vector<std::pair<int,int>>active_joints_body_a_objects; 
+			std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>> active_joints_body_a_map;
 			/*
 			 Joints system is not fully tested, there is need to make a game just about joints in order to test it out
 			*/
@@ -82,6 +83,12 @@ namespace SquareBox {
 
 			//helper functions
 			std::pair<int, glm::vec4> getTextureIdAndUvReactFromKey(int key_);
+
+			std::vector<SquareBox::GWOM::Joint> temp_joint_definitions;
+			/*
+				THIS VECTOR IS ONLY USED DURING LOAD TIME WHEN WE ARE LOADING IN A LEVEL FROM STORAGE
+				JOINT DATA IS KEEP HERE BEFORE THE JOINTS ACTUALLY GET CREATED
+			*/
 		};
 	};
 };

@@ -16,7 +16,7 @@ private:
 	bool getClosetHumanInCell(SquareBox::GWOM::ClusterObject& zombie_, std::vector<SquareBox::GWOM::Layer>& layers_,SquareBox::GWOM::Cell* target_cell_, float & current_closet_distance_);
 	
 	//float m_speed = 0.001f;
-	float m_speed = 0.006f;
+	float m_speed = 0.18f;
 	const float rotation_angle_range = 40.0f;
 	const float direction_range = 1.0f;
 };

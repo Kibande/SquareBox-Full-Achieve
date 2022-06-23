@@ -1021,7 +1021,7 @@ namespace SquareBox {
 			GLubyte b;
 			GLubyte a;
 
-			glm::ivec4 getVec4() { return  glm::ivec4(r,g,b,a); }
+			glm::ivec4 getIVec4() { return  glm::ivec4(r,g,b,a); }
 		};
 	}
 }

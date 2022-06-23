@@ -8,7 +8,7 @@
 class Bullet
 {
 public:
-	void init(SquareBox::AssetManager::GLTexture bullet_texture_,float bullet_size_,float speed_, float damage_,int num_blood_mess_particles_,float blood_mess_particle_width_);
+	void init(SquareBox::AssetManager::GLTexture bullet_texture_,float bullet_size_,float speed_, float damage_,float bullet_decay_,int num_blood_mess_particles_,float blood_mess_particle_width_);
 	// should be called after the cluster objects position and direction have already been set
 	void setUp(SquareBox::GWOM::ClusterObject& cluster_object_);
 	void update(float delta_time_, std::pair<int, std::pair<int, int>>& player_coordinates_, std::pair<int, std::pair<int, int>>& cluster_object_coordinates_, std::vector<SquareBox::GWOM::Layer>& layers_, int grid_index_with_collision_members_, SquareBox::RenderEngine::ParticleBatch* blood_particle_batch_ptr_, SquareBox::GWOM::Grid* collision_grid_ptr_);
@@ -32,5 +32,6 @@ private:
 	float m_blood_mess_particle_width;
 	SquareBox::Utilities m_utilities;
 	float m_bullet_size;
+	float m_bullet_decay;
 };
 

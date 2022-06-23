@@ -19,12 +19,16 @@ namespace SquareBox {
 		public:
 			TileSystem();
 			~TileSystem();
-		
-			void init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_);
-			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, SquareBox::LayerTilingEnum tiling_, std::vector<int> & layer_data_);
+			void init(float orign_x_, float orign_y_, float width_, float height_, float tile_size_);
+			void init(float orignX_, float orignY_, float width_, float height_, float tile_size_, std::vector<int> & layer_data_);
 			void resetTileSystem();
+
 			Tile * getTile(const glm::vec2& pos_);
+			void setTile(const glm::vec2& pos_,int key_) { getTile(pos_)->key = key_; };
+
 			Tile * getTile(unsigned x_,unsigned y_);
+			void setTile(unsigned x_, unsigned y_, int key_) { getTile(x_, y_)->key = key_; };
+
 			bool isInTileSystem(const glm::vec2 pos_);
 			std::map<int, SquareBox::GWOM::Tile*>  getAllTilesInDestRect(glm::vec4& dest_rect_,bool only_active_tiles_=false);
 
@@ -38,16 +42,13 @@ namespace SquareBox {
 			Tile * getTileByIndex(const int index_) { return &m_tiles[index_]; }
 			std::vector<Tile>& getAllTileSystemTiles() { return m_tiles; }
 			bool isInitialised() const { return m_is_initialised; }
-			void dispose() {};
+			void dispose() { if (m_is_initialised) { resetTileSystem(); } };
 			std::vector<Tile> m_tiles;//this is what is actually stored;
 
 			float getOriginX() const { return m_orign_x; }
 
 			float getOriginY() const { return m_orign_y; }
 
-			SquareBox::LayerTilingEnum getTiling() const {
-				return m_tiling;
-			}
 			std::vector<std::pair<int, int>> active_tiles;
 		private:
 			float m_tile_size = 0.0f;
@@ -58,8 +59,6 @@ namespace SquareBox {
 			unsigned m_num_y_tiles = 0;
 			unsigned m_num_x_tiles = 0;
 			bool m_is_initialised = false;
-			SquareBox::LayerTilingEnum m_tiling = SquareBox::LayerTilingEnum::None;
-
 		};
 
 

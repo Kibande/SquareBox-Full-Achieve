@@ -22,7 +22,7 @@ namespace SquareBox {
 			friend class PhysicsWorld;
 			PhysicsProperties();
 			~PhysicsProperties();
-			void init(int numFixtures_, int numJoints_);
+			void init(int numFixtures_);
 			glm::vec4 getBoxCoordinates();
 			glm::vec2 getCircleCoordinates();
 			float getAngle();
@@ -62,10 +62,8 @@ namespace SquareBox {
 			void dispose();
 			// a body can have  multiple fixtures and multiple joints
 			std::vector<b2Fixture*> fixtures;
-			std::vector<b2Joint*> joints;
 			glm::vec2 dimensions; //width,height
 		private:
-			void destoryJoint(b2Joint *joint);
 			b2World* world = nullptr;
 			b2Body* body = nullptr;
 			b2Shape* shape = nullptr;

@@ -19,7 +19,7 @@ namespace SquareBox {
 			virtual void dispose() override;
 
 			// Inherited via IInputDevice
-			virtual void update() override;
+			virtual void update(int screen_width_, int screen_height_) override;
 		};
 	}
 }

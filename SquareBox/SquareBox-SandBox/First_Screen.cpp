@@ -115,7 +115,7 @@ void First_Screen::onEntry()
 	active_cluster_object.texture_info.uv_rect = glm::vec4(0.0f,0.0f,1.0f,1.0f);
 
 	active_cluster_object.is_alive = true;
-	active_cluster_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getVec4();
+	active_cluster_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 	active_cluster_object.shape = SquareBox::BodyShapeEnum::Circle;
 
 	
@@ -128,7 +128,7 @@ void First_Screen::onEntry()
 
 	house.shape = SquareBox::BodyShapeEnum::Box;
 	house.is_alive = true;
-	house.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getVec4();
+	house.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 
 	//cluster objects adaptive properties
 	active_cluster_object.radius = screen_dimensions.x * 0.03;

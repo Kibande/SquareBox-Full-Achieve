@@ -18,7 +18,7 @@ namespace SquareBox {
 		SDL_SetMainReady();
 #endif
 
-		if(SDL_Init(SDL_INIT_EVERYTHING) <0) {
+		if(SDL_Init(SDL_INIT_EVERYTHING) !=0) {
 			SBX_CORE_CRITICAL("SDL init Error %s\n", SDL_GetError());
 		};
 		// Decide GL+GLSL versions
@@ -61,7 +61,7 @@ namespace SquareBox {
 
 		// Create window with graphics context
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);//Gives us two buffers and eliminates flickering
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);//Research the rest
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);//Research the rest
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 

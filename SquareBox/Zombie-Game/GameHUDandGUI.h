@@ -1,6 +1,7 @@
 #pragma once
 #include<SquareBox-Core/SquareBoxGameEngine.h>
 #include "LayerIndicies.h"
+#include "FireButtonTexture.h"
 class GameHUDandGUI
 {
 public:
@@ -11,22 +12,19 @@ public:
 private:
 	//texture that make up the GUI
 
-	//the fire button
-
 	//button for the players controls
 	SquareBox::GWOM::ClusterObject inner_movement_button;
 	SquareBox::GWOM::ClusterObject outer_movement_button;
 	SquareBox::GWOM::ClusterObject fire_button;
 
-	//textures to switch between when firing
-	SquareBox::AssetManager::GLTexture blue_texture;
-	SquareBox::AssetManager::GLTexture yellow_texture;
-
 
 	SquareBox::Utilities  m_utilities;
 	SquareBox::IMainGame * m_game_ptr;
 	SquareBox::RenderEngine::Window * m_window_ptr;
+	glm::vec4 m_dest_rect;
 	SquareBox::IShape* m_current_shape_ptr = nullptr;// a pointer to the current world shape 
+	float m_camera_scale = 0.0f;
+	FireButtonTexture m_fire_button_texture;
 
 };
 

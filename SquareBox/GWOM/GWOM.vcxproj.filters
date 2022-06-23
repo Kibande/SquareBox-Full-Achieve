@@ -15,9 +15,6 @@
     <ClInclude Include="ClusterObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="DSUGWOM_generated.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Entities.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
     <ClInclude Include="WorldCluster.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DSUGWOM_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp">
@@ -62,6 +62,9 @@
       <Filter>Docs</Filter>
     </None>
     <None Include="NetworkMessage.fbs">
+      <Filter>Docs</Filter>
+    </None>
+    <None Include="DSUGWOM _V2.fbs">
       <Filter>Docs</Filter>
     </None>
   </ItemGroup>

@@ -62,19 +62,19 @@ void MobileAppEditor_Screen::onEntry()
 	menu_object.texture_info.texture_type = SquareBox::TextureEnum::SINGLE;
 	//__debugbreak();
 	auto color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::orange);
-	menu_object.color = color.getVec4();
+	menu_object.color = color.getIVec4();
 	mo.setBackGroundObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::green);
-	menu_object.color = color.getVec4();
+	menu_object.color = color.getIVec4();
 	mo.setObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::blue);
-	menu_object.color = color.getVec4();
+	menu_object.color = color.getIVec4();
 	mo.setOnHoverObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon);
-	menu_object.color = color.getVec4();
+	menu_object.color = color.getIVec4();
 	mo.setOnClickObject(menu_object);
 
 	mo.setTextScaling(glm::vec2(1.0f));

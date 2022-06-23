@@ -64,12 +64,11 @@ namespace SquareBox {
 			(Top, "Top", 5)
 		)
 
-		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(LayerTilingEnum,
-			(FlatTiling, "FlatTiling", 0)
-			(IsoMetricTiling, "IsometricTiling", 1)
-			(None, "None", 2)
+		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(LayerTypeEnum,
+			(FlatLayer, "FlatLayer", 0)
+			(TiledLayer, "TiledLayer", 1)
+			(IsometricLayer, "IsometricLayer", 2)
 		)
-
 		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(FallOffEnum,
 		(LINEAR, "LINEAR", 0)
 			(LOGARITHMIC, "LOGARITHMIC", 1)
@@ -177,7 +176,7 @@ namespace SquareBox {
 			(ESCAPE, "ESCAPE", SDLK_ESCAPE)
 			(BACKSAPCE, "BACKSAPCE", SDLK_BACKSPACE)
 			(TAB, "TAB", SDLK_TAB)
-			(SAPCE, "SPACE", SDLK_SPACE)
+			(SPACE, "SPACE", SDLK_SPACE)
 			(EXCLAIM, "EXCLAIM", SDLK_EXCLAIM)
 			(DOUBLEQUOTE, "DOUBLEQUOTE", SDLK_QUOTEDBL)
 			(HASH, "HASH", SDLK_HASH)

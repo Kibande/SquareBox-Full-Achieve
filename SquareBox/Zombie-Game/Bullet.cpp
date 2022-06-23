@@ -2,7 +2,7 @@
 
 
 
-void Bullet::init(SquareBox::AssetManager::GLTexture bullet_texture_, float bullet_size_, float speed_,float damage_, int num_blood_mess_particles_, float blood_mess_particle_width_)
+void Bullet::init(SquareBox::AssetManager::GLTexture bullet_texture_, float bullet_size_, float speed_,float damage_, float bullet_decay_, int num_blood_mess_particles_, float blood_mess_particle_width_)
 {
 		m_bullet_texture = bullet_texture_;
 		m_num_blood_mess_particles = num_blood_mess_particles_;
@@ -10,6 +10,7 @@ void Bullet::init(SquareBox::AssetManager::GLTexture bullet_texture_, float bull
 		m_bullet_size = bullet_size_;
 		m_speed = speed_;
 		m_damage = damage_;
+		m_bullet_decay = bullet_decay_;
 		m_utilities.init();
 }
 
@@ -18,7 +19,7 @@ void Bullet::setUp(SquareBox::GWOM::ClusterObject& cluster_object_)
 	cluster_object_.speed = m_speed;
 	cluster_object_.pod_float = m_damage; // the bullets damage is being stored as 
 	cluster_object_.texture_info.texture_id = m_bullet_texture.id;
-	cluster_object_.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getVec4();
+	cluster_object_.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 	cluster_object_.radius = m_bullet_size;
 	cluster_object_.shape = SquareBox::BodyShapeEnum::Circle;
 }
@@ -28,8 +29,15 @@ void Bullet::update(float delta_time_, std::pair<int, std::pair<int, int>>& play
 	SquareBox::GWOM::ClusterObject& target_bullet = layers_[cluster_object_coordinates_.first].world_clusters[cluster_object_coordinates_.second.first].cluster_objects[cluster_object_coordinates_.second.second];
 	glm::vec2 old_position = target_bullet.position;
 	target_bullet.position += target_bullet.direction * target_bullet.speed * delta_time_;
-
+	target_bullet.life_span -= m_bullet_decay;
 	auto displacement = glm::length(target_bullet.position - old_position);
+	if (target_bullet.life_span <= 0) {
+		target_bullet.is_alive = false;
+		collision_grid_ptr_->removeObject(target_bullet);
+		m_utilities.removePairFromVector(layers_[target_bullet.layer_index].alive_cluster_objects, std::pair<int, int>(target_bullet.cluster_index, target_bullet.index));
+		return;
+	}
+
 	//first collide with the world
 	if (collideWithTiles(target_bullet,LayerIndicies::bricks_layer_index,layers_)) {
 		// kill the bullet

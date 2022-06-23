@@ -35,6 +35,7 @@ namespace SquareBox {
 			bool isWorldinitalised() const { return m_isWorldinitalised; }
 			void createObject(const SquareBox::GWOM::ClusterObject &clusterObject_);
 			void createJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
+			void destoryJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
 			bool areObjectsTouching(const SquareBox::GWOM::ClusterObject &sensorBody_, const SquareBox::GWOM::ClusterObject &bodyToTest_);
 
 			//Joint Setters
@@ -83,10 +84,10 @@ namespace SquareBox {
 			void createEdgeShape(const SquareBox::GWOM::ClusterObject &clusterObject_);
 
 			//Create Revolute Joint
-			void createRevoluteJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
-			void createDistanceJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
-			void createPrismaticJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
-			void createPulleyJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
+			b2Joint* createRevoluteJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
+			b2Joint* createDistanceJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
+			b2Joint* createPrismaticJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
+			b2Joint* createPulleyJoint(SquareBox::GWOM::ClusterObject &clusterObjectA_, SquareBox::GWOM::ClusterObject &clusterObjectB_, SquareBox::GWOM::Joint& joint_);
 
 			//The Fixture
 			void createFixtureForBody(const SquareBox::GWOM::ClusterObject &clusterObject_);

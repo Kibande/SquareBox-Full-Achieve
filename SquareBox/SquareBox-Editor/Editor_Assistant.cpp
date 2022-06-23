@@ -1,73 +1,500 @@
 #include "Editor_Assistant.h"
-void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::Layer & active_layer_ref_, std::vector<std::pair<int, int>> & selected_tiles_vec_, SquareBox::IMainGame * m_game, SquareBox::Utilities & m_utilities)
+void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::Layer& active_layer_ref_, std::vector<std::pair<int, int>>& selected_tiles_vec_, SquareBox::IMainGame* m_game, SquareBox::Utilities& m_utilities)
 {
 	if (active_layer_ref_.tile_system.isInitialised()) {
 		// we are going to loop through , duplicating tile by tile
-		std::vector<std::pair<int,int>> duplicates;
-
+		std::vector<std::pair<int, int>> duplicates;
 		if (
-			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
+			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_super_duplicate_input_key_1)
 			&&
 			(
-				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)
 				||
-				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)
 				||
 				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
 				||
 				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
+				||
+
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_west_duplication_input_key)
+				||
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_east_duplication_input_key)
+				||
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_west_duplication_input_key)
+				||
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_east_duplication_input_key)
 				)
-
 			) {
-
+			//duplicate the selected cells but with the apropriate texture
 			for (unsigned int i = 0; i < selected_tiles_vec_.size(); i++)
 			{
-				auto * focus_tile = active_layer_ref_.tile_system.getTileByIndex(selected_tiles_vec_[i].second);
+				auto* focus_tile = active_layer_ref_.tile_system.getTileByIndex(selected_tiles_vec_[i].second);
 
-				if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
-					//duplicate into the tile on the left
+				// first check for diagonals
+				if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_west_duplication_input_key)) {
+
+					//duplicate into the tile on the north west
 					int new_tile_row = focus_tile->coordinates.first - 1;
-					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
-					if (new_tile_row >= 0 && new_tile_row <= max_tile_index) {
+					int new_tile_col = focus_tile->coordinates.second + 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+					if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
 						//populate the tile
-						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
-						target_tile->key = focus_tile->key;
+						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index - 1 + retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
-						duplicates.push_back(std::pair<int,int>(active_layer_ref_.index, target_tile->index));
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
-				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
-					//duplicate into the tile on the left
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_east_duplication_input_key)) {
+
+					//duplicate into the tile on the north west
 					int new_tile_row = focus_tile->coordinates.first + 1;
-					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
+					int new_tile_col = focus_tile->coordinates.second + 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+					if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+						//populate the tile
+						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index + 1 + retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
+						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+					}
+				}
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_west_duplication_input_key)) {
+
+					//duplicate into the tile on the north west
+					int new_tile_row = focus_tile->coordinates.first - 1;
+					int new_tile_col = focus_tile->coordinates.second - 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+					if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+						//populate the tile
+						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index - 1 - retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
+						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+					}
+				}
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_east_duplication_input_key)) {
+
+					//duplicate into the tile on the north west
+					int new_tile_row = focus_tile->coordinates.first + 1;
+					int new_tile_col = focus_tile->coordinates.second - 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+					if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+						//populate the tile
+						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index + 1 - retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
+						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+					}
+				}
+
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)) {
+					//duplicate into the tile on the west
+					int new_tile_row = focus_tile->coordinates.first - 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
 					if (new_tile_row >= 0 && new_tile_row <= max_tile_index) {
 						//populate the tile
 						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
-						target_tile->key = focus_tile->key;
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index - 1;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
+						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+					}
+				}
+				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)) {
+					//duplicate into the tile on the east
+					int new_tile_row = focus_tile->coordinates.first + 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+					if (new_tile_row >= 0 && new_tile_row <= max_tile_index) {
+						//populate the tile
+						auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index + 1;
+								// check that we are still in the tiling boundaries
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
 						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
-					//duplicate into the tile on the left
+					//duplicate into the tile on the north
 					int new_tile_col = focus_tile->coordinates.second + 1;
-					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
 					if (new_tile_col >= 0 && new_tile_col <= max_tile_index) {
 						//populate the tile
 						auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
-						target_tile->key = focus_tile->key;
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index + retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
 						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
 				}
 				else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
-					//duplicate into the tile on the left
+					//duplicate into the tile on the south
 					int new_tile_col = focus_tile->coordinates.second - 1;
-					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells()* active_layer_ref_.tile_system.getNumYCells()) - 1;
+					int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
 					if (new_tile_col >= 0 && new_tile_col <= max_tile_index) {
 						//populate the tile
 						auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
-						target_tile->key = focus_tile->key;
+
+						if (focus_tile->key != -1) {
+
+							auto  focus_tile_sub_raw_data = active_layer_ref_.sub_textures_table.find(focus_tile->key);
+							if (focus_tile_sub_raw_data != active_layer_ref_.sub_textures_table.end()) {
+
+								const auto& focus_tile_sub_texture = focus_tile_sub_raw_data->second;
+								int focus_tiling_index = focus_tile_sub_texture.tiling_index;
+
+								auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
+
+								auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+
+								int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
+
+								int desired_target_tile_tiling_index = focus_tiling_index - retrieved_texture.tiling.x;
+								// check that we are still in the tiling boundaries
+								if (desired_target_tile_tiling_index < 0) {
+									return;
+								}
+								else if (desired_target_tile_tiling_index >= retrieved_texture_max_index) {
+									return;
+								}
+
+								for (unsigned int j = 0; j < active_layer_ref_.sub_textures_table.size(); j++) {
+									const auto& sub_texture = active_layer_ref_.sub_textures_table[j];
+									if (
+										(sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET)
+										&&
+
+										(sub_texture.tiling_index == desired_target_tile_tiling_index)
+										) {
+
+										target_tile->key = sub_texture.sub_texture_key;
+										break;
+									}
+								}
+							}
+							else {
+								SBX_CORE_CRITICAL("Sub texture not in sub textures table");
+								__debugbreak();
+
+							}
+
+						}
+
 						m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
 						duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
 					}
@@ -77,6 +504,162 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 				selected_tiles_vec_.clear();
 				selected_tiles_vec_ = duplicates;
 			}
+
+		}
+		else if (
+		m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
+		&&
+		(
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)
+		||
+
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_west_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_east_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_west_duplication_input_key)
+		||
+		m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_east_duplication_input_key)
+		)
+		) {
+
+		for (unsigned int i = 0; i < selected_tiles_vec_.size(); i++)
+		{
+			auto* focus_tile = active_layer_ref_.tile_system.getTileByIndex(selected_tiles_vec_[i].second);
+
+			// first check for diagonals
+			if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_west_duplication_input_key)) {
+
+				//duplicate into the tile on the north west
+				int new_tile_row = focus_tile->coordinates.first - 1;
+				int new_tile_col = focus_tile->coordinates.second + 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_east_duplication_input_key)) {
+
+				//duplicate into the tile on the north west
+				int new_tile_row = focus_tile->coordinates.first + 1;
+				int new_tile_col = focus_tile->coordinates.second + 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_west_duplication_input_key)) {
+
+				//duplicate into the tile on the north west
+				int new_tile_row = focus_tile->coordinates.first - 1;
+				int new_tile_col = focus_tile->coordinates.second - 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_east_duplication_input_key)) {
+
+				//duplicate into the tile on the north west
+				int new_tile_row = focus_tile->coordinates.first + 1;
+				int new_tile_col = focus_tile->coordinates.second - 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index && new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)) {
+				//duplicate into the tile on the west
+				int new_tile_row = focus_tile->coordinates.first - 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)) {
+				//duplicate into the tile on the east
+				int new_tile_row = focus_tile->coordinates.first + 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_row >= 0 && new_tile_row <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(new_tile_row, focus_tile->coordinates.second);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
+				//duplicate into the tile on the north
+				int new_tile_col = focus_tile->coordinates.second + 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+			else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_south_duplication_input_key)) {
+				//duplicate into the tile on the south
+				int new_tile_col = focus_tile->coordinates.second - 1;
+				int max_tile_index = (active_layer_ref_.tile_system.getNumXCells() * active_layer_ref_.tile_system.getNumYCells()) - 1;
+				if (new_tile_col >= 0 && new_tile_col <= max_tile_index) {
+					//populate the tile
+					auto target_tile = active_layer_ref_.tile_system.getTile(focus_tile->coordinates.first, new_tile_col);
+
+					target_tile->key = focus_tile->key;
+
+					m_utilities.addPairToVector(active_layer_ref_.tile_system.active_tiles, std::pair<int, int>(target_tile->coordinates.first, target_tile->coordinates.second));
+					duplicates.push_back(std::pair<int, int>(active_layer_ref_.index, target_tile->index));
+				}
+			}
+		}
+		if (duplicates.size() > 0) {
+			selected_tiles_vec_.clear();
+			selected_tiles_vec_ = duplicates;
+		}
 
 		}
 
@@ -90,19 +673,19 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 */
 
 // we need to modify this so that we can duplicate a vector of cluster objects and not only one
-std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDuplicator(SquareBox::PhysicsCollisionEngine::PhysicsWorld & m_physicsWorld, std::vector<SquareBox::GWOM::Layer>&  layers_, std::vector<std::pair<int, int>> & m_selectedClusterObjects, SquareBox::GWOM::ClusterObject * m_currentClusterObject_ptr, SquareBox::IShape* m_currentShape_ptr, SquareBox::IMainGame * m_game, SquareBox::Utilities & m_utilities)
+std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDuplicator(SquareBox::PhysicsCollisionEngine::PhysicsWorld& m_physicsWorld, std::vector<SquareBox::GWOM::Layer>& layers_, std::vector<std::pair<int, int>>& m_selectedClusterObjects, SquareBox::GWOM::ClusterObject* m_currentClusterObject_ptr, SquareBox::IShape* m_currentShape_ptr, SquareBox::IMainGame* m_game, SquareBox::Utilities& m_utilities)
 {
 	std::pair<int, int> new_created_cluster_object_coordinates = std::pair<int, int>(-1, -1);//since our pointer is going to get iinvalidated
 	//Duplicating ,for needs_width
 	if (m_currentClusterObject_ptr != nullptr && !layers_[m_currentClusterObject_ptr->layer_index].tile_system.isInitialised()) {
-		auto & current_layer = layers_[m_currentClusterObject_ptr->layer_index];
+		auto& current_layer = layers_[m_currentClusterObject_ptr->layer_index];
 		if (
 			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
 			&&
 			(
-				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)
 				||
-				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)
+				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)
 				||
 				m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)
 				||
@@ -116,17 +699,17 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 				//create push back a new Cluster Objects
 				current_layer.world_clusters[orignals_cluster_index].cluster_objects.push_back(orignals_properties_copy);
 				const int dupsIndex = current_layer.world_clusters[orignals_cluster_index].cluster_objects.size() - 1;
-				SquareBox::GWOM::ClusterObject & dup = current_layer.world_clusters[orignals_cluster_index].cluster_objects[dupsIndex];
+				SquareBox::GWOM::ClusterObject& dup = current_layer.world_clusters[orignals_cluster_index].cluster_objects[dupsIndex];
 				dup.cluster_index = orignals_cluster_index;
 				dup.index = dupsIndex;
 				dup.layer_index = orignals_cluster_index;
 				m_utilities.nameClusterObjectByIndex(dup);
 
 				if (m_currentShape_ptr->needs_height_width) {
-					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
+					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)) {
 						dup.position.x -= orignals_properties_copy.width;
 					}
-					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)) {
 						dup.position.x += orignals_properties_copy.width;
 					}
 					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
@@ -137,10 +720,10 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 					}
 				}
 				else {
-					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_left_duplication_input_key)) {
+					if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_west_duplication_input_key)) {
 						dup.position.x -= (orignals_properties_copy.radius * 2);
 					}
-					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_right_duplication_input_key)) {
+					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_east_duplication_input_key)) {
 						dup.position.x += (orignals_properties_copy.radius * 2);
 					}
 					else if (m_game->getInputDevice()->isInputIdReceived(cluster_object_selection_north_duplication_input_key)) {
@@ -173,7 +756,7 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 	return new_created_cluster_object_coordinates;
 }
 
-void SquareBoxEditor::Editor_Assistant::cameraControls(SquareBox::Camera::ParallelCamera & camera_, SquareBox::IMainGame * gamePtr_)
+void SquareBoxEditor::Editor_Assistant::cameraControls(SquareBox::Camera::ParallelCamera& camera_, SquareBox::IMainGame* gamePtr_)
 {
 
 	float calculated_movement_speed = 1 / camera_.getScale();

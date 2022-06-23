@@ -11,6 +11,9 @@
     <ClInclude Include="..\..\SquareBox\Zombie-Game\Player.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\ScreenIndicies.h" />
     <ClInclude Include="..\..\SquareBox\Zombie-Game\Zombie.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Bullet.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\Gun.h" />
+    <ClInclude Include="..\..\SquareBox\Zombie-Game\FireButtonTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\Zombie-Game\App.cpp" />
@@ -23,5 +26,8 @@
     <ClCompile Include="..\..\SquareBox\Zombie-Game\main.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\Player.cpp" />
     <ClCompile Include="..\..\SquareBox\Zombie-Game\Zombie.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Bullet.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\Gun.cpp" />
+    <ClCompile Include="..\..\SquareBox\Zombie-Game\FireButtonTexture.cpp" />
   </ItemGroup>
 </Project>

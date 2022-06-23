@@ -61,7 +61,7 @@ bool ICollisionAgent::collideWithTiles(const float delta_time_, SquareBox::GWOM:
     // Check the four corners
 	glm::vec2 cluster_object_dimensions(cluster_object_.radius*2.0f);
 	glm::vec4 new_cluster_object_dest_rect = glm::vec4(cluster_object_.position - cluster_object_dimensions * 0.5f, cluster_object_dimensions);
-	std::vector<SquareBox::GWOM::Tile * > collided_tiles;
+    collided_tiles.clear();
 
 	glm::vec2 bottom_left_corner = glm::vec2(new_cluster_object_dest_rect.x, new_cluster_object_dest_rect.y);
 	glm::vec2 bottom_right_corner = glm::vec2(new_cluster_object_dest_rect.x + new_cluster_object_dest_rect.z, new_cluster_object_dest_rect.y);

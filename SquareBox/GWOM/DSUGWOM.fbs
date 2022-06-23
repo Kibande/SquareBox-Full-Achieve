@@ -161,12 +161,10 @@ awake:bool;
 is_bullet:bool;
 requesting_recreation:bool;
 controller_type:int;
-	
 shape:int;
 type:int;
 vec_of_edges:[PairOfVec2];
 vertices:[Vec2];
-joints:[Joint];
 off_set:Vec2;
 position:Vec2;
 init_linear_velocity:Vec2;
@@ -191,7 +189,7 @@ name:string;
 opacity:int;
 is_visible:bool;
 is_locked:bool;
-tiling:int;
+layer_type:int;
 single_textures:[ParentTexture];
 tiled_textures:[ParentTexture];
 sub_textures:[SubTexture];
@@ -202,6 +200,7 @@ tile_system_height:float;
 tile_system_tile_size:float;
 tile_system_data:[int];
 alive_cluster_objects:[PairOfInt]; //stored because the ordering of cluster objects is kept here
+active_joints:[Joint];//having this allows for a smarter and cleaner loading experience
 world_clusters: [WorldCluster];
 }
 

@@ -1,6 +1,87 @@
 #include "Utilities.h"
 #include <Asset-Manager/Asset-Manager.h>
+#include <MathLib/MathLib.h>
 namespace SquareBox {
+
+	/*
+		the euality checker needs to be better fine tunned
+
+
+	*/
+	bool operator == (SquareBox::GWOM::Joint& lhs, SquareBox::GWOM::Joint& rhs) {
+		return (
+			lhs.collide_connected_bodies == rhs.collide_connected_bodies
+			&&
+			lhs.joint_type == rhs.joint_type
+			&&
+			lhs.body_a_coordinates == rhs.body_a_coordinates
+			&&
+			lhs.body_b_coordinates == rhs.body_b_coordinates
+			&&
+			lhs.enable_motor == rhs.enable_motor
+			&&
+			lhs.enable_limit == rhs.enable_limit
+			&&
+
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.reference_angle, rhs.reference_angle)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.frequency_hz, rhs.frequency_hz)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.damping_ratio, rhs.damping_ratio)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.max_length, rhs.max_length)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.min_length, rhs.min_length)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.length, rhs.length)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.length_a, rhs.length_a)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.length_b, rhs.length_b)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.lower_angle, rhs.lower_angle)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.max_motor_torque, rhs.max_motor_torque)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.max_motor_force, rhs.max_motor_force)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.motor_speed, rhs.motor_speed)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.thickness, rhs.thickness)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.pulley_ratio, rhs.pulley_ratio)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.stiffness, rhs.stiffness)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.damping, rhs.damping)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.local_axis_a.x, rhs.local_axis_a.x)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.local_anchor_a.x, rhs.local_anchor_a.x)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.local_anchor_a.y, rhs.local_anchor_a.y)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.local_anchor_b.x, rhs.local_anchor_b.x)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.local_anchor_b.y, rhs.local_anchor_b.y)
+
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.ground_anchor_a.x, rhs.ground_anchor_a.x)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.ground_anchor_a.y, rhs.ground_anchor_a.y)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.ground_anchor_b.x, rhs.ground_anchor_b.x)
+			&&
+			SquareBox::MathLib::Float::areFloatsEqual(lhs.ground_anchor_b.y, rhs.ground_anchor_b.y)
+			);
+	}
+
 	Utilities::Utilities()
 	{
 	}
@@ -178,6 +259,57 @@ namespace SquareBox {
 		return false;
 	}
 
+	void Utilities::addJointToLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
+	{
+		auto & response = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		if (response == layer_.active_joints_body_a_map.end()) {
+			//not found so add it
+			layer_.active_joints_body_a_map[joint_.body_a_coordinates] = std::vector<SquareBox::GWOM::Joint>();
+		}
+		auto& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+
+		// we did not check for duplicates ....
+
+		auto & target_vec = (*cleark).second;
+		bool found_exact = false;
+		for (auto& it = target_vec.begin(); it != target_vec.end();it++)
+		{
+			//first equality check
+			if ((*it)== joint_) {
+				found_exact = true;
+			}
+		}
+
+		if (found_exact) {
+			SBX_ERROR("Tried to record the exact same Joint twice");
+		}
+		else {
+			target_vec.push_back(joint_);
+		}
+	}
+
+	void Utilities::removeJointFromLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
+	{
+		auto& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		if (cleark == layer_.active_joints_body_a_map.end()) {
+			//not found 
+			SBX_CORE_ERROR("Tried to delete a joint that was never rcorded");
+		}
+		else {
+			auto& target_vec = (*cleark).second;
+			bool found_exact = false;
+			for (auto& it = target_vec.begin(); it != target_vec.end();it++)
+			{
+				//first equality check
+				if ((*it) == joint_) {
+					target_vec.erase(it);
+					break;
+				}
+			}
+			
+		}
+	}
+
 	void Utilities::worldIndiciesCleanUp(std::vector<SquareBox::GWOM::Layer> & layers_)
 	{
 		for (unsigned int i = 0; i < layers_.size(); i++)
@@ -220,13 +352,10 @@ namespace SquareBox {
 	//			bool kept = false;//is this cluster object am the alive still 
 	//			SquareBox::GWOM::ClusterObject& cobj = cwc.cluster_objects[j];
 
-
-
 	//			const int oldWorldClusterIndex = cobj.cluster_index;
 	//			const int oldClusterObjectIndex = cobj.index;
 
 	//		
-
 
 	//			cobj.cluster_index = world_cluster_index;// newWorldClusterIndex being set
 	//			if (cobj.is_alive && cobj.life_span >= 1) {
@@ -598,175 +727,89 @@ namespace SquareBox {
 		}
 	}
 
-	void Utilities::deactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_)
+	void Utilities::deactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_,SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
 	{
 		//store the joints info somewhere else
-		std::vector<SquareBox::GWOM::Joint*> copied_joint_vec;
-		for (unsigned int i = 0; i < clusterObject_.joints.size(); i++)
-		{
-			//copy all the joints info because this joint will be deleted by destoryClusterObjectsjoints
-			SquareBox::GWOM::Joint *tempjoint = new SquareBox::GWOM::Joint();//we need to call delete when game is done
-			*tempjoint = *clusterObject_.joints[i];
-			tempjoint->is_joint_alive = false;
-			copied_joint_vec.push_back(tempjoint);
-		}
+		std::vector<SquareBox::GWOM::Joint> copied_joint_vec = clusterObject_.joints;
 
 		//loop through all its joints destorying one by one
 
 		for (unsigned int i = 0; i < copied_joint_vec.size(); i++)
 		{
-			SquareBox::GWOM::ClusterObject & bodyA = layers_[clusterObject_.layer_index].world_clusters[copied_joint_vec[i]->body_a_coordinates.first].cluster_objects[copied_joint_vec[i]->body_a_coordinates.second];
-			SquareBox::GWOM::ClusterObject & bodyB = layers_[clusterObject_.layer_index].world_clusters[copied_joint_vec[i]->body_b_coordinates.first].cluster_objects[copied_joint_vec[i]->body_b_coordinates.second];
-			destroyClusterObjectJoint(layers_,bodyA, bodyB);
+			auto& focus_joint = copied_joint_vec[i];
+			destroyClusterObjectJoint(layers_[clusterObject_.layer_index],focus_joint,physics_world_ptr_);
 		}
 
-		//restore back these joints data about the joints it lost
-
-		clusterObject_.joints.clear();
+		if (clusterObject_.joints.size()!=0) {
+			/*
+			 this should be 0 because all joints should have been destroyed
+			
+			*/
+			__debugbreak();
+		}
+		//restore back these joints data about the joints os that it is not lost
 		clusterObject_.joints = copied_joint_vec;
 	}
 
-	void Utilities::destroryClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_)
+	void Utilities::destroryClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
 	{
 		for (unsigned int i = 0; i < clusterObject_.joints.size(); i++)
 		{
-			SquareBox::GWOM::ClusterObject & bodyA = layers_[clusterObject_.layer_index].world_clusters[clusterObject_.joints[i]->body_a_coordinates.first].cluster_objects[clusterObject_.joints[i]->body_a_coordinates.second];
-			SquareBox::GWOM::ClusterObject & bodyB = layers_[clusterObject_.layer_index].world_clusters[clusterObject_.joints[i]->body_b_coordinates.first].cluster_objects[clusterObject_.joints[i]->body_b_coordinates.second];
-			destroyClusterObjectJoint(layers_,bodyA, bodyB);
+			auto& focus_joint = clusterObject_.joints[i];
+			
+			destroyClusterObjectJoint(layers_[clusterObject_.layer_index], focus_joint, physics_world_ptr_);
 		}
 	}
 	//we only need one joint member to reactivate a joint
-	void Utilities::reactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::PhysicsCollisionEngine::PhysicsWorld & physics_world_)
+	void Utilities::reactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
 	{
 		//store the joints info somewhere else
-		std::vector<SquareBox::GWOM::Joint*> copied_joint_vec;
-		for (unsigned int i = 0; i < clusterObject_.joints.size(); i++)
-		{
-			SquareBox::GWOM::Joint *tempjoint = clusterObject_.joints[i];
-			copied_joint_vec.push_back(tempjoint);
-		}
+		std::vector<SquareBox::GWOM::Joint> copied_joint_vec= clusterObject_.joints;
+	
 		//clear this cluster objects joints info
 		clusterObject_.joints.clear();
 
 		for (unsigned int i = 0; i < copied_joint_vec.size(); i++)
 		{
-			if (!copied_joint_vec[i]->is_joint_alive) {
-				SquareBox::GWOM::ClusterObject & bodyA = layers_[clusterObject_.layer_index].world_clusters[copied_joint_vec[i]->body_a_coordinates.first].cluster_objects[copied_joint_vec[i]->body_a_coordinates.second];
-				SquareBox::GWOM::ClusterObject & bodyB = layers_[clusterObject_.layer_index].world_clusters[copied_joint_vec[i]->body_b_coordinates.first].cluster_objects[copied_joint_vec[i]->body_b_coordinates.second];
-				physics_world_.createJoint(bodyA, bodyB, *copied_joint_vec[i]);
-				addPairToVector(layers_[clusterObject_.layer_index].active_joints_body_a_objects, copied_joint_vec[i]->body_a_coordinates, false);
-			}
-			else {
-				SBX_CORE_ERROR("Tried to reactivate an alive joint  ");
-			}
+			SquareBox::GWOM::Joint& focus_joint = copied_joint_vec[i];
+				SquareBox::GWOM::ClusterObject & bodyA = layers_[clusterObject_.layer_index].world_clusters[focus_joint.body_a_coordinates.first].cluster_objects[focus_joint.body_a_coordinates.second];
+				SquareBox::GWOM::ClusterObject & bodyB = layers_[clusterObject_.layer_index].world_clusters[focus_joint.body_b_coordinates.first].cluster_objects[focus_joint.body_b_coordinates.second];
+				physics_world_ptr_->createJoint(bodyA, bodyB, focus_joint);
+				addJointToLayerAliveJointsMap(layers_[clusterObject_.layer_index], copied_joint_vec[i]);
+			
 		}
-		copied_joint_vec.clear();
+	
 	}
 
-	void Utilities::destroyClusterObjectJoint(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObjectA_, SquareBox::GWOM::ClusterObject & clusterObjectB_)
+	void Utilities::destroyClusterObjectJoint(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
 	{
-		SquareBox::GWOM::Joint* shared_joint = nullptr;
-		int shared_joint_index_in_A = 0;
+		SquareBox::GWOM::ClusterObject& clusterObjectA_ = layer_.world_clusters[joint_.body_a_coordinates.first].cluster_objects[joint_.body_a_coordinates.second];
+		SquareBox::GWOM::ClusterObject& clusterObjectB_ = layer_.world_clusters[joint_.body_b_coordinates.first].cluster_objects[joint_.body_b_coordinates.second];
 
-		for (unsigned int i = 0; i < clusterObjectA_.joints.size(); i++)
-		{
-			std::pair<int, int> bodyAACoridnates = std::pair<int, int>(clusterObjectA_.joints[i]->body_a_coordinates.first, clusterObjectA_.joints[i]->body_a_coordinates.second);
-			std::pair<int, int> bodyABCoridnates = std::pair<int, int>(clusterObjectA_.joints[i]->body_b_coordinates.first, clusterObjectA_.joints[i]->body_b_coordinates.second);
+		//deletefrom the physics world
+		physics_world_ptr_->destoryJoint(clusterObjectA_, clusterObjectB_,joint_);
 
-			if ((bodyAACoridnates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index) && bodyABCoridnates == std::pair<int, int>(clusterObjectB_.cluster_index, clusterObjectB_.index))
-				||
-				(bodyAACoridnates == std::pair<int, int>(clusterObjectB_.cluster_index, clusterObjectB_.index) && bodyABCoridnates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index))
-				) {
-				shared_joint = clusterObjectA_.joints[i];
-				shared_joint_index_in_A = i;
-				break;//break the loop
-			}
-		}
+		//remove from the layers vector
+		removeJointFromLayerAliveJointsMap(layer_, joint_);
+	}
 
-		if (shared_joint != nullptr) {
-			//we have a joint to delete
+	void Utilities::createClusterObjectJoint(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint & joint_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
+	{
+		SquareBox::GWOM::ClusterObject & clusterObjectA_ = layer_.world_clusters[joint_.body_a_coordinates.first].cluster_objects[joint_.body_a_coordinates.second];
+		SquareBox::GWOM::ClusterObject& clusterObjectB_ = layer_.world_clusters[joint_.body_b_coordinates.first].cluster_objects[joint_.body_b_coordinates.second];
+		//add to the physics world 
+		physics_world_ptr_->createJoint(clusterObjectA_, clusterObjectB_, joint_);
+		// add to the layers vector
+		addJointToLayerAliveJointsMap(layer_, joint_);
+	}
 
-			int shared_joint_index_in_B = -1;
-			for (unsigned int i = 0; i < clusterObjectB_.joints.size(); i++)
+	void Utilities::createLayerJointsOnLoadFromStorage(SquareBox::GWOM::Layer& layer_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
+	{
+			for (auto & it = layer_.temp_joint_definitions.begin(); it != layer_.temp_joint_definitions.end(); it++)
 			{
-				std::pair<int, int> bodyAACoridnates = std::pair<int, int>(clusterObjectB_.joints[i]->body_a_coordinates.first, clusterObjectB_.joints[i]->body_a_coordinates.second);
-				std::pair<int, int> bodyABCoridnates = std::pair<int, int>(clusterObjectB_.joints[i]->body_b_coordinates.first, clusterObjectB_.joints[i]->body_b_coordinates.second);
-
-				if ((bodyAACoridnates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index) && bodyABCoridnates == std::pair<int, int>(clusterObjectB_.cluster_index, clusterObjectB_.index))
-					||
-					(bodyAACoridnates == std::pair<int, int>(clusterObjectB_.cluster_index, clusterObjectB_.index) && bodyABCoridnates == std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index))
-					) {
-					shared_joint_index_in_B = i;
-					break;//break the loop
-				}
+				createClusterObjectJoint(layer_, (*it), physics_world_ptr_);
 			}
-
-			if (shared_joint_index_in_B == -1) {
-				SBX_CORE_CRITICAL("The Joint was not found among body Bs joints");
-			}
-
-			//delete from body A
-			//local delete
-			int current_local_index_A = 0;
-			for (auto it = clusterObjectA_.joints.begin(); it != clusterObjectA_.joints.end();) {
-				if (current_local_index_A == shared_joint_index_in_A) {
-					clusterObjectA_.joints.erase(it);
-					break;//stop here to save time and to also prevent invalidation
-				}
-				++it;
-				++current_local_index_A;
-			}
-			//physics engine delete
-			int current_physics_index_A = 0;
-			for (auto it = clusterObjectA_.physics_properties->joints.begin(); it != clusterObjectA_.physics_properties->joints.end();) {
-				if (current_physics_index_A == shared_joint_index_in_A) {
-					clusterObjectA_.physics_properties->joints.erase(it);
-					break;
-				}
-				++it;
-				++current_physics_index_A;
-			}
-
-			//delete from body B
-			//local delete
-			int current_local_index_B = 0;
-			for (auto it = clusterObjectB_.joints.begin(); it != clusterObjectB_.joints.end();) {
-				if (current_local_index_B == shared_joint_index_in_B) {
-					clusterObjectB_.joints.erase(it);
-					break;
-				}
-				++it;
-				++current_local_index_B;
-			}
-			//physics engine delete
-			int current_physics_index_B = 0;
-			for (auto it = clusterObjectB_.physics_properties->joints.begin(); it != clusterObjectB_.physics_properties->joints.end();) {
-				if (current_physics_index_B == shared_joint_index_in_B) {
-					clusterObjectB_.physics_properties->joints.erase(it);
-					break;
-				}
-				++it;
-				++current_physics_index_B;
-			}
-		}
-		else {
-			SBX_CORE_ERROR("failed to find a shared joint when deleting joint");
-		}
-
-		removePairFromVector(layers_[clusterObjectA_.layer_index].active_joints_body_a_objects, std::pair<int, int>(clusterObjectA_.cluster_index, clusterObjectA_.index), true);
-	}
-
-	void Utilities::createWorldClusterJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld & physics_world_)
-	{
-		for (unsigned int i = 0; i < layers_.size(); i++)
-		{
-			SquareBox::GWOM::Layer & layer = layers_[i];
-			for (int j = 0; j < layer.active_joints_body_a_objects.size(); j++) {
-				std::pair<int, int>  cobj_pair = layer.active_joints_body_a_objects[j];
-				SquareBox::GWOM::ClusterObject& ccobj = layer.world_clusters[cobj_pair.first].cluster_objects[cobj_pair.second];
-				reactivateClusterObjectJoints(layers_, ccobj, physics_world_);
-			}
-		}
+			layer_.temp_joint_definitions.clear();
 	}
 
 	void Utilities::dispose()
@@ -842,6 +885,15 @@ namespace SquareBox {
 		cluster_object_.name[new_name_.size()] = '\0';
 	}
 
+	void Utilities::nameLayerByGivenName(SquareBox::GWOM::Layer& layer_, const std::string new_name_)
+	{
+		for (unsigned int si = 0; si < new_name_.size(); si++)
+		{
+			layer_.name[si] = new_name_[si];
+		}
+		layer_.name[new_name_.size()] = '\0';
+	}
+
 	void Utilities::nameLayerByIndex(SquareBox::GWOM::Layer & layer_)
 	{
 		int index = layer_.index;
@@ -868,37 +920,70 @@ namespace SquareBox {
 		layer_.name[nameString.size()] = '\0';
 	}
 
-	bool Utilities::deleteClusterObjectFromWorld(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject cluster_object_)
+	void Utilities::updateClusterObjectLayerIndex(SquareBox::GWOM::ClusterObject& cluster_object_, int new_layer_index_)
 	{
-		auto & cluster_object_layer = layers_[cluster_object_.layer_index];
-		for (std::vector<std::pair<int, int>>::iterator it = cluster_object_layer.alive_cluster_objects.begin(); it != cluster_object_layer.alive_cluster_objects.end();)
+		cluster_object_.layer_index = new_layer_index_;
+		/*
+		  joints do not reference the layers index, so a change in layer index does not affect them
+		  if i find other parts that refrenece tha layer inside of a cluster objects that they need to be changed.
+		  it will be done from here.
+		*/
+	}
+
+	void Utilities::updateClusterObjectIndex(SquareBox::GWOM::ClusterObject& cluster_object_, int new_cluster_object_index, std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* targetPhysicsWorld_)
+	{
+		const int old_cluster_object_index = cluster_object_.index;
+		std::string old_cluster_object_name = cluster_object_.name;
+		nameClusterObjectByIndex(cluster_object_);
+		std::string expected_cluster_object_name = cluster_object_.name;
+		cluster_object_.index = new_cluster_object_index;
+		const int focus_layer_index = cluster_object_.layer_index; //since joints are only between same layer objects
+		//handle the joints
+
+		//store the joints info somewhere else since destorying the joint will erase it
+		std::vector<SquareBox::GWOM::Joint> copied_joint_vec = cluster_object_.joints;
+		
+		for (unsigned int i = 0; i < copied_joint_vec.size(); i++)
 		{
-			bool erased = false;
-			if (cluster_object_.cluster_index == (*it).first && cluster_object_.index == (*it).second) {
-				//this is our target cluster object
-				for (unsigned int j = 0; j < cluster_object_.joints.size(); j++)
-				{
-					SquareBox::GWOM::Joint* joint = cluster_object_.joints[j];
-					// since we assume joints to always be on the same layer
-					SquareBox::GWOM::ClusterObject& jointBodyA = cluster_object_layer.world_clusters[joint->body_a_coordinates.first].cluster_objects[joint->body_a_coordinates.second];
-					SquareBox::GWOM::ClusterObject& jointBodyB = cluster_object_layer.world_clusters[joint->body_b_coordinates.first].cluster_objects[joint->body_b_coordinates.second];
-					destroyClusterObjectJoint(layers_, jointBodyA, jointBodyB);
-				}
+			auto& focus_joint = copied_joint_vec[i];
+			if (focus_joint.is_joint_alive) {
 
-				it = cluster_object_layer.alive_cluster_objects.erase(it);
-				erased = true;
-				cluster_object_.is_alive = false;
-				if (cluster_object_.physics_properties != nullptr) {
-					cluster_object_.physics_properties->dispose();
-					cluster_object_.physics_properties = nullptr;
-				}
+				destroyClusterObjectJoint(layers_[focus_layer_index],focus_joint,targetPhysicsWorld_);
+				//update my coordinates in the joint
+				focus_joint.body_b_coordinates = std::pair<int, int>(cluster_object_.cluster_index, cluster_object_.index);
+				createClusterObjectJoint(layers_[focus_layer_index], focus_joint, targetPhysicsWorld_);
 			}
-			if (!erased) {
-				++it;
-			}
-
-			return erased;
 		}
+		
+		//changing the name if there is need
+		nameClusterObjectByIndex(cluster_object_);
+		std::string new_cluster_object_name = cluster_object_.name;
+
+		if (old_cluster_object_name == expected_cluster_object_name) {
+			nameClusterObjectByGivenName(cluster_object_, new_cluster_object_name);
+		}
+		else {
+			nameClusterObjectByGivenName(cluster_object_, old_cluster_object_name);
+		}
+	}
+
+	void Utilities::deleteClusterObjectFromWorld(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & cluster_object_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
+	{
+		if (cluster_object_.is_alive) {
+			//delete all joints associated to this object
+			destroryClusterObjectJoints(layers_, cluster_object_, physics_world_ptr_);
+			if (cluster_object_.physics_properties != nullptr) {
+				cluster_object_.physics_properties->dispose();
+				cluster_object_.physics_properties = nullptr;
+			}
+			cluster_object_.is_alive = false;
+			removePairFromVector(layers_[cluster_object_.layer_index].alive_cluster_objects, std::pair<int, int>(cluster_object_.cluster_index, cluster_object_.index));
+
+		}
+		else {
+			SBX_CORE_ERROR("Tried to delete a  dead cluster object");
+		}
+	
 	}
 
 	void Utilities::setCurrentShapePointer(SquareBox::BodyShapeEnum enum_, SquareBox::IShape** currentShape_)
@@ -960,6 +1045,7 @@ namespace SquareBox {
 			tmp_tiled_parent_texture.texture.tiling = current_tiled_parent_texture.texture.tiling;
 			//set the textures display name , in the asset manager for future use for future use
 			SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(tmp_tiled_parent_texture.texture.id, current_tiled_parent_texture.texture.display_name);
+			SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_tiled_parent_texture.texture.id, tmp_tiled_parent_texture.texture.tiling);
 			layer_.tiled_textures.push_back(tmp_tiled_parent_texture);
 		}
 	}
@@ -1010,7 +1096,7 @@ namespace SquareBox {
 			}
 			if (rebirth) {
 				if (ClusterObject_->physics_properties != nullptr) {
-					deactivateClusterObjectJoints(layers_, *ClusterObject_);
+					deactivateClusterObjectJoints(layers_, *ClusterObject_,targetPhysicsWorld_);
 					ClusterObject_->physics_properties->dispose();
 					/*
 						we should not set ClusterObject_->physics_properties = nullptr, this will prevent the object from being created in our
@@ -1211,7 +1297,7 @@ namespace SquareBox {
 			//at the end
 			if (rebirth && ClusterObject_->physics_properties != nullptr&&ClusterObject_->physics_properties->isIntialised()) {
 				if (targetPhysicsWorld_ != nullptr&& targetPhysicsWorld_->isWorldinitalised()) {
-					reactivateClusterObjectJoints(layers_, *ClusterObject_, *targetPhysicsWorld_);
+					reactivateClusterObjectJoints(layers_, *ClusterObject_,targetPhysicsWorld_);
 				}
 				else {
 					SBX_CORE_ERROR("Physics World is not Intialised");
@@ -1225,7 +1311,7 @@ namespace SquareBox {
 			}
 
 			if (respectAncestor_ && prepopulateClusterObject) {
-				auto new_cluster_object = layers_[layer_index].world_clusters[shell.first].cluster_objects[shell.second];
+				auto & new_cluster_object = layers_[layer_index].world_clusters[shell.first].cluster_objects[shell.second];
 				new_cluster_object.layer_index = shell.first;
 				new_cluster_object.index = shell.second;
 				new_cluster_object.layer_index = ancestor.layer_index;
@@ -1295,7 +1381,4 @@ namespace SquareBox {
 
 		return (x_coordinate > x1 && x_coordinate<x2&& y_coordinate>y1 && y_coordinate < y2);
 	}
-
-
-
 }

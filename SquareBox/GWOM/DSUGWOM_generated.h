@@ -1167,15 +1167,14 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TYPE = 74,
     VT_VEC_OF_EDGES = 76,
     VT_VERTICES = 78,
-    VT_JOINTS = 80,
-    VT_OFF_SET = 82,
-    VT_POSITION = 84,
-    VT_INIT_LINEAR_VELOCITY = 86,
-    VT_DIRECTION = 88,
-    VT_SPEED = 90,
-    VT_PHYSICS_PROPERTIES = 92,
-    VT_COLOR = 94,
-    VT_TEXTURE_INFO = 96
+    VT_OFF_SET = 80,
+    VT_POSITION = 82,
+    VT_INIT_LINEAR_VELOCITY = 84,
+    VT_DIRECTION = 86,
+    VT_SPEED = 88,
+    VT_PHYSICS_PROPERTIES = 90,
+    VT_COLOR = 92,
+    VT_TEXTURE_INFO = 94
   };
   int32_t layer_index() const {
     return GetField<int32_t>(VT_LAYER_INDEX, 0);
@@ -1291,9 +1290,6 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<const SquareBox::DSUGWOM::Vec2 *> *vertices() const {
     return GetPointer<const flatbuffers::Vector<const SquareBox::DSUGWOM::Vec2 *> *>(VT_VERTICES);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *joints() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *>(VT_JOINTS);
-  }
   const SquareBox::DSUGWOM::Vec2 *off_set() const {
     return GetStruct<const SquareBox::DSUGWOM::Vec2 *>(VT_OFF_SET);
   }
@@ -1363,9 +1359,6 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVectorOfTables(vec_of_edges()) &&
            VerifyOffset(verifier, VT_VERTICES) &&
            verifier.VerifyVector(vertices()) &&
-           VerifyOffset(verifier, VT_JOINTS) &&
-           verifier.VerifyVector(joints()) &&
-           verifier.VerifyVectorOfTables(joints()) &&
            VerifyField<SquareBox::DSUGWOM::Vec2>(verifier, VT_OFF_SET) &&
            VerifyField<SquareBox::DSUGWOM::Vec2>(verifier, VT_POSITION) &&
            VerifyField<SquareBox::DSUGWOM::Vec2>(verifier, VT_INIT_LINEAR_VELOCITY) &&
@@ -1497,9 +1490,6 @@ struct ClusterObjectBuilder {
   void add_vertices(flatbuffers::Offset<flatbuffers::Vector<const SquareBox::DSUGWOM::Vec2 *>> vertices) {
     fbb_.AddOffset(ClusterObject::VT_VERTICES, vertices);
   }
-  void add_joints(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>> joints) {
-    fbb_.AddOffset(ClusterObject::VT_JOINTS, joints);
-  }
   void add_off_set(const SquareBox::DSUGWOM::Vec2 *off_set) {
     fbb_.AddStruct(ClusterObject::VT_OFF_SET, off_set);
   }
@@ -1575,7 +1565,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObject(
     int32_t type = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfVec2>>> vec_of_edges = 0,
     flatbuffers::Offset<flatbuffers::Vector<const SquareBox::DSUGWOM::Vec2 *>> vertices = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>> joints = 0,
     const SquareBox::DSUGWOM::Vec2 *off_set = 0,
     const SquareBox::DSUGWOM::Vec2 *position = 0,
     const SquareBox::DSUGWOM::Vec2 *init_linear_velocity = 0,
@@ -1593,7 +1582,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObject(
   builder_.add_init_linear_velocity(init_linear_velocity);
   builder_.add_position(position);
   builder_.add_off_set(off_set);
-  builder_.add_joints(joints);
   builder_.add_vertices(vertices);
   builder_.add_vec_of_edges(vec_of_edges);
   builder_.add_type(type);
@@ -1675,7 +1663,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObjectDirect(
     int32_t type = 0,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfVec2>> *vec_of_edges = nullptr,
     const std::vector<SquareBox::DSUGWOM::Vec2> *vertices = nullptr,
-    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *joints = nullptr,
     const SquareBox::DSUGWOM::Vec2 *off_set = 0,
     const SquareBox::DSUGWOM::Vec2 *position = 0,
     const SquareBox::DSUGWOM::Vec2 *init_linear_velocity = 0,
@@ -1688,7 +1675,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObjectDirect(
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto vec_of_edges__ = vec_of_edges ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfVec2>>(*vec_of_edges) : 0;
   auto vertices__ = vertices ? _fbb.CreateVectorOfStructs<SquareBox::DSUGWOM::Vec2>(*vertices) : 0;
-  auto joints__ = joints ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>(*joints) : 0;
   return SquareBox::DSUGWOM::CreateClusterObject(
       _fbb,
       layer_index,
@@ -1729,7 +1715,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObjectDirect(
       type,
       vec_of_edges__,
       vertices__,
-      joints__,
       off_set,
       position,
       init_linear_velocity,
@@ -1849,7 +1834,7 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_OPACITY = 6,
     VT_IS_VISIBLE = 8,
     VT_IS_LOCKED = 10,
-    VT_TILING = 12,
+    VT_LAYER_TYPE = 12,
     VT_SINGLE_TEXTURES = 14,
     VT_TILED_TEXTURES = 16,
     VT_SUB_TEXTURES = 18,
@@ -1860,7 +1845,8 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TILE_SYSTEM_TILE_SIZE = 28,
     VT_TILE_SYSTEM_DATA = 30,
     VT_ALIVE_CLUSTER_OBJECTS = 32,
-    VT_WORLD_CLUSTERS = 34
+    VT_ACTIVE_JOINTS = 34,
+    VT_WORLD_CLUSTERS = 36
   };
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
@@ -1874,8 +1860,8 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool is_locked() const {
     return GetField<uint8_t>(VT_IS_LOCKED, 0) != 0;
   }
-  int32_t tiling() const {
-    return GetField<int32_t>(VT_TILING, 0);
+  int32_t layer_type() const {
+    return GetField<int32_t>(VT_LAYER_TYPE, 0);
   }
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> *single_textures() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> *>(VT_SINGLE_TEXTURES);
@@ -1907,6 +1893,9 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *>(VT_ALIVE_CLUSTER_OBJECTS);
   }
+  const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *active_joints() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *>(VT_ACTIVE_JOINTS);
+  }
   const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *>(VT_WORLD_CLUSTERS);
   }
@@ -1917,7 +1906,7 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_OPACITY) &&
            VerifyField<uint8_t>(verifier, VT_IS_VISIBLE) &&
            VerifyField<uint8_t>(verifier, VT_IS_LOCKED) &&
-           VerifyField<int32_t>(verifier, VT_TILING) &&
+           VerifyField<int32_t>(verifier, VT_LAYER_TYPE) &&
            VerifyOffset(verifier, VT_SINGLE_TEXTURES) &&
            verifier.VerifyVector(single_textures()) &&
            verifier.VerifyVectorOfTables(single_textures()) &&
@@ -1937,6 +1926,9 @@ struct Layer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_ALIVE_CLUSTER_OBJECTS) &&
            verifier.VerifyVector(alive_cluster_objects()) &&
            verifier.VerifyVectorOfTables(alive_cluster_objects()) &&
+           VerifyOffset(verifier, VT_ACTIVE_JOINTS) &&
+           verifier.VerifyVector(active_joints()) &&
+           verifier.VerifyVectorOfTables(active_joints()) &&
            VerifyOffset(verifier, VT_WORLD_CLUSTERS) &&
            verifier.VerifyVector(world_clusters()) &&
            verifier.VerifyVectorOfTables(world_clusters()) &&
@@ -1960,8 +1952,8 @@ struct LayerBuilder {
   void add_is_locked(bool is_locked) {
     fbb_.AddElement<uint8_t>(Layer::VT_IS_LOCKED, static_cast<uint8_t>(is_locked), 0);
   }
-  void add_tiling(int32_t tiling) {
-    fbb_.AddElement<int32_t>(Layer::VT_TILING, tiling, 0);
+  void add_layer_type(int32_t layer_type) {
+    fbb_.AddElement<int32_t>(Layer::VT_LAYER_TYPE, layer_type, 0);
   }
   void add_single_textures(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>> single_textures) {
     fbb_.AddOffset(Layer::VT_SINGLE_TEXTURES, single_textures);
@@ -1993,6 +1985,9 @@ struct LayerBuilder {
   void add_alive_cluster_objects(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects) {
     fbb_.AddOffset(Layer::VT_ALIVE_CLUSTER_OBJECTS, alive_cluster_objects);
   }
+  void add_active_joints(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>> active_joints) {
+    fbb_.AddOffset(Layer::VT_ACTIVE_JOINTS, active_joints);
+  }
   void add_world_clusters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters) {
     fbb_.AddOffset(Layer::VT_WORLD_CLUSTERS, world_clusters);
   }
@@ -2013,7 +2008,7 @@ inline flatbuffers::Offset<Layer> CreateLayer(
     int32_t opacity = 0,
     bool is_visible = false,
     bool is_locked = false,
-    int32_t tiling = 0,
+    int32_t layer_type = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>> single_textures = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>> tiled_textures = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>>> sub_textures = 0,
@@ -2024,9 +2019,11 @@ inline flatbuffers::Offset<Layer> CreateLayer(
     float tile_system_tile_size = 0.0f,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> tile_system_data = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>> alive_cluster_objects = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>> active_joints = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>> world_clusters = 0) {
   LayerBuilder builder_(_fbb);
   builder_.add_world_clusters(world_clusters);
+  builder_.add_active_joints(active_joints);
   builder_.add_alive_cluster_objects(alive_cluster_objects);
   builder_.add_tile_system_data(tile_system_data);
   builder_.add_tile_system_tile_size(tile_system_tile_size);
@@ -2037,7 +2034,7 @@ inline flatbuffers::Offset<Layer> CreateLayer(
   builder_.add_sub_textures(sub_textures);
   builder_.add_tiled_textures(tiled_textures);
   builder_.add_single_textures(single_textures);
-  builder_.add_tiling(tiling);
+  builder_.add_layer_type(layer_type);
   builder_.add_opacity(opacity);
   builder_.add_name(name);
   builder_.add_is_locked(is_locked);
@@ -2051,7 +2048,7 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
     int32_t opacity = 0,
     bool is_visible = false,
     bool is_locked = false,
-    int32_t tiling = 0,
+    int32_t layer_type = 0,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> *single_textures = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> *tiled_textures = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>> *sub_textures = nullptr,
@@ -2062,6 +2059,7 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
     float tile_system_tile_size = 0.0f,
     const std::vector<int32_t> *tile_system_data = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> *alive_cluster_objects = nullptr,
+    const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> *active_joints = nullptr,
     const std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> *world_clusters = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto single_textures__ = single_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>>(*single_textures) : 0;
@@ -2069,6 +2067,7 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
   auto sub_textures__ = sub_textures ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>>(*sub_textures) : 0;
   auto tile_system_data__ = tile_system_data ? _fbb.CreateVector<int32_t>(*tile_system_data) : 0;
   auto alive_cluster_objects__ = alive_cluster_objects ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>>(*alive_cluster_objects) : 0;
+  auto active_joints__ = active_joints ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>>(*active_joints) : 0;
   auto world_clusters__ = world_clusters ? _fbb.CreateVector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>>(*world_clusters) : 0;
   return SquareBox::DSUGWOM::CreateLayer(
       _fbb,
@@ -2076,7 +2075,7 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
       opacity,
       is_visible,
       is_locked,
-      tiling,
+      layer_type,
       single_textures__,
       tiled_textures__,
       sub_textures__,
@@ -2087,6 +2086,7 @@ inline flatbuffers::Offset<Layer> CreateLayerDirect(
       tile_system_tile_size,
       tile_system_data__,
       alive_cluster_objects__,
+      active_joints__,
       world_clusters__);
 }
 

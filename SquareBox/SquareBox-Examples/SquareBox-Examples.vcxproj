@@ -268,26 +268,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="BoostExample.h" />
-    <ClInclude Include="Box2DExample.h" />
     <ClInclude Include="CustomAppConsole.h" />
     <ClInclude Include="ExampleHomeScreen.h" />
     <ClInclude Include="IExample.h" />
-    <ClInclude Include="LoggerExample.h" />
-    <ClInclude Include="LuaExample.h" />
+    <ClInclude Include="ParticleSystemExample.h" />
     <ClInclude Include="ScreenIndices.h" />
-    <ClInclude Include="TextureRenderingExample.h" />
-    <ClInclude Include="VideoPlayerExample.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="BoostExample.cpp" />
-    <ClCompile Include="Box2DExample.cpp" />
     <ClCompile Include="ExampleHomeScreen.cpp" />
-    <ClCompile Include="LoggerExample.cpp" />
-    <ClCompile Include="LuaExample.cpp" />
-    <ClCompile Include="TextureRenderingExample.cpp" />
-    <ClCompile Include="VideoPlayerExample.cpp" />
+    <ClCompile Include="ParticleSystemExample.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

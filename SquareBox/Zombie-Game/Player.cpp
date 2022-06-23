@@ -7,6 +7,9 @@ void Player::init()
 void Player::setUp(SquareBox::GWOM::ClusterObject & player_cluster_object)
 {
 	player_cluster_object.speed = m_speed;
+	//initial direction is usefull for the mobile controls use case
+	// where direction only gets updated when the player moves
+	player_cluster_object.direction = glm::vec2(0, -1);
 }
 
 void Player::update(float delta_time_, std::pair<int, std::pair<int, int>> & cluster_object_coordinates_, std::vector<SquareBox::GWOM::Layer>& layers_,int grid_index_with_collision_members_,int start_index_, SquareBox::RenderEngine::ParticleBatch * blood_particle_batch_ptr_, SquareBox::GWOM::Grid* collision_grid_ptr_)

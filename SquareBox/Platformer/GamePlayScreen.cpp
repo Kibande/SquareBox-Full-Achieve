@@ -24,19 +24,42 @@ void GamePlayScreen::onEntry()
 	m_texture_program.linkShaders();
 
 	m_sprite_batch.init();
-	glm::vec2 screen_dimensions;
-	screen_dimensions.x = std::max(m_window_ptr->getScreenWidth(),m_window_ptr->getScreenHeight());
-	screen_dimensions.y = std::min(m_window_ptr->getScreenWidth(),m_window_ptr->getScreenHeight());
-	m_layer.camera.init(screen_dimensions.x,screen_dimensions.y);
+	m_layer.camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+	m_layer.camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight())*0.5f);
 
+
+	nLevelWidth = 64;
+	nLevelHeight = 16;
+	
+	sLevel.append("................................................................");
+	sLevel.append("................................................................");
+	sLevel.append(".......ooooo....................................................");
+	sLevel.append("........ooo.....................................................");
+	sLevel.append(".......................########.................................");
+	sLevel.append(".....BB?BBBB?BB.......###..............#.#......................");
+	sLevel.append("....................###................#.#......................");
+	sLevel.append("...................####.........................................");
+	sLevel.append("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG.##############.....########");
+	sLevel.append("...................................#.#...............###........");
+	sLevel.append("........................############.#............###...........");
+	sLevel.append("........................#............#.........###..............");
+	sLevel.append("........................#.############......###.................");
+	sLevel.append("........................#................###....................");
+	sLevel.append("........................#################.......................");
+	sLevel.append("................................................................");
 }
 
 void GamePlayScreen::update(const float & deltaTime_)
 {
-	glm::vec2 screen_dimensions;
-	screen_dimensions.x = std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	screen_dimensions.y = std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	m_layer.camera.update(screen_dimensions.x, screen_dimensions.y);
+	int nTileWidth = 16;
+	int nTileHeight = 16;
+
+	int nVisibleTilesX = m_window_ptr->getScreenWidth() / nTileWidth;
+	int nVisibleTilesY = m_window_ptr->getScreenHeight() / nTileHeight;
+
+	 
+
+	m_layer.camera.update(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
 	m_window_ptr->update();
 }
 
