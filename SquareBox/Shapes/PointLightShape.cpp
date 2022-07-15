@@ -12,7 +12,7 @@ void SquareBox::Shapes::PointLightShape::draw(const SquareBox::GWOM::ClusterObje
 		//the further away from the center the less bright a light is
 		const glm::vec4 & uvRect = glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
 
-		spriteBatch_.draw(destRect, uvRect, 0, 0.0f, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)), 0);
+		spriteBatch_.draw(destRect, uvRect, 0, 0.0f, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)), 0);
 	}
 }
 

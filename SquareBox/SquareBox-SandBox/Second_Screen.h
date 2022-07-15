@@ -1,6 +1,7 @@
 #pragma once
 #include "ScreenIndices.h"
 #include <SquareBox-Core/SquareBoxGameEngine.h>
+#include <SquareBox-Editor/Editor_Assistant.h>
 #include<ImGUI/imgui.h>
 #include<ImGUI/imgui_impl_sdl.h>
 #include<ImGUI/imgui_impl_opengl3.h>
@@ -8,7 +9,7 @@
 class Second_Screen : public SquareBox::IGameScreen
 {
 public:
-	Second_Screen(SquareBox::RenderEngine::Window* window);
+	Second_Screen();
 	~Second_Screen();
 private:
 	// Inherited via IGameScreen
@@ -32,8 +33,6 @@ private:
 
 	void drawGUI();
 
-	void cameraControls(SquareBox::Camera::ParallelCamera & camera_, SquareBox::IMainGame * gamePtr_);
-
 	void showMenuMain();
 
 	void loadTextureObject(std::string file_path_,std::string file_name_, glm::vec2 tiling_);
@@ -41,7 +40,6 @@ private:
 	SquareBox::Utilities m_utilities;
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
 	SquareBox::RenderEngine::DebugRenderer m_debug_renderer;
@@ -77,22 +75,5 @@ private:
 	*/
 	SquareBox::GWOM::TileSystem m_tile_system;
 
-
-
-
-	//camera controls
-	int camera_panning_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_ALT);
-	int camera_panning_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_ALT);
-	int camera_panning_master_input_key = static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK);
-
-
-	//camera zoom
-	int camera_zooming_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_ALT);
-	int camera_zooming_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_ALT);
-	//and the mouse wheel
-
-
-	//camera motion
-	int camera_motion_1_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::LEFT_CTRL);
-	int camera_motion_2_of_or_input_key = static_cast<int>(SquareBox::KeyBoardEnum::RIGHT_CTRL);
+	SquareBoxEditor::Editor_Assistant m_editor_assistant;
 };

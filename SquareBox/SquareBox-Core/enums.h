@@ -16,6 +16,20 @@ namespace SquareBox {
 		(MIDDLE,"MIDDLE",2)
 		)
 
+		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(GUIElementStateEnum,
+			(ACTIVE, "ACTIVE", 0)
+			(DEFAULT, "DEFAULT", 1)
+			(DISABLED, "DISABLED", 2)
+			(FOCUS, "FOCUS", 3)
+			(HOVER, "HOVER", 4)
+			(SELECTED, "SELECTED", 5)
+		)
+
+		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(GUIElementShapeEnum,
+			(BOX, "BOX", 0)
+			(CIRCLE, "CIRCLE", 1)
+		)
+
 		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(AudioInputFormatEnum,
 			(FLAC_FORMAT,"FLAC_FORMAT", MIX_INIT_FLAC)
 			(MOD_FORMAT,"MOD_FORMAT", MIX_INIT_MOD)

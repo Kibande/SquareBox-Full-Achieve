@@ -54,8 +54,6 @@ table PairOfVec2 {
 table GLTexture {
 	assets_file_path:string;
 	display_name:string;
-	heigth:int;
-	width:int;
 	tiling:Ivec2;
 }
 
@@ -77,6 +75,8 @@ table TextureInfo {
    tile_sheet_index:int;
    texture_id:int;
    uv_rect:Vec4;
+   color:Ivec4;
+   opacity:int;
 }
 
 table VectorOfInt {
@@ -171,7 +171,6 @@ init_linear_velocity:Vec2;
 direction:Vec2;
 speed:float;
 physics_properties:int;
-color:Ivec4;
 texture_info:TextureInfo;
 
 }

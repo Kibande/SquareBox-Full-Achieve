@@ -168,7 +168,6 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 		//load the layers textures
 		m_utilities.loadLayerTextures(focus_layer, m_window_ptr->getDDPI());
 
-		if (focus_layer.tile_system.isInitialised()) {
 			/*
 				we need a world cluster in layers where we are going to store all the tiles that have been
 				converted to cluster objects
@@ -288,11 +287,7 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 					}
 				}
 			}
-		}
-		else {
-			// the grass layer has one hug box of grass
-			// for now lets forget about this
-		}
+		
 	}
 
 	// we need a layer that will hold the ammunition

@@ -338,21 +338,13 @@ struct GLTexture FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ASSETS_FILE_PATH = 4,
     VT_DISPLAY_NAME = 6,
-    VT_HEIGTH = 8,
-    VT_WIDTH = 10,
-    VT_TILING = 12
+    VT_TILING = 8
   };
   const flatbuffers::String *assets_file_path() const {
     return GetPointer<const flatbuffers::String *>(VT_ASSETS_FILE_PATH);
   }
   const flatbuffers::String *display_name() const {
     return GetPointer<const flatbuffers::String *>(VT_DISPLAY_NAME);
-  }
-  int32_t heigth() const {
-    return GetField<int32_t>(VT_HEIGTH, 0);
-  }
-  int32_t width() const {
-    return GetField<int32_t>(VT_WIDTH, 0);
   }
   const SquareBox::DSUGWOM::Ivec2 *tiling() const {
     return GetStruct<const SquareBox::DSUGWOM::Ivec2 *>(VT_TILING);
@@ -363,8 +355,6 @@ struct GLTexture FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(assets_file_path()) &&
            VerifyOffset(verifier, VT_DISPLAY_NAME) &&
            verifier.VerifyString(display_name()) &&
-           VerifyField<int32_t>(verifier, VT_HEIGTH) &&
-           VerifyField<int32_t>(verifier, VT_WIDTH) &&
            VerifyField<SquareBox::DSUGWOM::Ivec2>(verifier, VT_TILING) &&
            verifier.EndTable();
   }
@@ -379,12 +369,6 @@ struct GLTextureBuilder {
   }
   void add_display_name(flatbuffers::Offset<flatbuffers::String> display_name) {
     fbb_.AddOffset(GLTexture::VT_DISPLAY_NAME, display_name);
-  }
-  void add_heigth(int32_t heigth) {
-    fbb_.AddElement<int32_t>(GLTexture::VT_HEIGTH, heigth, 0);
-  }
-  void add_width(int32_t width) {
-    fbb_.AddElement<int32_t>(GLTexture::VT_WIDTH, width, 0);
   }
   void add_tiling(const SquareBox::DSUGWOM::Ivec2 *tiling) {
     fbb_.AddStruct(GLTexture::VT_TILING, tiling);
@@ -404,13 +388,9 @@ inline flatbuffers::Offset<GLTexture> CreateGLTexture(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> assets_file_path = 0,
     flatbuffers::Offset<flatbuffers::String> display_name = 0,
-    int32_t heigth = 0,
-    int32_t width = 0,
     const SquareBox::DSUGWOM::Ivec2 *tiling = 0) {
   GLTextureBuilder builder_(_fbb);
   builder_.add_tiling(tiling);
-  builder_.add_width(width);
-  builder_.add_heigth(heigth);
   builder_.add_display_name(display_name);
   builder_.add_assets_file_path(assets_file_path);
   return builder_.Finish();
@@ -420,8 +400,6 @@ inline flatbuffers::Offset<GLTexture> CreateGLTextureDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *assets_file_path = nullptr,
     const char *display_name = nullptr,
-    int32_t heigth = 0,
-    int32_t width = 0,
     const SquareBox::DSUGWOM::Ivec2 *tiling = 0) {
   auto assets_file_path__ = assets_file_path ? _fbb.CreateString(assets_file_path) : 0;
   auto display_name__ = display_name ? _fbb.CreateString(display_name) : 0;
@@ -429,8 +407,6 @@ inline flatbuffers::Offset<GLTexture> CreateGLTextureDirect(
       _fbb,
       assets_file_path__,
       display_name__,
-      heigth,
-      width,
       tiling);
 }
 
@@ -564,7 +540,9 @@ struct TextureInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TEXTURE_INDEX = 6,
     VT_TILE_SHEET_INDEX = 8,
     VT_TEXTURE_ID = 10,
-    VT_UV_RECT = 12
+    VT_UV_RECT = 12,
+    VT_COLOR = 14,
+    VT_OPACITY = 16
   };
   int32_t texture_type() const {
     return GetField<int32_t>(VT_TEXTURE_TYPE, 0);
@@ -581,6 +559,12 @@ struct TextureInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const SquareBox::DSUGWOM::Vec4 *uv_rect() const {
     return GetStruct<const SquareBox::DSUGWOM::Vec4 *>(VT_UV_RECT);
   }
+  const SquareBox::DSUGWOM::Ivec4 *color() const {
+    return GetStruct<const SquareBox::DSUGWOM::Ivec4 *>(VT_COLOR);
+  }
+  int32_t opacity() const {
+    return GetField<int32_t>(VT_OPACITY, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_TEXTURE_TYPE) &&
@@ -588,6 +572,8 @@ struct TextureInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_TILE_SHEET_INDEX) &&
            VerifyField<int32_t>(verifier, VT_TEXTURE_ID) &&
            VerifyField<SquareBox::DSUGWOM::Vec4>(verifier, VT_UV_RECT) &&
+           VerifyField<SquareBox::DSUGWOM::Ivec4>(verifier, VT_COLOR) &&
+           VerifyField<int32_t>(verifier, VT_OPACITY) &&
            verifier.EndTable();
   }
 };
@@ -611,6 +597,12 @@ struct TextureInfoBuilder {
   void add_uv_rect(const SquareBox::DSUGWOM::Vec4 *uv_rect) {
     fbb_.AddStruct(TextureInfo::VT_UV_RECT, uv_rect);
   }
+  void add_color(const SquareBox::DSUGWOM::Ivec4 *color) {
+    fbb_.AddStruct(TextureInfo::VT_COLOR, color);
+  }
+  void add_opacity(int32_t opacity) {
+    fbb_.AddElement<int32_t>(TextureInfo::VT_OPACITY, opacity, 0);
+  }
   explicit TextureInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -628,8 +620,12 @@ inline flatbuffers::Offset<TextureInfo> CreateTextureInfo(
     int32_t texture_index = 0,
     int32_t tile_sheet_index = 0,
     int32_t texture_id = 0,
-    const SquareBox::DSUGWOM::Vec4 *uv_rect = 0) {
+    const SquareBox::DSUGWOM::Vec4 *uv_rect = 0,
+    const SquareBox::DSUGWOM::Ivec4 *color = 0,
+    int32_t opacity = 0) {
   TextureInfoBuilder builder_(_fbb);
+  builder_.add_opacity(opacity);
+  builder_.add_color(color);
   builder_.add_uv_rect(uv_rect);
   builder_.add_texture_id(texture_id);
   builder_.add_tile_sheet_index(tile_sheet_index);
@@ -1173,8 +1169,7 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_DIRECTION = 86,
     VT_SPEED = 88,
     VT_PHYSICS_PROPERTIES = 90,
-    VT_COLOR = 92,
-    VT_TEXTURE_INFO = 94
+    VT_TEXTURE_INFO = 92
   };
   int32_t layer_index() const {
     return GetField<int32_t>(VT_LAYER_INDEX, 0);
@@ -1308,9 +1303,6 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t physics_properties() const {
     return GetField<int32_t>(VT_PHYSICS_PROPERTIES, 0);
   }
-  const SquareBox::DSUGWOM::Ivec4 *color() const {
-    return GetStruct<const SquareBox::DSUGWOM::Ivec4 *>(VT_COLOR);
-  }
   const SquareBox::DSUGWOM::TextureInfo *texture_info() const {
     return GetPointer<const SquareBox::DSUGWOM::TextureInfo *>(VT_TEXTURE_INFO);
   }
@@ -1365,7 +1357,6 @@ struct ClusterObject FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<SquareBox::DSUGWOM::Vec2>(verifier, VT_DIRECTION) &&
            VerifyField<float>(verifier, VT_SPEED) &&
            VerifyField<int32_t>(verifier, VT_PHYSICS_PROPERTIES) &&
-           VerifyField<SquareBox::DSUGWOM::Ivec4>(verifier, VT_COLOR) &&
            VerifyOffset(verifier, VT_TEXTURE_INFO) &&
            verifier.VerifyTable(texture_info()) &&
            verifier.EndTable();
@@ -1508,9 +1499,6 @@ struct ClusterObjectBuilder {
   void add_physics_properties(int32_t physics_properties) {
     fbb_.AddElement<int32_t>(ClusterObject::VT_PHYSICS_PROPERTIES, physics_properties, 0);
   }
-  void add_color(const SquareBox::DSUGWOM::Ivec4 *color) {
-    fbb_.AddStruct(ClusterObject::VT_COLOR, color);
-  }
   void add_texture_info(flatbuffers::Offset<SquareBox::DSUGWOM::TextureInfo> texture_info) {
     fbb_.AddOffset(ClusterObject::VT_TEXTURE_INFO, texture_info);
   }
@@ -1571,11 +1559,9 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObject(
     const SquareBox::DSUGWOM::Vec2 *direction = 0,
     float speed = 0.0f,
     int32_t physics_properties = 0,
-    const SquareBox::DSUGWOM::Ivec4 *color = 0,
     flatbuffers::Offset<SquareBox::DSUGWOM::TextureInfo> texture_info = 0) {
   ClusterObjectBuilder builder_(_fbb);
   builder_.add_texture_info(texture_info);
-  builder_.add_color(color);
   builder_.add_physics_properties(physics_properties);
   builder_.add_speed(speed);
   builder_.add_direction(direction);
@@ -1669,7 +1655,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObjectDirect(
     const SquareBox::DSUGWOM::Vec2 *direction = 0,
     float speed = 0.0f,
     int32_t physics_properties = 0,
-    const SquareBox::DSUGWOM::Ivec4 *color = 0,
     flatbuffers::Offset<SquareBox::DSUGWOM::TextureInfo> texture_info = 0) {
   auto vec_of_mask_bits__ = vec_of_mask_bits ? _fbb.CreateVector<int32_t>(*vec_of_mask_bits) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
@@ -1721,7 +1706,6 @@ inline flatbuffers::Offset<ClusterObject> CreateClusterObjectDirect(
       direction,
       speed,
       physics_properties,
-      color,
       texture_info);
 }
 

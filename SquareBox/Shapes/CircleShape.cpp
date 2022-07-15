@@ -12,7 +12,7 @@ namespace SquareBox {
 
 				const glm::vec2   boxDims = glm::vec2(clusterObject_.radius * 2, clusterObject_.radius * 2);
 				const glm::vec2  boxOrigin = glm::vec2(clusterObject_.position) - boxDims * 0.5f;
-				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.radius * 2, clusterObject_.radius * 2), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w) * (0.01 * opacity_)), clusterObject_.angle);
+				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.radius * 2, clusterObject_.radius * 2), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w) * (0.01 * opacity_)), clusterObject_.angle);
 			}
 		}
 

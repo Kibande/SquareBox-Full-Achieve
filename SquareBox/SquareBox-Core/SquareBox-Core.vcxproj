@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -146,7 +146,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86;$(SolutionDir)\vendor\lib\Debug\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -168,7 +168,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86_64;$(SolutionDir)\vendor\lib\Debug\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -193,7 +193,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86;$(SolutionDir)\vendor\lib\Release\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -218,7 +218,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86_64;$(SolutionDir)\vendor\lib\Release\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -243,7 +243,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86;$(SolutionDir)\vendor\lib\Dist\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -268,7 +268,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AI.lib;Lua.lib;Box2D.lib;ImGui.lib;MathLib.lib;Animation-System.lib;Audio-System.lib;Camera.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Render-Engine.lib;Asset-Manager.lib;Media-Player.lib;Physics-Collision-Engine.lib;GWOM.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86_64;$(SolutionDir)\vendor\lib\Dist\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -276,7 +276,6 @@
     <ClInclude Include="Essentials.h" />
     <ClInclude Include="IGameScreen.h" />
     <ClInclude Include="IMainGame.h" />
-    <ClInclude Include="IShape.h" />
     <ClInclude Include="ScreenList.h" />
     <ClInclude Include="SquareBoxGameEngine.h" />
     <ClInclude Include="Utilities.h" />
@@ -289,7 +288,6 @@
   <ItemGroup>
     <ClCompile Include="IGameScreen.cpp" />
     <ClCompile Include="IMainGame.cpp" />
-    <ClCompile Include="IShape.cpp" />
     <ClCompile Include="ScreenList.cpp" />
     <ClCompile Include="SquareBoxGameEngine.cpp" />
     <ClCompile Include="Utilities.cpp" />
@@ -326,6 +324,9 @@
     </ProjectReference>
     <ProjectReference Include="..\Shapes\Shapes.vcxproj">
       <Project>{09400CD1-F5E1-36A7-DE9C-4AFBCADDBDF7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GUI\GUI.vcxproj">
+      <Project>{2AEC870B-96F5-877C-1F71-9E7C8B79937C}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Media-Player\Media-Player.vcxproj">
       <Project>{7F08F9D9-6B6B-887E-14F1-C03400335401}</Project>

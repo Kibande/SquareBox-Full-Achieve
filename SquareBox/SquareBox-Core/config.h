@@ -16,9 +16,9 @@
 #include <Shapes/Shapes.h>
 #include <AI/AI.h>
 #include <Asset-Manager/Asset-Manager.h>
+#include <GUI/GUI.h>
 #include "IMainGame.h"
 #include "IGameScreen.h"
-#include "IShape.h"
 #include "ScreenList.h"
 #include "Essentials.h"
 #include "Utilities.h"

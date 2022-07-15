@@ -3,17 +3,17 @@
 void SquareBox::Shapes::CalculatedLightShape::draw(const SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::SpriteBatch & spriteBatch_, int opacity_)
 {
 	if (!clusterObject_.is_hidden) {
-		calculateVisiblityPolygon(clusterObject_.position, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)));
+		calculateVisiblityPolygon(clusterObject_.position, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)));
 		//The drawing
 		// Draw each triangle in fan
 		for (int i = 0; i < vecVisibilityPolygonPoints.size() - 1 && vecVisibilityPolygonPoints.size()>0; i++)
 		{
-			drawTriangleLight(clusterObject_.position, glm::vec2(std::get<1>(vecVisibilityPolygonPoints[i]), std::get<2>(vecVisibilityPolygonPoints[i])), glm::vec2(std::get<1>(vecVisibilityPolygonPoints[i + 1]), std::get<2>(vecVisibilityPolygonPoints[i + 1])), spriteBatch_, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)), true, clusterObject_.radius);
+			drawTriangleLight(clusterObject_.position, glm::vec2(std::get<1>(vecVisibilityPolygonPoints[i]), std::get<2>(vecVisibilityPolygonPoints[i])), glm::vec2(std::get<1>(vecVisibilityPolygonPoints[i + 1]), std::get<2>(vecVisibilityPolygonPoints[i + 1])), spriteBatch_, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)), true, clusterObject_.radius);
 		}
 		if (vecVisibilityPolygonPoints.size() > 0) {
 			//close the triangle
 			// Fan will have one open edge, so draw last point of fan to first
-			drawTriangleLight(clusterObject_.position, glm::vec2(std::get<1>(vecVisibilityPolygonPoints[vecVisibilityPolygonPoints.size() - 1]), std::get<2>(vecVisibilityPolygonPoints[vecVisibilityPolygonPoints.size() - 1])), glm::vec2(std::get<1>(vecVisibilityPolygonPoints[0]), std::get<2>(vecVisibilityPolygonPoints[0])), spriteBatch_, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)), true, clusterObject_.radius);
+			drawTriangleLight(clusterObject_.position, glm::vec2(std::get<1>(vecVisibilityPolygonPoints[vecVisibilityPolygonPoints.size() - 1]), std::get<2>(vecVisibilityPolygonPoints[vecVisibilityPolygonPoints.size() - 1])), glm::vec2(std::get<1>(vecVisibilityPolygonPoints[0]), std::get<2>(vecVisibilityPolygonPoints[0])), spriteBatch_, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)), true, clusterObject_.radius);
 		}
 	}
 }
@@ -31,7 +31,7 @@ bool SquareBox::Shapes::CalculatedLightShape::containtsPoint(SquareBox::GWOM::Cl
 
 void SquareBox::Shapes::CalculatedLightShape::debugDraw(const SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const  SquareBox::RenderEngine::ColorRGBA8 borderColor_)
 {
-	calculateVisiblityPolygon(clusterObject_.position, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)));
+	calculateVisiblityPolygon(clusterObject_.position, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)));
 
 	//The drawing
 	// Draw each triangle in fan
@@ -58,7 +58,7 @@ void SquareBox::Shapes::CalculatedLightShape::debugDraw(const SquareBox::GWOM::C
 	debugRender_.drawCircle(clusterObject_.position, borderColor_, clusterObject_.radius*0.3);
 
 	//drawing the diameter
-	debugRender_.drawCircle(clusterObject_.position, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)), clusterObject_.radius);
+	debugRender_.drawCircle(clusterObject_.position, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)), clusterObject_.radius);
 }
 
 void SquareBox::Shapes::CalculatedLightShape::traceDraw(const SquareBox::GWOM::ClusterObject & clusterObject_, SquareBox::RenderEngine::DebugRenderer & debugRender_, const  glm::vec2 & mouseinworld, const  SquareBox::RenderEngine::ColorRGBA8 & borderColor_, const  float cameraScale_)
@@ -69,7 +69,7 @@ void SquareBox::Shapes::CalculatedLightShape::traceDraw(const SquareBox::GWOM::C
 		debugRender_.drawCircle(clusterObject_.vertices[i], borderColor_, 1.0f / cameraScale_);
 	}
 
-	calculateVisiblityPolygon(mouseinworld, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)));
+	calculateVisiblityPolygon(mouseinworld, clusterObject_.radius, clusterObject_.vec_of_edges, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)));
 	// Draw each triangle in fan
 
 	for (int i = 0; i < vecVisibilityPolygonPoints.size() - 1 && vecVisibilityPolygonPoints.size()>0; i++)
@@ -95,7 +95,7 @@ void SquareBox::Shapes::CalculatedLightShape::traceDraw(const SquareBox::GWOM::C
 	}
 
 	//drawing the diameter
-	debugRender_.drawCircle(mouseinworld, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.color.x), ( clusterObject_.color.y), ( clusterObject_.color.z), ( clusterObject_.color.w)), clusterObject_.radius);
+	debugRender_.drawCircle(mouseinworld, SquareBox::RenderEngine::ColorRGBA8(( clusterObject_.texture_info.color.x), ( clusterObject_.texture_info.color.y), ( clusterObject_.texture_info.color.z), ( clusterObject_.texture_info.color.w)), clusterObject_.radius);
 }
 
 glm::vec2 SquareBox::Shapes::CalculatedLightShape::localCoordinatesToWorldCoordinates(const SquareBox::GWOM::ClusterObject & clusterObject_, const  glm::vec2 & localCoordinates_)

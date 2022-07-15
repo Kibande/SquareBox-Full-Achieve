@@ -28,6 +28,7 @@ class LayerTypeInterface {
 		*/
 		virtual void onLayerIndexChange(SquareBox::GWOM::Layer& active_layer_, int new_layer_index_) =0 ;
 		virtual void onFocus(SquareBox::GWOM::Layer& layer_, EditorModeEnum editor_mode_) = 0;
+		virtual void onOutOfFocus(SquareBox::GWOM::Layer& layer_) = 0;
 		virtual void onUpdateProcessingInput(float deltaTime_,std::vector<SquareBox::GWOM::Layer> & layers_, int active_layer_index_,SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_) = 0;
 		
 		// done even when the layer is not the one receiving input

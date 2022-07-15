@@ -15,13 +15,34 @@
     <ClInclude Include="ClusterObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DSUGUI_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DSUGWOM_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DSUString_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Entities.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FontInfo.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIElement.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GWOM.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiReaderWriter.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Joint.h">
@@ -33,18 +54,24 @@
     <ClInclude Include="LevelReaderWriter.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="StringReaderWriter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureInfo.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="TileSystem.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WorldCluster.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="DSUGWOM_generated.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiReaderWriter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Layer.cpp">
@@ -53,18 +80,24 @@
     <ClCompile Include="LevelReaderWriter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="StringReaderWriter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="TileSystem.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DSUGUI.fbs">
+      <Filter>Docs</Filter>
+    </None>
     <None Include="DSUGWOM.fbs">
       <Filter>Docs</Filter>
     </None>
-    <None Include="NetworkMessage.fbs">
+    <None Include="DSUString.fbs">
       <Filter>Docs</Filter>
     </None>
-    <None Include="DSUGWOM _V2.fbs">
+    <None Include="NetworkMessage.fbs">
       <Filter>Docs</Filter>
     </None>
   </ItemGroup>

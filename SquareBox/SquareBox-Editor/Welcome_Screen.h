@@ -7,7 +7,7 @@
 class Welcome_Screen :public SquareBox::IGameScreen
 {
 public:
-	Welcome_Screen(SquareBox::RenderEngine::Window* window);
+	Welcome_Screen();
 	~Welcome_Screen();
 
 private:
@@ -36,7 +36,6 @@ private:
 private:
 	SquareBox::RenderEngine::SpriteBatch m_spriteBatch;
 	SquareBox::RenderEngine::SpriteFont m_spriteFont;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_textureProgram;
 	SquareBox::Camera::ParallelCamera m_camera;
 

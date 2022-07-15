@@ -21,10 +21,12 @@
     <ClInclude Include="IExample.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="ScreenIndices.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystemExample.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -33,9 +35,11 @@
     <ClCompile Include="ExampleHomeScreen.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystemExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystemExample.cpp" />
   </ItemGroup>
 </Project>

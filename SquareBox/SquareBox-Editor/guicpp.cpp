@@ -1377,7 +1377,7 @@
 //					}
 //
 //					if (ImGui::Button("+ Single")) {
-//						m_show_open_texture_file_dialog = true;
+//						m_show_open_single_texture_file_dialog = true;
 //					}
 //				}
 //				else if (m_current_cluster_object_ptr->texture_type == 1) {
@@ -2272,7 +2272,7 @@
 //			ImGui::OpenPopup("Open Level File");
 //		if (m_show_save_level_file_dialog)
 //			ImGui::OpenPopup("Save Level File");
-//		if (m_show_open_texture_file_dialog)
+//		if (m_show_open_single_texture_file_dialog)
 //			ImGui::OpenPopup("Open Texture File");
 //
 //		if (m_show_open_tile_sheet_file_dialog)
@@ -2598,7 +2598,7 @@
 //		//reset of all dialogs
 //		m_show_open_level_file_dialog = false;
 //		m_show_save_level_file_dialog = false;
-//		m_show_open_texture_file_dialog = false;
+//		m_show_open_single_texture_file_dialog = false;
 //		m_show_open_tile_sheet_file_dialog = false;
 //	}
 //

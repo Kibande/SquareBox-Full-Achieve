@@ -18,13 +18,28 @@
     <ClInclude Include="DesktopAppEditor_Screen.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EditorEnums.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Editor_Assistant.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatLayer.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FolderChangeTracker.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LevelEditor_Screen.h">
+    <ClInclude Include="GUIEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IsometricLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerTypeInterface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEditor.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MenuObject.h">
@@ -36,15 +51,12 @@
     <ClInclude Include="ScreenIndices.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TiledLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Welcome_Screen.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="LayerTypeInterface.h" />
-    <ClInclude Include="TiledLayer.h" />
-    <ClInclude Include="LevelEditor.h" />
-    <ClInclude Include="FlatLayer.h" />
-    <ClInclude Include="IsometricLayer.h" />
-    <ClInclude Include="EditorEnums.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -56,16 +68,28 @@
     <ClCompile Include="Editor_Assistant.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="FlatLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="FolderChangeTracker.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="LevelEditor_Screen.cpp">
+    <ClCompile Include="GUIEditor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IsometricLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEditor.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="MenuObject.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="MobileAppEditor_Screen.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TiledLayer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Welcome_Screen.cpp">
@@ -77,9 +101,5 @@
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="TiledLayer.cpp" />
-    <ClCompile Include="LevelEditor.cpp" />
-    <ClCompile Include="FlatLayer.cpp" />
-    <ClCompile Include="IsometricLayer.cpp" />
   </ItemGroup>
 </Project>

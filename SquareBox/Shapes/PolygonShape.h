@@ -1,6 +1,6 @@
 #pragma once
 #include <SquareBox-Core/enums.h>
-#include <SquareBox-Core/IShape.h>
+#include "IShape.h"
 #include <Physics-Collision-Engine/PhysicsCollisionEngine.h>
 #include <Render-Engine/RenderingEngine.h>
 #include <glm/glm.hpp>

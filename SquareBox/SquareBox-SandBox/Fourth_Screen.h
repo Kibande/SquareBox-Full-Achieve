@@ -3,7 +3,7 @@
 class Fourth_Screen : public SquareBox::IGameScreen
 {
 public:
-	Fourth_Screen(SquareBox::RenderEngine::Window *window_);
+	Fourth_Screen();
 	~Fourth_Screen();
 	// Inherited via IGameScreen
 	virtual int getNextScreenIndex() const override;
@@ -16,7 +16,6 @@ public:
 	virtual void destroy() override;
 
 private:
-	SquareBox::RenderEngine::Window * m_window_ptr = nullptr;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
 	SquareBox::InputManager::IInputDevice * m_input_handler;

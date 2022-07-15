@@ -261,18 +261,18 @@ namespace SquareBox {
 
 	void Utilities::addJointToLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
 	{
-		auto & response = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& response = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 		if (response == layer_.active_joints_body_a_map.end()) {
 			//not found so add it
 			layer_.active_joints_body_a_map[joint_.body_a_coordinates] = std::vector<SquareBox::GWOM::Joint>();
 		}
-		auto& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 
 		// we did not check for duplicates ....
 
-		auto & target_vec = (*cleark).second;
+		std::vector<SquareBox::GWOM::Joint> & target_vec = (*cleark).second;
 		bool found_exact = false;
-		for (auto& it = target_vec.begin(); it != target_vec.end();it++)
+		for (std::vector<SquareBox::GWOM::Joint>::iterator & it = target_vec.begin(); it != target_vec.end();it++)
 		{
 			//first equality check
 			if ((*it)== joint_) {
@@ -290,15 +290,15 @@ namespace SquareBox {
 
 	void Utilities::removeJointFromLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
 	{
-		auto& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator & cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 		if (cleark == layer_.active_joints_body_a_map.end()) {
 			//not found 
 			SBX_CORE_ERROR("Tried to delete a joint that was never rcorded");
 		}
 		else {
-			auto& target_vec = (*cleark).second;
+			std::vector<SquareBox::GWOM::Joint>& target_vec = (*cleark).second;
 			bool found_exact = false;
-			for (auto& it = target_vec.begin(); it != target_vec.end();it++)
+			for (std::vector<SquareBox::GWOM::Joint>::iterator & it = target_vec.begin(); it != target_vec.end();it++)
 			{
 				//first equality check
 				if ((*it) == joint_) {
@@ -740,13 +740,6 @@ namespace SquareBox {
 			destroyClusterObjectJoint(layers_[clusterObject_.layer_index],focus_joint,physics_world_ptr_);
 		}
 
-		if (clusterObject_.joints.size()!=0) {
-			/*
-			 this should be 0 because all joints should have been destroyed
-			
-			*/
-			__debugbreak();
-		}
 		//restore back these joints data about the joints os that it is not lost
 		clusterObject_.joints = copied_joint_vec;
 	}
@@ -1345,7 +1338,7 @@ namespace SquareBox {
 				new_cluster_object.position = ancestor.position;
 				new_cluster_object.init_linear_velocity = ancestor.init_linear_velocity;
 
-				new_cluster_object.color = ancestor.color;
+				new_cluster_object.texture_info.color = ancestor.texture_info.color;
 			}
 		}
 		else {

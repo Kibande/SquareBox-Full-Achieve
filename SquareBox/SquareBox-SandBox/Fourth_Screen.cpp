@@ -1,8 +1,8 @@
 #include "Fourth_Screen.h"
 
-Fourth_Screen::Fourth_Screen(SquareBox::RenderEngine::Window *window_)
+Fourth_Screen::Fourth_Screen()
 {
-	m_window_ptr = window_;
+
 }
 
 Fourth_Screen::~Fourth_Screen()
@@ -46,7 +46,7 @@ void Fourth_Screen::build()
 	//layer
 	m_layers.emplace_back();
 	SquareBox::GWOM::Layer & active_layer=m_layers[m_active_layer_index];
-	glm::vec2 screen_dimensions(std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()), std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()));
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	active_layer.camera.init(screen_dimensions.x,screen_dimensions.y);
 	active_layer.camera.setPosition(screen_dimensions*glm::vec2(0.5f));
 
@@ -96,9 +96,8 @@ void Fourth_Screen::onEntry()
 //called once every frame to update the game logic
 void Fourth_Screen::update(const float & deltaTime_)
 {
-	glm::vec2 screen_dimensions(std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()), std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()));
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
-	m_window_ptr->update();
 	m_layers[m_active_layer_index].camera.update(screen_dimensions.x, screen_dimensions.y);
 
 
@@ -113,7 +112,7 @@ void Fourth_Screen::draw()
 	preUpdateShader(&m_texture_program, "mySampler");
 	uploadCameraInfo(&m_texture_program, &m_layers[m_active_layer_index].camera,"P");
 	m_sprite_batch.begin();
-	glm::vec2 screen_dimensions(std::max(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()), std::min(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight()));
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
 	m_sprite_font.draw(m_sprite_batch, "Fourth Screen", screen_dimensions*glm::vec2(0.5f), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), SquareBox::JustificationEnum::MIDDLE);
 	m_sprite_batch.end();

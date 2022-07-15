@@ -5,7 +5,7 @@ class Thrid_Screen : public SquareBox::IGameScreen
 {
 
 public:
-	Thrid_Screen(SquareBox::RenderEngine::Window* window);
+	Thrid_Screen();
 	~Thrid_Screen();
 	// Inherited via IGameScreen
 	virtual int getNextScreenIndex() const override;
@@ -18,7 +18,6 @@ public:
 	virtual void destroy() override;
 
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
 

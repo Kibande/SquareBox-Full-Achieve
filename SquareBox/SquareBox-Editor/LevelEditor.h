@@ -34,7 +34,7 @@ enum class EditorThemeEnum {
 class LevelEditor :public SquareBox::IGameScreen
 {
 public:
-	LevelEditor(SquareBox::RenderEngine::Window* window_ptr_);
+	LevelEditor();
 
 	// Inherited via IGameScreen
 	virtual int getNextScreenIndex() const override;
@@ -61,7 +61,8 @@ public:
 	void disposeGUI();
 	void showMainMenu();
 	void drawGUI();
-
+	// called when we change layers so as to flex the p
+	void upateEditorVariables();
 	~LevelEditor();
 
 private:
@@ -73,10 +74,6 @@ private:
 	SquareBox::RenderEngine::DebugRenderer m_debug_renderer;
 
 	SquareBox::AssetManager::GLTexture m_texture;
-
-	SquareBox::RenderEngine::Window* m_window_ptr;
-
-	std::vector<LayerTypeInterface*> m_layer_types_vec;
 
 	SquareBox::GWOM::LevelReaderWriter m_level_reader_writer;
 
@@ -136,5 +133,6 @@ private:
 	std::vector<LayerTypeInterface*> m_vec_of_layer_types;
 	int m_selected_layer_type = 0;
 	bool m_is_all_work_saved = true;
+	float m_main_menu_bar_height = 0.0f;
 };
 

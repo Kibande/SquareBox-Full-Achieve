@@ -1,7 +1,6 @@
 #include "Editor_Assistant.h"
 void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::Layer& active_layer_ref_, std::vector<std::pair<int, int>>& selected_tiles_vec_, SquareBox::IMainGame* m_game, SquareBox::Utilities& m_utilities)
 {
-	if (active_layer_ref_.tile_system.isInitialised()) {
 		// we are going to loop through , duplicating tile by tile
 		std::vector<std::pair<int, int>> duplicates;
 		if (
@@ -663,7 +662,6 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 		}
 
-	}
 }
 
 
@@ -677,7 +675,7 @@ std::pair<int, int> SquareBoxEditor::Editor_Assistant::currentClusterObjectDupli
 {
 	std::pair<int, int> new_created_cluster_object_coordinates = std::pair<int, int>(-1, -1);//since our pointer is going to get iinvalidated
 	//Duplicating ,for needs_width
-	if (m_currentClusterObject_ptr != nullptr && !layers_[m_currentClusterObject_ptr->layer_index].tile_system.isInitialised()) {
+	if (m_currentClusterObject_ptr != nullptr) {
 		auto& current_layer = layers_[m_currentClusterObject_ptr->layer_index];
 		if (
 			m_game->getInputDevice()->isInputIdBeingReceived(cluster_object_selection_duplication_input_key_1)
@@ -774,6 +772,7 @@ void SquareBoxEditor::Editor_Assistant::cameraControls(SquareBox::Camera::Parall
 
 		auto relation_motion = gamePtr_->getInputDevice()->getScreenLocations()[1].coordinates;
 		camera_.offsetPosition(glm::vec2(-relation_motion.x, relation_motion.y * camera_.getAspectRatio()) * calculated_movement_speed);
+		return;
 	}
 	//zoom
 	if (
@@ -783,9 +782,18 @@ void SquareBoxEditor::Editor_Assistant::cameraControls(SquareBox::Camera::Parall
 		) {
 		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
 		float scale_offset = mouse_wheel.y;
-		camera_.offsetScale(scale_offset);
+		if (std::abs(scale_offset)) {
+			glm::vec2 mouse_in_world_before = camera_.convertScreenToWorld(gamePtr_->getInputDevice()->getScreenLocations()[0].coordinates);
+			camera_.offsetScale(scale_offset);
+			glm::vec2 mouse_in_world_after = camera_.convertScreenToWorld(gamePtr_->getInputDevice()->getScreenLocations()[0].coordinates);
+
+			glm::vec2 dist_vec = mouse_in_world_before - mouse_in_world_after;
+			camera_.offsetPosition(dist_vec);
+			return;
+		}
 	}
-	else if (
+	
+	if (
 		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_1_of_or_input_key)
 		||
 		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_2_of_or_input_key)

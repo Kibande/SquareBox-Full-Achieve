@@ -17,7 +17,7 @@ namespace SquareBox {
 			static GLTexture getTextureById(int id_);
 			/// Applies the tiling to the cached version of the Texture so that it can be maintained 
 			/// when being retrieved from the asset manager 
-			static void setTextureTilingById(int id_, glm::vec2 tiling_);
+			static void setTextureTilingById(int id_, glm::ivec2 tiling_);
 			static void setTextureDisplayNameById(int id_, std::string display_name_);
 		private:
 			static TextureCache m_texture_cache;

@@ -1,10 +1,10 @@
 #pragma once
-//#include <SquareBox-Core/SquareBoxGameEngine.h>
-#include <SquareBox-Core/IMainGame.h>
+#include <SquareBox-Core/SquareBoxGameEngine.h>
 #include "Welcome_Screen.h"
 #include "MobileAppEditor_Screen.h"
 #include "DesktopAppEditor_Screen.h"
 #include "LevelEditor.h"
+#include "GUIEditor.h"
 
 class App : public SquareBox::IMainGame
 {
@@ -26,4 +26,5 @@ private:
 	std::unique_ptr<LevelEditor> level_editor_screen_model_2 = nullptr;
 	std::unique_ptr<DesktopAppEditor_Screen> desktop_app_editor_screen = nullptr;
 	std::unique_ptr<MobileAppEditor_Screen> mobile_app_editor_screen = nullptr;
+	std::unique_ptr<GUIEditor> m_gui_editor_screen = nullptr;
 };

@@ -1,0 +1,32 @@
+#pragma once
+#include "TextureInfo.h"
+#include "FontInfo.h"
+#include <glm/glm.hpp>
+#include<vector>
+namespace SquareBox {
+	namespace GWOM {
+		class GUIElement {
+		public:
+			GUIElement() {
+				std::strcpy(name, "name\0");
+			}
+			~GUIElement() {};
+			GUIElementShapeEnum shape=SquareBox::GUIElementShapeEnum::CIRCLE;
+			GUIElementStateEnum state=SquareBox::GUIElementStateEnum::ACTIVE;
+			int id = 1;
+			char name[20];
+			bool is_hidden = false;
+			bool is_locked= false;
+			glm::vec2 location_ratio = { 0.0f,0.0f };
+			float height_ratio = 0.0f;
+			float width_ratio = 0.0f;
+			float radius_ratio = 0.0f;
+			float angle = 0.0f;
+			float is_alive = false;
+			std::vector<FontInfo> fonts = std::vector<FontInfo>(6, FontInfo());//	the number of memebers should match the possible
+			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of memebers should match the possible
+			//	state count.
+		};
+	};
+};
+

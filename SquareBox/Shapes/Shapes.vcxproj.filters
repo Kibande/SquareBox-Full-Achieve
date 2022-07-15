@@ -12,9 +12,6 @@
     <ClInclude Include="BoxShape.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="BridgeWrapper.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CalculatedLightShape.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -28,6 +25,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="EdgeShape.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IShape.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PointLightShape.h">
@@ -47,9 +47,6 @@
     <ClCompile Include="BoxShape.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="BridgeWrapper.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="CalculatedLightShape.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -63,6 +60,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="EdgeShape.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IShape.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="PointLightShape.cpp">

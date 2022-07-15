@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -274,10 +274,10 @@
     <ClInclude Include="Editor_Assistant.h" />
     <ClInclude Include="FlatLayer.h" />
     <ClInclude Include="FolderChangeTracker.h" />
+    <ClInclude Include="GUIEditor.h" />
     <ClInclude Include="IsometricLayer.h" />
     <ClInclude Include="LayerTypeInterface.h" />
     <ClInclude Include="LevelEditor.h" />
-    <ClInclude Include="LevelEditor_Screen.h" />
     <ClInclude Include="MenuObject.h" />
     <ClInclude Include="MobileAppEditor_Screen.h" />
     <ClInclude Include="ScreenIndices.h" />
@@ -290,9 +290,9 @@
     <ClCompile Include="Editor_Assistant.cpp" />
     <ClCompile Include="FlatLayer.cpp" />
     <ClCompile Include="FolderChangeTracker.cpp" />
+    <ClCompile Include="GUIEditor.cpp" />
     <ClCompile Include="IsometricLayer.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
-    <ClCompile Include="LevelEditor_Screen.cpp" />
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="MobileAppEditor_Screen.cpp" />
     <ClCompile Include="TiledLayer.cpp" />

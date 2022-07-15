@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -268,25 +268,36 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ClusterObject.h" />
+    <ClInclude Include="DSUGUI_generated.h" />
     <ClInclude Include="DSUGWOM_generated.h" />
+    <ClInclude Include="DSUString_generated.h" />
     <ClInclude Include="Entities.h" />
+    <ClInclude Include="FontInfo.h" />
+    <ClInclude Include="GUIElement.h" />
     <ClInclude Include="GWOM.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GuiLayer.h" />
+    <ClInclude Include="GuiReaderWriter.h" />
     <ClInclude Include="Joint.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LevelReaderWriter.h" />
+    <ClInclude Include="StringReaderWriter.h" />
+    <ClInclude Include="TextureInfo.h" />
     <ClInclude Include="TileSystem.h" />
     <ClInclude Include="WorldCluster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GuiReaderWriter.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="LevelReaderWriter.cpp" />
+    <ClCompile Include="StringReaderWriter.cpp" />
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DSUGWOM _V2.fbs" />
+    <None Include="DSUGUI.fbs" />
     <None Include="DSUGWOM.fbs" />
+    <None Include="DSUString.fbs" />
     <None Include="NetworkMessage.fbs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

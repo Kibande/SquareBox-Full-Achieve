@@ -1,7 +1,7 @@
 #include "DesktopAppEditor_Screen.h"
 #include "ScreenIndices.h"
 #include<glm/gtx/vector_angle.hpp>
-DesktopAppEditor_Screen::DesktopAppEditor_Screen(SquareBox::RenderEngine::Window* window) :m_window(window)
+DesktopAppEditor_Screen::DesktopAppEditor_Screen()
 {
 }
 
@@ -48,7 +48,7 @@ void DesktopAppEditor_Screen::onEntry()
 	m_debug_program.linkShaders();
 
 	//Init Cameras
-	m_layer.camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_layer.camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_layer.camera.setScale(162.0f);
 	m_layer.camera.setPosition(glm::vec2(0));//Center the camera
 	
@@ -63,7 +63,7 @@ void DesktopAppEditor_Screen::onEntry()
 	//  SquareBox::AssetManager::IOManager::freePixelData(pixel_buffer);
 
 	//  //Window Opactity
-	//  m_window->setWindowOpacity(0.1f);
+	  m_game_ptr->getWindow()->setWindowOpacity(0.1f);
 
 	
 
@@ -89,7 +89,7 @@ void DesktopAppEditor_Screen::onExit()
 
 void DesktopAppEditor_Screen::update(const float & deltaTime_)
 {
-	m_layer.camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_layer.camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_assistant.cameraControls(m_layer.camera, m_game_ptr);
 	//Get the mouse coordinates
 	glm::vec2 mouse_in_world = m_layer.camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
@@ -111,7 +111,7 @@ void DesktopAppEditor_Screen::draw()
 	m_sprite_font.draw(m_sprite_batch, buffer, m_layer.camera.getPosition(), glm::vec2(0.01f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
 	
 	glm::vec4 dest_rect = glm::vec4(box.position - glm::vec2(box.width, box.height) * 0.5f, box.width, box.height);
-	m_sprite_batch.draw(dest_rect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), box.texture_info.texture_id, 1.0f, box.color);
+	m_sprite_batch.draw(dest_rect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), box.texture_info.texture_id, 1.0f, box.texture_info.color);
 	m_sprite_batch.end();
 	
 	m_sprite_batch.renderBatch();

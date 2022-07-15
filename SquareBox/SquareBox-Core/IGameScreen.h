@@ -7,7 +7,6 @@ namespace SquareBox {
 	class IMainGame;
 	enum class ScreenState
 	{
-		NONE,
 		RUNNING,
 		EXIT_APPLICATION,
 		CHANGE_NEXT,
@@ -36,7 +35,7 @@ namespace SquareBox {
 		virtual void update(const float & deltaTime_) = 0;
 		///Called once ever frame to draw to the screen
 		virtual void draw() = 0;
-		///These are called when a screen enters and leaves forcus
+		///These are called when a screen enters and leaves focus
 		virtual void onExit() = 0;
 		/// Called when this screen is removed from the list of screen 
 		///this happens at the end of the application
@@ -59,7 +58,7 @@ namespace SquareBox {
 		void preUpdateShader(SquareBox::RenderEngine::GLSLProgram* program, std::string textureUnifromName);
 		void uploadCameraInfo(SquareBox::RenderEngine::GLSLProgram * program, SquareBox::Camera::ParallelCamera* camera, std::string cameraUniformName);
 
-		ScreenState m_current_state = ScreenState::NONE;
+		ScreenState m_current_state = ScreenState::RUNNING;
 		IMainGame* m_game_ptr = nullptr;//A pointer to  the main game contoller
 		int m_screen_index = -1;//-1 means we are not currently an active screen
 	};

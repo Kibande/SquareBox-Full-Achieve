@@ -113,9 +113,13 @@ namespace SquareBox {
 			if (m_screen_list) {
 				m_screen_list->destroy();
 				m_screen_list.reset(); // frees all the smart pointer memory for us
-				m_window.destory();//sdl clean up
+
+				m_audio_engine_ptr->dispose();
+				delete m_audio_engine_ptr;
+
 				m_input_manager->dispose(); //dispose the input manager and free up memory
 				delete m_input_manager;//release inputManager Memory
+				m_window.destory();//sdl clean up
 #ifndef SQB_PLATFORM_ANDROID
 
 				for (unsigned int i = 0; i < m_vec_of_media_players.size(); i++)
@@ -142,6 +146,16 @@ namespace SquareBox {
 	bool IMainGame::init()
 	{
 		SquareBox::init();
+
+		m_audio_engine_ptr = new SquareBox::AudioSystem::AudioEngine();
+		int audio_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
+		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
+		m_audio_engine_ptr->init(audio_flags, 22050, SquareBox::AudioOutputFormatEnum::U8_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::MONO, 4096);
+
 		if (m_input_device == SquareBox::InputDevicesEnum::KeyBoardAndMouse) {
 			m_input_manager = new SquareBox::InputManager::Keyboard();
 			m_input_manager->init();
@@ -174,6 +188,7 @@ namespace SquareBox {
 		m_current_screen_ptr = m_screen_list->getCurrent();
 		if (m_current_screen_ptr == nullptr) {
 			SBX_CORE_CRITICAL("No Game Screen Initialized");
+			return false;
 		}
 		m_current_screen_ptr->onEntry();
 		m_current_screen_ptr->setRunning();
@@ -215,10 +230,6 @@ namespace SquareBox {
 				break;
 			case ScreenState::EXIT_APPLICATION:
 				exitGame();
-				break;
-			case ScreenState::NONE:
-				//this is not a common use case 
-				// when is it used ??
 				break;
 			default:
 				SBX_CORE_CRITICAL("Unknown Screen State");

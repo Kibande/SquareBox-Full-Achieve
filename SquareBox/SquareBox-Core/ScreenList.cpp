@@ -42,8 +42,8 @@ namespace SquareBox {
 	{
 		newScreen->m_screen_index = m_screens.size();
 		m_screens.push_back(newScreen);
-		newScreen->build();
 		newScreen->setParentGame(m_game);
+		newScreen->build();
 	}
 
 	void ScreenList::destroy()

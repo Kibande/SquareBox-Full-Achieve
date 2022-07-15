@@ -6,7 +6,7 @@
 class DesktopAppEditor_Screen :public SquareBox::IGameScreen
 {
 public:
-	DesktopAppEditor_Screen(SquareBox::RenderEngine::Window* window);
+	DesktopAppEditor_Screen();
 	~DesktopAppEditor_Screen();
 
 private:
@@ -32,7 +32,6 @@ private:
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
 	SquareBox::RenderEngine::DebugRenderer m_debug_render;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 	SquareBox::RenderEngine::GLSLProgram m_debug_program;
 	SquareBox::Camera::ParallelCamera m_camera;

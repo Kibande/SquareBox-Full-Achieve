@@ -19,12 +19,12 @@ void GamePlayScreen::build()
 void GamePlayScreen::onEntry()
 {
 	//initailising the GUI camera
+	
+	m_hud_gui_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
+	m_game_play_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
-	m_hud_gui_camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	m_game_play_camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-
-	m_hud_gui_camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth() * 0.5f, m_window_ptr->getScreenHeight() * 0.5f));
-	m_game_play_camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth() *0.5f, m_window_ptr->getScreenHeight() *0.5f));
+	m_hud_gui_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));
+	m_game_play_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() *0.5f, m_game_ptr->getWindow()->getScreenHeight() *0.5f));
 	m_hud_gui_camera.setScale(1.0f);
 	m_game_play_camera.setScale(1.0f);
 
@@ -51,39 +51,30 @@ void GamePlayScreen::onEntry()
 
 
 	//initialize our games GUI
-	m_game_huds_and_gui.init(m_game_ptr, m_window_ptr);
+	m_game_huds_and_gui.init(m_game_ptr);
 
 	//initialize our game logic
-	m_game_logic.init(m_game_ptr, m_audio_engine_ptr,m_window_ptr,&m_agents_collision_grid,m_layers,m_game_play_camera,m_player_coordinates);
+	m_game_logic.init(m_game_ptr, m_game_ptr->getAudioEngine(), m_game_ptr->getWindow(),&m_agents_collision_grid,m_layers,m_game_play_camera,m_player_coordinates);
 
 	m_utilities.init();
 
 	#ifdef SQB_PLATFORM_ANDROID
-		m_sprite_font.init("fonts/Comfortaa-Regular.ttf", screen_dimensions.y * 0.05f);
+		m_sprite_font.init("fonts/Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
 	#else
-		m_sprite_font.init("Assets/Fonts/Comfortaa-Regular.ttf", m_window_ptr->getScreenHeight() * 0.05f);
+		m_sprite_font.init("Assets/Fonts/Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
 	#endif
 
+		
 
-	//setup the audio engine
-		m_audio_engine_ptr = new SquareBox::AudioSystem::AudioEngine();
-		int audio_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
-		m_audio_engine_ptr->init(audio_flags, 22050, SquareBox::AudioOutputFormatEnum::U8_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::MONO, 4096);
-		SDL_GetNumAudioDevices(SDL_FALSE);
 		auto music_raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
 		m_music_1 = SquareBox::AudioSystem::Music("", SquareBox::FallOffEnum::INVERSE, 10.0f, 50.0f, glm::vec2(0.0f), music_raw_data.first, music_raw_data.second);
 		//lets load our music from here
-		m_audio_engine_ptr->loadMusic(m_music_1);
+		m_game_ptr->getAudioEngine()->loadMusic(m_music_1);
 		m_music_1.play();
 		auto raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/rifle.wav");
 		m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("", raw_data.first, raw_data.second));
 
-		m_audio_engine_ptr->loadSoundBank(m_sound_bank);
+		m_game_ptr->getAudioEngine()->loadSoundBank(m_sound_bank);
 		//m_sound_bank.play();
 
 		auto sound_effect1 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
@@ -124,8 +115,8 @@ void GamePlayScreen::update(const float & deltaTime_)
 
 
 	// update the huds and GUI camera
-	m_hud_gui_camera.update(m_window_ptr->getScreenWidth() ,m_window_ptr->getScreenHeight());
-	m_game_play_camera.update(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+	m_hud_gui_camera.update(m_game_ptr->getWindow()->getScreenWidth() ,m_game_ptr->getWindow()->getScreenHeight());
+	m_game_play_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
 	//set the game play camera to always be at the players location
 
@@ -181,8 +172,7 @@ void GamePlayScreen::update(const float & deltaTime_)
 	}
 
 	m_game_play_camera.setPosition(new_camera_position);
-	m_audio_engine_ptr->update(glm::vec2(0.0f));
-
+	m_game_ptr->getAudioEngine()->update(glm::vec2(0.0f));
 }
 
 void GamePlayScreen::draw()
@@ -327,9 +317,6 @@ void GamePlayScreen::destroy()
 	m_utilities.dispose();
 
 	m_sprite_font.dispose();
-
-	m_audio_engine_ptr->dispose();
-	delete m_audio_engine_ptr;
 }
 
 void GamePlayScreen::drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_,SquareBox::GWOM::Layer & layer_)

@@ -86,7 +86,6 @@ void SquareBox::GWOM::TileSystem::resetTileSystem()
 	m_num_y_tiles = 0;
 	m_num_x_tiles = 0;
 	active_tiles.clear();
-	m_is_initialised = false;
 	/* we are not reseting the tiling system because the way we set it is external from the whole tiling grid*/
 }
 

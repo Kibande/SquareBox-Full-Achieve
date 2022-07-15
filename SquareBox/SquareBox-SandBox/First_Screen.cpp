@@ -18,7 +18,7 @@ Order of Methods Calling
 
 */
 
-First_Screen::First_Screen(SquareBox::RenderEngine::Window* window) :m_window(window)
+First_Screen::First_Screen()
 {
 }
 
@@ -34,8 +34,6 @@ int First_Screen::getPreviousScreenIndex() const
 
 void First_Screen::build()
 {
-	//Called when the Screen is Added to the Screens list
-	glm::vec2 screen_dimensions(std::max(m_window->getScreenWidth(), m_window->getScreenHeight()), std::min(m_window->getScreenWidth(), m_window->getScreenHeight()));
 	//Create our first layer
 	m_layers.emplace_back();
 	//get a reference to the last placed layer
@@ -45,6 +43,7 @@ void First_Screen::build()
 	layer.alive_cluster_objects.reserve(60);
 	layer.single_textures.reserve(5);
 	layer.tiled_textures.reserve(10);
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	layer.camera.init(screen_dimensions.x, screen_dimensions.y);
 
 	layer.camera.setScale(1.0f);
@@ -95,7 +94,8 @@ void First_Screen::onEntry()
 	m_texture_program.linkShaders();
 
 	//this is where the screens default parameters are set
-	glm::vec2 screen_dimensions(std::max(m_window->getScreenWidth(), m_window->getScreenHeight()), std::min(m_window->getScreenWidth(), m_window->getScreenHeight()));
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
+
 	m_layers[m_active_layer_index].camera.setPosition(glm::vec2(screen_dimensions.x / 2, screen_dimensions.y / 2));//Center the camera
 
 																			  
@@ -142,8 +142,7 @@ void First_Screen::onEntry()
 void First_Screen::update(const float & deltaTime_)
 {
 	//Called once every game loop , and updates what will be drawn
-	m_window->update();
-	glm::vec2 screen_dimensions(std::max(m_window->getScreenWidth(), m_window->getScreenHeight()), std::min(m_window->getScreenWidth(), m_window->getScreenHeight()));
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_layers[m_active_layer_index].camera.update(screen_dimensions.x, screen_dimensions.y);
 
 	//m_automation.update(m_vec_of_world_clusters,m_layers[m_active_layer_index].alive_cluster_objects,deltaTime_);
@@ -194,7 +193,7 @@ void First_Screen::draw()
 	m_sprite_font.draw(m_sprite_batch, os.str().c_str(), glm::vec2(screen_dimensions.x*0.1 ,screen_dimensions.y*0.9), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon), SquareBox::JustificationEnum::MIDDLE);
 
 #else
-	m_sprite_font.draw(m_sprite_batch, std::to_string(m_game_ptr->getFps()).c_str(), glm::vec2(m_window->getScreenWidth()*0.1, m_window->getScreenHeight()*0.9), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon), SquareBox::JustificationEnum::MIDDLE);
+	m_sprite_font.draw(m_sprite_batch, std::to_string(m_game_ptr->getFps()).c_str(), glm::vec2(m_game_ptr->getWindow()->getScreenWidth()*0.1, m_game_ptr->getWindow()->getScreenHeight()*0.9), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon), SquareBox::JustificationEnum::MIDDLE);
 #endif
 	SquareBox::GWOM::ClusterObject & active_cluster_object = m_vec_of_world_clusters[0].cluster_objects[0];
 	SquareBox::GWOM::ClusterObject & house = m_vec_of_world_clusters[0].cluster_objects[1];

@@ -48,6 +48,7 @@ public:
 	virtual void onPrepareForStorage(std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_) override;
 	virtual void onLoadFromStorage(std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_) override;
 	virtual void onFocus(SquareBox::GWOM::Layer& layer_, EditorModeEnum editor_mode_) override;
+	virtual void onOutOfFocus(SquareBox::GWOM::Layer& layer_) override;
 	virtual void onLayerIndexChange(SquareBox::GWOM::Layer& active_layer_, int new_layer_index_) override;
 	virtual void onUpdateProcessingInput(float deltaTime_, std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_,SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_) override;
 	virtual void onUpdateWithOrWithoutProcessing(float deltaTime_, std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_,SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_) override;

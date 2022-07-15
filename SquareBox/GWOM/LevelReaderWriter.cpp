@@ -40,7 +40,7 @@ namespace SquareBox {
 				{
 					const SquareBox::GWOM::ParentTexture& current_single_parent_texture = layer.single_textures[k];
 					auto current_single_texture_tiling_vec2 = SquareBox::DSUGWOM::Ivec2(current_single_parent_texture.texture.tiling.x, current_single_parent_texture.texture.tiling.y);
-					fb_single_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder,current_single_parent_texture.texture_index,SquareBox::DSUGWOM::CreateGLTexture(builder,builder.CreateString(current_single_parent_texture.texture.asset_file_path),builder.CreateString(current_single_parent_texture.texture.display_name), current_single_parent_texture.texture.height, current_single_parent_texture.texture.width,&current_single_texture_tiling_vec2)));
+					fb_single_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder,current_single_parent_texture.texture_index,SquareBox::DSUGWOM::CreateGLTexture(builder,builder.CreateString(current_single_parent_texture.texture.asset_file_path),builder.CreateString(current_single_parent_texture.texture.display_name),&current_single_texture_tiling_vec2)));
 				}
 
 				//Tiled 
@@ -49,7 +49,7 @@ namespace SquareBox {
 				{
 					const SquareBox::GWOM::ParentTexture& current_tiled_parent_texture = layer.tiled_textures[k];
 					auto current_tiled_texture_tiling_vec2 = SquareBox::DSUGWOM::Ivec2(current_tiled_parent_texture.texture.tiling.x, current_tiled_parent_texture.texture.tiling.y);
-					fb_tiled_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder, current_tiled_parent_texture.texture_index, SquareBox::DSUGWOM::CreateGLTexture(builder, builder.CreateString(current_tiled_parent_texture.texture.asset_file_path), builder.CreateString(current_tiled_parent_texture.texture.display_name), current_tiled_parent_texture.texture.height, current_tiled_parent_texture.texture.width,&current_tiled_texture_tiling_vec2)));
+					fb_tiled_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder, current_tiled_parent_texture.texture_index, SquareBox::DSUGWOM::CreateGLTexture(builder, builder.CreateString(current_tiled_parent_texture.texture.asset_file_path), builder.CreateString(current_tiled_parent_texture.texture.display_name),&current_tiled_texture_tiling_vec2)));
 				}
 
 				//Sub texture
@@ -99,8 +99,8 @@ namespace SquareBox {
 						auto tmp_ccobj_position = SquareBox::DSUGWOM::Vec2(ccobj->position.x, ccobj->position.y);
 						auto tmp_ccobj_init_linear_velocity = SquareBox::DSUGWOM::Vec2(ccobj->init_linear_velocity.x, ccobj->init_linear_velocity.y);
 						auto tmp_ccobj_direction = SquareBox::DSUGWOM::Vec2(ccobj->direction.x, ccobj->direction.y);
-						auto tmp_ccobj_color = SquareBox::DSUGWOM::Ivec4(ccobj->color.x, ccobj->color.y, ccobj->color.z, ccobj->color.w);
 						auto tmp_texture_info_uv_rect = SquareBox::DSUGWOM::Vec4(ccobj->texture_info.uv_rect.x, ccobj->texture_info.uv_rect.y, ccobj->texture_info.uv_rect.z, ccobj->texture_info.uv_rect.w);
+						auto tmp_texture_info_color = SquareBox::DSUGWOM::Ivec4(ccobj->texture_info.color.x, ccobj->texture_info.color.y, ccobj->texture_info.color.z, ccobj->texture_info.color.w);
 
 						//we have to covert each Cluster object to a flatBuffer Cluster Object
 						vec_of_fb_cluster_objects.push_back(SquareBox::DSUGWOM::CreateClusterObject(builder,
@@ -146,15 +146,14 @@ namespace SquareBox {
 							&tmp_ccobj_direction,
 							ccobj->speed,
 							ccobj->physics_properties != nullptr ? 1 : 0,
-							&tmp_ccobj_color,
-							SquareBox::DSUGWOM::CreateTextureInfo(builder, static_cast<int>(ccobj->texture_info.texture_type), ccobj->texture_info.texture_index, ccobj->texture_info.tile_sheet_index, ccobj->texture_info.texture_id, &tmp_texture_info_uv_rect)
+							SquareBox::DSUGWOM::CreateTextureInfo(builder, static_cast<int>(ccobj->texture_info.texture_type), ccobj->texture_info.texture_index, ccobj->texture_info.tile_sheet_index, ccobj->texture_info.texture_id, &tmp_texture_info_uv_rect,&tmp_texture_info_color,ccobj->texture_info.opacity)
 						));
 					}
 					vec_of_fb_layer_world_clusters.push_back(SquareBox::DSUGWOM::CreateWorldCluster(builder, cwcobj.index, cwcobj.deletionIndex, builder.CreateString(std::string(cwcobj.name)), cwcobj.isSelected, builder.CreateVector(vec_of_fb_cluster_objects)));
 				}
 
 				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> vec_of_joints;
-				for (auto & it = layer.active_joints_body_a_map.begin(); it != layer.active_joints_body_a_map.end(); it++)
+				for (std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::const_iterator & it = layer.active_joints_body_a_map.begin(); it != layer.active_joints_body_a_map.end(); it++)
 				{
 					for (unsigned int vector_index = 0;vector_index<(*it).second.size();vector_index++) {
 						const SquareBox::GWOM::Joint & current_joint = (*it).second[vector_index];
@@ -246,7 +245,6 @@ namespace SquareBox {
 			for (unsigned int i = 0; i<fb_layers->size(); i++) {
 				auto fb_layer = fb_layers->Get(i);
 				SquareBox::GWOM::Layer layer;
-
 			
 				//layer name
 				auto fb_layer_name = fb_layer->name()->str();
@@ -274,8 +272,6 @@ namespace SquareBox {
 					tmp_parent_texture.texture_index = fb_single_texture->texture_index();
 					tmp_parent_texture.texture.asset_file_path = fb_single_texture->texture()->assets_file_path()->str();
 					tmp_parent_texture.texture.display_name = fb_single_texture->texture()->display_name()->str();
-					tmp_parent_texture.texture.height = fb_single_texture->texture()->heigth();
-					tmp_parent_texture.texture.width = fb_single_texture->texture()->width();
 					tmp_parent_texture.texture.tiling = glm::vec2(0.0f, 0.0f);
 					layer.single_textures.push_back(tmp_parent_texture);
 				}
@@ -290,8 +286,6 @@ namespace SquareBox {
 					tmp_parent_texture.texture_index = fb_tiled_texture->texture_index();
 					tmp_parent_texture.texture.asset_file_path = fb_tiled_texture->texture()->assets_file_path()->str();
 					tmp_parent_texture.texture.display_name = fb_tiled_texture->texture()->display_name()->str();
-					tmp_parent_texture.texture.height = fb_tiled_texture->texture()->heigth();
-					tmp_parent_texture.texture.width = fb_tiled_texture->texture()->width();
 					tmp_parent_texture.texture.tiling = glm::ivec2(fb_tiled_texture->texture()->tiling()->x(), fb_tiled_texture->texture()->tiling()->y());
 					layer.tiled_textures.push_back(tmp_parent_texture);
 				}
@@ -462,7 +456,6 @@ namespace SquareBox {
 						/*Externals*/
 
 						cluster_object.physics_properties = fb_cluster_object->physics_properties() == 1 ? new SquareBox::PhysicsCollisionEngine::PhysicsProperties() : nullptr;
-						cluster_object.color = glm::vec4(fb_cluster_object->color()->x(), fb_cluster_object->color()->y(), fb_cluster_object->color()->z(), fb_cluster_object->color()->w());;
 
 						auto fb_texture_info = fb_cluster_object->texture_info();
 						cluster_object.texture_info.texture_type = static_cast<SquareBox::TextureEnum>(fb_texture_info->texture_type());
@@ -470,6 +463,8 @@ namespace SquareBox {
 						cluster_object.texture_info.tile_sheet_index = fb_texture_info->tile_sheet_index();
 						cluster_object.texture_info.texture_id = fb_texture_info->texture_id();
 						cluster_object.texture_info.uv_rect = glm::vec4(fb_texture_info->uv_rect()->x(), fb_texture_info->uv_rect()->y(), fb_texture_info->uv_rect()->x(), fb_texture_info->uv_rect()->w());
+						cluster_object.texture_info.color = glm::vec4(fb_texture_info->color()->x(), fb_texture_info->color()->y(), fb_texture_info->color()->z(), fb_texture_info->color()->w());
+						cluster_object.texture_info.opacity = fb_texture_info->opacity();
 						world_cluster.cluster_objects.push_back(cluster_object);
 					}
 					layer.world_clusters.push_back(world_cluster);

@@ -37,6 +37,10 @@ void IsometricLayer::onFocus(SquareBox::GWOM::Layer& layer_, EditorModeEnum edit
 {
 }
 
+void IsometricLayer::onOutOfFocus(SquareBox::GWOM::Layer& layer_)
+{
+}
+
 void IsometricLayer::onLayerIndexChange(SquareBox::GWOM::Layer& active_layer_, int new_layer_index_)
 {
 	active_layer_.index = new_layer_index_;

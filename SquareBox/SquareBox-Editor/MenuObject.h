@@ -4,28 +4,26 @@
 #include <glm/glm.hpp>
 #include<SquareBox-Core/SquareBoxGameEngine.h>
 	/*	a simple table like menu system	 */
-	/*	 if using text, this extenstion currenlty only works best for a 32 res font
-		i will have to read through the found libraray in order to be able to configure this properly so that it works for 
-		all resolution 
-
-		Author : Kibande Steven
-		Date : Wenesday 22nd September 2021 17:12
-
-	*/
 class MenuObject
 {
 public:
 
 	MenuObject() {
-		m_name = "root";
+		m_name = "name";
 	}
 
 	MenuObject(const std::string & name) {
 		m_name = name;
 	}
 
-	MenuObject& setTableArrangement(int nColumns, int nRows) {
-		m_table_arrangement = { nColumns,nRows };
+
+	MenuObject& setTitleText(std::string title_text_) {
+		m_title = title_text_;
+		return *this;
+	}
+
+	MenuObject& setNumColumns(int num_columns_) {
+		m_num_columns = num_columns_;
 		return *this;
 	}	
 
@@ -39,10 +37,8 @@ public:
 		m_cell_justification = justification_;
 		return *this;
 	}
-
-
-	MenuObject& setLeftRightJustificationPadding(float padding_) {
-		m_left_right_justification_padding = padding_;
+	MenuObject& setTextToBoxHeightScale(float text_scaling_) {
+		m_text_to_box_height_scale = text_scaling_;
 		return *this;
 	}
 
@@ -51,6 +47,11 @@ public:
 		m_children_padding = childPadding_;
 		return *this;
 	}
+	MenuObject& setTitlePadding(glm::vec2& title_padding_) {
+		m_title_padding = title_padding_;
+		return *this;
+	}
+
 
 	MenuObject& setCellSize(glm::vec2& cellSize_) {
 		m_cell_size = cellSize_;
@@ -58,17 +59,8 @@ public:
 	}
 
 
-	MenuObject& setTextScaling(glm::vec2& scaling_) {
-		m_text_scaling = scaling_;
-		return *this;
-	}
-
 	MenuObject& setTextColor(SquareBox::RenderEngine::ColorRGBA8 color_) {
 		m_text_color = color_;
-		return *this;
-	}
-	MenuObject& setSpriteFont(SquareBox::RenderEngine::SpriteFont* spriteFontPtr_) {
-		m_sprite_font_ptr = spriteFontPtr_;
 		return *this;
 	}
 
@@ -77,23 +69,23 @@ public:
 		return *this;
 	}
 
-	MenuObject& setObject(SquareBox::GWOM::ClusterObject  clusterObject_) {
-		m_cluster_object = clusterObject_;
+	MenuObject& setObject(SquareBox::GWOM::ClusterObject  cluster_object_) {
+		m_cluster_object = cluster_object_;
 		return *this;
 	}
 
-	MenuObject& setBackGroundObject(SquareBox::GWOM::ClusterObject clusterObject_) {
-		m_back_ground_cluster_object = clusterObject_;
+	MenuObject& setBackGroundObject(SquareBox::GWOM::ClusterObject cluster_object_) {
+		m_back_ground_cluster_object = cluster_object_;
 		return *this;
 	}
 
-	MenuObject& setOnClickObject(SquareBox::GWOM::ClusterObject clusterObject_) {
-		m_on_click_cluster_object = clusterObject_;
+	MenuObject& setOnClickObject(SquareBox::GWOM::ClusterObject cluster_object_) {
+		m_on_click_cluster_object = cluster_object_;
 		return *this;
 	}
 
-	MenuObject& setOnHoverObject(SquareBox::GWOM::ClusterObject clusterObject_) {
-		m_on_hover_cluster_object = clusterObject_;
+	MenuObject& setOnHoverObject(SquareBox::GWOM::ClusterObject cluster_object_) {
+		m_on_hover_cluster_object = cluster_object_;
 		return *this;
 	}
 
@@ -127,10 +119,6 @@ public:
 	glm::vec2  getTableSize()   {
 		return m_table_size;
 	}
-	//For now cells are simply one line strings
-	glm::vec2 getNameSize() {
-		return m_sprite_font_ptr->measure(m_name.c_str());
-	}
 
 	bool hasChildren()
 	{
@@ -143,14 +131,16 @@ public:
 			//create it since it doesn't yet exist
 			m_item_pointer[name_] = m_items.size();
 			m_items.push_back(MenuObject(name_));
-			m_items.back().setSpriteFont(m_sprite_font_ptr);//share the spirte Font 
+			//inherit all the parents properties
 			m_items.back().setChildrenPadding(m_children_padding);
+			m_items.back().setTitlePadding(m_title_padding);
+			m_items.back().setNumColumns(m_num_columns);
+			m_items.back().setTextToBoxHeightScale(m_text_to_box_height_scale);
 			m_items.back().setObject(m_cluster_object);
 			m_items.back().setOnHoverObject(m_on_hover_cluster_object);
 			m_items.back().setOnClickObject(m_on_click_cluster_object);
 			m_items.back().setBackGroundObject(m_back_ground_cluster_object);
 			m_items.back().setCellSize(m_cell_size);
-			m_items.back().setTextScaling(m_text_scaling);
 			m_items.back().setTextColor(m_text_color);
 		}
 		return m_items[m_item_pointer[name_]];
@@ -158,183 +148,221 @@ public:
 
 
 
-	MenuObject* drawSelf(SquareBox::IMainGame* gamePtr_, const glm::vec2& mouseinworld_, SquareBox::RenderEngine::SpriteBatch* spriteBatch_, SquareBox::RenderEngine::DebugRenderer* debugRenderer_, glm::vec2 position_) {
+	MenuObject* drawSelf(SquareBox::IMainGame* game_ptr_, const glm::vec2& mouse_in_world_, SquareBox::RenderEngine::SpriteBatch& sprite_batch_,SquareBox::RenderEngine::SpriteFont & sprite_font_,SquareBox::RenderEngine::DebugRenderer& debug_renderer_,float camera_scale_, glm::vec2 position_) {
 		MenuObject* returnie = nullptr;
+		glm::vec2 title_dimentions = sprite_font_.measure(m_name.c_str());
+		float title_height = (title_dimentions.y / camera_scale_);
+		float title_width = (title_dimentions.x / camera_scale_);
+		
 
-		//pull the position to the center
-		position_ =position_- glm::vec2(m_table_size.x, m_table_size.y) * 0.5f;
+		//pull the position to the bottom left corner
+		glm::vec4 bounding_grid_dest_rect(position_ - (m_table_size * 0.5f), m_table_size);
+		
+		sprite_batch_.draw(bounding_grid_dest_rect, m_back_ground_cluster_object.texture_info.uv_rect, m_back_ground_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8((m_back_ground_cluster_object.texture_info.color.x), (m_back_ground_cluster_object.texture_info.color.y), (m_back_ground_cluster_object.texture_info.color.z), (m_back_ground_cluster_object.texture_info.color.w)));
 
-		glm::vec4 destRect(position_, m_table_size);
-		if (spriteBatch_ != nullptr) {
-			spriteBatch_->draw(destRect, m_back_ground_cluster_object.texture_info.uv_rect, m_back_ground_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8((m_back_ground_cluster_object.color.x), (m_back_ground_cluster_object.color.y), (m_back_ground_cluster_object.color.z), (m_back_ground_cluster_object.color.w)));
-		}
-
-		if (debugRenderer_ != nullptr) {
-			debugRenderer_->drawBox(destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
-		}
+		debug_renderer_.drawBox(bounding_grid_dest_rect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
 
 		//start position for drawing
-		glm::vec2 start_position(position_.x, position_.y + m_table_size.y);
+		glm::vec2 current_drawing_position(bounding_grid_dest_rect.x, bounding_grid_dest_rect.y + m_table_size.y);
 
 		if (m_show_title) {
-			start_position.y -= getNameSize().y;
-			if (spriteBatch_ != nullptr) {
-				//total distance we are working with
-				glm::vec2 point_a = start_position;
-				glm::vec2 point_b = start_position;
-				point_b.x += m_table_size.x;
-				if (m_title_justification == SquareBox::JustificationEnum::LEFT) {
-					m_sprite_font_ptr->draw(*spriteBatch_, getName().c_str(), point_a, m_text_scaling, 1.0f, m_text_color, m_title_justification);
-				}
-				else if (m_title_justification == SquareBox::JustificationEnum::MIDDLE) {
-					m_sprite_font_ptr->draw(*spriteBatch_, getName().c_str(), (point_a + point_b) * 0.5f, m_text_scaling, 1.0f, m_text_color, m_title_justification);
-				}
-				else if (m_title_justification == SquareBox::JustificationEnum::RIGHT) {
-					m_sprite_font_ptr->draw(*spriteBatch_, getName().c_str(), point_b, m_text_scaling, 1.0f, m_text_color, m_title_justification);
-				}
+			
+			current_drawing_position.y -= m_title_padding.y;
+			current_drawing_position.y -= title_height;
+			current_drawing_position.y -= m_title_padding.y;
+
+			//total distance we are working with
+			glm::vec2 text_positioning;
+
+			if (m_title_justification == SquareBox::JustificationEnum::LEFT) {
+				text_positioning = current_drawing_position;
 			}
+			else if (m_title_justification == SquareBox::JustificationEnum::MIDDLE) {
+				text_positioning = glm::vec2(current_drawing_position.x + bounding_grid_dest_rect.z*0.5f, current_drawing_position.y);
+			}
+			else if (m_title_justification == SquareBox::JustificationEnum::RIGHT) {
+				text_positioning = glm::vec2(current_drawing_position.x + bounding_grid_dest_rect.z, current_drawing_position.y);
+			}
+			else {
+				SBX_CORE_ERROR("Unidentified Text Justification");
+			}
+				sprite_font_.draw(sprite_batch_, m_title.c_str(), text_positioning, glm::vec2(1 / camera_scale_), 1.0f, m_text_color, m_title_justification);
 		}
 
+		if (m_num_columns > 0) {
 
-		int current_item_index = 0;
-		for (unsigned int y = 0; y < m_table_arrangement.y && current_item_index < m_items.size(); y++)
-		{
-			start_position.y -= m_children_padding.y;
+			current_drawing_position.y -= m_children_padding.y;
+			current_drawing_position.x += m_children_padding.x;
+			for (unsigned int item_count = 0; item_count < m_items.size();)
+			{
+				current_drawing_position.y -= m_cell_size.y;
+				float x_coordinates = current_drawing_position.x;
+				for (unsigned int j = 0; j < m_num_columns; j++) {
+					
+					auto& m = m_items[item_count];
+					glm::vec4 cell_dest_rect(x_coordinates, current_drawing_position.y, m_cell_size);
+					// draw the cell
+					/*
+						desired changes in the way the buttons look like should be done here since we alread have the dest rect with us
+					
+					*/
 
-				//get the maximum height in  the row that we are going to draw
-			float max_height = 0.0f;
-			for (unsigned i = 0; i < m_table_arrangement.x && current_item_index+i < m_items.size(); i++)
-			{
-				max_height = std::max(max_height, m_items[current_item_index+i].m_cell_size.y);
-			}
-			start_position.y -= max_height;
-			float start_x = start_position.x;
-			for (unsigned x = 0; x < m_table_arrangement.x && current_item_index < m_items.size(); x++)
-			{
-				auto& m = m_items[current_item_index];
-				start_position.x += m_children_padding.x;
-				glm::vec4 destRect(start_position, m.m_cell_size);
+
 			
-				if (debugRenderer_ != nullptr) {
-					debugRenderer_->drawBox(destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
-				
-				}
-				bool clicked = false;
-				bool hovered = false;
-				//testing mouse presense
-				if (isInBox(mouseinworld_, destRect)) {
-					hovered = true;
-					if (gamePtr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
-						clicked = true;
-						if (m.hasChildren()) {
-							returnie=&m;
-						}
-					}
-				}
 
-					if (clicked) {
-						if (spriteBatch_ != nullptr) {
-							spriteBatch_->draw(destRect, m.m_on_click_cluster_object.texture_info.uv_rect, m.m_on_click_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_on_click_cluster_object.color));
+					debug_renderer_.drawBox(cell_dest_rect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
+				
+					bool clicked = false;
+					bool hovered = false;
+					//testing mouse presense
+					if (isInBox(mouse_in_world_, cell_dest_rect) && m.isEnabled()) {
+						hovered = true;
+						if (game_ptr_->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
+							clicked = true;
+							if (m.hasChildren()) {
+								returnie=&m;
+							}
 						}
 					}
-					else if (hovered) {
-						if (spriteBatch_ != nullptr) {
-							spriteBatch_->draw(destRect, m.m_on_hover_cluster_object.texture_info.uv_rect, m.m_on_hover_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_on_hover_cluster_object.color));
-						}
+
+					if (hovered) {
+						sprite_batch_.draw(cell_dest_rect, m.m_on_hover_cluster_object.texture_info.uv_rect, m.m_on_hover_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_on_hover_cluster_object.texture_info.color));
+					}else if (clicked) {
+						sprite_batch_.draw(cell_dest_rect, m.m_on_click_cluster_object.texture_info.uv_rect, m.m_on_click_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_on_click_cluster_object.texture_info.color));
 					}
 					else {
-						//just display our normal texture
-						if (spriteBatch_ != nullptr) {
-							spriteBatch_->draw(destRect, m.m_cluster_object.texture_info.uv_rect, m.m_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_cluster_object.color));
-						}
+						sprite_batch_.draw(cell_dest_rect, m.m_cluster_object.texture_info.uv_rect, m.m_cluster_object.texture_info.texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(m.m_cluster_object.texture_info.color));
 					}
 				
 
 				
-					if (spriteBatch_ != nullptr && m.m_show_text) {
-						//draw texture first
+					if (m.m_show_text) {
+						glm::vec2 text_dimentions = sprite_font_.measure(m.m_name.c_str());
+						float text_height = (text_dimentions.y / camera_scale_);
+						float text_width = (text_dimentions.x / camera_scale_);
+
+						float text_to_cell_height = cell_dest_rect.w / text_height;
+
+						auto text_position =glm::vec2(cell_dest_rect.x, cell_dest_rect.y);
+
+				
+
 						if (m.m_cell_justification == SquareBox::JustificationEnum::LEFT) {
-							auto text_position = start_position + glm::vec2(destRect.z, destRect.w) * 0.5f;
 							//the x is in place now the y
-							float name_height = m.getNameSize().y;
-							text_position.y -= name_height * 0.5f;
-							text_position.x = start_position.x + m.m_left_right_justification_padding;
-							m_sprite_font_ptr->draw(*spriteBatch_, m.getName().c_str(), text_position, m.m_text_scaling, 1.0f, m.m_text_color, m.m_cell_justification);
 						}
 						else if (m.m_cell_justification == SquareBox::JustificationEnum::MIDDLE) {
-							//position text start in middle of button
-							auto text_position = start_position + glm::vec2(destRect.z, destRect.w) * 0.5f;
-							//the x is in place now the y
-							float name_height = m.getNameSize().y;
-							text_position.y -= name_height * 0.5f;
-							m_sprite_font_ptr->draw(*spriteBatch_, m.getName().c_str(), text_position, m.m_text_scaling, 1.0f, m.m_text_color, m.m_cell_justification);
+							text_position.x += cell_dest_rect.z*0.5f;
 						}
 						else if (m.m_cell_justification == SquareBox::JustificationEnum::RIGHT) {
-							auto text_position = start_position + glm::vec2(destRect.z, destRect.w) * 0.5f;
-							//the x is in place now the y
-							float name_height = m.getNameSize().y;
-							float name_width = m.getNameSize().x;
-							text_position.y -= name_height * 0.5f;
-							text_position.x = start_position.x + destRect.z - name_width - m.m_left_right_justification_padding;
-							m_sprite_font_ptr->draw(*spriteBatch_, m.getName().c_str(), text_position, m.m_text_scaling, 1.0f, m.m_text_color, m.m_cell_justification);
+							text_position.x += cell_dest_rect.z;
 						}
+
+						float before_scale = (1 / camera_scale_) * text_to_cell_height;
+						float after_scale = (1 / camera_scale_) * text_to_cell_height * m.m_text_to_box_height_scale;
+
+						float difference_in_scales = before_scale - after_scale;
+						if (difference_in_scales > 0 && !SquareBox::MathLib::Float::areFloatsEqual(difference_in_scales, 0)) {
+							// the scale is making the text smaller the the space its supposed to occupy
+							//so shit it so that it appears to be in the center but shitfting it upp by half the difference in propotional
+							//cell size
+							text_position.y += (difference_in_scales * cell_dest_rect.w) * 0.5f;
+						}
+						else {
+							//ignore making the text bigger that the bounding box
+							after_scale = before_scale;
+						}
+
+						std::string string_text = m.getName();
+
+						//handling texts that are longer than the cell
+						if (text_width>cell_dest_rect.z) {
+							//we also accounted for the horizontal scaling too.
+							float width_correction_ratio = cell_dest_rect.z/text_width;
+							
+							string_text = m.m_name.substr(0, m.m_name.length()* (width_correction_ratio + (width_correction_ratio * (1-after_scale))));
+						}
+
+						sprite_font_.draw(sprite_batch_, string_text.c_str(), text_position, glm::vec2(after_scale), 1.0f, m.m_text_color, m.m_cell_justification);
 					
 					}
-				current_item_index += 1;//move to the next item count when ever we draw
-				start_position.x += m.m_cell_size.x;//consider the space occupied by the one that 
-				//came before
+					x_coordinates += m_cell_size.x;
+					x_coordinates += m_children_padding.x;
+					item_count += 1;
+					if (!(item_count<m_items.size())) {
+						//the grid has less elements than its ideal max
+						break;
+					}
+				}
+				current_drawing_position.y -= m_children_padding.y;
 			}
-			start_position.x = start_x;
 		}
 
 		return returnie;
-
 	}
 
-	void Build()
+	void Build(SquareBox::RenderEngine::SpriteFont & sprite_font_,float camera_scale_)
 	{
-		
 		// Recursively build all children, so they can determine their size, use
 		// that size to indicate cell sizes if this object contains more than 
 		// one item
-		
+		//the name and title are of the same font hence same height and width dimensions
+		glm::vec2 font_dimentions = sprite_font_.measure(m_name.c_str());
+		float font_height = (font_dimentions.y / camera_scale_);
+		float font_width = (font_dimentions.x / camera_scale_);
+
 		for (auto& m : m_items)
 		{
 			if (m.hasChildren())
 			{
-				m.Build();
-
+				m.Build(sprite_font_,camera_scale_);
 			}
 		}
 
-		//computing the tables sizes
-		int current_item_index = 0;
-		float max_width_length = 0.0f;
-		for (unsigned int y = 0; y < m_table_arrangement.y && current_item_index < m_items.size(); y++)
-		{
-			
-			float max_height_length = 0.0f;
-			m_table_size.x = 0;
-			for (unsigned x = 0; x < m_table_arrangement.x && current_item_index < m_items.size(); x++)
-			{
-				m_table_size.x += m_children_padding.x;
-				m_table_size.x += m_items[current_item_index].m_cell_size.x;
-				max_height_length = std::max(max_height_length, m_items[current_item_index].m_cell_size.y);
-				current_item_index++;
-			}
-			m_table_size.y += max_height_length;
-			m_table_size.y += m_children_padding.y;
-			max_width_length = std::max(max_width_length, m_table_size.x);
-		}
+		m_table_size.x = 0;
+		m_table_size.y = 0;
 
-		m_table_size.x = max_width_length;
+		float total_width = 0.0f;
+		float total_height = 0.0f;
+
 		//add padding on the sides
-		m_table_size.x += m_children_padding.x;
-		m_table_size.y += m_children_padding.y;
-
 		if (m_show_title) {
-			m_table_size.y += getNameSize().y;
+			total_height += m_title_padding.y;//top padding
+			total_height += font_height;
+			total_height += m_title_padding.y;//bottom padding
 		}
+
+		if (m_num_columns>0) {
+
+			total_width += m_children_padding.x;//left padding
+			total_height += m_children_padding.y;//top padding
+
+			float grid_width = 0.0f;
+
+			for (unsigned int item_count = 0; item_count < m_items.size();)
+			{
+				grid_width = 0.0f;
+				for (unsigned int j = 0; j < m_num_columns; j++) {
+					grid_width += m_cell_size.x;
+					grid_width += m_children_padding.x;//right padding
+					item_count += 1;
+					if (!(item_count < m_items.size())) {
+						//the grid has less elements than its ideal max
+						break;
+					}
+				}
+				total_height += m_cell_size.y;
+				total_height += m_children_padding.y;//bottom padding
+			}
+			/* 
+			* 
+				grid with will get over written a few times but we shall still get our desired output
+			*/
+
+			total_width += grid_width;
+		}
+
+		m_table_size.x = total_width;
+		m_table_size.y = total_height;
 	}
 
 	private:
@@ -359,13 +387,15 @@ public:
 		}
 protected:
 	std::string m_name;
+	std::string m_title="title";
 	bool m_enabled = true;
-	glm::vec2 m_text_scaling = {1.0f,1.0f};
 	int32_t m_Id = -1;
 	glm::vec2 m_table_size = { 0, 0 };
-	glm::ivec2 m_table_arrangement = { 1,1 };
-	glm::vec2 m_cell_size;
-	glm::vec2 m_children_padding=  { 0.0f,0.0f };
+	int m_num_columns = 1;
+	glm::vec2 m_cell_size = { 0.0f,0.0f };
+	glm::vec2 m_children_padding = { 0.0f,0.0f };
+	glm::vec2 m_title_padding = { 0.0f,0.0f };
+	float m_text_to_box_height_scale = 1.0f;//ratio the scale should be to its would be normal
 	SquareBox::RenderEngine::ColorRGBA8 m_text_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::black);
 	bool m_show_title = true;
 	bool m_show_text = true;
@@ -374,7 +404,6 @@ protected:
 	float m_left_right_justification_padding = 0.0f;
 	std::unordered_map<std::string, size_t> m_item_pointer;
 	std::vector<MenuObject> m_items;
-	SquareBox::RenderEngine::SpriteFont* m_sprite_font_ptr= nullptr;
 	SquareBox::GWOM::ClusterObject m_cluster_object;
 	SquareBox::GWOM::ClusterObject m_on_click_cluster_object;
 	SquareBox::GWOM::ClusterObject m_on_hover_cluster_object;

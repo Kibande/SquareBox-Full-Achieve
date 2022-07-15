@@ -1,5 +1,5 @@
 #include "Second_Screen.h"
-
+#include <SquareBox-Editor/Editor_Assistant.cpp>
 /*
 Order of Methods Calling
 	Constructor
@@ -17,16 +17,9 @@ Order of Methods Calling
 	De constructor
 
 */
-char* convertGLTextureDisplayNameToCstr(const SquareBox::GWOM::ClusterObject& clusterObject_)
-{
-	//this new here is never deleted, and is called alot, that is a problem to us 
-	auto retrived_texture = SquareBox::AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
-	char* pc = new char[retrived_texture.display_name.size() + 1];
-	std::strcpy(pc, retrived_texture.display_name.c_str());
-	return pc;
-}
 
-Second_Screen::Second_Screen(SquareBox::RenderEngine::Window* window_) :m_window(window_)
+
+Second_Screen::Second_Screen()
 {
 }
 
@@ -68,9 +61,9 @@ void Second_Screen::onEntry()
 
 
 	//Init Cameras
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	glm::vec2 screen_dimensions = glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
+	m_camera.init(screen_dimensions.x, screen_dimensions.y);
 	m_camera.setScale(m_camera_scale);//The Zoom of the Camera
-	glm::vec2 screen_dimensions = glm::vec2(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_camera.setPosition(screen_dimensions * glm::vec2(0.5f));
 
 	m_utilities.init();
@@ -98,7 +91,7 @@ void Second_Screen::onEntry()
 
 	//window icon
 	auto icon_pixel_data = SquareBox::AssetManager::IOManager::getPixelDataFromImageFile("Assets/Textures/nodpi/bricks_light_top.png");
-	m_window->setWindowIcon(icon_pixel_data.pixels, icon_pixel_data.width, icon_pixel_data.height);
+	m_game_ptr->getWindow()->setWindowIcon(icon_pixel_data.pixels, icon_pixel_data.width, icon_pixel_data.height);
 	SquareBox::AssetManager::IOManager::freePixelData(icon_pixel_data);
 }
 
@@ -121,11 +114,11 @@ void Second_Screen::update(const float& deltaTime_)
 
 	if (m_game_ptr->isProcessingInput())
 	{
-		cameraControls(m_camera, m_game_ptr);
+		m_editor_assistant.cameraControls(m_camera, m_game_ptr);
 		m_camera_scale = m_camera.getScale();
 	}
 
-	glm::vec2 screen_dimensions(m_window->getScreenWidth(), m_window->getScreenHeight());
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
 	// maintaing the textures aspect ratio
 	//retrive texture from the asset manager
@@ -137,10 +130,9 @@ void Second_Screen::update(const float& deltaTime_)
 	}
 
 	//Called once every game loop , and updates what will be drawn
-	m_window->update();
-	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_camera.update(screen_dimensions.x, screen_dimensions.y);
 	m_camera.setScale(m_camera_scale);
-	m_window->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(m_window_back_ground_color_array[0] * 255, m_window_back_ground_color_array[1] * 255, m_window_back_ground_color_array[2] * 255, m_window_back_ground_color_array[2] * 255));
+	m_game_ptr->getWindow()->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(m_window_back_ground_color_array[0] * 255, m_window_back_ground_color_array[1] * 255, m_window_back_ground_color_array[2] * 255, m_window_back_ground_color_array[2] * 255));
 }
 
 void Second_Screen::draw()
@@ -326,7 +318,7 @@ void Second_Screen::initGUI()
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForOpenGL(m_window->getWindowPointerForImGui(), m_window->getGLContextPointerForImGui());
+	ImGui_ImplSDL2_InitForOpenGL(m_game_ptr->getWindow()->getWindowPointerForImGui(), m_game_ptr->getWindow()->getGLContextPointerForImGui());
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
 	//Load Fonts
@@ -347,7 +339,7 @@ void Second_Screen::drawGUI()
 {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window->getWindowPointerForImGui());
+	ImGui_ImplSDL2_NewFrame(m_game_ptr->getWindow()->getWindowPointerForImGui());
 	ImGui::NewFrame();
 	showMenuMain();
 	ImGuiWindowFlags physics_tab_window_flags = 0;
@@ -355,7 +347,7 @@ void Second_Screen::drawGUI()
 	bool* physics_tab_open = false;
 	ImGui::Begin("Control Panel", physics_tab_open, physics_tab_window_flags);
 
-	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
+	ImGui::SetWindowPos(ImVec2(m_game_ptr->getWindow()->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
 	{
 		ImGui::InputFloat("Camera Scale ", &m_camera_scale, 0.01f, 0.1f, "%.3f");
 		ImGui::InputFloat("Indicies Scale", &m_tiling_numbers_scale, 0.01f, 0.1f, "%.3f");
@@ -391,9 +383,15 @@ void Second_Screen::drawGUI()
 			ImGui::SameLine();
 			std::vector<char*>  vc;
 			vc.reserve(m_vec_of_texture_objects.size());
-			std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), convertGLTextureDisplayNameToCstr);
+			std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), [](const SquareBox::GWOM::ClusterObject & cluster_object_) {
+				//this new here is never deleted, and is called alot, that is a problem to us 
+				auto retrived_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
+				char* pc = new char[retrived_texture.display_name.size() + 1];
+				std::strcpy(pc, retrived_texture.display_name.c_str());
+				return pc;
+			});
 			int m_active_texture_object_index_before = m_active_texture_object_index;
-			ImGui::Combo("", &m_active_texture_object_index, &vc[0], m_vec_of_texture_objects.size());
+			ImGui::Combo("###loadedTextures", &m_active_texture_object_index, &vc[0], m_vec_of_texture_objects.size());
 			if (m_active_texture_object_index_before != m_active_texture_object_index) {
 				auto& target_cluster_object = m_vec_of_texture_objects[m_active_texture_object_index];
 
@@ -416,7 +414,7 @@ void Second_Screen::drawGUI()
 					glm::vec4 cluster_objects_dest_rect = glm::vec4(target_position - (target_dimensions * 0.5f), target_dimensions);
 					SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(target_cluster_object.texture_info.texture_id);
 					float tile_size = target_cluster_object.width / retrieved_texture.tiling.x;// since we are only doing this for sqaure grids
-					m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size, SquareBox::LayerTilingEnum::FlatTiling);
+					m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size);
 				}
 				else {
 					// dispose of the tile system 
@@ -465,7 +463,7 @@ void Second_Screen::drawGUI()
 						glm::vec4 cluster_objects_dest_rect = glm::vec4(target_position - (target_dimensions * 0.5f), target_dimensions);
 						SquareBox::AssetManager::GLTexture retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(target_cluster_object.texture_info.texture_id);
 						float tile_size = target_cluster_object.width / retrieved_texture.tiling.x;// since we are only doing this for sqaure grids
-						m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size, SquareBox::LayerTilingEnum::FlatTiling);
+						m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size);
 					}
 					else {
 						// dispose of the tile system 
@@ -542,54 +540,6 @@ void Second_Screen::drawGUI()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-
-void Second_Screen::cameraControls(SquareBox::Camera::ParallelCamera& camera_, SquareBox::IMainGame* gamePtr_)
-{
-
-	float calculated_movement_speed = 1 / camera_.getScale();
-
-	//camera panning
-	if (
-		(
-			gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_1_of_or_input_key)
-			||
-			gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_2_of_or_input_key)
-			)
-		&&
-		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_panning_master_input_key)
-		) {
-
-		auto relation_motion = gamePtr_->getInputDevice()->getScreenLocations()[1].coordinates;
-		camera_.offsetPosition(glm::vec2(-relation_motion.x, relation_motion.y * camera_.getAspectRatio()) * calculated_movement_speed);
-	}
-	//zoom
-	if (
-		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_zooming_1_of_or_input_key)
-		||
-		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_zooming_2_of_or_input_key)
-		) {
-		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
-		float scale_offset = mouse_wheel.y;
-		camera_.offsetScale(scale_offset);
-	}
-	else if (
-		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_1_of_or_input_key)
-		||
-		gamePtr_->getInputDevice()->isInputIdBeingReceived(camera_motion_2_of_or_input_key)
-		) {
-		//check for movement in x axis first
-		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
-		float offset_in_x = mouse_wheel.y * calculated_movement_speed;
-		camera_.offsetPosition(glm::vec2(offset_in_x, 0));
-	}
-	else {
-		//all movement is in the y axis
-		auto mouse_wheel = gamePtr_->getInputDevice()->getPivotMotion();
-		float offset_in_y = mouse_wheel.y * calculated_movement_speed;
-		camera_.offsetPosition(glm::vec2(0, offset_in_y));
-	}
-}
-
 void Second_Screen::showMenuMain()
 {
 	if (ImGui::BeginMainMenuBar())
@@ -656,7 +606,7 @@ void Second_Screen::loadTextureObject(std::string file_path_, std::string file_n
 	auto& new_texture_object = m_vec_of_texture_objects.back();
 	//Setting up our object
 	new_texture_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
-	glm::vec2 screen_dimensions = glm::vec2(m_window->getScreenWidth(), m_window->getScreenHeight());
+	glm::vec2 screen_dimensions = glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	new_texture_object.position = screen_dimensions * glm::vec2(0.5f); //position the texture at the center 
 	//of the screen
 	new_texture_object.shape = SquareBox::BodyShapeEnum::Box;
@@ -690,7 +640,7 @@ void Second_Screen::loadTextureObject(std::string file_path_, std::string file_n
 		glm::vec2 target_dimensions = glm::vec2(new_texture_object.width, new_texture_object.height);
 		glm::vec4 cluster_objects_dest_rect = glm::vec4(target_position - (target_dimensions * 0.5f), target_dimensions);
 		float tile_size = new_texture_object.width / retrieved_texture.tiling.x;// since we are only doing this for sqaure grids
-		m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size, SquareBox::LayerTilingEnum::FlatTiling);
+		m_tile_system.init(cluster_objects_dest_rect.x, cluster_objects_dest_rect.y, cluster_objects_dest_rect.z, cluster_objects_dest_rect.w, tile_size);
 	}
 }
 

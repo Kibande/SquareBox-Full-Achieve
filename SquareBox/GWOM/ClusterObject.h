@@ -11,6 +11,7 @@ using namespace std;
 #include <SquareBox-Core/Essentials.h>
 #include <Asset-Manager/Asset-Manager.h>
 #include "Joint.h"
+#include "TextureInfo.h"
 //Being specific here helps us to avoid falling prey to circular includes
 namespace SquareBox {
 	namespace PhysicsCollisionEngine {
@@ -26,18 +27,7 @@ namespace SquareBox {
 namespace SquareBox {
 	namespace GWOM {
 
-		class TextureInfo {
-		public:
-			TextureEnum texture_type = TextureEnum::SINGLE;//type of texture a single texture of a tilesheet
-			int texture_index = 0;//the textures position in the table of textures 
-			int tile_sheet_index = 0;//For if we have a tile sheet
-			int texture_id;/* this is for easy accessing and it can de used again the asset manager to query 
-						   for more information about the texture like the file path name , original dimensions
-						   generally all the information that can be found in the SquareBox::AssetManager::GLTexture object
-						   */
-			//vec4
-			glm::vec4 uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);//textures uvLayer out
-		};
+
 
 		class ClusterObject {
 		public:
@@ -111,7 +101,6 @@ namespace SquareBox {
 			/*Externals*/
 			//PhysicsProperties physics_properties;
 			SquareBox::PhysicsCollisionEngine::PhysicsProperties* physics_properties = nullptr;
-			glm::ivec4 color = glm::ivec4(255,255,255,255);
 			TextureInfo texture_info;
 			Cell * associated_pointer = nullptr;
 

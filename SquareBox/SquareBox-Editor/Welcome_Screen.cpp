@@ -1,8 +1,7 @@
 #include "Welcome_Screen.h"
 #include "ScreenIndices.h"
 #include <ImGui/ImGuiFileBrowser.h>
-Welcome_Screen::Welcome_Screen(SquareBox::RenderEngine::Window* window) :m_window(window)
-{
+Welcome_Screen::Welcome_Screen() {
 }
 
 Welcome_Screen::~Welcome_Screen()
@@ -40,9 +39,9 @@ void Welcome_Screen::onEntry()
 	m_textureProgram.linkShaders();
 
 	//Init Cameras
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_camera.setScale(1.0f);
-	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2));//Center the camera
+	m_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() / 2, m_game_ptr->getWindow()->getScreenHeight() / 2));//Center the camera
 	// SquareBox::AudioSystem::Music music= m_game->getAudioEngine().loadMusic("Assets/Audio/Stranded.mp3");
 	// music.play(0);
 	initGUI();
@@ -75,8 +74,7 @@ void Welcome_Screen::update(const float & deltaTime_)
 	else {
 		m_game_ptr->setProcessingInput(true);
 	}
-	m_window->update();
-	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
 		std::cout << "Mouse Click \n";
 	}
@@ -151,7 +149,7 @@ void Welcome_Screen::initGUI()
 	//ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForOpenGL(m_window->getWindowPointerForImGui(), m_window->getGLContextPointerForImGui());
+	ImGui_ImplSDL2_InitForOpenGL(m_game_ptr->getWindow()->getWindowPointerForImGui(), m_game_ptr->getWindow()->getGLContextPointerForImGui());
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
 	//Load Fonts
@@ -171,10 +169,8 @@ void Welcome_Screen::drawGUI()
 {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window->getWindowPointerForImGui());
+	ImGui_ImplSDL2_NewFrame(m_game_ptr->getWindow()->getWindowPointerForImGui());
 	ImGui::NewFrame();
-
-
 
 	{
 		ImGui::Begin("Route Panel");
@@ -197,8 +193,11 @@ void Welcome_Screen::drawGUI()
 			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
 		}
 
-		//file dialog
-		//showMainMenu();
+		if (ImGui::Button("GUI Editor")) {
+			m_nextScreenIndex = GUI_EDITOR_SCREEN_INDEX;
+			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
+		}
+
 		ImGui::End();
 	}
 

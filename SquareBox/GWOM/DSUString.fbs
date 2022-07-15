@@ -1,0 +1,5 @@
+table SquareBoxStringData {
+		data:string;
+}
+
+root_type SquareBoxStringData;

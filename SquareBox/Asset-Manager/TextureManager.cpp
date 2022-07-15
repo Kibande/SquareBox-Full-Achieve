@@ -40,7 +40,7 @@ namespace SquareBox {
 		{
 			return m_texture_cache.getTexture(id_);
 		}
-		void TextureManager::setTextureTilingById(int id_, glm::vec2 tiling_)
+		void TextureManager::setTextureTilingById(int id_, glm::ivec2 tiling_)
 		{
 			m_texture_cache.setTextureTilingById(id_,tiling_);
 		}

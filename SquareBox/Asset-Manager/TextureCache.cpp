@@ -42,7 +42,7 @@ namespace SquareBox {
 			}
 			return mit->second;
 		}
-		void TextureCache::setTextureTilingById(int texture_id_, glm::vec2 tiling_)
+		void TextureCache::setTextureTilingById(int texture_id_, glm::ivec2 tiling_)
 		{
 			std::map<int, GLTexture>::iterator mit = m_id_texture_map.find(texture_id_);
 			if (mit != m_id_texture_map.end()) {

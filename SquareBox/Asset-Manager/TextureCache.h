@@ -11,7 +11,7 @@ namespace SquareBox {
 			~TextureCache();
 			GLTexture getTexture(std::string texture_file_path_);
 			GLTexture getTexture(int texture_id_);
-			void setTextureTilingById(int texture_id_, glm::vec2 tiling_);
+			void setTextureTilingById(int texture_id_, glm::ivec2 tiling_);
 			void setTextureDisplayNameById(int texture_id_, std::string display_name_);
 		private:
 			std::map<std::string, GLTexture> m_file_path_texture_map;

@@ -12,7 +12,7 @@ namespace SquareBox {
 				/* the box padding of 0.01 has been removed from here
 				 for boxes  and capsules, we shall just be submitting smaller dimensions to the physics engine
 				*/
-				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.width, clusterObject_.height), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((clusterObject_.color.x), (clusterObject_.color.y), (clusterObject_.color.z), (clusterObject_.color.w)*(0.01*opacity_)), clusterObject_.angle);
+				spriteBatch_.draw(glm::vec4(boxOrigin, clusterObject_.width, clusterObject_.height), clusterObject_.texture_info.uv_rect, clusterObject_.texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((clusterObject_.texture_info.color.x), (clusterObject_.texture_info.color.y), (clusterObject_.texture_info.color.z), (clusterObject_.texture_info.color.w)*(0.01*opacity_)), clusterObject_.angle);
 			}
 		}
 

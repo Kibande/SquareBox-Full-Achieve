@@ -1,4 +1,5 @@
 #pragma once
+#include "IShape.h"
 #include "BoxShape.h"
 #include "CircleShape.h"
 #include "CapsuleShape.h"
@@ -6,6 +7,5 @@
 #include "ChainShape.h"
 #include "PolygonShape.h"
 #include "TopCapsuleShape.h"
-#include "BridgeWrapper.h"
 #include "PointLightShape.h"
 #include "CalculatedLightShape.h"

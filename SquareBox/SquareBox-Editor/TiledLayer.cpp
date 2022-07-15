@@ -84,6 +84,11 @@ void TiledLayer::onFocus(SquareBox::GWOM::Layer& layer_, EditorModeEnum editor_m
 	m_active_sub_texture_key = 0;
 }
 
+void TiledLayer::onOutOfFocus(SquareBox::GWOM::Layer& layer_)
+{
+	m_selected_tiles.clear();
+}
+
 void TiledLayer::onLayerIndexChange(SquareBox::GWOM::Layer& active_layer_, int new_layer_index_)
 {
 	active_layer_.index = new_layer_index_;
@@ -130,7 +135,7 @@ void TiledLayer::onUpdateProcessingInput(float deltaTime_, std::vector<SquareBox
 				for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
 				{
 					SquareBox::GWOM::Tile* focus_tile = active_layer.tile_system.getTileByIndex(m_selected_tiles[i].second);
-					focus_tile->key = -1;
+					active_layer.tile_system.setTile(focus_tile->coordinates.first,focus_tile->coordinates.second,-1);
 					m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, focus_tile->coordinates);
 				}
 				m_selected_tiles.clear();
@@ -145,7 +150,7 @@ void TiledLayer::onUpdateProcessingInput(float deltaTime_, std::vector<SquareBox
 			SquareBox::GWOM::Tile* hovered_tile = active_layer.tile_system.getTile(mouse_in_world);
 			if (game_ptr_->getInputDevice()->isInputIdReceived(tiled_layer_place_mode_fill_tile)) {
 				//we have to edit the hovered tile and give it a texture to display
-				hovered_tile->key = m_active_sub_texture_key;
+				active_layer.tile_system.setTile(hovered_tile->coordinates.first, hovered_tile->coordinates.second, m_active_sub_texture_key);
 				m_utilities.addPairToVector(active_layer.tile_system.active_tiles, hovered_tile->coordinates, false);
 				m_is_all_work_saved = false;
 			}
@@ -251,7 +256,6 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 		}
 		ImGui::Text("To: %s", layers_[m_target_shift_to_layer_index].name);
 
-		if (active_layer.tile_system.isInitialised() && layers_[m_target_shift_to_layer_index].tile_system.isInitialised()) {
 			auto& destination_layer = layers_[m_target_shift_to_layer_index];
 			if (active_layer.layer_type != destination_layer.layer_type) {
 
@@ -289,7 +293,7 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 
 
 								//remove from the current layer
-								orign_grid_tile->key = -1;
+								orign_grid_tile->key = -1;//use set tile instead
 								m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, orign_grid_tile->coordinates);
 							}
 							m_selected_tiles.clear(); // since object might have been transfered to a locked layer
@@ -309,7 +313,6 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 			else {
 				ImGui::Text("Both layers must have the same tilling orientation");
 			}
-		}
 
 	}
 
@@ -421,29 +424,11 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 			//update the current objects texture info
 			auto& selected_tile_sheet_texture = active_layer.tiled_textures[m_selected_tile_sheet_texture_index].texture;
 			//current active texture
-			ImTextureID my_tex_id;
-			float my_tex_w = 0.0f;
-			float my_tex_h = 0.0f;
-			my_tex_id = (ImTextureID)selected_tile_sheet_texture.id;
-			if (selected_tile_sheet_texture.tiling.x < 1 && selected_tile_sheet_texture.tiling.y < 1) {
-				//the tilesheet sheet hasn't yet been grided
-				if (selected_tile_sheet_texture.width > selected_tile_sheet_texture.height) {
-					my_tex_w = 75;
-					my_tex_h = 30;
-				}
-				else {
-					//give it a different aspect ratio
-					my_tex_w = 55;
-					my_tex_h = 100;
-				}
-			}
-			else {
-				my_tex_w = 50;
-				my_tex_h = 50;
-			}
-
-
+			ImTextureID my_tex_id = (ImTextureID)selected_tile_sheet_texture.id;
+			float my_tex_w = 50;
+			float my_tex_h = 50;
 			float zoom = 4.0f;
+
 			ImGui::Text("Preview");
 
 			/*
@@ -451,11 +436,23 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 			*/
 			glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(selected_tiling_index);
 
-			ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);                 // Top-left
-			ImVec2 uv_max = ImVec2(uvRect.z, uvRect.w);                 // Lower-right
+			float texture_width = selected_tile_sheet_texture.width;
+			float texture_height = selected_tile_sheet_texture.height;
+
+			float region_width = uvRect.z * texture_width;
+			float region_height = uvRect.w * texture_height;
+
+			float region_x_orign = (uvRect.x) * texture_width;
+			float region_y_orign = (1 - uvRect.w - uvRect.y) * texture_height;
+			/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
+			ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
+			ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
+
+			//ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);   // Top-left
+			//ImVec2 uv_max = ImVec2(uv_min.x + uvRect.z, uv_min.y + uvRect.w);  // Lower-right
 			ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 			ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
-			ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv_min, uv_max, tint_col, border_col);
+			ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv0, uv1, tint_col, border_col);
 			ImGui::Text("Index: "); ImGui::SameLine();
 			//ImGui::InputInt("", &m_current_cluster_object_ptr->texture_info.tile_sheet_index);
 			ImGui::DragInt("###m_current_tile_sheet_index", &selected_tiling_index, 1, 0, (selected_tile_sheet_texture.tiling.x * selected_tile_sheet_texture.tiling.y) - 1, "%d", ImGuiSliderFlags_AlwaysClamp);

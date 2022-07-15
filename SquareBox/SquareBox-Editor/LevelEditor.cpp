@@ -18,7 +18,7 @@ void onModifty(std::string file_path_) {
 }
 
 
-LevelEditor::LevelEditor(SquareBox::RenderEngine::Window* window_ptr_) :m_window_ptr(window_ptr_)
+LevelEditor::LevelEditor()
 {
 }
 
@@ -98,7 +98,7 @@ void LevelEditor::update(const float& deltaTime_)
 		m_layers[i].camera.setScale(m_universal_camera_scale);
 		m_layers[i].camera.setPosition(m_universal_camera_position);
 		//update all camera so that there is no jump when we change layers
-		m_layers[i].camera.update(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+		m_layers[i].camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	}
 
 
@@ -202,7 +202,7 @@ void LevelEditor::draw()
 			}
 
 			//LIGHTS
-			m_window_ptr->useAdditiveBlending();
+			m_game_ptr->getWindow()->useAdditiveBlending();
 
 			m_sprite_batch.begin();
 
@@ -219,25 +219,36 @@ void LevelEditor::draw()
 			uploadCameraInfo(&m_light_program, &layer.camera, "P");
 			m_sprite_batch.renderBatch();
 			m_light_program.unuse();
-			m_window_ptr->useAlphaBlending();
+			m_game_ptr->getWindow()->useAlphaBlending();
 
-			//the out laws
-			m_debug_renderer.begin();
+			if (layer.index == m_active_layer_index) {
+				/* a better option that the checking if this is the active layer is sending down the active layer index in the
+					onOutsideDebugModeDebugDraw so that the object trace is only drawn for the active layer but the other things
+					that are not limited to the active layer  still get drawn
+				*/
 
-			for each (auto & layer_type in m_vec_of_layer_types)
-			{
-				if (layer.layer_type == layer_type->layer_type) {
-					layer_type->onOutsideDebugModeDebugDraw(layer, m_game_ptr, m_debug_renderer, m_editor_mode_enum);
-					break;
+
+				//the out laws
+				m_debug_renderer.begin();
+
+				for each (auto & layer_type in m_vec_of_layer_types)
+				{
+					if (layer.layer_type == layer_type->layer_type) {
+
+						layer_type->onOutsideDebugModeDebugDraw(layer, m_game_ptr, m_debug_renderer, m_editor_mode_enum);
+						break;
+					}
 				}
+
+				m_debug_renderer.end();
+				//render all our debug shapes
+				m_debug_program.use();
+				uploadCameraInfo(&m_debug_program, &layer.camera, "P");
+				m_debug_renderer.render();
+				m_debug_program.unuse();
+
 			}
 
-			m_debug_renderer.end();
-			//render all our debug shapes
-			m_debug_program.use();
-			uploadCameraInfo(&m_debug_program, &layer.camera, "P");
-			m_debug_renderer.render();
-			m_debug_program.unuse();
 
 		}
 	}
@@ -290,7 +301,7 @@ void LevelEditor::createNewLayer()
 	m_layers.emplace_back();
 	//get a reference to the last placed layer
 	SquareBox::GWOM::Layer& layer = m_layers.back();
-	layer.camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+	layer.camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	layer.camera.setScale(m_universal_camera_scale);
 	layer.camera.setPosition(m_universal_camera_position);
 	layer.is_visible = true;
@@ -298,19 +309,18 @@ void LevelEditor::createNewLayer()
 	layer.index = m_layers.size() - 1;
 	/* its import that the layer be created as a FlatLayer because the other layer types require user input during their setup*/
 	layer.layer_type = SquareBox::LayerTypeEnum::FlatLayer;
-	for (unsigned int i = 0; i < m_vec_of_layer_types.size(); i++)
+	for each (auto & layer_type in m_vec_of_layer_types)
 	{
-		if (layer.layer_type == m_vec_of_layer_types[i]->layer_type) {
-			m_vec_of_layer_types[i]->onLayerInit(layer);
-			m_vec_of_layer_types[i]->onFocus(layer, m_editor_mode_enum);
-			m_selected_layer_type = i;
+		if (layer.layer_type == layer_type->layer_type) {
+			layer_type->onLayerInit(layer);
+			layer_type->onFocus(layer, m_editor_mode_enum);
 			break;
 		}
 	}
+	m_active_layer_index = layer.index; // must be set before upateEditorVariables
+	upateEditorVariables();
 	//name this layer accoriding to its index
 	m_utilities.nameLayerByIndex(layer);
-
-	m_active_layer_index = layer.index;
 }
 
 void LevelEditor::createNewProject()
@@ -357,7 +367,7 @@ void LevelEditor::initGUI()
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // enable Gamepad Controls
 
 	// Setup Platform/Renderer backends
-	ImGui_ImplSDL2_InitForOpenGL(m_window_ptr->getWindowPointerForImGui(), m_window_ptr->getGLContextPointerForImGui());
+	ImGui_ImplSDL2_InitForOpenGL(m_game_ptr->getWindow()->getWindowPointerForImGui(), m_game_ptr->getWindow()->getGLContextPointerForImGui());
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
 	//Load Fonts
@@ -384,8 +394,8 @@ void LevelEditor::disposeGUI()
 
 void LevelEditor::showMainMenu()
 {
-	if (ImGui::BeginMainMenuBar())
-	{
+	ImGui::BeginMainMenuBar();
+	m_main_menu_bar_height = ImGui::GetWindowHeight();
 		if (ImGui::BeginMenu("Menu"))
 		{
 			if (ImGui::MenuItem("Respect Ancestor", NULL, m_respect_ancestor)) {
@@ -450,21 +460,20 @@ void LevelEditor::showMainMenu()
 			ImGui::EndMenu();
 		}
 
-		ImGui::EndMainMenuBar();
-	}
+	ImGui::EndMainMenuBar();
 
 	// Setup Dear ImGui style
 	if (m_theme_index == EditorThemeEnum::ClassicTheme) {
 		ImGui::StyleColorsClassic();
-		m_window_ptr->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(127, 127, 127, 127));
+		m_game_ptr->getWindow()->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(127, 127, 127, 127));
 	}
 	else if (m_theme_index == EditorThemeEnum::LightTheme) {
 		ImGui::StyleColorsLight();
-		m_window_ptr->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255));
+		m_game_ptr->getWindow()->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255));
 	}
 	else if (m_theme_index == EditorThemeEnum::DarkTheme) {
 		ImGui::StyleColorsDark();
-		m_window_ptr->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255));
+		m_game_ptr->getWindow()->setBackGroundColor(SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255));
 	}
 }
 
@@ -489,13 +498,13 @@ void LevelEditor::drawGUI()
 
 	bool* properties_tab_open = false;
 	if (ImGui::Begin("Properties Tab", properties_tab_open, properties_tab_window_flags)) {
-		ImGui::SetWindowPos(ImVec2(0, 20));
+		ImGui::SetWindowPos(ImVec2(0, m_main_menu_bar_height));
 		if (m_show_console) {
-			auto properties_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), m_window_ptr->getScreenHeight() * 0.75);
+			auto properties_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), m_game_ptr->getWindow()->getScreenHeight() * 0.75);
 			ImGui::SetWindowSize(properties_tab_size);
 		}
 		else {
-			auto properties_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), static_cast<float>(m_window_ptr->getScreenHeight()));
+			auto properties_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), static_cast<float>(m_game_ptr->getWindow()->getScreenHeight()));
 			ImGui::SetWindowSize(properties_tab_size);
 		}
 
@@ -520,14 +529,14 @@ void LevelEditor::drawGUI()
 		}
 
 		if (e != beforeMode) {
-			for each (auto &  layer_type in m_vec_of_layer_types)
+			for each (auto & layer_type in m_vec_of_layer_types)
 			{
-				if (layer_type->layer_type==m_layers[m_active_layer_index].layer_type) {
-						layer_type->onFocus(m_layers[m_active_layer_index],m_editor_mode_enum);
-						/*
-							helps us to clear the selected items vector 
-							and also set the current cluster object to nullptr for he flatlayer
-						*/
+				if (layer_type->layer_type == m_layers[m_active_layer_index].layer_type) {
+					layer_type->onFocus(m_layers[m_active_layer_index], m_editor_mode_enum);
+					/*
+						helps us to clear the selected items vector
+						and also set the current cluster object to nullptr for he flatlayer
+					*/
 				}
 			}
 		}
@@ -557,7 +566,7 @@ void LevelEditor::drawGUI()
 		ImGui::NewLine();
 		ImGui::NewLine();
 	}
-		ImGui::End();
+	ImGui::End();
 
 
 	ImGuiWindowFlags physics_tab_window_flags = 0;
@@ -568,16 +577,16 @@ void LevelEditor::drawGUI()
 	bool* right_side_tab_open = false;
 	if (ImGui::Begin("Side Tab", right_side_tab_open, physics_tab_window_flags)) {
 		if (m_show_console) {
-			auto right_side_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), m_window_ptr->getScreenHeight() * 0.75);
+			auto right_side_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), m_game_ptr->getWindow()->getScreenHeight() * 0.75);
 			ImGui::SetWindowSize(right_side_tab_size);
 		}
 		else {
-			auto right_side_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), static_cast<float>(m_window_ptr->getScreenHeight()));
+			auto right_side_tab_size = ImVec2(static_cast<float>(ImGui::GetWindowWidth()), static_cast<float>(m_game_ptr->getWindow()->getScreenHeight()));
 			ImGui::SetWindowSize(right_side_tab_size);
 		}
-		ImGui::SetWindowPos(ImVec2(m_window_ptr->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
+		ImGui::SetWindowPos(ImVec2(m_game_ptr->getWindow()->getScreenWidth() - ImGui::GetWindowWidth() - 2, m_main_menu_bar_height));
 		int right_tab_subject = static_cast<int>(m_side_view);
-		
+
 		ImGui::Text("FPS Counter: %.2f", static_cast<float>(m_game_ptr->getFps()));
 		ImGui::Text("Active Layer: %s", m_layers[m_active_layer_index].name);
 		ImGui::NewLine();
@@ -585,7 +594,7 @@ void LevelEditor::drawGUI()
 
 		if (ImGui::BeginTabBar("SidePanelTabs"))
 		{
-			
+
 			if (ImGui::BeginTabItem("Layering"))
 			{
 				ImGui::NewLine();
@@ -644,15 +653,22 @@ void LevelEditor::drawGUI()
 						ss << i;
 
 						if (ImGui::Button(ss.str().c_str()) && layer.is_visible && !layer.is_locked) {
+							//first do the currently layers clean up
+							for each (auto & layer_type in m_vec_of_layer_types)
+							{
+								if (layer_type->layer_type == m_layers[m_active_layer_index].layer_type) {
+									layer_type->onOutOfFocus(m_layers[m_active_layer_index]);
+								}
+							}
 							m_active_layer_index = i;
 							SquareBox::GWOM::Layer& new_active_layer = m_layers[i];
-
 							for each (auto & layer_type in m_vec_of_layer_types)
 							{
 								if (layer_type->layer_type == new_active_layer.layer_type) {
-									layer_type->onFocus(new_active_layer,m_editor_mode_enum);
+									layer_type->onFocus(new_active_layer, m_editor_mode_enum);
 								}
 							}
+							upateEditorVariables();
 						}
 					}
 				}
@@ -673,6 +689,7 @@ void LevelEditor::drawGUI()
 						for each (auto & layer_type in m_vec_of_layer_types)
 						{
 							if (layer_type->layer_type == active_layer.layer_type) {
+								//no need to call on out of focus since the layer is getting deleted
 								layer_type->onLayerDispose(active_layer);
 								break;
 							}
@@ -691,18 +708,6 @@ void LevelEditor::drawGUI()
 							item_count++;
 						}
 
-						/*
-							update the layers stored indicies  and the names
-
-
-							!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							but the issue is muh deeper than that.
-							the entity system relies on these layer indexs so much
-							a cluster object stores a variable pointing to its layers index
-							and that is used in joints.....
-							these to need to be updated, the cluster objects and their joints
-
-						*/
 						item_count = 0;
 						for (auto it = m_layers.begin(); it != m_layers.end(); it++)
 						{
@@ -714,7 +719,7 @@ void LevelEditor::drawGUI()
 							for each (auto & layer_type in m_vec_of_layer_types)
 							{
 								if (layer_type->layer_type == (*it).layer_type) {
-									layer_type->onFocus((*it), m_editor_mode_enum); 
+									layer_type->onFocus((*it), m_editor_mode_enum);
 									layer_type->onLayerIndexChange((*it), item_count);
 								}
 							}
@@ -739,8 +744,8 @@ void LevelEditor::drawGUI()
 						auto& new_active_layer = m_layers[m_active_layer_index];
 						for each (auto & layer_type in m_vec_of_layer_types)
 						{
-							if (layer_type->layer_type== new_active_layer.layer_type) {
-								layer_type->onFocus(new_active_layer,m_editor_mode_enum);
+							if (layer_type->layer_type == new_active_layer.layer_type) {
+								layer_type->onFocus(new_active_layer, m_editor_mode_enum);
 							}
 						}
 						//force the new active layer to open open it
@@ -869,7 +874,7 @@ void LevelEditor::drawGUI()
 		ImGui::NewLine();
 		ImGui::NewLine();
 	}
-		ImGui::End();
+	ImGui::End();
 
 
 	//dialogs
@@ -1059,11 +1064,11 @@ void LevelEditor::drawGUI()
 		{
 			SquareBox::GWOM::Layer& layer = m_layers[i];
 			//recreate all the layer cameras
-			layer.camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
+			layer.camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 			layer.camera.setScale(m_universal_camera_scale);
 			layer.camera.setPosition(m_universal_camera_position);
 			//load this layers textures
-			m_utilities.loadLayerTextures(layer, m_window_ptr->getDDPI());
+			m_utilities.loadLayerTextures(layer, m_game_ptr->getWindow()->getDDPI());
 			//the world clusters
 			for each (auto & layer_type in m_vec_of_layer_types)
 			{
@@ -1208,8 +1213,8 @@ void LevelEditor::drawGUI()
 
 	//file explore dialog - end
 	if (m_show_console) {
-		auto console_position = ImVec2(0.0f, m_window_ptr->getScreenHeight() * 0.75f);
-		auto console_size = ImVec2(static_cast<float>(m_window_ptr->getScreenWidth()), m_window_ptr->getScreenHeight() * 0.25f);
+		auto console_position = ImVec2(0.0f, m_game_ptr->getWindow()->getScreenHeight() * 0.75f);
+		auto console_size = ImVec2(static_cast<float>(m_game_ptr->getWindow()->getScreenWidth()), m_game_ptr->getWindow()->getScreenHeight() * 0.25f);
 		ImGuiWindowFlags console_flags = 0;
 		console_flags |= ImGuiWindowFlags_NoTitleBar;
 		m_console.Draw("Console", &m_show_console, console_flags, console_position, console_size);
@@ -1246,6 +1251,16 @@ void LevelEditor::drawGUI()
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
 
+}
+
+void LevelEditor::upateEditorVariables()
+{
+	for (unsigned int i = 0; i < m_vec_of_layer_types.size(); i++)
+	{
+		if (m_vec_of_layer_types[i]->layer_type == m_layers[m_active_layer_index].layer_type) {
+			m_selected_layer_type = i;
+		}
+	}
 }
 
 LevelEditor::~LevelEditor()

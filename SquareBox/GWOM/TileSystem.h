@@ -33,16 +33,15 @@ namespace SquareBox {
 			std::map<int, SquareBox::GWOM::Tile*>  getAllTilesInDestRect(glm::vec4& dest_rect_,bool only_active_tiles_=false);
 
 			///Getters
-			int getNumXCells() const { return m_num_x_tiles; }
-			int getNumYCells() const { return m_num_y_tiles; }
+			unsigned getNumXCells() const { return m_num_x_tiles; }
+			unsigned getNumYCells() const { return m_num_y_tiles; }
 			float getWidth() const { return m_width; }
 			float getHeight() const { return m_height; }
 			float getTileSize() const { return m_tile_size; }
 			glm::vec2 getTileSystemOrigin() const { return glm::vec2(m_orign_x, m_orign_y); }
 			Tile * getTileByIndex(const int index_) { return &m_tiles[index_]; }
 			std::vector<Tile>& getAllTileSystemTiles() { return m_tiles; }
-			bool isInitialised() const { return m_is_initialised; }
-			void dispose() { if (m_is_initialised) { resetTileSystem(); } };
+			void dispose() { resetTileSystem(); };
 			std::vector<Tile> m_tiles;//this is what is actually stored;
 
 			float getOriginX() const { return m_orign_x; }
@@ -58,7 +57,6 @@ namespace SquareBox {
 			float m_orign_y = 0.0f;
 			unsigned m_num_y_tiles = 0;
 			unsigned m_num_x_tiles = 0;
-			bool m_is_initialised = false;
 		};
 
 

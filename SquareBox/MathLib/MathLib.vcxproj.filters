@@ -15,12 +15,16 @@
     <ClInclude Include="MathLib.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Random.h" />
+    <ClInclude Include="Random.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Float.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Random.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

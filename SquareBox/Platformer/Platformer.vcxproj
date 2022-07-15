@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -267,9 +267,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj">
-      <Project>{75A40C59-6172-005F-4A06-71853673DCC3}</Project>
-    </ProjectReference>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="GameHUDandGUI.h" />
+    <ClInclude Include="GameLogic.h" />
+    <ClInclude Include="GamePlayScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -279,10 +280,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="GameHUDandGUI.h" />
-    <ClInclude Include="GameLogic.h" />
-    <ClInclude Include="GamePlayScreen.h" />
+    <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj">
+      <Project>{75A40C59-6172-005F-4A06-71853673DCC3}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,7 +6,7 @@
 class GamePlayScreen : public SquareBox::IGameScreen
 {
 public:
-	GamePlayScreen(SquareBox::RenderEngine::Window * window_) :m_window_ptr(window_) {};
+	GamePlayScreen() {};
 	// Inherited via IGameScreen
 	virtual int getNextScreenIndex() const override;
 	virtual int getPreviousScreenIndex() const override;
@@ -17,8 +17,6 @@ public:
 	virtual void onExit() override;
 	virtual void destroy() override;
 	void drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_, SquareBox::GWOM::Layer& layer_);
-	//variables
-	SquareBox::RenderEngine::Window * m_window_ptr = nullptr;
 
     //The HUDS and GUI camera
 	SquareBox::Camera::ParallelCamera m_hud_gui_camera;
@@ -35,9 +33,6 @@ public:
 
 	//Debug Renderer
 	SquareBox::RenderEngine::DebugRenderer m_debug_renderer;
-
-	//Audio Engine
-	SquareBox::AudioSystem::AudioEngine * m_audio_engine_ptr = nullptr;
 
 	//layers
 	std::vector<SquareBox::GWOM::Layer> m_layers;

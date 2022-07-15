@@ -1,0 +1,107 @@
+// SquareBox DSUGUI Schema
+
+namespace SquareBox.DSUGUI;
+
+table PairOfInt {
+  first:int;
+  second:int;
+}
+
+struct Vec2 {
+  x:float;
+  y:float;
+}
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+struct Vec4 {
+  x:float;
+  y:float;
+  z:float;
+  w:float;
+}
+
+struct Ivec2 {
+  x:int;
+  y:int;
+}
+
+struct Ivec3 {
+  x:int;
+  y:int;
+  z:int;
+}
+
+struct Ivec4 {
+  x:int;
+  y:int;
+  z:int;
+  w:int;
+}
+
+table PairOfVec2 {
+  first:Vec2;
+  second:Vec2;
+}
+
+table GLTexture {
+	assets_file_path:string;
+	display_name:string;
+	tiling:Ivec2;
+}
+
+table SpriteFont {
+	font_path:string;
+	display_name:string;
+	font_size:int;
+}
+
+table TextureInfo {
+   texture_type:int;
+   texture_index:int;
+   tile_sheet_index:int;
+   texture_id:int;
+   uv_rect:Vec4;
+   color:Ivec4;
+   opacity:int;
+}
+
+table FontInfo {
+   color:Ivec4;
+   font_index:int;
+   text:string;
+   show_text:bool;
+   text_to_box_height_scale:float;
+   opacity:int;
+   justification:int;
+}
+
+table GUIElement {
+	shape:int;
+	state:int;
+	id:int;
+	name:string;
+	is_hidden:bool;
+	is_locked:bool;
+	location_ratio:Vec2;
+	height_ratio:float;
+	width_ratio:float;
+	radius_ratio:float;
+	angle:float;
+	is_alive:bool;
+	fonts:[FontInfo];
+	textures:[TextureInfo];
+}
+
+table SquareBoxGuiLayer {
+  gui_elements:[GUIElement];
+  single_textures:[GLTexture];
+  tiled_textures:[GLTexture];
+  sprite_fonts:[SpriteFont];
+}
+
+root_type SquareBoxGuiLayer;

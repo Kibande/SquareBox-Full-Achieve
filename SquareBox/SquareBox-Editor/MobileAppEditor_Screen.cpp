@@ -1,7 +1,7 @@
 #include "MobileAppEditor_Screen.h"
 #include "ScreenIndices.h"
 
-MobileAppEditor_Screen::MobileAppEditor_Screen(SquareBox::RenderEngine::Window* window) :m_window(window)
+MobileAppEditor_Screen::MobileAppEditor_Screen()
 {
 }
 
@@ -48,65 +48,58 @@ void MobileAppEditor_Screen::onEntry()
 	m_debugProgram.linkShaders();
 
 	//Init Cameras
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_camera.setScale(1.0f);
-	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2));//Center the camera
+	m_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() *0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));//Center the camera
 	
-	mo.setTableArrangement(2, 3);
+	mo.setNumColumns(3);
 	mo.setTitleJustification(SquareBox::JustificationEnum::MIDDLE);
-	mo.setSpriteFont(&m_spriteFont);
 	SquareBox::GWOM::ClusterObject menu_object;
-	auto texture = SquareBox::AssetManager::TextureManager::getTextureByName("white background.png", m_window->getDDPI());
+	auto texture = SquareBox::AssetManager::TextureManager::getTextureByName("white background.png", m_game_ptr->getWindow()->getDDPI());
 	menu_object.texture_info.texture_id = texture.id;
 	menu_object.texture_info.uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	menu_object.texture_info.texture_type = SquareBox::TextureEnum::SINGLE;
 	//__debugbreak();
 	auto color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::orange);
-	menu_object.color = color.getIVec4();
+	menu_object.texture_info.color = color.getIVec4();
 	mo.setBackGroundObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::green);
-	menu_object.color = color.getIVec4();
+	menu_object.texture_info.color = color.getIVec4();
 	mo.setObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::blue);
-	menu_object.color = color.getIVec4();
+	menu_object.texture_info.color = color.getIVec4();
 	mo.setOnHoverObject(menu_object);
 
 	color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon);
-	menu_object.color = color.getIVec4();
+	menu_object.texture_info.color = color.getIVec4();
 	mo.setOnClickObject(menu_object);
 
-	mo.setTextScaling(glm::vec2(1.0f));
-	auto cell_size = glm::vec2(222, 36);
+	auto cell_size = glm::vec2(100, 36);
 	mo.setCellSize(cell_size);
 	mo.setChildrenPadding(cell_size *0.2f);
-	mo["Magic"]["Black"].setTableArrangement(1, 2);
-	mo["Magic"]["Black"].setTableArrangement(1, 2);
-	mo["Magic"]["Black"]["Fire"].setID(101).enable(false).setTableArrangement(2, 4);
-	mo["Magic"]["Black"]["Ice"].setID(101).enable(false).setTableArrangement(2, 4);
-	mo["Boys"].setID(102).enable(true).setTableArrangement(2,3);
-	mo["Thrid"].setID(102).enable(true).setTableArrangement(2,3);
-	mo["Yes"].setID(102).enable(true).setTableArrangement(2,3);
-	mo["MUST"].setID(102).enable(true).setTableArrangement(2,3);
-	mo["MUK"].setID(102).enable(true).setTableArrangement(2,3);
+	mo.setTitlePadding(cell_size *0.3f);
+	mo.setTitleJustification(SquareBox::JustificationEnum::MIDDLE);
+	mo.setTextToBoxHeightScale(0.5f);
+	mo["Magic"]["Black"].setNumColumns(2);
+	mo["Magic"]["Black"].setTitleText("Black Title");
+	mo["Magic"]["Black"]["Fire"].setID(101).enable(false);
+	mo["Magic"]["Black"]["Ice"].setID(101).enable(false);
+	//mo["Boys"].setID(102).enable(true);
+	//mo["Yes"].setID(102).enable(true);
+	//mo["MUST"].setID(102).enable(true);
 
-	mo["Boys"].setLeftRightJustificationPadding(3.1f);
+	mo["Thrid"].setID(102).enable(true);
+	mo["Makerere University of Science and Tecnology"].setID(102).enable(true);
 	mo["Magic"].showText(true);
-
-	mo["Yes"].setLeftRightJustificationPadding(3.1f);
 	mo["Boys"].setCellJustification(SquareBox::JustificationEnum::LEFT);
 	mo["Yes"].setCellJustification(SquareBox::JustificationEnum::RIGHT);
 	mo["MUST"].setCellJustification(SquareBox::JustificationEnum::MIDDLE);
-
-
-
-
-
-	mo.Build();
+	mo.showTitle(true);
+	mo.Build(m_spriteFont,m_camera.getScale());
 	menu_manager_vec.push_back(&mo);
 	m_game_ptr->setProcessingInput(true);
-
 }
 
 void MobileAppEditor_Screen::onExit()
@@ -120,8 +113,8 @@ void MobileAppEditor_Screen::onExit()
 
 void MobileAppEditor_Screen::update(const float & deltaTime_)
 {
-	m_window->update();
-	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
+
+	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
 	if (m_game_ptr->getInputDevice()->isInputIdReceived((int)(SquareBox::KeyBoardEnum::BACKSAPCE))) {
 		
@@ -129,6 +122,7 @@ void MobileAppEditor_Screen::update(const float & deltaTime_)
 			menu_manager_vec.pop_back();
 		}
 	}
+	mo.Build(m_spriteFont, m_camera.getScale());
 }
 
 void MobileAppEditor_Screen::draw()
@@ -141,12 +135,12 @@ void MobileAppEditor_Screen::draw()
 	IGameScreen::preUpdateShader(&m_textureProgram, "mySampler");
 
 	IGameScreen::uploadCameraInfo(&m_textureProgram, &m_camera, "P");
-
+	m_spriteBatch.end(); mo.Build(m_spriteFont, m_camera.getScale());
 	m_spriteBatch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
 
 	//m_sprite_font or m_sprite_batch draw
 
-	auto returnded=menu_manager_vec.back()->drawSelf(m_game_ptr, mouse_in_world, &m_spriteBatch, nullptr, glm::vec2(m_window->getScreenWidth() * 0.5, m_window->getScreenHeight() * 0.5));
+	auto returnded=menu_manager_vec.back()->drawSelf(m_game_ptr, mouse_in_world, m_spriteBatch, m_spriteFont,m_debugRenderer,m_camera.getScale(), glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight())*0.5f);
 	if (returnded != nullptr) {
 		menu_manager_vec.push_back(returnded);
 	}
@@ -159,10 +153,12 @@ void MobileAppEditor_Screen::draw()
 	m_debugProgram.use();
 
 	IGameScreen::uploadCameraInfo(&m_debugProgram, &m_camera, "P");
-
+	m_debugRenderer.end(); mo.Build(m_spriteFont, m_camera.getScale());
 	m_debugRenderer.begin();
-	 menu_manager_vec.back()->drawSelf(m_game_ptr, mouse_in_world, nullptr, &m_debugRenderer, glm::vec2(m_window->getScreenWidth()*0.5,m_window->getScreenHeight()*0.5));
-	
+	auto returnded_debug = menu_manager_vec.back()->drawSelf(m_game_ptr, mouse_in_world, m_spriteBatch, m_spriteFont, m_debugRenderer, m_camera.getScale(), glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight()) * 0.5f);
+	if (returnded_debug != nullptr) {
+		menu_manager_vec.push_back(returnded_debug);
+	}
 	m_debugRenderer.end();
 	m_debugRenderer.render();
 	m_debugProgram.unuse();

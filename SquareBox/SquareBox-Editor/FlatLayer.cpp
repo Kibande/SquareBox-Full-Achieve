@@ -118,7 +118,7 @@ void FlatLayer::onLayerInit(SquareBox::GWOM::Layer& layer_)
 	layer_.alive_cluster_objects.clear();
 	layer_.alive_cluster_objects.reserve(60);//some cache friendlness
 
-		//create the layers first world cluster and cluster object
+	//create the layers first world cluster and cluster object
 	//set up the first world cluster in this layer
 	layer_.world_clusters.emplace_back();
 	auto& world_cluster = layer_.world_clusters.back();
@@ -184,6 +184,23 @@ void FlatLayer::onLoadFromStorage(std::vector<SquareBox::GWOM::Layer>& layers_, 
 			*/
 			bool is_last_cluster_object_in_last_world_cluster = (j == active_layer.world_clusters.size() - 1) && (k == focus_world_cluster.cluster_objects.size() - 1) ? true : false;
 			m_current_cluster_object_ptr = &focus_world_cluster.cluster_objects[k];
+
+			/* this is meant to be a fix incase we are not upating the texture info anywhere else
+			 thou i thinking the whole parent texture grid does something
+			*/
+			//if (m_current_cluster_object_ptr->texture_info.texture_type == SquareBox::TextureEnum::SINGLE) {
+			//	if (active_layer.single_textures.size()> m_current_cluster_object_ptr->texture_info.texture_index)
+			//	{
+			// 		m_current_cluster_object_ptr->texture_info.texture_id = active_layer.single_textures[m_current_cluster_object_ptr->texture_info.texture_index].texture.id;
+			//	}
+			//}
+			//else {
+			//	//tile sheet
+			//	if (active_layer.tiled_textures.size() > m_current_cluster_object_ptr->texture_info.texture_index)
+			//	{
+			//		m_current_cluster_object_ptr->texture_info.texture_id = active_layer.tiled_textures[m_current_cluster_object_ptr->texture_info.texture_index].texture.id;
+			//	}
+			//}
 			m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
 			SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(m_current_shape_ptr->is_plotted, false, false, glm::vec2(0), m_current_cluster_object_ptr, layers_, &m_physics_world, is_last_cluster_object_in_last_world_cluster, false);
 			if (is_last_cluster_object_in_last_world_cluster) {
@@ -259,6 +276,11 @@ void FlatLayer::onFocus(SquareBox::GWOM::Layer& layer_, EditorModeEnum editor_mo
 		m_current_cluster_object_ptr = nullptr;
 	}
 	updateStates();
+}
+
+void FlatLayer::onOutOfFocus(SquareBox::GWOM::Layer& layer_)
+{
+	m_current_cluster_object_ptr = nullptr;
 }
 
 void FlatLayer::onUpdateProcessingInput(float deltaTime_, std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_, SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_)
@@ -1118,16 +1140,16 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 		ImGui::Text("Color");
 		static float col2[4];
 
-		col2[0] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->color.x), static_cast<float>(255));
-		col2[1] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->color.y), static_cast<float>(255));
-		col2[2] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->color.z), static_cast<float>(255));
-		col2[3] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->color.w), static_cast<float>(255));
+		col2[0] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->texture_info.color.x), static_cast<float>(255));
+		col2[1] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->texture_info.color.y), static_cast<float>(255));
+		col2[2] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->texture_info.color.z), static_cast<float>(255));
+		col2[3] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(m_current_cluster_object_ptr->texture_info.color.w), static_cast<float>(255));
 
 		ImGui::ColorEdit4("Clear color", col2);
-		m_current_cluster_object_ptr->color.x = static_cast<int>(col2[0] * 255);
-		m_current_cluster_object_ptr->color.y = static_cast<int>(col2[1] * 255);
-		m_current_cluster_object_ptr->color.z = static_cast<int>(col2[2] * 255);
-		m_current_cluster_object_ptr->color.w = static_cast<int>(col2[3] * 255);
+		m_current_cluster_object_ptr->texture_info.color.x = static_cast<int>(col2[0] * 255);
+		m_current_cluster_object_ptr->texture_info.color.y = static_cast<int>(col2[1] * 255);
+		m_current_cluster_object_ptr->texture_info.color.z = static_cast<int>(col2[2] * 255);
+		m_current_cluster_object_ptr->texture_info.color.w = static_cast<int>(col2[3] * 255);
 
 		int shape_type_enum = static_cast<int>(m_place_mode_shape_type);
 		ImGui::RadioButton("Single Shape", &shape_type_enum, 0); ImGui::SameLine();
@@ -1143,8 +1165,13 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 			{
 				shapes_labels_ptr[i] = ToString(m_vec_shapes_pointer[i]->body_shape);
 			}
+			if (editor_mode_ == EditorModeEnum::SELECT) {
+				ImGui::BeginDisabled();
+			}
 			ImGui::Combo("###Shape", &m_selected_shape, shapes_labels_ptr, m_vec_shapes_pointer.size());
-
+			if (editor_mode_ == EditorModeEnum::SELECT) {
+				ImGui::EndDisabled();
+			}
 			//get our shapes dimensions
 
 			for (unsigned int i = 0; i < m_vec_shapes_pointer.size(); i++)
@@ -1288,15 +1315,24 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					float my_tex_w = 50;
 					float my_tex_h = 50;
 					float zoom = 4.0f;
-					ImGui::Text("Preview");
-					//get the uvCoords
-					glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+					float texture_width = active_layer.single_textures[m_selected_single_texture_index].texture.width;
+					float texture_height = active_layer.single_textures[m_selected_single_texture_index].texture.height;
 
-					ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);                 // Top-left
-					ImVec2 uv_max = ImVec2(uvRect.z, uvRect.w);                 // Lower-right
+					float region_width = m_current_cluster_object_ptr->texture_info.uv_rect.z * texture_width;
+					float region_height = m_current_cluster_object_ptr->texture_info.uv_rect.w * texture_height;
+
+					float region_x_orign = (m_current_cluster_object_ptr->texture_info.uv_rect.x) * texture_width;
+					float region_y_orign = (1 - m_current_cluster_object_ptr->texture_info.uv_rect.w - m_current_cluster_object_ptr->texture_info.uv_rect.y) * texture_height;
+					/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
+					ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
+					ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
+		
+					ImGui::Text("Preview");
+					//ImVec2 uv_min = ImVec2(m_current_cluster_object_ptr->texture_info.uv_rect.x, m_current_cluster_object_ptr->texture_info.uv_rect.y);                 // Top-left
+					//ImVec2 uv_max = ImVec2(uv_min.x + m_current_cluster_object_ptr->texture_info.uv_rect.z, uv_min.y+ m_current_cluster_object_ptr->texture_info.uv_rect.w );                 // Lower-right
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 					ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
-					ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv_min, uv_max, tint_col, border_col);
+					ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv0, uv1, tint_col, border_col);
 
 				}
 				else {
@@ -1329,28 +1365,9 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					m_current_cluster_object_ptr->texture_info.texture_index = m_selected_tile_sheet_texture_index;
 					m_current_cluster_object_ptr->texture_info.texture_id = selected_tile_sheet_texture.id;
 					//current active texture
-					ImTextureID my_tex_id;
-					float my_tex_w = 0.0f;
-					float my_tex_h = 0.0f;
-					my_tex_id = (ImTextureID)selected_tile_sheet_texture.id;
-					if (selected_tile_sheet_texture.tiling.x < 1 && selected_tile_sheet_texture.tiling.y < 1) {
-						//the tilesheet sheet hasn't yet been grided
-						if (selected_tile_sheet_texture.width > selected_tile_sheet_texture.height) {
-							my_tex_w = 75;
-							my_tex_h = 30;
-						}
-						else {
-							//give it a different aspect ratio
-							my_tex_w = 55;
-							my_tex_h = 100;
-						}
-					}
-					else {
-						my_tex_w = 50;
-						my_tex_h = 50;
-					}
-
-
+					ImTextureID my_tex_id= (ImTextureID)selected_tile_sheet_texture.id;
+					float my_tex_w = 50;
+					float my_tex_h = 50;
 					float zoom = 4.0f;
 					ImGui::Text("Preview");
 
@@ -1363,11 +1380,26 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 						m_current_cluster_object_ptr->texture_info.uv_rect = uvRect;
 					}
 
-					ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);                 // Top-left
-					ImVec2 uv_max = ImVec2(uvRect.z, uvRect.w);                 // Lower-right
+					float texture_width = selected_tile_sheet_texture.width;
+					float texture_height = selected_tile_sheet_texture.height;
+
+					float region_width = m_current_cluster_object_ptr->texture_info.uv_rect.z * texture_width;
+					float region_height = m_current_cluster_object_ptr->texture_info.uv_rect.w * texture_height;
+
+					float region_x_orign = (m_current_cluster_object_ptr->texture_info.uv_rect.x) * texture_width;
+					float region_y_orign = (1-m_current_cluster_object_ptr->texture_info.uv_rect.w -m_current_cluster_object_ptr->texture_info.uv_rect.y) * texture_height;
+					/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
+					ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
+					ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
+					
+					ImVec2 texture_dimensions(selected_tile_sheet_texture.width, selected_tile_sheet_texture.height);
+					//ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);   // Top-left
+					//ImVec2 uv_max = ImVec2(uv_min.x +uvRect.z , uv_min.y + uvRect.w);  // Lower-right
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 					ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
-					ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv_min, uv_max, tint_col, border_col);
+					
+
+					ImGui::Image(my_tex_id, ImVec2(my_tex_w* zoom, my_tex_h* zoom), uv0, uv1, tint_col, border_col);
 					ImGui::Text("Index: "); ImGui::SameLine();
 					//ImGui::InputInt("", &m_current_cluster_object_ptr->texture_info.tile_sheet_index);
 					ImGui::DragInt("###m_current_tile_sheet_index", &m_current_cluster_object_ptr->texture_info.tile_sheet_index, 1, 0, (selected_tile_sheet_texture.tiling.x * selected_tile_sheet_texture.tiling.y) - 1, "%d", ImGuiSliderFlags_AlwaysClamp);

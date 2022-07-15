@@ -8,7 +8,7 @@
 class First_Screen : public SquareBox::IGameScreen
 {
 public:
-	First_Screen(SquareBox::RenderEngine::Window* window);
+	First_Screen();
 	~First_Screen();
 private:
 	// Inherited via IGameScreen
@@ -30,7 +30,6 @@ private:
 
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 
 	//the layering system

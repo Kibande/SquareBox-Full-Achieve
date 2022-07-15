@@ -12,6 +12,12 @@
     <ClInclude Include="App.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FireButtonTexture.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="GameHUDandGUI.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -19,6 +25,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GamePlayScreen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Human.h">
@@ -39,14 +48,15 @@
     <ClInclude Include="Zombie.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Gun.h" />
-    <ClInclude Include="FireButtonTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FireButtonTexture.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameHUDandGUI.cpp">
@@ -56,6 +66,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GamePlayScreen.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Human.cpp">
@@ -76,10 +89,5 @@
     <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Gun.cpp" />
-    <ClCompile Include="FireButtonTexture.cpp" />
   </ItemGroup>
 </Project>

@@ -15,24 +15,27 @@ int closestPow2(int i) {
 
 namespace SquareBox {
 	namespace RenderEngine {
-		void SpriteFont::init(const char* font, int height_) {
-			init(font, height_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
+		void SpriteFont::init(std::string font_file_, int height_) {
+			init(font_file_, height_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
 		}
 		// the font size considers a camera scale of 1
-		void SpriteFont::init(const char* font, int height_, char cs, char ce) {
+		void SpriteFont::init(std::string font_file_, int height_, char cs, char ce) {
+			m_font_size = height_;
 			// Initialize SDL_ttf
 			if (!TTF_WasInit()) {
 				TTF_Init();
 			}
-			TTF_Font* f = TTF_OpenFont(font, height_);
+			m_font_path = font_file_;
+			TTF_Font* f = TTF_OpenFont(m_font_path.c_str(), m_font_size);
+			
 			if (f == nullptr) {
-				SBX_CORE_CRITICAL("Failed to open TTF font {} ", font);
+				SBX_CORE_CRITICAL("Failed to open TTF font {} ", m_font_path);
 				return;
 			}
 			_fontHeight = TTF_FontHeight(f);
 			_regStart = cs;
 			_regLength = ce - cs + 1;
-			int padding = height_ / 8;
+			int padding = m_font_size / 8;
 
 			// First measure all the regions
 			glm::ivec4* glyphRects = new glm::ivec4[_regLength];
@@ -82,7 +85,7 @@ namespace SquareBox {
 
 			// Can a bitmap font be made?
 			if (!bestPartition) {
-				SBX_CORE_CRITICAL("Failed to Map TTF font {} to texture. Try lowering resolution.\n",font);
+				SBX_CORE_CRITICAL("Failed to Map TTF font {} to texture. Try lowering resolution.\n", m_font_path);
 				return;
 			}
 			// Create the texture
@@ -162,6 +165,12 @@ namespace SquareBox {
 			m_is_initialised = true;
 			TTF_CloseFont(f);
 		}
+		void SpriteFont::setProperties(std::string font_file_, std::string font_display_name_, int font_size_)
+		{
+			m_font_size = font_size_;
+			m_font_path=font_file_;
+			m_display_name=font_display_name_;
+		}
 		SpriteFont::SpriteFont()
 		{
 		}
@@ -210,11 +219,11 @@ namespace SquareBox {
 			return size;
 		}
 
-		void SpriteFont::draw(SpriteBatch & batch, const char * c_str_, glm::vec2 position, glm::vec2 camera_to_font_height_scaling_, float depth, ColorRGBA8 tint, SquareBox::JustificationEnum justification_)
+		void SpriteFont::draw(SpriteBatch & batch, const char * c_str_, glm::vec2 coordinates_, glm::vec2 camera_to_font_height_scaling_, float depth, ColorRGBA8 tint, SquareBox::JustificationEnum justification_)
 		{
 			if (!m_is_initialised) return;
 
-			glm::vec2 tp = position;
+			glm::vec2 tp = coordinates_;
 			//Apply justification
 			if (justification_ == SquareBox::JustificationEnum::MIDDLE)
 			{
@@ -230,7 +239,7 @@ namespace SquareBox {
 				if (c_str_[si] == '\n')
 				{
 					tp.y += _fontHeight * camera_to_font_height_scaling_.y;
-					tp.x = position.x;
+					tp.x = coordinates_.x;
 				}
 				else
 				{

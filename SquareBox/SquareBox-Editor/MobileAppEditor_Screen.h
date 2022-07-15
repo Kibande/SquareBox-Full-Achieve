@@ -4,7 +4,7 @@
 class MobileAppEditor_Screen :public SquareBox::IGameScreen
 {
 public:
-	MobileAppEditor_Screen(SquareBox::RenderEngine::Window* window);
+	MobileAppEditor_Screen();
 	~MobileAppEditor_Screen();
 
 private:
@@ -30,7 +30,6 @@ private:
 	SquareBox::RenderEngine::SpriteBatch m_spriteBatch;
 	SquareBox::RenderEngine::SpriteFont m_spriteFont;
 	SquareBox::RenderEngine::DebugRenderer m_debugRenderer;
-	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_textureProgram;
 	SquareBox::RenderEngine::GLSLProgram m_debugProgram;
 	SquareBox::Camera::ParallelCamera m_camera;

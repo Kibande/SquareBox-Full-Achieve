@@ -1,6 +1,6 @@
 #include "Thrid_Screen.h"
 
-Thrid_Screen::Thrid_Screen(SquareBox::RenderEngine::Window* window):m_window(window)
+Thrid_Screen::Thrid_Screen()
 {
 }
 
