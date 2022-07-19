@@ -29,7 +29,7 @@ void Welcome_Screen::destroy()
 void Welcome_Screen::onEntry()
 {
 	m_spriteBatch.init();
-	m_spriteFont.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_spriteFont.initWithName("Comfortaa-Bold", 32);
 
 	//Init Shaders
 	m_textureProgram.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
@@ -177,16 +177,15 @@ void Welcome_Screen::drawGUI()
 
 		// Buttons
 
-		if (ImGui::Button("Mobile App Editor")) {
-			m_nextScreenIndex = MOBILE_APP_EDITOR_SCREEN_INDEX;
-			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
-		}
+		//if (ImGui::Button("Mobile App Editor")) {
+		//	m_nextScreenIndex = MOBILE_APP_EDITOR_SCREEN_INDEX;
+		//	m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
+		//}
 
-		if (ImGui::Button("Desktop App Editor")) {
-			m_nextScreenIndex = DESKTOP_APP_EDITOR_SCREEN_INDEX;
-			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
-		}
-
+		//if (ImGui::Button("Desktop App Editor")) {
+		//	m_nextScreenIndex = DESKTOP_APP_EDITOR_SCREEN_INDEX;
+		//	m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
+		//}
 
 		if (ImGui::Button("Level Editor")) {
 			m_nextScreenIndex = LEVEL_EDITOR_SCREEN_INDEX;

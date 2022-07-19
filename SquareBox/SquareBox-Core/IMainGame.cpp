@@ -18,9 +18,9 @@ namespace SquareBox {
 	{
 		m_windowBGColor = windowBGColor;
 		m_window_name = windowName;
-		m_window_height = windowHeight;
+		m_start_up_window_height = windowHeight;
 		m_max_delta_time = maxDeltaTime;
-		m_window_width = windowWidth;
+		m_start_up_window_width = windowWidth;
 		m_input_device = inputDevice;
 		m_video_decorder = videoDecorder;
 		m_window_flags = windowsFlags;
@@ -58,9 +58,6 @@ namespace SquareBox {
 			}
 			else {
 				m_window.update();
-				m_window_width = m_window.getScreenWidth();
-				m_window_height = m_window.getScreenHeight();
-
 				// Calculate the frameTime in milliseconds
 				limiter.begin();
 				const Uint32 & newTicks = SDL_GetTicks();
@@ -83,7 +80,7 @@ namespace SquareBox {
 					if (m_use_get_input)
 					{
 						// update the input manager if we are processing input
-						m_input_manager->update(m_window_width,m_window_height);
+						m_input_manager->update(m_window.getScreenWidth(), m_window.getScreenHeight());
 						m_input_manager->processInput();
 					}
 					// Since we just took a step that is length deltaTime, subtract from totalDeltaTime
@@ -198,7 +195,7 @@ namespace SquareBox {
 
 	bool IMainGame::initSystems()
 	{
-		m_window.create(m_window_name, m_window_width, m_window_height, m_window_flags, m_windowBGColor);
+		m_window.create(m_window_name, m_start_up_window_width, m_start_up_window_height, m_window_flags, m_windowBGColor);
 		return true;
 	}
 

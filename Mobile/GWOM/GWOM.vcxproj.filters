@@ -2,20 +2,30 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\GWOM\ClusterObject.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUGUI_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOM_generated.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUString_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Entities.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\FontInfo.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Grid.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\GUIElement.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\GuiLayer.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\GuiReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\GWOM.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Joint.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Layer.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\LevelReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\StringReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\TextureInfo.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TileSystem.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\WorldCluster.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\GWOM\Grid.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\GuiReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\Layer.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\LevelReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\StringReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\TileSystem.cpp" />
   </ItemGroup>
 </Project>

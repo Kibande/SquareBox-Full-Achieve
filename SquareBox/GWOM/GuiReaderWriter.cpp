@@ -22,7 +22,7 @@ bool SquareBox::GWOM::GuiReaderWriter::saveGuiLayerDataAsBinary(const std::strin
             fb_gui_element_fonts.push_back(SquareBox::DSUGUI::CreateFontInfo(builder,
                 &fb_font_info_color,
                 focus_font_info.font_index,
-                builder.CreateString(focus_font_info.text),
+                builder.CreateString(std::string(focus_font_info.text)),
                 focus_font_info.show_text,
                 focus_font_info.text_to_box_height_scale,
                 focus_font_info.opacity,
@@ -47,15 +47,15 @@ bool SquareBox::GWOM::GuiReaderWriter::saveGuiLayerDataAsBinary(const std::strin
                 focus_texture_info.opacity
             ));
         }
-
+        auto temp_vec2 = SquareBox::DSUGUI::Vec2(focus_gui_element.location_ratio.x, focus_gui_element.location_ratio.y);
         fb_gui_elements.push_back(SquareBox::DSUGUI::CreateGUIElement(builder,
             static_cast<int>(focus_gui_element.shape),
             static_cast<int>(focus_gui_element.state),
             focus_gui_element.id,
-            builder.CreateString(focus_gui_element.name),
+            builder.CreateString(std::string(focus_gui_element.name)),
             focus_gui_element.is_hidden,
             focus_gui_element.is_locked,
-            &SquareBox::DSUGUI::Vec2(focus_gui_element.location_ratio.x, focus_gui_element.location_ratio.y),
+            &temp_vec2,
             focus_gui_element.height_ratio,
             focus_gui_element.width_ratio,
             focus_gui_element.radius_ratio,
@@ -70,10 +70,11 @@ bool SquareBox::GWOM::GuiReaderWriter::saveGuiLayerDataAsBinary(const std::strin
     for (unsigned int i = 0; i < gui_layer_.single_textures.size(); i++)
     {
         const SquareBox::AssetManager::GLTexture& current_single_texture = gui_layer_.single_textures[i];
+        auto temp_vec2 = SquareBox::DSUGUI::Ivec2(current_single_texture.tiling.x, current_single_texture.tiling.y);
         fb_single_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
             builder.CreateString(current_single_texture.asset_file_path),
             builder.CreateString(current_single_texture.display_name),
-            &SquareBox::DSUGUI::Ivec2(current_single_texture.tiling.x,current_single_texture.tiling.y)
+            &temp_vec2
             ));
     }
 
@@ -81,10 +82,11 @@ bool SquareBox::GWOM::GuiReaderWriter::saveGuiLayerDataAsBinary(const std::strin
     for (unsigned int i = 0; i < gui_layer_.tiled_textures.size(); i++)
     {
         const SquareBox::AssetManager::GLTexture& current_tiled_texture = gui_layer_.tiled_textures[i];
+        auto temp_vec2 = SquareBox::DSUGUI::Ivec2(current_tiled_texture.tiling.x, current_tiled_texture.tiling.y);
         fb_single_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
             builder.CreateString(current_tiled_texture.asset_file_path),
             builder.CreateString(current_tiled_texture.display_name),
-            &SquareBox::DSUGUI::Ivec2(current_tiled_texture.tiling.x, current_tiled_texture.tiling.y)
+            &temp_vec2
         ));
     }
 
@@ -137,6 +139,7 @@ bool SquareBox::GWOM::GuiReaderWriter::loadGuiLayerDataAsBinary(const std::strin
             gui_element.name[j] = fb_name[j];
         }
         gui_element.name[fb_name.length()] = '\0';
+
         gui_element.is_hidden = fb_gui_element->is_hidden();
         gui_element.is_locked = fb_gui_element->is_locked();
         gui_element.location_ratio.x = fb_gui_element->location_ratio()->x();
@@ -161,7 +164,7 @@ bool SquareBox::GWOM::GuiReaderWriter::loadGuiLayerDataAsBinary(const std::strin
             {
                 font_info.text[k] = fb_font_text[k];
             }
-            font_info.text[fb_name.length()] = '\0';
+            font_info.text[fb_font_text.length()] = '\0';
 
             font_info.show_text = fb_font->show_text();
             font_info.text_to_box_height_scale = fb_font->text_to_box_height_scale();

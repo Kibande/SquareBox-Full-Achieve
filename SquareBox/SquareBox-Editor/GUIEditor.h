@@ -49,6 +49,8 @@ private:
 
 	void initGUI();
 
+	void disposeGUI();
+
 	void drawGUI();
 
 	void showMenuMain();
@@ -59,6 +61,10 @@ private:
 
 	void setCurrentGuiElementPtrLocationRatio();
 
+	void cleanOutGUILayer();
+
+	void createNewGUILayer();
+
 	SquareBox::Utilities m_utilities;
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
@@ -67,7 +73,7 @@ private:
 	SquareBox::Camera::ParallelCamera m_camera;
 	bool m_show_about_dialog = false;
 	int m_next_screen_index = SCREEN_INDEX_NO_SCREEN;
-	int m_previous_screen_index = SCREEN_INDEX_NO_SCREEN;
+	int m_previous_screen_index = WELCOME_SCREEN_INDEX;
 	SquareBoxEditor::Editor_Assistant m_editor_assistant;
 	SquareBox::GWOM::GuiLayer m_gui_layer;
 
@@ -91,6 +97,7 @@ private:
 	std::string m_font_file_extensions = ".ttf";
 	const char** m_shapes_labels_ptr = nullptr;
 	const char** m_gui_element_states_labels_ptr = nullptr;
+	const char** m_text_justification_lables_ptr = nullptr;
 
 
 	//variables that need updating in select mode
@@ -104,4 +111,6 @@ private:
 	int m_selected_font_index = 0;
 	int m_font_size = 32;
 	int m_selected_texture_type = 0;
+	bool m_active_selecting = true;//this helps us be able to interact with the GUI like the user would
+
 };

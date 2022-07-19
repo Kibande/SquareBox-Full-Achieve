@@ -41,7 +41,6 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Essentials.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\IGameScreen.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\IMainGame.h" />
-    <ClInclude Include="..\..\SquareBox\SquareBox-Core\IShape.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\macros.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\ScreenList.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\sqbpch.h" />
@@ -51,7 +50,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IGameScreen.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IMainGame.cpp" />
-    <ClCompile Include="..\..\SquareBox\SquareBox-Core\IShape.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\main.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\ScreenList.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\sqbpch.cpp" />

@@ -1,3 +1,7 @@
+// SquareBox DSUString Schema
+
+namespace SquareBox.DSUString;
+
 table SquareBoxStringData {
 		data:string;
 }

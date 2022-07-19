@@ -49,6 +49,10 @@ namespace SquareBox {
 			m_current_state = ScreenState::RUNNING;
 		}
 
+		void setScreenState(ScreenState new_state) {
+			m_current_state = new_state;
+		}
+
 		//setters
 		void setParentGame(IMainGame* game) { m_game_ptr = game; }
 

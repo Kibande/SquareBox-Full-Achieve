@@ -30,7 +30,7 @@ void MobileAppEditor_Screen::destroy()
 void MobileAppEditor_Screen::onEntry()
 {
 	m_spriteBatch.init();
-	m_spriteFont.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_spriteFont.initWithName("Comfortaa-Bold", 32);
 	m_debugRenderer.init();
 
 	//Init Shaders

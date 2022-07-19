@@ -30,8 +30,8 @@ void App::addScreens()
 	m_screen_list->addScreen(m_gui_editor_screen.get());
 
 	// Our starting Screen
-	//m_screen_list->setScreen(m_welcome_screen->getScreenIndex());
-	m_screen_list->setScreen(m_gui_editor_screen->getScreenIndex());
+	m_screen_list->setScreen(m_welcome_screen->getScreenIndex());
+	//m_screen_list->setScreen(m_gui_editor_screen->getScreenIndex());
 	//m_screen_list->setScreen(desktop_app_editor_screen->getScreenIndex());
 }
 

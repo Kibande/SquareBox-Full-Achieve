@@ -31,7 +31,7 @@ void DesktopAppEditor_Screen::onEntry()
 {
 	m_sprite_batch.init();
 	m_debug_render.init();
-	m_sprite_font.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithName("Comfortaa-Bold", 32);
 
 	//Init Shaders
 	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");

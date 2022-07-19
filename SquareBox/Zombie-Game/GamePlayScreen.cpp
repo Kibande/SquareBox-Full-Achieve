@@ -58,14 +58,8 @@ void GamePlayScreen::onEntry()
 
 	m_utilities.init();
 
-	#ifdef SQB_PLATFORM_ANDROID
-		m_sprite_font.init("fonts/Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
-	#else
-		m_sprite_font.init("Assets/Fonts/Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
-	#endif
-
-		
-
+	m_sprite_font.initWithName("Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
+	
 		auto music_raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
 		m_music_1 = SquareBox::AudioSystem::Music("", SquareBox::FallOffEnum::INVERSE, 10.0f, 50.0f, glm::vec2(0.0f), music_raw_data.first, music_raw_data.second);
 		//lets load our music from here

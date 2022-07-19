@@ -89,8 +89,8 @@ namespace SquareBox {
 #ifndef SQB_PLATFORM_ANDROID
 		std::vector<SquareBox::MediaPlayer::IPlayer *>m_vec_of_media_players;
 #endif
-		int m_window_height = 100;
-		int m_window_width = 100;
+		int m_start_up_window_height = 100;
+		int m_start_up_window_width = 100;
 		int m_window_flags = 0;
 		std::string m_window_name;
 		SquareBox::InputDevicesEnum m_input_device = SquareBox::InputDevicesEnum::KeyBoardAndMouse;

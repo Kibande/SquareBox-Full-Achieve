@@ -4,8 +4,8 @@ void SquareBox::GUI::BoxGUIElement::drawTexture(const SquareBox::GWOM::GUIElemen
 {
 
 	if (!gui_element_.is_hidden && gui_element_.is_alive) {
-	glm::vec2 position = glm::vec2(visiable_dest_rect_.x, visiable_dest_rect_.y) + glm::vec2(gui_element_.location_ratio.x * visiable_dest_rect_.z, gui_element_.location_ratio.y * visiable_dest_rect_.w);
-	glm::vec2 dimensions = glm::vec2(gui_element_.width_ratio * visiable_dest_rect_.z, gui_element_.height_ratio * visiable_dest_rect_.w);
+		glm::vec2 position = glm::vec2(visiable_dest_rect_.x, visiable_dest_rect_.y) + glm::vec2(gui_element_.location_ratio.x * visiable_dest_rect_.z, gui_element_.location_ratio.y * visiable_dest_rect_.w);
+		glm::vec2 dimensions = glm::vec2(gui_element_.width_ratio * visiable_dest_rect_.z, gui_element_.height_ratio * visiable_dest_rect_.w);
 		//A box
 		glm::vec2  boxOrigin = glm::vec2(position) - dimensions * 0.5f;
 		/* the box padding of 0.01 has been removed from here
@@ -13,18 +13,19 @@ void SquareBox::GUI::BoxGUIElement::drawTexture(const SquareBox::GWOM::GUIElemen
 		*/
 		const SquareBox::GWOM::TextureInfo& texture_info = gui_element_.textures[static_cast<int>(gui_element_.state)];
 
-		sprite_batch_.draw(glm::vec4(boxOrigin, dimensions), texture_info.uv_rect,texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((texture_info.color.x), (texture_info.color.y), (texture_info.color.z), (texture_info.color.w) * (0.01 * texture_info.opacity)), gui_element_.angle);
+		sprite_batch_.draw(glm::vec4(boxOrigin, dimensions), texture_info.uv_rect, texture_info.texture_id, 0.0f, SquareBox::RenderEngine::ColorRGBA8((texture_info.color.x), (texture_info.color.y), (texture_info.color.z), (texture_info.color.w) * (0.01 * texture_info.opacity)), gui_element_.angle);
 	}
 }
 
-void SquareBox::GUI::BoxGUIElement::drawText(const SquareBox::GWOM::GUIElement& gui_element_,SquareBox::RenderEngine::SpriteFont & sprite_font_, SquareBox::RenderEngine::SpriteBatch& sprite_batch_, float camera_scale_, glm::vec4& visiable_dest_rect_)
+void SquareBox::GUI::BoxGUIElement::drawText(const SquareBox::GWOM::GUIElement& gui_element_, SquareBox::RenderEngine::SpriteFont& sprite_font_, SquareBox::RenderEngine::SpriteBatch& sprite_batch_, float camera_scale_, glm::vec4& visiable_dest_rect_)
 {
 	glm::vec2 position = glm::vec2(visiable_dest_rect_.x, visiable_dest_rect_.y) + glm::vec2(gui_element_.location_ratio.x * visiable_dest_rect_.z, gui_element_.location_ratio.y * visiable_dest_rect_.w);
 	glm::vec2 dimensions = glm::vec2(gui_element_.width_ratio * visiable_dest_rect_.z, gui_element_.height_ratio * visiable_dest_rect_.w);
 	//A box
 	glm::vec2  boxOrigin = glm::vec2(position) - dimensions * 0.5f;
+	glm::vec4 box_dest_rect(boxOrigin, dimensions);
+	
 
-	glm::vec4 box_dest_rect(boxOrigin,dimensions);
 	auto& font_info = gui_element_.fonts[static_cast<int>(gui_element_.state)];
 	glm::vec2 text_dimentions = sprite_font_.measure(font_info.text);
 	float text_height = (text_dimentions.y / camera_scale_);
@@ -78,7 +79,7 @@ void SquareBox::GUI::BoxGUIElement::drawText(const SquareBox::GWOM::GUIElement& 
 bool SquareBox::GUI::BoxGUIElement::containtsPoint(const SquareBox::GWOM::GUIElement& gui_element_, const glm::vec2& coordinates_, glm::vec4& visiable_dest_rect_)
 {
 	if (gui_element_.is_alive) {
-			glm::vec2 position = glm::vec2(visiable_dest_rect_.x, visiable_dest_rect_.y) + glm::vec2(gui_element_.location_ratio.x * visiable_dest_rect_.z, gui_element_.location_ratio.y * visiable_dest_rect_.w);
+		glm::vec2 position = glm::vec2(visiable_dest_rect_.x, visiable_dest_rect_.y) + glm::vec2(gui_element_.location_ratio.x * visiable_dest_rect_.z, gui_element_.location_ratio.y * visiable_dest_rect_.w);
 		glm::vec2 dimensions = glm::vec2(gui_element_.width_ratio * visiable_dest_rect_.z, gui_element_.height_ratio * visiable_dest_rect_.w);
 		//A box
 		const float x_position = position.x;

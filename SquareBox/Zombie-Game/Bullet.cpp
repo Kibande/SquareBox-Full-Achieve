@@ -19,7 +19,7 @@ void Bullet::setUp(SquareBox::GWOM::ClusterObject& cluster_object_)
 	cluster_object_.speed = m_speed;
 	cluster_object_.pod_float = m_damage; // the bullets damage is being stored as 
 	cluster_object_.texture_info.texture_id = m_bullet_texture.id;
-	cluster_object_.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
+	cluster_object_.texture_info.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 	cluster_object_.radius = m_bullet_size;
 	cluster_object_.shape = SquareBox::BodyShapeEnum::Circle;
 }

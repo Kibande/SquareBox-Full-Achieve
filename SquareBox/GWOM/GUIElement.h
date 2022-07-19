@@ -22,7 +22,8 @@ namespace SquareBox {
 			float width_ratio = 0.0f;
 			float radius_ratio = 0.0f;
 			float angle = 0.0f;
-			float is_alive = false;
+			bool is_alive = false;
+			bool is_to_be_deleted = false;
 			std::vector<FontInfo> fonts = std::vector<FontInfo>(6, FontInfo());//	the number of memebers should match the possible
 			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of memebers should match the possible
 			//	state count.

@@ -24,8 +24,10 @@ namespace SquareBox {
 		{
 		public:
 			SpriteFont();
-			void init(std::string font_file_, int size);
-			void init(std::string font_file_, int size, char cs, char ce);
+			void initWithFilePath(std::string font_file_, int size_);
+			void initWithName(std::string font_name_, int size_);
+			void initWithName(std::string font_name_, int size_, char cs, char ce);
+			void initWithFilePath(std::string font_file_, int size, char cs, char ce);
 			void setProperties(std::string font_file_, std::string font_display_name_, int font_size_);
 			//Destory the font resources
 			void dispose();

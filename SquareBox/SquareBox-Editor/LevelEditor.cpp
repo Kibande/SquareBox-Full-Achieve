@@ -145,8 +145,6 @@ void LevelEditor::update(const float& deltaTime_)
 void LevelEditor::draw()
 {
 	//we shall draw layer by layer starting with the first one
-	// 
-
 
 	for (unsigned int i = 0; i < m_layers.size(); i++) {
 		SquareBox::GWOM::Layer& layer = m_layers[i];
@@ -198,7 +196,6 @@ void LevelEditor::draw()
 				uploadCameraInfo(&m_debug_program, &layer.camera, "P");
 				m_debug_renderer.render();
 				m_debug_program.unuse();
-
 			}
 
 			//LIGHTS
@@ -226,8 +223,6 @@ void LevelEditor::draw()
 					onOutsideDebugModeDebugDraw so that the object trace is only drawn for the active layer but the other things
 					that are not limited to the active layer  still get drawn
 				*/
-
-
 				//the out laws
 				m_debug_renderer.begin();
 
@@ -263,12 +258,21 @@ void LevelEditor::onExit()
 		m_game_ptr->abortExit();//abort normal exit and first see request for permission to exit
 		m_request_exit = true;//this will lead to the are u sure dialog being displayed
 	}
-	else {
+	else
+	{
 		//this line must be called by the programmer inorder to permit the game to exit
 		// for  a game to exit the programmer must have allowed it to
+		m_layers.clear();
 		m_sprite_batch.dispose();
-		m_utilities.dispose();
 		m_texture_program.dispose();
+		m_utilities.dispose();
+		m_debug_renderer.dispose();
+		m_debug_program.dispose();
+
+		//need a better fix for a clean up here
+		m_texture_program = SquareBox::RenderEngine::GLSLProgram();
+		m_debug_program = SquareBox::RenderEngine::GLSLProgram();
+
 		//m_automation.dispose();
 		//m_animatioCreator.dispose();
 		for each (const auto & ref_layer in m_layers) {
@@ -285,8 +289,8 @@ void LevelEditor::onExit()
 		{
 			layer_type->onDispose();
 		}
-		//disposeGUI(); calling this here caused problems because drawGUI was called in the next game loop
-		m_game_ptr->initiateExit();
+		m_vec_of_layer_types.clear();
+		disposeGUI(); //calling this here caused problems because drawGUI was called in the next game loop
 	}
 }
 
@@ -427,6 +431,7 @@ void LevelEditor::showMainMenu()
 				ImGui::EndMenu();
 			}
 			if (ImGui::MenuItem("About", NULL)) { m_show_about_dialog = true; }
+			if (ImGui::MenuItem("Home", NULL)) { setScreenState(SquareBox::ScreenState::CHANGE_PREVIOUS); }
 			if (ImGui::MenuItem("Quit", NULL)) { m_request_exit = true; }
 			ImGui::EndMenu();
 		}
@@ -924,7 +929,7 @@ void LevelEditor::drawGUI()
 			ImGui::CloseCurrentPopup();
 			//Close  LevelEditor
 			m_allow_exit = true;
-			onExit();
+			m_game_ptr->initiateExit();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
@@ -957,27 +962,34 @@ void LevelEditor::drawGUI()
 		ImGui::Separator();
 		ImGui::Text("Camera Controls");
 		ImGui::Text("LEFT_ALT + LEFT_CLICK         :  Camera Panning");
-		ImGui::Text("LEFT_ALT + mouse wheel        :  Camera Zoom");
-		ImGui::Text("LEFT_CTRL + mouse wheel       :  Camera movement in x direction");
-		ImGui::Text("mouse wheel                   :  Camera movement in y direction");
+		ImGui::Text("SHIFT    + mouse wheel        :  Camera Zoom");
+
 
 		ImGui::Separator();
 		ImGui::Text("SELECT MODE");
-		ImGui::Text("\nCluster Mode");
-		ImGui::Text("LEFT_CLICK                    :  makes hovered objects world cluster get selected");
 
-		ImGui::Text("\nObject Mode");
-		ImGui::Text("LEFT_CLICK                    :  makes hovered object active object");
-		ImGui::Text("TAB + ARROW KEYS              :  dupilcates the selected cluster object in the arrows' direction");
 
-		ImGui::Text("\nFree Select Mode");
-		ImGui::Text("LEFT_CLICK                    :  adds hovered object to selected objects");
-		ImGui::Text("SPACE_BAR + RIGHT_CLICK       :  creates selection rectangle");
+		if (m_layers[m_active_layer_index].layer_type == SquareBox::LayerTypeEnum::TiledLayer) {
+		ImGui::Text("TAB + ARROW KEY               :  Duplicated selected tiles in a particular direction");
+		ImGui::Text("F1  + ARROW KEY               :  Tiles out the texture map into the world");
+		}
+		else if (m_layers[m_active_layer_index].layer_type == SquareBox::LayerTypeEnum::FlatLayer) {
+			ImGui::Text("\nCluster Mode");
+			ImGui::Text("LEFT_CLICK                    :  makes hovered objects world cluster get selected");
+			ImGui::Text("\nObject Mode");
+			ImGui::Text("LEFT_CLICK                    :  makes hovered object active object");
+			ImGui::Text("TAB + ARROW KEYS              :  dupilcates the selected cluster object in the arrows' direction");
 
-		ImGui::Text("\n\nRIGHT_CLICK                   :  drags selected objects");
+			ImGui::Text("\nFree Select Mode");
+			ImGui::Text("LEFT_CLICK                    :  adds hovered object to selected objects");
+			ImGui::Text("SPACE_BAR + RIGHT_CLICK       :  creates selection rectangle");
 
-		ImGui::Text("\nJoint Mode:");
-		ImGui::Text("Still under development");
+			ImGui::Text("\n\nRIGHT_CLICK                   :  drags selected objects");
+
+			ImGui::Text("\nJoint Mode:");
+			ImGui::Text("Still under development");
+		}
+
 		if (ImGui::Button("OK", ImVec2(120, 0))) {
 			m_show_key_bindings_dialog = false;
 			ImGui::CloseCurrentPopup();

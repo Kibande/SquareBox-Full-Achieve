@@ -26,7 +26,7 @@ void GameHUDandGUI::init(SquareBox::IMainGame * game_)
 	outer_direction_button.is_hidden = false;
 	
 
-	outer_direction_button.color = glm::vec4(255, 255, 255, 255);
+	outer_direction_button.texture_info.color = glm::vec4(255, 255, 255, 255);
 
 	inner_direction_button = outer_direction_button;
 	inner_direction_button.texture_info.texture_id = SquareBox::AssetManager::TextureManager::getTextureByName("movement button center.png", m_game_ptr->getWindow()->getDDPI()).id;
@@ -37,7 +37,7 @@ void GameHUDandGUI::init(SquareBox::IMainGame * game_)
 
 	m_avaliable_gui_space_object.shape = SquareBox::BodyShapeEnum:: Box;
 	m_avaliable_gui_space_object.is_alive = true;
-	m_avaliable_gui_space_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::black).getIVec4();
+	m_avaliable_gui_space_object.texture_info.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::black).getIVec4();
 
 }
 

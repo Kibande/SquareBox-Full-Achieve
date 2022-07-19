@@ -256,7 +256,7 @@ void SquareBox::Shapes::CalculatedLightShape::drawTriangleLight(const glm::vec2 
 
 void SquareBox::Shapes::CalculatedLightShape::drawRay(const glm::vec2 & a, const glm::vec2 & b, SquareBox::RenderEngine::SpriteBatch & SpriteBatch_, const SquareBox::RenderEngine::ColorRGBA8 & color)
 {
-	const float magnifier = 1;
+	const float magnifier = 1.0f;
 	const float & length = fabs(glm::length(a - b));
 	const float & angleInRadians = std::atan2(b.y - a.y, b.x - a.x);
 	const float & height = 0.1f;

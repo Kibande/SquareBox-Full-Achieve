@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\Shapes\BoxShape.h" />
-    <ClInclude Include="..\..\SquareBox\Shapes\BridgeWrapper.h" />
     <ClInclude Include="..\..\SquareBox\Shapes\CalculatedLightShape.h" />
     <ClInclude Include="..\..\SquareBox\Shapes\CapsuleShape.h" />
     <ClInclude Include="..\..\SquareBox\Shapes\ChainShape.h" />
@@ -12,10 +11,10 @@
     <ClInclude Include="..\..\SquareBox\Shapes\PolygonShape.h" />
     <ClInclude Include="..\..\SquareBox\Shapes\Shapes.h" />
     <ClInclude Include="..\..\SquareBox\Shapes\TopCapsuleShape.h" />
+    <ClInclude Include="..\..\SquareBox\Shapes\IShape.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\Shapes\BoxShape.cpp" />
-    <ClCompile Include="..\..\SquareBox\Shapes\BridgeWrapper.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\CalculatedLightShape.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\CapsuleShape.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\ChainShape.cpp" />
@@ -24,5 +23,6 @@
     <ClCompile Include="..\..\SquareBox\Shapes\PointLightShape.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\PolygonShape.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\TopCapsuleShape.cpp" />
+    <ClCompile Include="..\..\SquareBox\Shapes\IShape.cpp" />
   </ItemGroup>
 </Project>

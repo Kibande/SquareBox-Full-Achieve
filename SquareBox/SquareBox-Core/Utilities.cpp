@@ -261,18 +261,18 @@ namespace SquareBox {
 
 	void Utilities::addJointToLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
 	{
-		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& response = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		const std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& response = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 		if (response == layer_.active_joints_body_a_map.end()) {
 			//not found so add it
 			layer_.active_joints_body_a_map[joint_.body_a_coordinates] = std::vector<SquareBox::GWOM::Joint>();
 		}
-		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		const std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator& cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 
 		// we did not check for duplicates ....
 
 		std::vector<SquareBox::GWOM::Joint> & target_vec = (*cleark).second;
 		bool found_exact = false;
-		for (std::vector<SquareBox::GWOM::Joint>::iterator & it = target_vec.begin(); it != target_vec.end();it++)
+		for (std::vector<SquareBox::GWOM::Joint>::iterator it = target_vec.begin(); it != target_vec.end();it++)
 		{
 			//first equality check
 			if ((*it)== joint_) {
@@ -290,7 +290,7 @@ namespace SquareBox {
 
 	void Utilities::removeJointFromLayerAliveJointsMap(SquareBox::GWOM::Layer& layer_, SquareBox::GWOM::Joint& joint_)
 	{
-		std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator & cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
+		const std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::iterator & cleark = layer_.active_joints_body_a_map.find(joint_.body_a_coordinates);
 		if (cleark == layer_.active_joints_body_a_map.end()) {
 			//not found 
 			SBX_CORE_ERROR("Tried to delete a joint that was never rcorded");
@@ -298,7 +298,7 @@ namespace SquareBox {
 		else {
 			std::vector<SquareBox::GWOM::Joint>& target_vec = (*cleark).second;
 			bool found_exact = false;
-			for (std::vector<SquareBox::GWOM::Joint>::iterator & it = target_vec.begin(); it != target_vec.end();it++)
+			for (std::vector<SquareBox::GWOM::Joint>::iterator  it = target_vec.begin(); it != target_vec.end();it++)
 			{
 				//first equality check
 				if ((*it) == joint_) {
@@ -316,9 +316,19 @@ namespace SquareBox {
 		{
 			if (layers_[i].alive_cluster_objects.size() > 0) {
 				SBX_CRITICAL("Layer indicies clean up is not yet implemented");
-//				__debugbreak();
+		//	__debugbreak();
 			}
 		}
+	}
+
+	void Utilities::guiLayerCleanUp(SquareBox::GWOM::GuiLayer& gui_layer_)
+	{
+		//clean up the texures and fonts 
+		// since this is not yet implemented we shall only be using textures and fonts that are coming from the
+		// Assets folder
+		/*
+			 implement copying textures and fonts from where every they are to the Assets folder
+		*/
 	}
 
 	//{
@@ -798,7 +808,7 @@ namespace SquareBox {
 
 	void Utilities::createLayerJointsOnLoadFromStorage(SquareBox::GWOM::Layer& layer_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_)
 	{
-			for (auto & it = layer_.temp_joint_definitions.begin(); it != layer_.temp_joint_definitions.end(); it++)
+			for (auto  it = layer_.temp_joint_definitions.begin(); it != layer_.temp_joint_definitions.end(); it++)
 			{
 				createClusterObjectJoint(layer_, (*it), physics_world_ptr_);
 			}

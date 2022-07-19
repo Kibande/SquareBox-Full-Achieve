@@ -51,6 +51,7 @@ namespace SquareBox {
 		void updateClusterObjectIndex(SquareBox::GWOM::ClusterObject& cluster_object_,int new_cluster_object_index, std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* targetPhysicsWorld_);
 
 		void worldIndiciesCleanUp(std::vector<SquareBox::GWOM::Layer>& layers_);
+		void guiLayerCleanUp(SquareBox::GWOM::GuiLayer & gui_layer_);
 		void showPlottedVertices(bool onlyshowStartAndEnd_, SquareBox::RenderEngine::DebugRenderer& debugRenderer_, const SquareBox::GWOM::ClusterObject& clusterObject_, float pointRadius_, SquareBox::RenderEngine::ColorRGBA8 color_ = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
 		
 		void deactivateClusterObjectJoints(std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::GWOM::ClusterObject & clusterObject_,SquareBox::PhysicsCollisionEngine::PhysicsWorld* physics_world_ptr_);

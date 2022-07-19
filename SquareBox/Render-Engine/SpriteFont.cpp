@@ -15,19 +15,30 @@ int closestPow2(int i) {
 
 namespace SquareBox {
 	namespace RenderEngine {
-		void SpriteFont::init(std::string font_file_, int height_) {
-			init(font_file_, height_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
+		void SpriteFont::initWithFilePath(std::string font_file_, int size_) {
+			initWithFilePath(font_file_, size_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
+		}
+
+		void SpriteFont::initWithName(std::string font_name_, int size_) {
+			std::string relative_path;
+			relative_path = "Assets/Fonts/" + font_name_ + ".ttf";
+			initWithFilePath(relative_path, size_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
+		}
+
+		void SpriteFont::initWithName(std::string font_name_, int size_, char cs, char ce) {
+			std::string relative_path;
+			relative_path = "Assets/Fonts/" + font_name_ + "ttf";
+			initWithFilePath(relative_path, size_, cs, ce);
 		}
 		// the font size considers a camera scale of 1
-		void SpriteFont::init(std::string font_file_, int height_, char cs, char ce) {
-			m_font_size = height_;
+		void SpriteFont::initWithFilePath(std::string font_file_, int size_, char cs, char ce) {
+			m_font_size = size_;
 			// Initialize SDL_ttf
 			if (!TTF_WasInit()) {
 				TTF_Init();
 			}
 			m_font_path = font_file_;
-			TTF_Font* f = TTF_OpenFont(m_font_path.c_str(), m_font_size);
-			
+			TTF_Font* f = TTF_OpenFontRW(SDL_RWFromFile(m_font_path.c_str(), "rb"), 1, m_font_size);
 			if (f == nullptr) {
 				SBX_CORE_CRITICAL("Failed to open TTF font {} ", m_font_path);
 				return;

@@ -11,6 +11,10 @@ namespace SquareBox {
 	{
 		bool LevelReaderWriter::saveLevelDataAsBinary(const std::string& file_path_,const std::vector<SquareBox::GWOM::Layer>& layers_, float active_camera_scale_, const glm::vec2& active_camera_position_, int active_camera_index_)
 		{
+			try
+			{
+
+			
 			flatbuffers::FlatBufferBuilder builder(1024);
 		
 			//Serializing the layers now
@@ -153,7 +157,7 @@ namespace SquareBox {
 				}
 
 				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> vec_of_joints;
-				for (std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::const_iterator & it = layer.active_joints_body_a_map.begin(); it != layer.active_joints_body_a_map.end(); it++)
+				for (std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::const_iterator it = layer.active_joints_body_a_map.begin(); it != layer.active_joints_body_a_map.end(); it++)
 				{
 					for (unsigned int vector_index = 0;vector_index<(*it).second.size();vector_index++) {
 						const SquareBox::GWOM::Joint & current_joint = (*it).second[vector_index];
@@ -212,7 +216,7 @@ namespace SquareBox {
 								));
 					}
 				}
-				auto fb_layer = SquareBox::DSUGWOM::CreateLayer(builder,builder.CreateString(layer.name),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.layer_type),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_int_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_joints) ,builder.CreateVector(vec_of_fb_layer_world_clusters));
+				auto fb_layer = SquareBox::DSUGWOM::CreateLayer(builder,builder.CreateString(std::string(layer.name)),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.layer_type),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_int_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_joints) ,builder.CreateVector(vec_of_fb_layer_world_clusters));
 			
 				fb_layers.push_back(fb_layer);
 			}
@@ -228,10 +232,21 @@ namespace SquareBox {
 			int size = builder.GetSize();
 
 			return SquareBox::AssetManager::IOManager::saveRawDataToFile((const char *)buf, size, file_path_);
-		}
+			}
+			catch (const std::exception&)
+			{
+				SBX_CORE_ERROR("Errored While saving level");
+				return false;
+			}
+
+}
 
 		bool LevelReaderWriter::loadLevelDataAsBinary(const std::string& filePath,std::vector<SquareBox::GWOM::Layer>& layers_, float & active_camera_scale_, glm::vec2& active_camera_position_, int  & active_camera_index_)
 		{
+
+			try
+			{
+
 
 			std::pair<char *, int> fileInfo = SquareBox::AssetManager::IOManager::getRawDataFromFile(filePath);
 			//construct a buffer object that knows its size
@@ -469,8 +484,6 @@ namespace SquareBox {
 					}
 					layer.world_clusters.push_back(world_cluster);
 				}
-
-
 				//joints
 				auto fb_joints = fb_layer->active_joints();
 				for (unsigned int l = 0; l < fb_joints->size(); l++)
@@ -537,6 +550,12 @@ namespace SquareBox {
 			
 			delete[] dataBuffer;
 			return true;
+			}
+			catch (const std::exception&)
+			{
+				SBX_CORE_ERROR("Errored While loading level");
+				return false;
+			}
 		}
 	}
 }
