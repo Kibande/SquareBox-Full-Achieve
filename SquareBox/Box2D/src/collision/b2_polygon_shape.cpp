@@ -126,7 +126,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 
 	int32 n = b2Min(count, b2_maxPolygonVertices);
 
-	// Perform welding and copy vertices into local buffer.
+	// Perform welding and copy vertices into local m_buffer.
 	b2Vec2 ps[b2_maxPolygonVertices];
 	int32 tempCount = 0;
 	for (int32 i = 0; i < n; ++i)

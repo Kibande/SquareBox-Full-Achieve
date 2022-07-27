@@ -1,7 +1,7 @@
 #include "LevelReaderWriter.h"
 #include <MathLib/MathLib.h>
-#include "DSUGWOM_generated.h"
 #include <fstream>
+#include "DSUGWOMV1_generated.h"
 
 namespace SquareBox {
 	//Game World Object Model
@@ -9,7 +9,7 @@ namespace SquareBox {
 
 	namespace GWOM
 	{
-		bool LevelReaderWriter::saveLevelDataAsBinary(const std::string& file_path_,const std::vector<SquareBox::GWOM::Layer>& layers_, float active_camera_scale_, const glm::vec2& active_camera_position_, int active_camera_index_)
+		bool LevelReaderWriter::saveLevelDataAsBinary(const std::string& file_path_,const std::vector<SquareBox::GWOM::Layer>& layers_, float active_camera_scale_, const glm::vec2& active_camera_position_,const glm::vec2& editing_screen_dimensions_, int active_camera_index_)
 		{
 			try
 			{
@@ -18,15 +18,15 @@ namespace SquareBox {
 			flatbuffers::FlatBufferBuilder builder(1024);
 		
 			//Serializing the layers now
-			std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Layer>> fb_layers;
+			std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::Layer>> fb_layers;
 			for (unsigned int i = 0; i < layers_.size(); i++) {
 				const SquareBox::GWOM::Layer& layer = layers_[i];
 				
 				//alive_cluster_objects
-				std::vector< flatbuffers::Offset<SquareBox::DSUGWOM::PairOfInt>> fb_alive_cluster_objects;
+				std::vector< flatbuffers::Offset<SquareBox::DSUGWOMV1::PairOfInt>> fb_alive_cluster_objects;
 				for (unsigned int k = 0; k < layer.alive_cluster_objects.size(); k++)
 				{
-					fb_alive_cluster_objects.push_back(SquareBox::DSUGWOM::CreatePairOfInt(builder, layer.alive_cluster_objects[k].first, layer.alive_cluster_objects[k].second));
+					fb_alive_cluster_objects.push_back(SquareBox::DSUGWOMV1::CreatePairOfInt(builder, layer.alive_cluster_objects[k].first, layer.alive_cluster_objects[k].second));
 				}
 				
 				//tiling system data
@@ -39,75 +39,75 @@ namespace SquareBox {
 
 				//Textures
 				//Singles
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> fb_single_textures;
+				std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::ParentTexture>> fb_single_textures;
 				for (unsigned int k = 0; k < layer.single_textures.size(); k++)
 				{
 					const SquareBox::GWOM::ParentTexture& current_single_parent_texture = layer.single_textures[k];
-					auto current_single_texture_tiling_vec2 = SquareBox::DSUGWOM::Ivec2(current_single_parent_texture.texture.tiling.x, current_single_parent_texture.texture.tiling.y);
-					fb_single_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder,current_single_parent_texture.texture_index,SquareBox::DSUGWOM::CreateGLTexture(builder,builder.CreateString(current_single_parent_texture.texture.asset_file_path),builder.CreateString(current_single_parent_texture.texture.display_name),&current_single_texture_tiling_vec2)));
+					auto current_single_texture_tiling_vec2 = SquareBox::DSUGWOMV1::Ivec2(current_single_parent_texture.texture.tiling.x, current_single_parent_texture.texture.tiling.y);
+					fb_single_textures.push_back(SquareBox::DSUGWOMV1::CreateParentTexture(builder,current_single_parent_texture.texture_index,SquareBox::DSUGWOMV1::CreateGLTexture(builder,builder.CreateString(current_single_parent_texture.texture.asset_file_path),builder.CreateString(current_single_parent_texture.texture.display_name),&current_single_texture_tiling_vec2)));
 				}
 
 				//Tiled 
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::ParentTexture>> fb_tiled_textures;
+				std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::ParentTexture>> fb_tiled_textures;
 				for (unsigned int k = 0; k < layer.tiled_textures.size(); k++)
 				{
 					const SquareBox::GWOM::ParentTexture& current_tiled_parent_texture = layer.tiled_textures[k];
-					auto current_tiled_texture_tiling_vec2 = SquareBox::DSUGWOM::Ivec2(current_tiled_parent_texture.texture.tiling.x, current_tiled_parent_texture.texture.tiling.y);
-					fb_tiled_textures.push_back(SquareBox::DSUGWOM::CreateParentTexture(builder, current_tiled_parent_texture.texture_index, SquareBox::DSUGWOM::CreateGLTexture(builder, builder.CreateString(current_tiled_parent_texture.texture.asset_file_path), builder.CreateString(current_tiled_parent_texture.texture.display_name),&current_tiled_texture_tiling_vec2)));
+					auto current_tiled_texture_tiling_vec2 = SquareBox::DSUGWOMV1::Ivec2(current_tiled_parent_texture.texture.tiling.x, current_tiled_parent_texture.texture.tiling.y);
+					fb_tiled_textures.push_back(SquareBox::DSUGWOMV1::CreateParentTexture(builder, current_tiled_parent_texture.texture_index, SquareBox::DSUGWOMV1::CreateGLTexture(builder, builder.CreateString(current_tiled_parent_texture.texture.asset_file_path), builder.CreateString(current_tiled_parent_texture.texture.display_name),&current_tiled_texture_tiling_vec2)));
 				}
 
 				//Sub texture
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::SubTexture>> fb_sub_textures;
+				std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::SubTexture>> fb_sub_textures;
 				//only save the tiling data for a tiled layer, if speed is key
 				//if (layer.layer_type != SquareBox::LayerTypeEnum::FlatLayer) {
 
 				for (auto sub = layer.sub_textures_table.begin(); sub != layer.sub_textures_table.end(); sub++)
 				{
-					fb_sub_textures.push_back(SquareBox::DSUGWOM::CreateSubTexture(builder, static_cast<int>((*sub).second.parent_type), (*sub).second.sub_texture_key, (*sub).second.parent_texture_index, (*sub).second.tiling_index));
+					fb_sub_textures.push_back(SquareBox::DSUGWOMV1::CreateSubTexture(builder, static_cast<int>((*sub).second.parent_type), (*sub).second.sub_texture_key, (*sub).second.parent_texture_index, (*sub).second.tiling_index));
 				}
 				//}
 				
 
 				//the world clusters
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::WorldCluster>> vec_of_fb_layer_world_clusters;
+				std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::WorldCluster>> vec_of_fb_layer_world_clusters;
 				for (unsigned int k = 0; k < layer.world_clusters.size(); k++)
 				{
-					std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::ClusterObject>> vec_of_fb_cluster_objects;
+					std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::ClusterObject>> vec_of_fb_cluster_objects;
 					const SquareBox::GWOM::WorldCluster & cwcobj = layer.world_clusters[k];
 
 					for (unsigned int l = 0; l < cwcobj.cluster_objects.size(); l++)
 					{
 						const SquareBox::GWOM::ClusterObject * ccobj = &cwcobj.cluster_objects[l];
 
-						std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::PairOfVec2>> vec_of_edges;
+						std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::PairOfVec2>> vec_of_edges;
 						for (unsigned int m = 0; m < ccobj->vec_of_edges.size(); m++)
 						{
 							const std::pair<glm::vec2, glm::vec2> & pairOfVec2 = ccobj->vec_of_edges[k];
-							auto one = SquareBox::DSUGWOM::Vec2(pairOfVec2.first.x, pairOfVec2.first.y);
-							auto two = SquareBox::DSUGWOM::Vec2(pairOfVec2.second.x, pairOfVec2.second.y);
-							vec_of_edges.push_back(SquareBox::DSUGWOM::CreatePairOfVec2(
+							auto one = SquareBox::DSUGWOMV1::Vec2(pairOfVec2.first.x, pairOfVec2.first.y);
+							auto two = SquareBox::DSUGWOMV1::Vec2(pairOfVec2.second.x, pairOfVec2.second.y);
+							vec_of_edges.push_back(SquareBox::DSUGWOMV1::CreatePairOfVec2(
 								builder,
 								&one,
 								&two));
 						}
 
-						std::vector<const SquareBox::DSUGWOM::Vec2*> vec_of_vertices;
+						std::vector<const SquareBox::DSUGWOMV1::Vec2*> vec_of_vertices;
 						for (unsigned int m = 0; m < ccobj->vertices.size(); m++)
 						{
-							auto current_vertex = SquareBox::DSUGWOM::Vec2(ccobj->vertices[m].x, ccobj->vertices[m].y);
+							auto current_vertex = SquareBox::DSUGWOMV1::Vec2(ccobj->vertices[m].x, ccobj->vertices[m].y);
 							vec_of_vertices.push_back(&current_vertex);
 						}
 						
 
-						auto tmp_ccobj_offset = SquareBox::DSUGWOM::Vec2(ccobj->off_set.x, ccobj->off_set.y);
-						auto tmp_ccobj_position = SquareBox::DSUGWOM::Vec2(ccobj->position.x, ccobj->position.y);
-						auto tmp_ccobj_init_linear_velocity = SquareBox::DSUGWOM::Vec2(ccobj->init_linear_velocity.x, ccobj->init_linear_velocity.y);
-						auto tmp_ccobj_direction = SquareBox::DSUGWOM::Vec2(ccobj->direction.x, ccobj->direction.y);
-						auto tmp_texture_info_uv_rect = SquareBox::DSUGWOM::Vec4(ccobj->texture_info.uv_rect.x, ccobj->texture_info.uv_rect.y, ccobj->texture_info.uv_rect.z, ccobj->texture_info.uv_rect.w);
-						auto tmp_texture_info_color = SquareBox::DSUGWOM::Ivec4(ccobj->texture_info.color.x, ccobj->texture_info.color.y, ccobj->texture_info.color.z, ccobj->texture_info.color.w);
+						auto tmp_ccobj_offset = SquareBox::DSUGWOMV1::Vec2(ccobj->off_set.x, ccobj->off_set.y);
+						auto tmp_ccobj_position = SquareBox::DSUGWOMV1::Vec2(ccobj->position.x, ccobj->position.y);
+						auto tmp_ccobj_init_linear_velocity = SquareBox::DSUGWOMV1::Vec2(ccobj->init_linear_velocity.x, ccobj->init_linear_velocity.y);
+						auto tmp_ccobj_direction = SquareBox::DSUGWOMV1::Vec2(ccobj->direction.x, ccobj->direction.y);
+						auto tmp_texture_info_uv_rect = SquareBox::DSUGWOMV1::Vec4(ccobj->texture_info.uv_rect.x, ccobj->texture_info.uv_rect.y, ccobj->texture_info.uv_rect.z, ccobj->texture_info.uv_rect.w);
+						auto tmp_texture_info_color = SquareBox::DSUGWOMV1::Ivec4(ccobj->texture_info.color.x, ccobj->texture_info.color.y, ccobj->texture_info.color.z, ccobj->texture_info.color.w);
 
 						//we have to covert each Cluster object to a flatBuffer Cluster Object
-						vec_of_fb_cluster_objects.push_back(SquareBox::DSUGWOM::CreateClusterObject(builder,
+						vec_of_fb_cluster_objects.push_back(SquareBox::DSUGWOMV1::CreateClusterObject(builder,
 							ccobj->layer_index,
 							ccobj->cluster_index,
 							ccobj->index, ccobj->deletion_index,
@@ -150,35 +150,35 @@ namespace SquareBox {
 							&tmp_ccobj_direction,
 							ccobj->speed,
 							ccobj->physics_properties != nullptr ? 1 : 0,
-							SquareBox::DSUGWOM::CreateTextureInfo(builder, static_cast<int>(ccobj->texture_info.texture_type), ccobj->texture_info.texture_index, ccobj->texture_info.tile_sheet_index, ccobj->texture_info.texture_id, &tmp_texture_info_uv_rect,&tmp_texture_info_color,ccobj->texture_info.opacity)
+							SquareBox::DSUGWOMV1::CreateTextureInfo(builder, static_cast<int>(ccobj->texture_info.texture_type), ccobj->texture_info.texture_index, ccobj->texture_info.tile_sheet_index, ccobj->texture_info.texture_id, &tmp_texture_info_uv_rect,&tmp_texture_info_color,ccobj->texture_info.opacity)
 						));
 					}
-					vec_of_fb_layer_world_clusters.push_back(SquareBox::DSUGWOM::CreateWorldCluster(builder, cwcobj.index, cwcobj.deletionIndex, builder.CreateString(std::string(cwcobj.name)), cwcobj.isSelected, builder.CreateVector(vec_of_fb_cluster_objects)));
+					vec_of_fb_layer_world_clusters.push_back(SquareBox::DSUGWOMV1::CreateWorldCluster(builder, cwcobj.index, cwcobj.deletionIndex, builder.CreateString(std::string(cwcobj.name)), cwcobj.isSelected, builder.CreateVector(vec_of_fb_cluster_objects)));
 				}
 
-				std::vector<flatbuffers::Offset<SquareBox::DSUGWOM::Joint>> vec_of_joints;
+				std::vector<flatbuffers::Offset<SquareBox::DSUGWOMV1::Joint>> vec_of_joints;
 				for (std::map<std::pair<int, int>, std::vector<SquareBox::GWOM::Joint>>::const_iterator it = layer.active_joints_body_a_map.begin(); it != layer.active_joints_body_a_map.end(); it++)
 				{
 					for (unsigned int vector_index = 0;vector_index<(*it).second.size();vector_index++) {
 						const SquareBox::GWOM::Joint & current_joint = (*it).second[vector_index];
-							std::vector<const SquareBox::DSUGWOM::Vec2*> vec_of_joint_points;
+							std::vector<const SquareBox::DSUGWOMV1::Vec2*> vec_of_joint_points;
 							
 							for (unsigned int n = 0; n < current_joint.vec_of_points.size(); n++)
 							{
-								auto current_tmp_point = SquareBox::DSUGWOM::Vec2(current_joint.vec_of_points[n].x, current_joint.vec_of_points[n].y);
+								auto current_tmp_point = SquareBox::DSUGWOMV1::Vec2(current_joint.vec_of_points[n].x, current_joint.vec_of_points[n].y);
 								vec_of_joint_points.push_back(&current_tmp_point);
 							}
 
-								auto tmp_body_A_cords = SquareBox::DSUGWOM::CreatePairOfInt(builder, current_joint.body_a_coordinates.first, current_joint.body_a_coordinates.second);
-								auto tmp_body_B_cords = SquareBox::DSUGWOM::CreatePairOfInt(builder, current_joint.body_b_coordinates.first, current_joint.body_b_coordinates.second);
-								auto tmp_joint_color = SquareBox::DSUGWOM::Ivec4(current_joint.color.x, current_joint.color.y, current_joint.color.z, current_joint.color.w);
-								auto tmp_joint_ground_Anchor_A = SquareBox::DSUGWOM::Vec2(current_joint.ground_anchor_a.x, current_joint.ground_anchor_a.y);
-								auto tmp_joint_ground_Anchor_B = SquareBox::DSUGWOM::Vec2(current_joint.ground_anchor_b.x, current_joint.ground_anchor_b.y);
-								auto tmp_joint_local_Anchor_A = SquareBox::DSUGWOM::Vec2(current_joint.local_anchor_a.x, current_joint.local_anchor_a.y);
-								auto tmp_joint_local_Anchor_B = SquareBox::DSUGWOM::Vec2(current_joint.local_anchor_b.x, current_joint.local_anchor_b.y);
-								auto tmp_joint_local_Anchor = SquareBox::DSUGWOM::Vec2(current_joint.local_axis_a.x, current_joint.local_anchor_a.y);
+								auto tmp_body_A_cords = SquareBox::DSUGWOMV1::CreatePairOfInt(builder, current_joint.body_a_coordinates.first, current_joint.body_a_coordinates.second);
+								auto tmp_body_B_cords = SquareBox::DSUGWOMV1::CreatePairOfInt(builder, current_joint.body_b_coordinates.first, current_joint.body_b_coordinates.second);
+								auto tmp_joint_color = SquareBox::DSUGWOMV1::Ivec4(current_joint.color.x, current_joint.color.y, current_joint.color.z, current_joint.color.w);
+								auto tmp_joint_ground_Anchor_A = SquareBox::DSUGWOMV1::Vec2(current_joint.ground_anchor_a.x, current_joint.ground_anchor_a.y);
+								auto tmp_joint_ground_Anchor_B = SquareBox::DSUGWOMV1::Vec2(current_joint.ground_anchor_b.x, current_joint.ground_anchor_b.y);
+								auto tmp_joint_local_Anchor_A = SquareBox::DSUGWOMV1::Vec2(current_joint.local_anchor_a.x, current_joint.local_anchor_a.y);
+								auto tmp_joint_local_Anchor_B = SquareBox::DSUGWOMV1::Vec2(current_joint.local_anchor_b.x, current_joint.local_anchor_b.y);
+								auto tmp_joint_local_Anchor = SquareBox::DSUGWOMV1::Vec2(current_joint.local_axis_a.x, current_joint.local_anchor_a.y);
 
-								vec_of_joints.push_back(SquareBox::DSUGWOM::CreateJoint(
+								vec_of_joints.push_back(SquareBox::DSUGWOMV1::CreateJoint(
 									builder,
 									tmp_body_A_cords,
 									tmp_body_B_cords,
@@ -216,16 +216,17 @@ namespace SquareBox {
 								));
 					}
 				}
-				auto fb_layer = SquareBox::DSUGWOM::CreateLayer(builder,builder.CreateString(std::string(layer.name)),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.layer_type),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_int_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_joints) ,builder.CreateVector(vec_of_fb_layer_world_clusters));
+				auto fb_layer = SquareBox::DSUGWOMV1::CreateLayer(builder,builder.CreateString(std::string(layer.name)),layer.opacity,layer.is_visible,layer.is_locked,static_cast<int>(layer.layer_type),builder.CreateVector(fb_single_textures),builder.CreateVector(fb_tiled_textures),builder.CreateVector(fb_sub_textures),layer.tile_system.getOriginX(),layer.tile_system.getOriginY(),layer.tile_system.getWidth(),layer.tile_system.getHeight(),layer.tile_system.getTileSize(),builder.CreateVector(fb_tile_system_int_data),builder.CreateVector(fb_alive_cluster_objects), builder.CreateVector(vec_of_joints) ,builder.CreateVector(vec_of_fb_layer_world_clusters));
 			
 				fb_layers.push_back(fb_layer);
 			}
 			auto fb_save_ready_layers = builder.CreateVector(fb_layers);
 
-			SquareBox::DSUGWOM::Vec2 fb_camera_position(active_camera_position_.x, active_camera_position_.y);
+			SquareBox::DSUGWOMV1::Vec2 fb_camera_position(active_camera_position_.x, active_camera_position_.y);
+			SquareBox::DSUGWOMV1::Vec2 fb_editing_screen_dimensions(editing_screen_dimensions_.x, editing_screen_dimensions_.y);
 			
 
-			auto complete_level = SquareBox::DSUGWOM::CreateSquareBoxLevel(builder, active_camera_scale_, &fb_camera_position, active_camera_index_, fb_save_ready_layers);
+			auto complete_level = SquareBox::DSUGWOMV1::CreateSquareBoxLevel(builder, active_camera_scale_, &fb_camera_position,&fb_editing_screen_dimensions, active_camera_index_, fb_save_ready_layers);
 			builder.Finish(complete_level);
 
 			uint8_t* buf = builder.GetCurrentBufferPointer();
@@ -241,7 +242,7 @@ namespace SquareBox {
 
 }
 
-		bool LevelReaderWriter::loadLevelDataAsBinary(const std::string& filePath,std::vector<SquareBox::GWOM::Layer>& layers_, float & active_camera_scale_, glm::vec2& active_camera_position_, int  & active_camera_index_)
+		bool LevelReaderWriter::loadLevelDataAsBinary(const std::string& filePath,std::vector<SquareBox::GWOM::Layer>& layers_, float & active_camera_scale_, glm::vec2& active_camera_position_, glm::vec2& editing_screen_dimensions_, int  & active_camera_index_)
 		{
 
 			try
@@ -249,11 +250,11 @@ namespace SquareBox {
 
 
 			std::pair<char *, int> fileInfo = SquareBox::AssetManager::IOManager::getRawDataFromFile(filePath);
-			//construct a buffer object that knows its size
+			//construct a m_buffer object that knows its size
 			char *dataBuffer = new char[fileInfo.second];
 			dataBuffer = fileInfo.first;
 
-			auto complete_level = SquareBox::DSUGWOM::GetSquareBoxLevel(dataBuffer);
+			auto complete_level = SquareBox::DSUGWOMV1::GetSquareBoxLevel(dataBuffer);
 			
 			//the layers
 			auto fb_layers = complete_level->layers();
@@ -544,9 +545,14 @@ namespace SquareBox {
 			//the rest of the data
 			active_camera_index_ = complete_level->active_camera_index();
 			active_camera_scale_ = complete_level->camera_scale();
+
 			auto fb_active_camera_position = complete_level->camera_position();
 			active_camera_position_.x = fb_active_camera_position->x();
 			active_camera_position_.y = fb_active_camera_position->y();
+
+			auto fb_editing_screen_dimensions = complete_level->editing_screen_dimensions();
+			editing_screen_dimensions_.x = fb_editing_screen_dimensions->x();
+			editing_screen_dimensions_.y = fb_editing_screen_dimensions->y();
 			
 			delete[] dataBuffer;
 			return true;

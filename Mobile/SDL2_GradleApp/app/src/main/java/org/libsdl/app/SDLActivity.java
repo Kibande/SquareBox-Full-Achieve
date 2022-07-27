@@ -163,28 +163,29 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      */
     protected String[] getLibraries() {
         return new String[] {
-        	"AI",
-			"Animation_System",
-            "Asset_Manager",
-            "Audio_System",
-            "Box2D",
-            "Camera",
-            "GUI",
-            "GWOM",
             "hidapi",
-            "Input_Manager",
-            "Lua",
-            "main",
-            "MathLib",
-            "Network_Manager",
-            "Physics_Collision_Engine",
-            "Render_Engine",
             "SDL2",
-            "SDL2_mixer",
             "SDL2_ttf",
-            "Shapes",
-            "SquareBox_Core",
-            "SquareBox_Logger"
+            "SDL2_image",
+            "SDL2_mixer",
+            "SquareBox_Logger",
+            "Asset_Manager",
+            "Input_Manager",
+            "Render_Engine",
+			"Audio_System",
+			"MathLib",
+			"Lua",
+			"Box2D",
+			"Physics_Collision_Engine",
+			"GWOM",
+			"Shapes",
+			"AI",
+			"Animation_System",
+            "GUI",
+			"Camera",
+			"SquareBox_Core",
+            // "SDL2_net",
+            "main"
         };
     }
 

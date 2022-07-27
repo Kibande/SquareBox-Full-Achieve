@@ -384,15 +384,15 @@ static int io_lines(lua_State *L) {
 typedef struct {
 	FILE *f;  /* file being read */
 	int c;  /* current character (look ahead) */
-	int n;  /* number of elements in buffer 'buff' */
+	int n;  /* number of elements in m_buffer 'buff' */
 	char buff[L_MAXLENNUM + 1];  /* +1 for ending '\0' */
 } RN;
 
 /*
-** Add current char to buffer (if not out of space) and read next one
+** Add current char to m_buffer (if not out of space) and read next one
 */
 static int nextc(RN *rn) {
-	if (rn->n >= L_MAXLENNUM) {  /* buffer overflow? */
+	if (rn->n >= L_MAXLENNUM) {  /* m_buffer overflow? */
 		rn->buff[0] = '\0';  /* invalidate result */
 		return 0;  /* fail */
 	}
@@ -423,7 +423,7 @@ static int readdigits(RN *rn, int hex) {
 }
 
 /*
-** Read a number: first reads a valid prefix of a numeral into a buffer.
+** Read a number: first reads a valid prefix of a numeral into a m_buffer.
 ** Then it calls 'lua_stringtonumber' to check whether the format is
 ** correct and to convert it to a Lua number.
 */
@@ -472,17 +472,17 @@ static int read_line(lua_State *L, FILE *f, int chop) {
 	int c;
 	luaL_buffinit(L, &b);
 	do {  /* may need to read several chunks to get whole line */
-		char *buff = luaL_prepbuffer(&b);  /* preallocate buffer space */
+		char *buff = luaL_prepbuffer(&b);  /* preallocate m_buffer space */
 		int i = 0;
 		l_lockfile(f);  /* no memory errors can happen inside the lock */
 		while (i < LUAL_BUFFERSIZE && (c = l_getc(f)) != EOF && c != '\n')
-			buff[i++] = c;  /* read up to end of line or buffer limit */
+			buff[i++] = c;  /* read up to end of line or m_buffer limit */
 		l_unlockfile(f);
 		luaL_addsize(&b, i);
 	} while (c != EOF && c != '\n');  /* repeat until end of line */
 	if (!chop && c == '\n')  /* want a newline and have one? */
 		luaL_addchar(&b, c);  /* add ending newline to result */
-	luaL_pushresult(&b);  /* close buffer */
+	luaL_pushresult(&b);  /* close m_buffer */
 	/* return ok if read something (either a newline or something else) */
 	return (c == '\n' || lua_rawlen(L, -1) > 0);
 }
@@ -496,7 +496,7 @@ static void read_all(lua_State *L, FILE *f) {
 		nr = fread(p, sizeof(char), LUAL_BUFFERSIZE, f);
 		luaL_addsize(&b, nr);
 	} while (nr == LUAL_BUFFERSIZE);
-	luaL_pushresult(&b);  /* close buffer */
+	luaL_pushresult(&b);  /* close m_buffer */
 }
 
 static int read_chars(lua_State *L, FILE *f, size_t n) {
@@ -504,10 +504,10 @@ static int read_chars(lua_State *L, FILE *f, size_t n) {
 	char *p;
 	luaL_Buffer b;
 	luaL_buffinit(L, &b);
-	p = luaL_prepbuffsize(&b, n);  /* prepare buffer to read whole block */
+	p = luaL_prepbuffsize(&b, n);  /* prepare m_buffer to read whole block */
 	nr = fread(p, sizeof(char), n, f);  /* try to read 'n' chars */
 	luaL_addsize(&b, nr);
-	luaL_pushresult(&b);  /* close buffer */
+	luaL_pushresult(&b);  /* close m_buffer */
 	return (nr > 0);  /* true iff read something */
 }
 
@@ -520,7 +520,7 @@ static int g_read(lua_State *L, FILE *f, int first) {
 		n = first + 1;  /* to return 1 result */
 	}
 	else {
-		/* ensure stack space for all results and for auxlib's buffer */
+		/* ensure stack space for all results and for auxlib's m_buffer */
 		luaL_checkstack(L, nargs + LUA_MINSTACK, "too many arguments");
 		success = 1;
 		for (n = first; nargs-- && success; n++) {

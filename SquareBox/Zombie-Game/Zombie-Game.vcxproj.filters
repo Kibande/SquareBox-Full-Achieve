@@ -15,12 +15,6 @@
     <ClInclude Include="Bullet.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="FireButtonTexture.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameHUDandGUI.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -54,12 +48,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="FireButtonTexture.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameHUDandGUI.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic.cpp">

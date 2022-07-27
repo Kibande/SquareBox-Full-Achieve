@@ -1,7 +1,5 @@
 #include "GamePlayScreen.h"
 
-
-
 int GamePlayScreen::getNextScreenIndex() const
 {
 	return 0;
@@ -19,18 +17,16 @@ void GamePlayScreen::build()
 void GamePlayScreen::onEntry()
 {
 	//initailising the GUI camera
-	
 	m_hud_gui_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_game_play_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 
 	m_hud_gui_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));
-	m_game_play_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() *0.5f, m_game_ptr->getWindow()->getScreenHeight() *0.5f));
+	m_game_play_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));
 	m_hud_gui_camera.setScale(1.0f);
 	m_game_play_camera.setScale(1.0f);
 
 	//Intialize our sprite Batch
 	m_sprite_batch.init();
-
 
 	//Intialize our debug Renderer
 	m_debug_renderer.init();
@@ -49,138 +45,249 @@ void GamePlayScreen::onEntry()
 	m_debug_program.addAttribute("vertexColor");
 	m_debug_program.linkShaders();
 
+	//game stats gui
+	m_game_stats_gui_elements_coordinates[m_humans_text_gui_id] = -1;
+	m_game_stats_gui_elements_coordinates[m_zombie_text_gui_id] = -1;
+	m_game_stats_gui_elements_coordinates[m_bullets_text_gui_id] = -1;
+	m_game_stats_gui_elements_coordinates[m_fps_text_gui_id] = -1;
+	m_game_stats_huds_and_gui.init(m_game_ptr, m_game_stats_gui_elements_coordinates, "Assets/Guis/game stats gui.dat");
 
-	//initialize our games GUI
-	m_game_huds_and_gui.init(m_game_ptr);
+
+	//game play gui
+	m_game_play_gui_elements_coordinates[m_direction_center_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_direction_body_gui_id] = -1;
+
+	m_game_play_gui_elements_coordinates[m_fire_accessories_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_fire_gradient_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_fire_color_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_fire_shadow_gui_id] = -1;
+
+	m_game_play_gui_elements_coordinates[m_move_accessories_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_move_gradient_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_move_color_gui_id] = -1;
+	m_game_play_gui_elements_coordinates[m_move_shadow_gui_id] = -1;
+
+	m_game_play_gui_elements_coordinates[m_pause_gui_id] = -1;
+
+	m_game_mobile_controls_gui.init(m_game_ptr, m_game_play_gui_elements_coordinates, "Assets/Guis/game mobile controls.dat");
+
+	//game pause gui
+	m_game_pause_gui_elements_coordinates[m_continue_gui_id] = -1;
+	m_game_pause_gui_elements_coordinates[m_main_menu_gui_id] = -1;
+
+	m_game_pause_huds_and_gui.init(m_game_ptr, m_game_pause_gui_elements_coordinates, "Assets/Guis/pause screen gui.dat");
+
+
+	m_game_over_gui_elements_coordinates[m_game_over_gui_id] = -1;
+	m_game_over_gui_elements_coordinates[m_your_score_gui_id] = -1;
+	m_game_over_gui_elements_coordinates[m_your_score_int_gui_id] = -1;
+	m_game_over_gui_elements_coordinates[m_high_score_gui_id] = -1;
+	m_game_over_gui_elements_coordinates[m_play_again_gui_id] = -1;
+	m_game_over_gui_elements_coordinates[m_main_menu_go_gui_id] = -1;
+
+	m_game_over_huds_and_gui.init(m_game_ptr, m_game_over_gui_elements_coordinates, "Assets/Guis/game over gui.dat");
 
 	//initialize our game logic
-	m_game_logic.init(m_game_ptr, m_game_ptr->getAudioEngine(), m_game_ptr->getWindow(),&m_agents_collision_grid,m_layers,m_game_play_camera,m_player_coordinates);
-
+	m_game_logic.init(m_game_ptr, &m_agents_collision_grid, m_layers, m_game_play_camera, m_player_coordinates);
 	m_utilities.init();
 
-	m_sprite_font.initWithName("Comfortaa-Regular.ttf", m_game_ptr->getWindow()->getScreenHeight() * 0.05f);
+	//only show what is inside the collision boundaries
+	float collsion_grid_width = m_agents_collision_grid.getWidth();
+	float collsion_grid_height = m_agents_collision_grid.getHeight();
+	glm::vec4 collision_grid_destRect(m_agents_collision_grid.getGridOrigin(), collsion_grid_width, collsion_grid_height);
 	
-		auto music_raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
-		m_music_1 = SquareBox::AudioSystem::Music("", SquareBox::FallOffEnum::INVERSE, 10.0f, 50.0f, glm::vec2(0.0f), music_raw_data.first, music_raw_data.second);
-		//lets load our music from here
-		m_game_ptr->getAudioEngine()->loadMusic(m_music_1);
-		m_music_1.play();
-		auto raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/rifle.wav");
-		m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("", raw_data.first, raw_data.second));
-
-		m_game_ptr->getAudioEngine()->loadSoundBank(m_sound_bank);
-		//m_sound_bank.play();
-
-		auto sound_effect1 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
-		auto sound_effect2 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Patoranking-Love-You-Die-ft.-Diamond-Platnumz.mp3");
-		auto sound_effect3 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/prettyboydo, Wani - Mentally (320).mp3");
-		auto sound_effect4 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Reminisce-ft-Fireboy-DML-Ogaranya.mp3");
-		auto sound_effect5 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
-		auto sound_effect6 = SquareBox::AudioSystem::SoundEffect("Assets/Audio/Tion Wayne feat. Afro B - Cant Go Broke.mp3");
-		//m_sound_bank = SquareBox::AudioSystem::SoundBank(SquareBox::FallOffEnum::LINEAR, 5.0f, 30.0f, glm::vec2(0.0f));
-		//m_sound_bank.sound_effects.push_back(sound_effect1);
-		//m_sound_bank.sound_effects.push_back(sound_effect2);
-		//m_sound_bank.sound_effects.push_back(sound_effect3);
-		//m_sound_bank.sound_effects.push_back(sound_effect4);
-		//m_sound_bank.sound_effects.push_back(sound_effect5);
-
-		//m_audio_engine_ptr->loadSoundBank(m_sound_bank);
-		//m_sound_bank.play();
-	m_game_play_camera.setScale(3.5f);
+	m_game_play_camera.bindCameraPositionToDestRect(collision_grid_destRect);
+	//m_game_play_camera.unbindCameraPositionToDestRect();
+	
+	m_game_play_camera.setScale(3.5f); 
+	// investigate why some scales are causing issue when 
+	//retrieving collions objects
+	// to fix this we need to fix the way we determine which cells are in view, because the current
+	// methods is not sufficient for big cells , and this is something that i saw in the tile engine as well
 	//m_object_show_coordinates = true;
 	//m_show_grid = true;
 }
 
-void GamePlayScreen::update(const float & deltaTime_)
+void GamePlayScreen::update(const float& deltaTime_)
 {
-	/* 
-	making the layers networking safe
-	
-	 we can not be adding in new cluster objects in our layers while we are iterating over them ,
-	 doing so will result in us having memory access errors as the vector resizes
-	 
-	A networking safe option would be to keep the new cluster objects in limbo , and only add them in when
-	we are not using  the layer system actively like right here
-	
-	
-	*/
-	
-
-
-
-	// update the huds and GUI camera
-	m_hud_gui_camera.update(m_game_ptr->getWindow()->getScreenWidth() ,m_game_ptr->getWindow()->getScreenHeight());
+	m_hud_gui_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_game_play_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-
-	//set the game play camera to always be at the players location
 
 	//update the particle engines
 	for (unsigned int i = 0; i < m_layers.size(); i++)
 	{
-		SquareBox::GWOM::Layer & focus_layer = m_layers[i];
+		SquareBox::GWOM::Layer& focus_layer = m_layers[i];
 		//update the layers particle engines
 		focus_layer.particle_engine.update(deltaTime_);
 	}
-	SquareBox::GWOM::ClusterObject & player_cluster_object = m_layers[m_player_coordinates.first].world_clusters[m_player_coordinates.second.first].cluster_objects[m_player_coordinates.second.second];
-
-	bool player_set_to_move = false;
 	bool player_set_to_fire = false;
-	glm::vec2 player_direction =player_cluster_object.direction; //since mobile player position is only set when he moves
-	
+	bool move_player = false;
+	bool use_mobile_controls = false;
 
-	//huds and GUI update
-	m_game_huds_and_gui.update(m_game_play_camera, player_cluster_object.position, player_set_to_move, player_direction, player_set_to_fire);
-
-	if (!player_cluster_object.is_alive) {
-		// never fire
-		player_set_to_fire = false;
+	SquareBox::GWOM::ClusterObject& player_cluster_object = m_layers[m_player_coordinates.first].world_clusters[m_player_coordinates.second.first].cluster_objects[m_player_coordinates.second.second];
+#ifdef SQB_PLATFORM_ANDROID
+	use_mobile_controls = true;
+#endif
+	if (use_mobile_controls) {
+		//leave them displayed and fix the center movements location ratio
+		m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_direction_center_gui_id)->second).location_ratio = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_direction_body_gui_id)->second).location_ratio;
 	}
 
-	if (player_set_to_fire) {
-		m_sound_bank.play();
+	m_game_play_camera.setPosition(player_cluster_object.position);
+
+	if (m_process_game_play_controls) {
+		
+
+		if (use_mobile_controls) {
+
+			//controls independent updates
+			m_game_mobile_controls_gui.update(m_hud_gui_camera);
+
+			SquareBox::GWOM::GUIElement& gui_direction_center = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_direction_center_gui_id)->second);
+			SquareBox::GWOM::GUIElement& gui_direction_body = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_direction_body_gui_id)->second);
+			SquareBox::GWOM::GUIElement& gui_fire_button = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_fire_accessories_gui_id)->second);
+			SquareBox::GWOM::GUIElement& gui_move_button = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_move_accessories_gui_id)->second);
+			SquareBox::GWOM::GUIElement& gui_pause_button = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_pause_gui_id)->second);
+
+			//player controls
+			player_set_to_fire = (gui_fire_button.state == SquareBox::GUIElementStateEnum::ACTIVE);
+			move_player = (gui_move_button.state == SquareBox::GUIElementStateEnum::ACTIVE);
+
+			if (gui_direction_body.state == SquareBox::GUIElementStateEnum::ACTIVE) {
+
+				const std::vector<SquareBox::InputManager::LocationDetails>& locations_of_pointers_in_world = m_game_ptr->getInputDevice()->getScreenLocations();
+
+				for (unsigned int i = 0; i < locations_of_pointers_in_world.size(); i++)
+				{
+					glm::vec2 pointer_in_world = m_hud_gui_camera.convertScreenToWorld(locations_of_pointers_in_world[i].coordinates);
+					if (m_game_mobile_controls_gui.isCoordinateInGUIElement(pointer_in_world, m_game_play_gui_elements_coordinates.find(m_direction_body_gui_id)->second)) {
+						m_game_mobile_controls_gui.setGUIElementLocationRatio(pointer_in_world, m_game_play_gui_elements_coordinates.find(m_direction_center_gui_id)->second);
+						player_cluster_object.direction = glm::normalize(pointer_in_world - m_game_mobile_controls_gui.getGuiElementWorldPositionByIndex(m_game_play_gui_elements_coordinates.find(m_direction_body_gui_id)->second));
+					}
+				}
+			}
+
+			//pausing
+			if (gui_pause_button.state==SquareBox::GUIElementStateEnum::ACTIVE) {
+					m_process_game_play_controls = false;
+					m_process_game_pause_controls = true;
+
+					m_display_game_play_controls = false;
+					m_display_game_pause_controls = true;
+
+					m_update_game_world = false;
+					gui_pause_button.is_hidden = true;
+			}
+		}
+		else {
+			//moving
+			if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::SPACE))) {
+				move_player = true;
+			}
+
+			//firing
+			if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK))) {
+				player_set_to_fire = true;
+			}
+
+			//direction
+			glm::vec2 mouse_in_world = m_game_play_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
+			player_cluster_object.direction = glm::normalize(mouse_in_world - player_cluster_object.position);
+
+			//pausing
+			if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_p))) {
+
+				m_process_game_play_controls = false;
+				m_process_game_pause_controls = true;
+
+				m_display_game_play_controls = false;
+				m_display_game_pause_controls = true;
+
+				m_update_game_world = false;
+			}
+		}
+
+		if (move_player) {
+			player_cluster_object.position += player_cluster_object.direction * player_cluster_object.speed * deltaTime_;
+		}
 	}
+
+	if (m_process_game_pause_controls) {
+		m_game_pause_huds_and_gui.update(m_hud_gui_camera);
+
+		if (use_mobile_controls) {
+			if (m_game_pause_huds_and_gui.getGuiElementByIndex(m_game_pause_gui_elements_coordinates.find(m_continue_gui_id)->second).state == SquareBox::GUIElementStateEnum::ACTIVE) {
+				m_process_game_play_controls = true;
+				m_process_game_pause_controls = false;
+				m_display_game_play_controls = true;
+				m_display_game_pause_controls = false;
+				m_update_game_world = true;
+				SquareBox::GWOM::GUIElement& gui_pause_button = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_pause_gui_id)->second);
+				gui_pause_button.is_hidden = false;
+			}
+		}
+		else {
+			m_game_pause_huds_and_gui.getGuiElementByIndex(m_game_pause_gui_elements_coordinates.find(m_continue_gui_id)->second).is_hidden = true;//we use the 
+			//keyboard to unpause
+			if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_l))) {
+				m_process_game_play_controls = true;
+				m_process_game_pause_controls = false;
+
+				m_display_game_play_controls = true;
+				m_display_game_pause_controls = false;
+
+				m_update_game_world = true;
+			}
+		}
+	}
+
 	//Game logic update
-	m_game_logic.update(deltaTime_, player_set_to_fire, player_set_to_move, player_direction, m_layers);
-
-	glm::vec2 new_camera_position = m_game_play_camera.getPosition();
-	if (player_cluster_object.is_alive) {
-		/*
-
-			update our players movement and direction
-			together with where in the world our camera is facing
-		*/
-		player_cluster_object.direction = player_direction;
-		if (player_set_to_move) {
-			player_cluster_object.position += player_cluster_object.direction * player_cluster_object.speed * deltaTime_;
-			new_camera_position = player_cluster_object.position;
-		}
-	}
-	else {
-		//player is dead so just move camera around in the world
-		//with respect to the dead players body
-		player_cluster_object.direction = player_direction;
-		if (player_set_to_move) {
-			player_cluster_object.position += player_cluster_object.direction * player_cluster_object.speed * deltaTime_;
-			new_camera_position = player_cluster_object.position;
-		}
+	if (m_update_game_world) {
+		m_game_logic.update(deltaTime_, player_set_to_fire, m_layers);
 	}
 
-	m_game_play_camera.setPosition(new_camera_position);
-	m_game_ptr->getAudioEngine()->update(glm::vec2(0.0f));
+	if (m_process_game_stats) {
+		m_game_stats_huds_and_gui.update(m_hud_gui_camera);
+		//update our deplayed status
+		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_humans_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "HUMANS %d", m_layers[LayerIndicies::humans_layer_index].alive_cluster_objects.size());
+		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_zombie_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "ZOMBIES %d", m_layers[LayerIndicies::zombies_layer_index].alive_cluster_objects.size());
+		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_bullets_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "BULLETS %d", m_layers[LayerIndicies::ammunition_layer_index].alive_cluster_objects.size());
+		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_fps_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "FPS %d", m_game_ptr->getFps());
+	}
+	
+	if (!player_cluster_object.is_alive) {
+		m_process_game_play_controls = false;
+		m_process_game_pause_controls = false;
+		m_process_game_stats = false;
+		m_process_game_over_controls = true;
+
+		m_display_game_play_controls = false;
+		m_display_game_pause_controls = false;
+		m_display_game_stats = false;
+		m_display_game_over_controls = true;
+
+		m_game_over_huds_and_gui.update(m_hud_gui_camera);
+
+		if (m_game_over_huds_and_gui.getGuiElementByIndex(m_game_over_gui_elements_coordinates.find(m_play_again_gui_id)->second).state==SquareBox::GUIElementStateEnum::ACTIVE) {
+			//m_layers = m_layers_backup;
+			//grid objects have to be readded to the grid
+			
+			m_game_logic.restart(m_layers, m_player_coordinates);
+
+			m_display_game_stats = true;
+			m_process_game_stats = true;
+
+			m_process_game_play_controls = true;
+			m_display_game_play_controls = true;
+
+			m_display_game_over_controls = false;
+			m_process_game_over_controls = false;
+		}
+	}
 }
 
 void GamePlayScreen::draw()
 {
-	/*
-		  since  according to the physics of this game
-		  a grid can not hold two objects in the same area.
-		  we are going to draw the game basing on the grid for the chase of objects that can be in a collision grid
-
-		  those that can not will be drawn appropriatley
-	*/
-	char buffer[256];
-	// draw world
-
 
 	// concerate layer
 	SquareBox::GWOM::Layer& concerate_layer = m_layers[LayerIndicies::concerate_layer_index];
@@ -188,38 +295,31 @@ void GamePlayScreen::draw()
 
 
 	// roads_layer
-	SquareBox::GWOM::Layer& roads_layer = m_layers[LayerIndicies::roads_layer_index];
+	SquareBox::GWOM::Layer& roads_layer = m_layers[LayerIndicies::roads_and_grass_layer_index];
 	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, roads_layer);
 
 
-	// grass layer
-	SquareBox::GWOM::Layer& grass_layer = m_layers[LayerIndicies::grass_layer_index];
-	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, grass_layer);
-
-
-	//// walls layer
-	//SquareBox::GWOM::Layer& bricks_layer = m_layers[LayerIndicies::bricks_layer_index];
-	//drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, bricks_layer);
+	// walls layer
+	SquareBox::GWOM::Layer& bricks_layer = m_layers[LayerIndicies::bricks_layer_index];
+	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, bricks_layer);
 
 	float camera_width = m_game_play_camera.getCameraDimensions().x;
 	float camera_height = m_game_play_camera.getCameraDimensions().y;
-	glm::vec4 camera_destRect(m_game_play_camera.getPosition() - (glm::vec2(camera_width, camera_height)*0.5f), glm::vec2(camera_width, camera_height));
+	glm::vec4 camera_destRect(m_game_play_camera.getPosition() - (glm::vec2(camera_width, camera_height) * 0.5f), glm::vec2(camera_width, camera_height));
 
 
 	// The contents of the collision grid
 	std::map<int, SquareBox::GWOM::Cell*> collision_grid_cells_in_view = m_agents_collision_grid.getAllCellsInDestRect(camera_destRect);
-
 	m_texture_program.use();
 	preUpdateShader(&m_texture_program, "mySampler");
 	uploadCameraInfo(&m_texture_program, &m_game_play_camera, "P");
 	m_sprite_batch.begin();
 	for (auto it = collision_grid_cells_in_view.begin(); it != collision_grid_cells_in_view.end(); it++)
 	{
-		int cell_members_count = 0;
-		for (auto it_2 = (*it).second->member_cordinates.begin(); it_2 != (*it).second->member_cordinates.end();it_2++)
+		for (auto it_2 = (*it).second->member_cordinates.begin(); it_2 != (*it).second->member_cordinates.end(); it_2++)
 		{
 			std::pair<int, std::pair<int, int>> focus_cell_member_coordinates = (*it_2);
-			SquareBox::GWOM::ClusterObject & focus_cluster_object = m_layers[focus_cell_member_coordinates.first].world_clusters[focus_cell_member_coordinates.second.first].cluster_objects[focus_cell_member_coordinates.second.second];
+			SquareBox::GWOM::ClusterObject& focus_cluster_object = m_layers[focus_cell_member_coordinates.first].world_clusters[focus_cell_member_coordinates.second.first].cluster_objects[focus_cell_member_coordinates.second.second];
 			//converting direction to angle
 			const glm::vec2 right(1.0f, 0.0f);
 			//now the dot product
@@ -229,20 +329,7 @@ void GamePlayScreen::draw()
 			focus_cluster_object.angle = angle;
 			m_utilities.setCurrentShapePointer(focus_cluster_object.shape, &m_current_shape_ptr);
 			m_current_shape_ptr->draw(focus_cluster_object, m_sprite_batch, m_layers[focus_cell_member_coordinates.first].opacity);
-			if (m_object_show_coordinates) {
-				int cell_index = (*it).first;
-				sprintf(buffer, "%d %d", cell_index, cell_members_count);
-				m_sprite_font.draw(m_sprite_batch, buffer, focus_cluster_object.position, glm::vec2((1 / m_game_play_camera.getScale())*0.3f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::green), SquareBox::JustificationEnum::MIDDLE);
-			}
-
-			cell_members_count++;
 		}
-		if (m_object_show_coordinates) {
-			int cell_index = (*it).first;
-			sprintf(buffer, "%d %d", cell_index, (*it).second->index);
-			m_sprite_font.draw(m_sprite_batch, buffer, (*it).second->position, glm::vec2((1 / m_game_play_camera.getScale())*0.4f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::yellow), SquareBox::JustificationEnum::MIDDLE);
-		}
-
 	}
 	// the blood partciles
 	m_layers[LayerIndicies::ammunition_layer_index].particle_engine.draw(&m_sprite_batch);
@@ -259,39 +346,58 @@ void GamePlayScreen::draw()
 	SquareBox::GWOM::Layer& trees_layer = m_layers[LayerIndicies::trees_layer_index];
 	drawLayer(m_sprite_batch, m_game_play_camera, m_texture_program, trees_layer);
 
-	//draw the huds and gui
-	m_texture_program.use();
-	preUpdateShader(&m_texture_program, "mySampler");
-	uploadCameraInfo(&m_texture_program, &m_game_play_camera, "P");
-	m_sprite_batch.begin(SquareBox::RenderEngine::NONE);
-	m_game_huds_and_gui.draw(m_sprite_batch,m_sprite_font, m_layers);
-	m_sprite_batch.end();
-	m_sprite_batch.renderBatch();
-	m_texture_program.unuse();
+	if (m_display_game_stats) {
+		m_sprite_batch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
+		m_game_stats_huds_and_gui.draw(m_hud_gui_camera, m_sprite_batch);
+		m_sprite_batch.end();
+		m_texture_program.use();
+		preUpdateShader(&m_texture_program, "mySampler");
+		uploadCameraInfo(&m_texture_program, &m_hud_gui_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
+	}
 
-	if (m_show_grid) {
-		m_debug_program.use();
-		uploadCameraInfo(&m_debug_program, &m_game_play_camera, "P");
-		m_debug_renderer.begin();
-		m_debug_renderer.drawBox(camera_destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::green), 0.0f);
 
-		//draw the collision cells in camera view
-		for (auto it = collision_grid_cells_in_view.begin(); it != collision_grid_cells_in_view.end(); it++)
-		{
-			glm::vec2 grid_cell_position = (*it).second->position;
-			float grid_cell_size = m_agents_collision_grid.getCellSize();
-			glm::vec4 grid_cell_destRect(grid_cell_position - glm::vec2(grid_cell_size)*0.5f, glm::vec2(grid_cell_size));
-			m_debug_renderer.drawBox(grid_cell_destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
+	if (m_display_game_play_controls) {
+		m_sprite_batch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
+		m_game_mobile_controls_gui.draw(m_hud_gui_camera, m_sprite_batch);
+		m_sprite_batch.end();
+		m_texture_program.use();
+		preUpdateShader(&m_texture_program, "mySampler");
+		uploadCameraInfo(&m_texture_program, &m_hud_gui_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
+	}
 
-		}
-		m_debug_renderer.end();
-		m_debug_renderer.render();
-		m_debug_program.unuse();
+	if (m_display_game_pause_controls) {
+		m_sprite_batch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
+		m_game_pause_huds_and_gui.draw(m_hud_gui_camera, m_sprite_batch);
+		m_sprite_batch.end();
+		m_texture_program.use();
+		preUpdateShader(&m_texture_program, "mySampler");
+		uploadCameraInfo(&m_texture_program, &m_hud_gui_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
+	}
+
+	if (m_display_game_over_controls) {
+		m_sprite_batch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
+		m_game_over_huds_and_gui.draw(m_hud_gui_camera, m_sprite_batch);
+		m_sprite_batch.end();
+		m_texture_program.use();
+		preUpdateShader(&m_texture_program, "mySampler");
+		uploadCameraInfo(&m_texture_program, &m_hud_gui_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
 	}
 }
 
 void GamePlayScreen::onExit()
 {
+	m_game_mobile_controls_gui.dispose();
+	m_game_pause_huds_and_gui.dispose();
+	m_game_stats_huds_and_gui.dispose();
+	m_game_over_huds_and_gui.dispose();
 }
 
 void GamePlayScreen::destroy()
@@ -305,15 +411,13 @@ void GamePlayScreen::destroy()
 	m_hud_gui_camera.dispose();
 	m_game_play_camera.dispose();
 
-	m_game_huds_and_gui.dispose();
-	m_game_logic.dispose();
+	m_game_mobile_controls_gui.dispose();
+	//m_game_logic.dispose();
 
 	m_utilities.dispose();
-
-	m_sprite_font.dispose();
 }
 
-void GamePlayScreen::drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_,SquareBox::GWOM::Layer & layer_)
+void GamePlayScreen::drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_, SquareBox::GWOM::Layer& layer_)
 {
 	float camera_width = camera_.getCameraDimensions().x;
 	float camera_height = camera_.getCameraDimensions().y;

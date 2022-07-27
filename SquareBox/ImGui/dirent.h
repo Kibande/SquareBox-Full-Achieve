@@ -462,7 +462,7 @@ _wreaddir(
     struct _wdirent *entry;
 
     /*
-     * Read directory entry to buffer.  We can safely ignore the return value
+     * Read directory entry to m_buffer.  We can safely ignore the return value
      * as entry will be set to NULL in case of error.
      */
     (void) _wreaddir_r (dirp, &dirp->ent, &entry);
@@ -493,8 +493,8 @@ _wreaddir_r(
 
         /*
          * Copy file name as wide-character string.  If the file name is too
-         * long to fit in to the destination buffer, then truncate file name
-         * to PATH_MAX characters and zero-terminate the buffer.
+         * long to fit in to the destination m_buffer, then truncate file name
+         * to PATH_MAX characters and zero-terminate the m_buffer.
          */
         n = 0;
         while (n < PATH_MAX  &&  datap->cFileName[n] != 0) {
@@ -700,7 +700,7 @@ opendir(
             /*
              * Cannot convert file name to wide-character string.  This
              * occurs if the string contains invalid multi-byte sequences or
-             * the output buffer is too small to contain the resulting
+             * the output m_buffer is too small to contain the resulting
              * string.
              */
             error = 1;
@@ -730,7 +730,7 @@ readdir(
     struct dirent *entry;
 
     /*
-     * Read directory entry to buffer.  We can safely ignore the return value
+     * Read directory entry to m_buffer.  We can safely ignore the return value
      * as entry will be set to NULL in case of error.
      */
     (void) readdir_r (dirp, &dirp->ent, &entry);
@@ -740,7 +740,7 @@ readdir(
 }
 
 /*
- * Read next directory entry into called-allocated buffer.
+ * Read next directory entry into called-allocated m_buffer.
  *
  * Returns zero on success.  If the end of directory stream is reached, then
  * sets result to NULL and returns zero.
@@ -1053,7 +1053,7 @@ dirent_mbstowcs_s(
     n = mbstowcs (wcstr, mbstr, sizeInWords);
     if (!wcstr  ||  n < count) {
 
-        /* Zero-terminate output buffer */
+        /* Zero-terminate output m_buffer */
         if (wcstr  &&  sizeInWords) {
             if (n >= sizeInWords) {
                 n = sizeInWords - 1;
@@ -1106,7 +1106,7 @@ dirent_wcstombs_s(
     n = wcstombs (mbstr, wcstr, sizeInBytes);
     if (!mbstr  ||  n < count) {
 
-        /* Zero-terminate output buffer */
+        /* Zero-terminate output m_buffer */
         if (mbstr  &&  sizeInBytes) {
             if (n >= sizeInBytes) {
                 n = sizeInBytes - 1;

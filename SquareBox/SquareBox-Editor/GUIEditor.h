@@ -86,6 +86,7 @@ private:
 	float m_controls_panel_width = 0.0f;
 	imgui_addons::ImGuiFileBrowser m_file_dialog; // For working with file dialogs
 	SquareBox::GWOM::GuiReaderWriter m_gui_layer_reader_writer;
+	SquareBox::GWOM::OldGuiReaderWriter m_old_gui_layer_reader_writer;
 	bool m_show_open_gui_layer_file_dialog = false;
 	bool m_show_save_gui_layer_file_dialog = false;
 	bool m_show_open_single_texture_file_dialog = false;
@@ -112,5 +113,5 @@ private:
 	int m_font_size = 32;
 	int m_selected_texture_type = 0;
 	bool m_active_selecting = true;//this helps us be able to interact with the GUI like the user would
-
+	char m_buffer[20];
 };

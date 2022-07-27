@@ -48,7 +48,7 @@ namespace SquareBox {
 	}
 	void Log::GLClearError()
 	{
-		//loop through,while emptying  till error buffer is  empty
+		//loop through,while emptying  till error m_buffer is  empty
 		while (glGetError() != GL_NO_ERROR);
 	}
 

@@ -156,7 +156,7 @@ void luaX_setinput(lua_State *L, LexState *ls, ZIO *z, TString *source,
 	ls->lastline = 1;
 	ls->source = source;
 	ls->envn = luaS_newliteral(L, LUA_ENV);  /* get env name */
-	luaZ_resizebuffer(ls->L, ls->buff, LUA_MINBUFFER);  /* initialize buffer */
+	luaZ_resizebuffer(ls->L, ls->buff, LUA_MINBUFFER);  /* initialize m_buffer */
 }
 
 /*
@@ -291,7 +291,7 @@ static void read_long_string(LexState *ls, SemInfo *seminfo, size_t sep) {
 static void esccheck(LexState *ls, int c, const char *msg) {
 	if (!c) {
 		if (ls->current != EOZ)
-			save_and_next(ls);  /* add current to buffer for error message */
+			save_and_next(ls);  /* add current to m_buffer for error message */
 		lexerror(ls, msg, TK_STRING);
 	}
 }
@@ -305,7 +305,7 @@ static int gethexa(LexState *ls) {
 static int readhexaesc(LexState *ls) {
 	int r = gethexa(ls);
 	r = (r << 4) + gethexa(ls);
-	luaZ_buffremove(ls->buff, 2);  /* remove saved chars from buffer */
+	luaZ_buffremove(ls->buff, 2);  /* remove saved chars from m_buffer */
 	return r;
 }
 
@@ -322,7 +322,7 @@ static unsigned long readutf8esc(LexState *ls) {
 	}
 	esccheck(ls, ls->current == '}', "missing '}'");
 	next(ls);  /* skip '}' */
-	luaZ_buffremove(ls->buff, i);  /* remove saved chars from buffer */
+	luaZ_buffremove(ls->buff, i);  /* remove saved chars from m_buffer */
 	return r;
 }
 
@@ -341,7 +341,7 @@ static int readdecesc(LexState *ls) {
 		save_and_next(ls);
 	}
 	esccheck(ls, r <= UCHAR_MAX, "decimal escape too large");
-	luaZ_buffremove(ls->buff, i);  /* remove read digits from buffer */
+	luaZ_buffremove(ls->buff, i);  /* remove read digits from m_buffer */
 	return r;
 }
 
@@ -426,7 +426,7 @@ static int llex(LexState *ls, SemInfo *seminfo) {
 			next(ls);
 			if (ls->current == '[') {  /* long comment? */
 				size_t sep = skip_sep(ls);
-				luaZ_resetbuffer(ls->buff);  /* 'skip_sep' may dirty the buffer */
+				luaZ_resetbuffer(ls->buff);  /* 'skip_sep' may dirty the m_buffer */
 				if (sep >= 2) {
 					read_long_string(ls, NULL, sep);  /* skip long comment */
 					luaZ_resetbuffer(ls->buff);  /* previous call may dirty the buff. */

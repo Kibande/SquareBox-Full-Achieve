@@ -51,31 +51,31 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-28</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-26</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-28</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-28</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-28</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-26</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <AndroidAPILevel>android-28</AndroidAPILevel>
+    <AndroidAPILevel>android-30</AndroidAPILevel>
   </PropertyGroup>
   <Import Project="$(AndroidTargetsPath)\Android.props" />
   <ItemDefinitionGroup>
@@ -107,6 +107,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\main\main.vcxproj" />
+    <ProjectReference Include="..\SDL2\SDL2.vcxproj" />
+    <ProjectReference Include="..\SDL2\src\hidapi\android\hidapi.vcxproj" />
+    <ProjectReference Include="..\SDL2_image\SDL2_image.vcxproj" />
+    <ProjectReference Include="..\SDL2_mixer\SDL2_mixer.vcxproj" />
+    <ProjectReference Include="..\SDL2_ttf\SDL2_ttf.vcxproj" />
   </ItemGroup>
   <Import Project="$(AndroidTargetsPath)\Android.targets" />
   <ImportGroup Label="ExtensionTargets" />

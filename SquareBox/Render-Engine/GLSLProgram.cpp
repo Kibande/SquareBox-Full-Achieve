@@ -94,9 +94,9 @@ namespace SquareBox {
 			if (isLinked == GL_FALSE) {
 				GLint length = 0;
 				SBX_GLCall(glGetProgramiv(_programID, GL_INFO_LOG_LENGTH, &length));
-				//construct our error message buffer since we now even know its' length
+				//construct our error message m_buffer since we now even know its' length
 				char * message = (char*)alloca(length * sizeof(char));
-				//populating our buffer
+				//populating our m_buffer
 				SBX_GLCall(glGetProgramInfoLog(_programID, length, &length, message));
 
 				//We don't need the program anymore.
@@ -169,9 +169,9 @@ namespace SquareBox {
 			if (success == GL_FALSE) {
 				GLint length = 0;
 				SBX_GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-				//construct our error message buffer since we now even know its' length
+				//construct our error message m_buffer since we now even know its' length
 				char * message = (char*)alloca(length * sizeof(char));
-				//populating our buffer
+				//populating our m_buffer
 				SBX_GLCall(glGetShaderInfoLog(id, length, &length, message));
 
 				SBX_GLCall(glDeleteShader(id));

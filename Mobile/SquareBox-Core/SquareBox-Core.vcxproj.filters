@@ -12,6 +12,7 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\sqbpch.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\SquareBoxGameEngine.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Utilities.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-Core\GUIWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IGameScreen.cpp" />
@@ -21,5 +22,6 @@
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\sqbpch.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\SquareBoxGameEngine.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\Utilities.cpp" />
+    <ClCompile Include="..\..\SquareBox\SquareBox-Core\GUIWrapper.cpp" />
   </ItemGroup>
 </Project>

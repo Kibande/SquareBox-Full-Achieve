@@ -82,9 +82,9 @@ void First_Screen::onEntry()
 	m_automation.init();
 	m_automation.loadAutomationScript(m_automation_script);
 #ifdef SQB_PLATFORM_ANDROID
-	m_sprite_font.init("fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithFilePath("fonts/Comfortaa-Bold.ttf", 32);
 #else
-	m_sprite_font.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithFilePath("Assets/Fonts/Comfortaa-Bold.ttf", 32);
 #endif
 
 	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
@@ -115,7 +115,7 @@ void First_Screen::onEntry()
 	active_cluster_object.texture_info.uv_rect = glm::vec4(0.0f,0.0f,1.0f,1.0f);
 
 	active_cluster_object.is_alive = true;
-	active_cluster_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
+	active_cluster_object.texture_info.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 	active_cluster_object.shape = SquareBox::BodyShapeEnum::Circle;
 
 	
@@ -128,7 +128,7 @@ void First_Screen::onEntry()
 
 	house.shape = SquareBox::BodyShapeEnum::Box;
 	house.is_alive = true;
-	house.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
+	house.texture_info.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 
 	//cluster objects adaptive properties
 	active_cluster_object.radius = screen_dimensions.x * 0.03;
@@ -187,7 +187,7 @@ void First_Screen::draw()
 	m_sprite_batch.begin();
 	//m_sprite_font or m_sprite_batch draw
 #ifdef SQB_PLATFORM_ANDROID
-	glm::vec2 screen_dimensions(std::max(m_window->getScreenWidth(), m_window->getScreenHeight()), std::min(m_window->getScreenWidth(), m_window->getScreenHeight()));
+	glm::vec2 screen_dimensions(std::max(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight()), std::min(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight()));
 	std::ostringstream os;
 	os << m_game_ptr->getFps();
 	m_sprite_font.draw(m_sprite_batch, os.str().c_str(), glm::vec2(screen_dimensions.x*0.1 ,screen_dimensions.y*0.9), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::lemon_chiffon), SquareBox::JustificationEnum::MIDDLE);

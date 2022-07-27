@@ -683,7 +683,7 @@
 #define LUA_IDSIZE	60
 
 /*
-@@ LUAL_BUFFERSIZE is the buffer size used by the lauxlib buffer system.
+@@ LUAL_BUFFERSIZE is the m_buffer size used by the lauxlib m_buffer system.
 */
 #define LUAL_BUFFERSIZE   ((int)(16 * sizeof(void*) * sizeof(lua_Number)))
 

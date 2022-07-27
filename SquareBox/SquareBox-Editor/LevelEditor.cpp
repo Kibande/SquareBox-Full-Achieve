@@ -130,6 +130,16 @@ void LevelEditor::update(const float& deltaTime_)
 		}
 
 		m_editor_assitant.cameraControls(m_layers[m_active_layer_index].camera, m_game_ptr);
+
+		//forcing imgui to start responding
+		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::ESCAPE))) {
+			ImGui::SetNextFrameWantCaptureMouse(true);
+			ImGui::SetNextFrameWantCaptureKeyboard(true);
+			/* this is the hack that i have come up with to solve the issue of imgui freezing up
+			and not allowing any more user input, this block of code  forces it to start
+			taking user input but it disoragnises sdls input manager
+			so this function only helps you be able to save your work */
+		}
 	}
 
 	//operations done regardless what is processing input
@@ -1069,8 +1079,8 @@ void LevelEditor::drawGUI()
 		SBX_INFO("Starting Level Data Loading.");
 		SBX_INFO("Loading {} .", m_file_dialog.selected_fn);
 		cleanOutEditor();
-
-		m_level_reader_writer.loadLevelDataAsBinary(m_file_dialog.selected_path, m_layers, m_universal_camera_scale, m_universal_camera_position, m_active_layer_index);
+		glm::vec2 editing_screen_dimensions;
+		m_level_reader_writer.loadLevelDataAsBinary(m_file_dialog.selected_path, m_layers, m_universal_camera_scale, m_universal_camera_position, editing_screen_dimensions, m_active_layer_index);
 		// setting up the layers and their textures , both the singles and the tiled
 		for (unsigned int i = 0; i < m_layers.size(); i++)
 		{
@@ -1201,7 +1211,7 @@ void LevelEditor::drawGUI()
 			filePath = filePath.substr(0, filePath.size() - ext.size());
 		}
 		m_utilities.worldIndiciesCleanUp(m_layers);
-		if (m_level_reader_writer.saveLevelDataAsBinary(filePath + m_file_dialog.ext, m_layers, m_universal_camera_scale, m_universal_camera_position, m_active_layer_index))
+		if (m_level_reader_writer.saveLevelDataAsBinary(filePath + m_file_dialog.ext, m_layers, m_universal_camera_scale, m_universal_camera_position,glm::vec2(m_game_ptr->getWindow()->getScreenWidth(),m_game_ptr->getWindow()->getScreenHeight()), m_active_layer_index))
 		{
 			SBX_INFO("Level Data Saved at {}.{}", m_file_dialog.selected_path, m_file_dialog.ext);
 			m_is_all_work_saved = true;

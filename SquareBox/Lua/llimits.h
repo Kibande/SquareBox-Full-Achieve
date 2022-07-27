@@ -203,7 +203,7 @@ typedef l_uint32 Instruction;
 #define STRCACHE_M		2
 #endif
 
-/* minimum size for string buffer */
+/* minimum size for string m_buffer */
 #if !defined(LUA_MINBUFFER)
 #define LUA_MINBUFFER	32
 #endif

@@ -44,7 +44,7 @@ void luaZ_init(lua_State *L, ZIO *z, lua_Reader reader, void *data) {
 size_t luaZ_read(ZIO *z, void *b, size_t n) {
 	while (n) {
 		size_t m;
-		if (z->n == 0) {  /* no bytes in buffer? */
+		if (z->n == 0) {  /* no bytes in m_buffer? */
 			if (luaZ_fill(z) == EOZ)  /* try to read more */
 				return n;  /* no more input; return number of missing bytes */
 			else {

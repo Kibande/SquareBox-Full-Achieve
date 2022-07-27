@@ -591,7 +591,7 @@ int luaV_equalobj(lua_State *L, const TValue *t1, const TValue *t2) {
 
 #define isemptystr(o)	(ttisshrstring(o) && tsvalue(o)->shrlen == 0)
 
-/* copy strings in stack from top - n up to top - 1 to buffer */
+/* copy strings in stack from top - n up to top - 1 to m_buffer */
 static void copy2buff(StkId top, int n, char *buff) {
 	size_t tl = 0;  /* size already copied */
 	do {
@@ -632,7 +632,7 @@ void luaV_concat(lua_State *L, int total) {
 			}
 			if (tl <= LUAI_MAXSHORTLEN) {  /* is result a short string? */
 				char buff[LUAI_MAXSHORTLEN];
-				copy2buff(top, n, buff);  /* copy strings to buffer */
+				copy2buff(top, n, buff);  /* copy strings to m_buffer */
 				ts = luaS_newlstr(L, buff, tl);
 			}
 			else {  /* long string; copy strings directly to final result */

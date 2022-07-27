@@ -51,7 +51,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -80,7 +80,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -110,7 +110,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -139,7 +139,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -169,7 +169,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -198,7 +198,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -228,7 +228,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -257,7 +257,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -286,7 +286,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -315,7 +315,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -343,7 +343,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -373,7 +373,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -401,7 +401,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -431,7 +431,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 
@@ -459,7 +459,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 
 							auto results = active_layer_ref_.getTextureIdAndUvReactFromKey(focus_tile_sub_texture.sub_texture_key);
 
-							auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
+							const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(results.first);
 
 							int retrieved_texture_max_index = retrieved_texture.tiling.x * retrieved_texture.tiling.y;
 
@@ -488,7 +488,7 @@ void SquareBoxEditor::Editor_Assistant::currentTileDuplicator(SquareBox::GWOM::L
 						}
 						else {
 							SBX_CORE_CRITICAL("Sub texture not in sub textures table");
-							__debugbreak();
+							//__debugbreak();
 
 						}
 

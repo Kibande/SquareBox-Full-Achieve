@@ -468,17 +468,17 @@ static void newbox(lua_State *L) {
 }
 
 /*
-** check whether buffer is using a userdata on the stack as a temporary
-** buffer
+** check whether m_buffer is using a userdata on the stack as a temporary
+** m_buffer
 */
 #define buffonstack(B)	((B)->b != (B)->init.b)
 
 /*
-** Compute new size for buffer 'B', enough to accommodate extra 'sz'
+** Compute new size for m_buffer 'B', enough to accommodate extra 'sz'
 ** bytes.
 */
 static size_t newbuffsize(luaL_Buffer *B, size_t sz) {
-	size_t newsize = B->size * 2;  /* double buffer size */
+	size_t newsize = B->size * 2;  /* double m_buffer size */
 	if (MAX_SIZET - sz < B->n)  /* overflow in (B->n + sz)? */
 		return luaL_error(B->L, "buffer too large");
 	if (newsize < B->n + sz)  /* double is not big enough? */
@@ -487,9 +487,9 @@ static size_t newbuffsize(luaL_Buffer *B, size_t sz) {
 }
 
 /*
-** Returns a pointer to a free area with at least 'sz' bytes in buffer
+** Returns a pointer to a free area with at least 'sz' bytes in m_buffer
 ** 'B'. 'boxidx' is the relative position in the stack where the
-** buffer's box is or should be.
+** m_buffer's box is or should be.
 */
 static char *prepbuffsize(luaL_Buffer *B, size_t sz, int boxidx) {
 	if (B->size - B->n >= sz)  /* enough space? */
@@ -498,8 +498,8 @@ static char *prepbuffsize(luaL_Buffer *B, size_t sz, int boxidx) {
 		lua_State *L = B->L;
 		char *newbuff;
 		size_t newsize = newbuffsize(B, sz);
-		/* create larger buffer */
-		if (buffonstack(B))  /* buffer already has a box? */
+		/* create larger m_buffer */
+		if (buffonstack(B))  /* m_buffer already has a box? */
 			newbuff = (char *)resizebox(L, boxidx, newsize);  /* resize it */
 		else {  /* no box yet */
 			lua_pushnil(L);  /* reserve slot for final result */
@@ -554,7 +554,7 @@ LUALIB_API void luaL_pushresultsize(luaL_Buffer *B, size_t sz) {
 ** box (if existent) is not on the top of the stack. So, instead of
 ** calling 'luaL_addlstring', it replicates the code using -2 as the
 ** last argument to 'prepbuffsize', signaling that the box is (or will
-** be) bellow the string being added to the buffer. (Box creation can
+** be) bellow the string being added to the m_buffer. (Box creation can
 ** trigger an emergency GC, so we should not remove the string from the
 ** stack before we have the space guaranteed.)
 */
@@ -639,7 +639,7 @@ static const char *getF(lua_State *L, void *ud, size_t *size) {
 	LoadF *lf = (LoadF *)ud;
 	(void)L;  /* not used */
 	if (lf->n > 0) {  /* are there pre-read characters to be read? */
-		*size = lf->n;  /* return them (chars already in buffer) */
+		*size = lf->n;  /* return them (chars already in m_buffer) */
 		lf->n = 0;  /* no more pre-read characters */
 	}
 	else {  /* read a block from file */

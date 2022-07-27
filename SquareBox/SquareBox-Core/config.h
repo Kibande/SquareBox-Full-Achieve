@@ -22,3 +22,4 @@
 #include "ScreenList.h"
 #include "Essentials.h"
 #include "Utilities.h"
+#include "GUIWrapper.h"

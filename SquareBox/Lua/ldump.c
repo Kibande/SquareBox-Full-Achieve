@@ -55,7 +55,7 @@ static void dumpSize(DumpState *D, size_t x) {
 	lu_byte buff[DIBS];
 	int n = 0;
 	do {
-		buff[DIBS - (++n)] = x & 0x7f;  /* fill buffer in reverse order */
+		buff[DIBS - (++n)] = x & 0x7f;  /* fill m_buffer in reverse order */
 		x >>= 7;
 	} while (x != 0);
 	buff[DIBS - 1] |= 0x80;  /* mark last byte */

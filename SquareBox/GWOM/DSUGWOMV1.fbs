@@ -1,0 +1,214 @@
+// SquareBox DSUGWOM Schema
+
+namespace SquareBox.DSUGWOMV1;
+
+table PairOfInt {
+  first:int;
+  second:int;
+}
+
+struct Vec2 {
+  x:float;
+  y:float;
+}
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+struct Vec4 {
+  x:float;
+  y:float;
+  z:float;
+  w:float;
+}
+
+
+struct Ivec2 {
+  x:int;
+  y:int;
+}
+
+struct Ivec3 {
+  x:int;
+  y:int;
+  z:int;
+}
+
+struct Ivec4 {
+  x:int;
+  y:int;
+  z:int;
+  w:int;
+}
+
+
+table PairOfVec2 {
+  first:Vec2;
+  second:Vec2;
+}
+
+
+table GLTexture {
+	assets_file_path:string;
+	display_name:string;
+	tiling:Ivec2;
+}
+
+table ParentTexture {
+	texture_index:int;
+	texture:GLTexture;
+}
+
+table SubTexture {
+	parent_type:int;
+	sub_texture_key:int;
+	parent_texture_index:int;
+	tiling_index:int;
+}
+
+table TextureInfo {
+   texture_type:int;
+   texture_index:int;
+   tile_sheet_index:int;
+   texture_id:int;
+   uv_rect:Vec4;
+   color:Ivec4;
+   opacity:int;
+}
+
+table VectorOfInt {
+ data:[int];
+}
+
+table Joint {
+
+body_a_coordinates:PairOfInt;
+body_b_coordinates:PairOfInt;
+
+collide_connected_bodies:bool;
+is_joint_alive:bool;
+reference_angle:float;
+frequency_hz:float;
+damping_ratio:float;
+max_length:float;
+min_length:float;
+length:float;
+length_a:float;
+length_b:float;
+lower_angle:float;
+lower_translation:float;
+upper_angle:float;
+upper_translation:float;
+max_motor_torque:float;
+max_motor_force:float;
+motor_speed:float;
+enable_motor:bool;
+enable_limit:bool;
+color:Ivec4;
+thickness:float;
+pulley_ratio:float;
+stiffness:float;
+damping:float;
+
+ground_anchor_a:Vec2;
+ground_anchor_b:Vec2;
+local_anchor_a:Vec2;
+local_anchor_b:Vec2;
+
+vec_of_points:[Vec2];
+local_axis_a:Vec2;
+joint_type:int;
+
+}
+
+
+table ClusterObject{
+layer_index:int;
+cluster_index:int;
+index:int;
+deletion_index:int;
+life_span:float;
+group_index:int;
+family:int;
+vec_of_mask_bits:[int];
+name:string;
+height:float;
+width:float;
+radius:float;
+density:float;
+friction:float;
+restitution:float;
+angle:float;
+init_angular_velocity:float;
+frequency:float;
+linear_damping:float;
+angular_damping:float;
+gravity_scale:float;
+resistivity:float;
+
+is_first_hovered:bool;
+is_last_hovered:bool;
+is_first_selected:bool;
+is_last_selected:bool;
+is_hidden:bool;
+is_fixed_rotation:bool;
+is_alive:bool;
+allow_sleep:bool;
+awake:bool;
+is_bullet:bool;
+requesting_recreation:bool;
+controller_type:int;
+shape:int;
+type:int;
+vec_of_edges:[PairOfVec2];
+vertices:[Vec2];
+off_set:Vec2;
+position:Vec2;
+init_linear_velocity:Vec2;
+direction:Vec2;
+speed:float;
+physics_properties:int;
+texture_info:TextureInfo;
+
+}
+
+table WorldCluster {
+index:int;
+deletion_index:int;
+name:string;
+is_selected:bool;
+cluster_objects:[ClusterObject];
+}
+
+table Layer {
+name:string;
+opacity:int;
+is_visible:bool;
+is_locked:bool;
+layer_type:int;
+single_textures:[ParentTexture];
+tiled_textures:[ParentTexture];
+sub_textures:[SubTexture];
+tile_system_orign_x:float;
+tile_system_orign_y:float;
+tile_system_width:float;
+tile_system_height:float;
+tile_system_tile_size:float;
+tile_system_data:[int];
+alive_cluster_objects:[PairOfInt]; //stored because the ordering of cluster objects is kept here
+active_joints:[Joint];//having this allows for a smarter and cleaner loading experience
+world_clusters: [WorldCluster];
+}
+
+table SquareBoxLevel{
+	camera_scale:float;
+	camera_position:Vec2;
+	editing_screen_dimensions:Vec2;
+	active_camera_index:int;
+	layers:[Layer];
+}
+
+root_type SquareBoxLevel;

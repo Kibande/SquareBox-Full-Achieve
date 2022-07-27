@@ -76,6 +76,7 @@ private:
 	SquareBox::AssetManager::GLTexture m_texture;
 
 	SquareBox::GWOM::LevelReaderWriter m_level_reader_writer;
+	SquareBox::GWOM::OldLevelReaderWriter m_old_level_reader_writer;
 
 	imgui_addons::ImGuiFileBrowser m_file_dialog; // For working with file dialogs
 

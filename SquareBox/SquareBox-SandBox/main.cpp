@@ -1,6 +1,6 @@
 #pragma once
 #include "App.h"
-#include <Windows.h>
+//#include <Windows.h>
 int main(int argc, char** argv) {
 	App app;
 	int windowFlags = 0;
@@ -214,7 +214,7 @@ int main(int argc, char** argv) {
 //	glBindTexture(GL_TEXTURE_2D, 0);
 //	texture_program.unuse();
 //
-//	SDL_GL_SwapWindow(_window);//swap the buffer so that the next draw happens on the other buffer
+//	SDL_GL_SwapWindow(_window);//swap the m_buffer so that the next draw happens on the other m_buffer
 //
 //}
 //

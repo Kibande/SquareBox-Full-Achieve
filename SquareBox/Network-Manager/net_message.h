@@ -101,7 +101,7 @@ namespace SquareBox
 			// popping, so lets allow them all. NOTE: It assumes the data type is fundamentally
 			// Plain Old Data (POD). TLDR: Serialise & Deserialise into/from a vector
 
-			// Pushes any POD-like data into the message buffer
+			// Pushes any POD-like data into the message m_buffer
 			template<typename DataType>
 			friend message<T>& operator << (message<T>& msg, const DataType& data)
 			{
@@ -124,7 +124,7 @@ namespace SquareBox
 				return msg;
 			}
 
-			// Pulls any POD-like data form the message buffer
+			// Pulls any POD-like data form the message m_buffer
 			template<typename DataType>
 			friend message<T>& operator >> (message<T>& msg, DataType& data)
 			{

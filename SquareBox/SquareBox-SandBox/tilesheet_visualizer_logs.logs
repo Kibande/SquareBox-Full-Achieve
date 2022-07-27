@@ -1,5 +1,6 @@
-[08:42:42] [info] SQUAREBOX:  7 Audio Mix Channels Initialised 
-[08:42:42] [info] SQUAREBOX: Audio Engine has a read me file at D:\Programming\Projects\Cpp\SquareBox-Full-achieve\SquareBox\Audio-System\AudioEngine.cpp 44 and is scheduled for renovation
-[08:42:43] [info] SQUAREBOX: ***** openGL version 3.0.0 - Build 27.20.100.8854 **** 
+[12:49:12] [info] SQUAREBOX:  7 Audio Mix Channels Initialised 
+[12:49:12] [info] SQUAREBOX: Audio Engine has a read me file at D:\Programming\Projects\Cpp\SquareBox-Full-achieve\SquareBox\Audio-System\AudioEngine.cpp 44 and is scheduled for renovation
+[12:49:14] [info] SQUAREBOX: ***** openGL version 3.0.0 - Build 27.20.100.8854 **** 
 
-[08:43:23] [info] SQUAREBOX: Live Loaded  Texture  D:/Programming/Projects/Cpp/SquareBox-Full-achieve/SquareBox/SquareBox-SandBox/Assets/Textures/nodpi/blue_ninja.png 
+[12:49:15] [info] SQUAREBOX: Live Loaded  Texture  Assets/Textures/nodpi/human.png 
+[12:49:16] [info] SQUAREBOX: Live Loaded  Texture  Assets/Textures/nodpi/blue_grey.png 

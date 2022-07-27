@@ -136,7 +136,7 @@ namespace SquareBox {
 		void Window::swapBuffer()
 		{
 			//rendering code
-			SDL_GL_SwapWindow(m_sdl_window);//swap the buffer and drawa everything onto the screen
+			SDL_GL_SwapWindow(m_sdl_window);//swap the m_buffer and drawa everything onto the screen
 		}
 
 		void Window::resizeWindow(int screenWidth, int screenHeight)

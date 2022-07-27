@@ -261,7 +261,7 @@ static const char *checkoption(lua_State *L, const char *conv,
 		if (*option == '|')  /* next block? */
 			oplen++;  /* will check options with next length (+1) */
 		else if (memcmp(conv, option, oplen) == 0) {  /* match? */
-			memcpy(buff, conv, oplen);  /* copy valid option to buffer */
+			memcpy(buff, conv, oplen);  /* copy valid option to m_buffer */
 			buff[oplen] = '\0';
 			return conv + oplen;  /* return next item */
 		}
@@ -300,7 +300,7 @@ static int os_date(lua_State *L) {
 		setallfields(L, stm);
 	}
 	else {
-		char cc[4];  /* buffer for individual conversion specifiers */
+		char cc[4];  /* m_buffer for individual conversion specifiers */
 		luaL_Buffer b;
 		cc[0] = '%';
 		luaL_buffinit(L, &b);

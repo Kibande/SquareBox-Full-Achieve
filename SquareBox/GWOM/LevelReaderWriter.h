@@ -13,8 +13,8 @@ namespace SquareBox {
 		class LevelReaderWriter
 		{
 		public:
-			bool saveLevelDataAsBinary(const std::string& file_path_,const std::vector<SquareBox::GWOM::Layer> & layers_,float active_camera_scale_, const glm::vec2 & active_camera_position_,int active_camera_index_);
-			bool loadLevelDataAsBinary(const std::string& file_path_, std::vector<SquareBox::GWOM::Layer>& layers_, float & active_camera_scale_, glm::vec2& active_camera_position_,int & active_camera_index_);
+			bool saveLevelDataAsBinary(const std::string& file_path_,const std::vector<SquareBox::GWOM::Layer> & layers_,float active_camera_scale_, const glm::vec2 & active_camera_position_, const glm::vec2& editing_screen_dimensions_, int active_camera_index_);
+			bool loadLevelDataAsBinary(const std::string& file_path_, std::vector<SquareBox::GWOM::Layer>& layers_, float & active_camera_scale_, glm::vec2& active_camera_position_, glm::vec2& editing_screen_dimensions_,int & active_camera_index_);
 
 		private:
 		};

@@ -28,11 +28,11 @@ namespace SquareBox {
 		{
 			if (m_screen_width != screen_width_ || m_screen_height != screen_height_) {
 				//only do when we get a new screen resolution
-				
+
 				//adjusting position_ accordinlgly
-				m_position.x = (m_position.x / m_screen_width)* screen_width_;
-				m_position.y = (m_position.y / m_screen_height)* screen_height_;
-				
+				m_position.x = (m_position.x / m_screen_width) * screen_width_;
+				m_position.y = (m_position.y / m_screen_height) * screen_height_;
+
 				//adjust the values used to convert screen to world
 				m_screen_width = screen_width_;
 				m_screen_height = screen_height_;
@@ -47,7 +47,7 @@ namespace SquareBox {
 				m_ortho_matrix = glm::ortho(0.0f, (float)m_screen_width, 0.0f, (float)m_screen_height);
 
 				//create a vector that will encode the transalation
-				glm::vec3 translate(-m_position.x + m_screen_width *0.5f, -m_position.y + m_screen_height *0.5f, 0.0f);//The Modal Matrix
+				glm::vec3 translate(-m_position.x + m_screen_width * 0.5f, -m_position.y + m_screen_height * 0.5f, 0.0f);//The Modal Matrix
 
 				m_camera_matrix = glm::translate(m_ortho_matrix, translate);
 
@@ -56,7 +56,7 @@ namespace SquareBox {
 
 				//create a vector that will encode the scalling
 				glm::vec3 scale(m_scale, m_scale, 0.0f);//The Projection Matrix
-				m_camera_matrix = glm::scale(glm::mat4(1.0f), scale)*m_camera_matrix;
+				m_camera_matrix = glm::scale(glm::mat4(1.0f), scale) * m_camera_matrix;
 				m_needs_matrix_update = false;
 			}
 		}
@@ -75,6 +75,23 @@ namespace SquareBox {
 			screen_coords_ += m_position;
 
 			return screen_coords_;
+		}
+
+		bool ParallelCamera::isInBox(const  glm::vec2& testCoordinates_, const glm::vec4& testBoxDestRect_) {
+			const float x_position = testBoxDestRect_.x;
+			const float y_position = testBoxDestRect_.y;
+			const float width = testBoxDestRect_.z;
+			const float height = testBoxDestRect_.w;
+
+			const float x_coordinate = testCoordinates_.x;
+			const float y_coordinate = testCoordinates_.y;
+
+			const float  x1 = x_position;
+			const float  y1 = y_position;
+			const float  x2 = x1 + width;
+			const float  y2 = y1 + +height;
+
+			return (x_coordinate > x1 && x_coordinate<x2&& y_coordinate>y1 && y_coordinate < y2);
 		}
 
 		// Simple AABB test to see if a box is in the camera view
@@ -102,7 +119,48 @@ namespace SquareBox {
 				return true;
 			}
 			return false;
-		
+
+		}
+		void ParallelCamera::setPosition(glm::vec2 new_position_)
+		{
+			if (m_bound_to_dest_rect) {
+				// make sure we are in the bounding area
+				const glm::vec2& camera_dimensions = getCameraDimensions();
+				const glm::vec4 desired_camera_destRect(new_position_ - (camera_dimensions * 0.5f), camera_dimensions);
+
+				glm::vec2 top_right(desired_camera_destRect.x + desired_camera_destRect.z, desired_camera_destRect.y + desired_camera_destRect.w);
+				glm::vec2 bottom_left(desired_camera_destRect.x, desired_camera_destRect.y);
+
+				glm::vec2 world_top_right(m_bounding_dest_rect.x + m_bounding_dest_rect.z, m_bounding_dest_rect.y + m_bounding_dest_rect.w);
+				glm::vec2 world_bottom_left(m_bounding_dest_rect.x, m_bounding_dest_rect.y);
+
+				if (!isInBox(top_right, m_bounding_dest_rect)) {
+					if (top_right.x > world_top_right.x) {
+						new_position_.x -= (top_right.x - world_top_right.x);
+					}
+
+					if (top_right.y > world_top_right.y) {
+						new_position_.y -= (top_right.y - world_top_right.y);
+					}
+				}
+
+
+				if (!isInBox(bottom_left, m_bounding_dest_rect)) {
+					if (bottom_left.x < world_bottom_left.x) {
+						new_position_.x += (world_bottom_left.x - bottom_left.x);
+					}
+
+					if (bottom_left.y < world_bottom_left.y) {
+						new_position_.y += (world_bottom_left.y - bottom_left.y);
+					}
+				}
+
+				m_position = new_position_; m_needs_matrix_update = true;
+
+			}
+			else {
+				m_position = new_position_; m_needs_matrix_update = true;
+			}
 		}
 	}
 }

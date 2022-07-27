@@ -47,7 +47,7 @@ namespace SquareBox {
 		void DebugRenderer::end()
 		{
 			SBX_GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
-			//Ophan the buffer , this is for optimization
+			//Ophan the m_buffer , this is for optimization
 			SBX_GLCall(glBufferData(GL_ARRAY_BUFFER, m_verts.size() * sizeof(DebugVertex), nullptr, GL_DYNAMIC_DRAW));
 			//Upload the data
 			SBX_GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, m_verts.size() * sizeof(DebugVertex), m_verts.data()));
@@ -55,7 +55,7 @@ namespace SquareBox {
 			SBX_GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
 			SBX_GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo));
-			//Ophan the buffer , this is for optimization
+			//Ophan the m_buffer , this is for optimization
 			SBX_GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(GLuint), nullptr, GL_DYNAMIC_DRAW));
 			//Upload the data
 			SBX_GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, m_indices.size() * sizeof(GLuint), m_indices.data()));

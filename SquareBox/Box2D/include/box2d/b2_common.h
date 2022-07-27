@@ -69,7 +69,7 @@
 #define b2_angularSlop			(2.0f / 180.0f * b2_pi)
 
 /// The radius of the polygon/edge shape skin. This should not be modified. Making
-/// this smaller means polygons will have an insufficient buffer for continuous collision.
+/// this smaller means polygons will have an insufficient m_buffer for continuous collision.
 /// Making it larger may create artifacts for vertex collision.
 #define b2_polygonRadius		(2.0f * b2_linearSlop)
 

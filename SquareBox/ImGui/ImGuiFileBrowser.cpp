@@ -1226,13 +1226,13 @@ namespace imgui_addons
         path_max_def = true;
         #endif // PATH_MAX
 
-        char* buffer = nullptr;
+        char* m_buffer = nullptr;
 
         //If PATH_MAX is defined deal with memory using new/delete. Else fallback to malloc'ed memory from `realpath()`
         if(path_max_def)
-            buffer = new char[PATH_MAX];
+            m_buffer = new char[PATH_MAX];
 
-        char* real_path = realpath("./", buffer);
+        char* real_path = realpath("./", m_buffer);
         if (real_path == nullptr)
         {
             current_path = "/";
@@ -1246,7 +1246,7 @@ namespace imgui_addons
         }
 
         if(path_max_def)
-            delete[] buffer;
+            delete[] m_buffer;
         else
             free(real_path);
     }

@@ -256,65 +256,66 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 		}
 		ImGui::Text("To: %s", layers_[m_target_shift_to_layer_index].name);
 
-			auto& destination_layer = layers_[m_target_shift_to_layer_index];
-			if (active_layer.layer_type != destination_layer.layer_type) {
+		auto& destination_layer = layers_[m_target_shift_to_layer_index];
+		if (active_layer.layer_type != destination_layer.layer_type) {
 
-				if (
-					(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getOriginX(), destination_layer.tile_system.getOriginX()))
-					&&
-					(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getOriginY(), destination_layer.tile_system.getOriginY()))
-					&&
-					(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getHeight(), destination_layer.tile_system.getHeight()))
-					&&
-					(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getWidth(), destination_layer.tile_system.getWidth()))
-					&&
-					(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getTileSize(), destination_layer.tile_system.getTileSize()))
-					) {
-					/*
-					different layers can be having different texture arrangements
-					for this to work we shall need to make sure we have the same texture avaliable in the destination
-					as it is in the orign layer , if it is not we shall have to copy it to the destination layer
-					 the wway we are doing it right now where we just let the key pass through without cross checking
-					 it , can lead to errors
+			if (
+				(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getOriginX(), destination_layer.tile_system.getOriginX()))
+				&&
+				(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getOriginY(), destination_layer.tile_system.getOriginY()))
+				&&
+				(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getHeight(), destination_layer.tile_system.getHeight()))
+				&&
+				(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getWidth(), destination_layer.tile_system.getWidth()))
+				&&
+				(SquareBox::MathLib::Float::areFloatsEqual(active_layer.tile_system.getTileSize(), destination_layer.tile_system.getTileSize()))
+				) {
+				/*
+				different layers can be having different texture arrangements
+				for this to work we shall need to make sure we have the same texture avaliable in the destination
+				as it is in the orign layer , if it is not we shall have to copy it to the destination layer
+				 the wway we are doing it right now where we just let the key pass through without cross checking
+				 it , can lead to errors
 
-					*/
-					ImGui::Text("Not yet implementated, check comment in code {} {} ", __FILE__, __LINE__);
-					bool enable_without_texture_sorting = false;
-					if (enable_without_texture_sorting) {
-						if (ImGui::Button("OK", ImVec2(120, 0))) {
-							for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
-							{
-								SquareBox::GWOM::Tile* orign_grid_tile = layers_[m_selected_tiles[i].first].tile_system.getTileByIndex(m_selected_tiles[i].second);
-								//take to the target layer
-								SquareBox::GWOM::Tile* destination_grid_tile = layers_[m_target_shift_to_layer_index].tile_system.getTile(orign_grid_tile->coordinates.first, orign_grid_tile->coordinates.second);
-								destination_grid_tile->key = orign_grid_tile->key; // wrong !!! and can crush the application if the 
-								// texture key is out of range of the layers textures
-								m_utilities.addPairToVector(layers_[m_target_shift_to_layer_index].tile_system.active_tiles, destination_grid_tile->coordinates);
+				*/
+				ImGui::Text("Not yet implementated, check comment in code {} {} ", __FILE__, __LINE__);
+				bool enable_without_texture_sorting = false;
+				if (enable_without_texture_sorting) {
+					if (ImGui::Button("OK", ImVec2(120, 0))) {
+						for (unsigned int i = 0; i < m_selected_tiles.size(); i++)
+						{
+							SquareBox::GWOM::Tile* orign_grid_tile = layers_[m_selected_tiles[i].first].tile_system.getTileByIndex(m_selected_tiles[i].second);
+							//take to the target layer
+							SquareBox::GWOM::Tile* destination_grid_tile = layers_[m_target_shift_to_layer_index].tile_system.getTile(orign_grid_tile->coordinates.first, orign_grid_tile->coordinates.second);
+							destination_grid_tile->key = orign_grid_tile->key; // wrong !!! and can crush the application if the 
+							// texture key is out of range of the layers textures
+							m_utilities.addPairToVector(layers_[m_target_shift_to_layer_index].tile_system.active_tiles, destination_grid_tile->coordinates);
 
 
-								//remove from the current layer
-								orign_grid_tile->key = -1;//use set tile instead
-								m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, orign_grid_tile->coordinates);
-							}
-							m_selected_tiles.clear(); // since object might have been transfered to a locked layer
-							m_show_shift_tiles_to_another_layer_dialog = false;
-							ImGui::CloseCurrentPopup();
+							//remove from the current layer
+							orign_grid_tile->key = -1;//use set tile instead
+							m_utilities.removePairFromVector(active_layer.tile_system.active_tiles, orign_grid_tile->coordinates);
 						}
-					}
-					ImGui::SetItemDefaultFocus();
-					ImGui::SameLine();
-					if (ImGui::Button(enable_without_texture_sorting ? "Cancel" : "Okay", ImVec2(120, 0))) {
+						m_selected_tiles.clear(); // since object might have been transfered to a locked layer
 						m_show_shift_tiles_to_another_layer_dialog = false;
 						ImGui::CloseCurrentPopup();
 					}
-					ImGui::EndPopup();
 				}
+				ImGui::SetItemDefaultFocus();
+				ImGui::SameLine();
+				if (ImGui::Button(enable_without_texture_sorting ? "Cancel" : "Okay", ImVec2(120, 0))) {
+					m_show_shift_tiles_to_another_layer_dialog = false;
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
 			}
-			else {
-				ImGui::Text("Both layers must have the same tilling orientation");
-			}
-
+		}
+		else {
+			ImGui::Text("Both layers must have the same tilling orientation");
+		}
+		ImGui::EndPopup();
 	}
+	if(editor_mode_==EditorModeEnum::SELECT){
 
 	int lsme = static_cast<int>(m_tiled_layer_selection_mode_index);
 	TiledLayerSelectModeEnum beforelayerSelectionMode = m_tiled_layer_selection_mode_index;
@@ -331,6 +332,7 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 		}
 	}
 
+}
 	ImGui::Text("Texture");
 	ImGui::Separator();
 	static int current_texture_type = 0;

@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_RESIZABLE;
 #endif // SQB_PLATFORM_ANDROID
 	
-	app.run("Zombie Game",800, 600, windowFlags, 30, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255), "test/SquareBox-Editor.txt", true);
+	app.run("Zombie Game",800, 600, windowFlags, 60, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255), "test/SquareBox-Editor.txt", true);
 }
 
 

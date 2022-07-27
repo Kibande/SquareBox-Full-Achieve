@@ -116,6 +116,16 @@ void GUIEditor::update(const float& deltaTime_)
 	if (m_game_ptr->isProcessingInput())
 	{
 		m_editor_assistant.cameraControls(m_camera, m_game_ptr);
+
+		//forcing imgui to start responding
+		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::ESCAPE))) {
+			ImGui::SetNextFrameWantCaptureMouse(true);
+			ImGui::SetNextFrameWantCaptureKeyboard(true);
+			/* this is the hack that i have come up with to solve the issue of imgui freezing up 
+			and not allowing any more user input, this block of code  forces it to start
+			taking user input but it disoragnises sdls input manager 
+			so this function only helps you be able to save your work */
+		}
 	}
 
 	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
@@ -397,9 +407,7 @@ void GUIEditor::initGUI()
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO io = ImGui::GetIO(); (void)io;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // enable Gamepad Controls
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -443,31 +451,32 @@ void GUIEditor::drawGUI()
 
 		ImGui::Text("FPS Counter: %.2f", static_cast<float>(m_game_ptr->getFps()));
 		ImGui::Text("Elapsed Sec: %.2f", static_cast<float>(m_game_ptr->getGameLoopElapsedSeconds()));
-		
+		ImGui::Separator();
+		static int mode = 0;
+		int beforeMode = mode;
+		ImGui::RadioButton("Place Mode  ", &mode, 0); ImGui::SameLine();
+		ImGui::RadioButton("Select Mode ", &mode, 1); ImGui::SameLine();
+
+		m_gui_editor_mode = static_cast<GUIEditorModeEnum>(mode);
+
+		if (beforeMode != mode) {
+			if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
+				m_current_gui_element_ptr = nullptr;
+			}
+			else {
+				m_current_gui_element_ptr = &m_gui_layer.gui_elements.back();
+			}
+		}
+		ImGui::Checkbox("Debug Mode", &m_debug_mode);
+		static int orientaion = 0;
+		ImGui::RadioButton("Landscape   ", &orientaion, 0); ImGui::SameLine();
+		ImGui::RadioButton("Portriat     ", &orientaion, 1);
+		m_orientation = static_cast<GUIEditorOrientationEnum>(orientaion);
 		if (ImGui::BeginTabBar("Panel A"))
 		{
 			if (ImGui::BeginTabItem("Element")) {
 
-				static int mode = 0;
-				int beforeMode = mode;
-				ImGui::RadioButton("Place Mode  ", &mode, 0); ImGui::SameLine();
-				ImGui::RadioButton("Select Mode ", &mode, 1); ImGui::SameLine();
 
-				m_gui_editor_mode = static_cast<GUIEditorModeEnum>(mode);
-
-				if (beforeMode != mode) {
-					if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
-						m_current_gui_element_ptr = nullptr;
-					}
-					else {
-						m_current_gui_element_ptr = &m_gui_layer.gui_elements.back();
-					}
-				}
-				ImGui::Checkbox("Debug Mode", &m_debug_mode);
-				static int orientaion = 0;
-				ImGui::RadioButton("Landscape   ", &orientaion, 0); ImGui::SameLine();
-				ImGui::RadioButton("Portriat     ", &orientaion, 1);
-				m_orientation = static_cast<GUIEditorOrientationEnum>(orientaion);
 				if (m_current_gui_element_ptr != nullptr) {
 
 					ImGui::Separator();
@@ -533,6 +542,7 @@ void GUIEditor::drawGUI()
 
 					ImGui::Text("Hidden    : "); ImGui::SameLine();
 					ImGui::Checkbox("###is_hidden", &m_current_gui_element_ptr->is_hidden);
+
 					ImGui::Text("Locked    : "); ImGui::SameLine();
 					ImGui::Checkbox("###is_locked", &m_current_gui_element_ptr->is_locked);
 
@@ -794,55 +804,96 @@ void GUIEditor::drawGUI()
 				if (m_gui_layer.gui_elements.size() > 1) {//because the trace object can exit but if its alone
 					//then the gui_elements array is techincally empty
 
-				if (ImGui::BeginTable("layer layout", 3, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
-				{
-					std::pair<int, int> target_shift(0, 0);//(inde of element, shift direction)
-					for (int i = 0; i < m_gui_layer.gui_elements.size(); i++)
+					if (ImGui::BeginTable("layer layout", 6, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 					{
-						if (m_gui_layer.gui_elements[i].is_alive) {//last element excluded
-							ImGui::TableNextColumn();
-							if (ImGui::IsItemClicked(ImGui::SmallButton("up"))) {
-								target_shift = std::pair<int, int>(i, -1);
+						//ImGuiTabBarFlags_FittingPolicyResizeDown
+						std::pair<int, int> target_shift(0, 0);//(inde of element, shift direction)
+						for (int i = 0; i < m_gui_layer.gui_elements.size(); i++)
+						{
+							auto& focus_gui_element = m_gui_layer.gui_elements[i];
+							if (focus_gui_element.is_alive) {//last element excluded
+								ImGui::TableNextColumn();
+								if (ImGui::IsItemClicked(ImGui::ArrowButton("up", ImGuiDir_Up))) {
+									target_shift = std::pair<int, int>(i, -1);
+								}
+
+								ImGui::TableNextColumn();
+								if (ImGui::IsItemClicked(ImGui::ArrowButton("down", ImGuiDir_Down))) {
+									target_shift = std::pair<int, int>(i, 1);
+								}
+
+								ImGui::TableNextColumn();
+								if (focus_gui_element.is_hidden) {
+									if (ImGui::IsItemClicked(ImGui::SmallButton("S"))) {
+										focus_gui_element.is_hidden = false;
+									}
+								}
+								else {
+									if (ImGui::IsItemClicked(ImGui::SmallButton("H"))) {
+										focus_gui_element.is_hidden = true;
+									}
+								}
+
+
+								ImGui::TableNextColumn();
+								if (m_gui_editor_mode == GUIEditorModeEnum::PLACE) {
+									ImGui::BeginDisabled();
+								}
+								if (&focus_gui_element == m_current_gui_element_ptr) {
+									ImGui::Text("A");
+								}
+								else {
+									if (ImGui::IsItemClicked(ImGui::SmallButton("_"))) {
+										if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
+											m_current_gui_element_ptr = &focus_gui_element;
+											updateState();
+										}
+									}
+								}
+								if (m_gui_editor_mode == GUIEditorModeEnum::PLACE) {
+									ImGui::EndDisabled();
+								}
+
+								ImGui::TableNextColumn();
+								
+								sprintf(m_buffer, "###gui_element_id%d", i);
+								ImGui::InputInt(m_buffer, &focus_gui_element.id, 1, 10);
+
+								ImGui::TableNextColumn();
+								sprintf(m_buffer, "###gui_element_name%d", i);
+								ImGui::InputText(m_buffer, focus_gui_element.name, 20);
 							}
-							
-							ImGui::TableNextColumn();
-							if (ImGui::IsItemClicked(ImGui::SmallButton("down"))) {
-								target_shift = std::pair<int, int>(i, 1);
+						}
+						ImGui::EndTable();
+
+						if (target_shift != std::pair<int, int>(0, 0)) {
+							//a gui element it being shifted
+							int current_index = target_shift.first;
+							int desired_index = current_index + target_shift.second;
+							if (desired_index >= 0 && desired_index < m_gui_layer.gui_elements.size() - 1) {//last element excluded since its the current trace element 
+
+								auto element_a = m_gui_layer.gui_elements[current_index];
+								auto element_b = m_gui_layer.gui_elements[desired_index];
+
+								m_gui_layer.gui_elements[desired_index] = element_a;
+								m_gui_layer.gui_elements[current_index] = element_b;
+
+								if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
+									m_current_gui_element_ptr = nullptr;
+									/*
+										this is meant to protect us from us having have shift the selected cluster object
+										but still pointing at its previous memory address
+										a better apporach would be to have indexs stored , but those would to be
+										updated when a deletion occurs and that sounds like stress.
+
+										having a index system would be great, so thats something i will work on next
+										because with it , i can even have a select button here with me
+
+									*/
+								}
 							}
-							ImGui::TableNextColumn();
-							ImGui::Text(m_gui_layer.gui_elements[i].name);
 						}
 					}
-					ImGui::EndTable();
-
-					if (target_shift != std::pair<int, int>(0, 0)) {
-						//a gui element it being shifted
-						int current_index = target_shift.first;
-						int desired_index = current_index + target_shift.second;
-						if (desired_index >= 0 && desired_index < m_gui_layer.gui_elements.size() - 1) {//last element excluded since its the current trace element 
-							
-							auto element_a = m_gui_layer.gui_elements[current_index];
-							auto element_b = m_gui_layer.gui_elements[desired_index];
-
-							m_gui_layer.gui_elements[desired_index] = element_a;
-							m_gui_layer.gui_elements[current_index] = element_b;
-
-							if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
-								m_current_gui_element_ptr = nullptr;
-								/*
-									this is meant to protect us from us having have shift the selected cluster object
-									but still pointing at its previous memory address
-									a better apporach would be to have indexs stored , but those would to be
-									updated when a deletion occurs and that sounds like stress.
-
-									having a index system would be great, so thats something i will work on next
-									because with it , i can even have a select button here with me
-
-								*/
-							}
-						}
-					}
-				}
 				}
 				else {
 					ImGui::Text("Layer is Empty");
@@ -850,6 +901,7 @@ void GUIEditor::drawGUI()
 
 				ImGui::EndTabItem();
 			}
+			ImGui::Spacing();
 			ImGui::EndTabBar();
 		}
 		if (m_show_open_gui_layer_file_dialog) {
@@ -902,64 +954,7 @@ void GUIEditor::drawGUI()
 			cleanOutGUILayer();
 			if (m_gui_layer_reader_writer.loadGuiLayerDataAsBinary(m_file_dialog.selected_path, m_gui_layer)) {
 
-				//loading the textures
-				// singles
-				//copy the orignal list
-				auto original_single_textures = m_gui_layer.single_textures;
-				m_gui_layer.single_textures.clear();
-				for (unsigned int i = 0; i < original_single_textures.size(); i++)
-				{
-					auto& current_single_texture = original_single_textures[i];
-					SquareBox::AssetManager::GLTexture tmp_single_texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_single_texture.display_name, m_game_ptr->getWindow()->getDDPI());
-					SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_single_texture.id, current_single_texture.tiling);
-					m_gui_layer.single_textures.push_back(tmp_single_texture);
-				}
-
-				//copy the orignal list
-				//tiled
-				auto original_tiled_textures = m_gui_layer.tiled_textures;
-				m_gui_layer.tiled_textures.clear();
-				for (unsigned int i = 0; i < original_tiled_textures.size(); i++)
-				{
-					auto& current_tiled_texture = original_tiled_textures[i];
-					SquareBox::AssetManager::GLTexture tmp_tiled_texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_tiled_texture.display_name, m_game_ptr->getWindow()->getDDPI());
-					SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_tiled_texture.id, current_tiled_texture.tiling);
-					m_gui_layer.tiled_textures.push_back(tmp_tiled_texture);
-				}
-
-
-				//the sprite fonts
-				auto original_sprite_fonts = m_gui_layer.sprite_fonts;
-				m_gui_layer.sprite_fonts.clear();
-				for (unsigned int i = 0; i < original_sprite_fonts.size(); i++)
-				{
-					SquareBox::RenderEngine::SpriteFont tmp_sprite_font;
-					//this has to be edited so that sprite fonts are also loaded from 
-					//respective folders like textures
-					tmp_sprite_font.initWithFilePath(original_sprite_fonts[i].getFontFilePath(), original_sprite_fonts[i].getFontSize());
-					tmp_sprite_font.setDisplayName(original_sprite_fonts[i].getDisplayName());
-					m_gui_layer.sprite_fonts.push_back(tmp_sprite_font);
-				}
-
-
-				//upating the texture infos texture_id
-				for (unsigned int i = 0; i < m_gui_layer.gui_elements.size(); i++)
-				{
-					for (unsigned int j = 0; j < m_gui_layer.gui_elements[i].textures.size(); j++) {
-						auto& focus_texture_info = m_gui_layer.gui_elements[i].textures[j];
-						if (focus_texture_info.texture_type == SquareBox::TextureEnum::SINGLE) {
-							if (m_gui_layer.single_textures.size() > focus_texture_info.texture_index) {
-								focus_texture_info.texture_id = m_gui_layer.single_textures[focus_texture_info.texture_index].id;
-							}
-						}
-						else {
-							//tile sheet
-							if (m_gui_layer.tiled_textures.size() > focus_texture_info.texture_index) {
-								focus_texture_info.texture_id = m_gui_layer.tiled_textures[focus_texture_info.texture_index].id;
-							}
-						}
-					}
-				}
+				m_utilities.loadGuiLayerTexturesAndFonts(m_gui_layer, m_game_ptr->getWindow()->getDDPI());
 
 				if (m_gui_editor_mode == GUIEditorModeEnum::PLACE) {
 					m_current_gui_element_ptr = &m_gui_layer.gui_elements.back();
@@ -1070,6 +1065,7 @@ void GUIEditor::drawGUI()
 				 folders by default , so accesing a texture from the downloads folder while
 				 working wil work but that image wont be loaded the next time the gui is loaded
 			*/
+			m_gui_layer.editing_screen_dimensions = glm::vec2(m_visiable_dest_rect.z, m_visiable_dest_rect.w);
 			if (m_gui_layer_reader_writer.saveGuiLayerDataAsBinary(filePath + ext, m_gui_layer)) {
 				SBX_INFO("GUI layer successfully saved at {}", m_file_dialog.selected_path);
 			}
@@ -1090,6 +1086,15 @@ void GUIEditor::drawGUI()
 	ImGui::Render();
 	glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+	}
 }
 
 void GUIEditor::showMenuMain()
@@ -1101,18 +1106,18 @@ void GUIEditor::showMenuMain()
 		if (ImGui::MenuItem("About", NULL)) {
 			m_show_about_dialog = true;
 		}
-		if (ImGui::MenuItem("Open", NULL)) {
+		if (ImGui::MenuItem("Open", "CTRL+O")) {
 			m_show_open_gui_layer_file_dialog = true;
 		}
-		if (ImGui::MenuItem("Save", NULL)) {
+		if (ImGui::MenuItem("Save", "CTRL+S")) {
 			m_show_save_gui_layer_file_dialog = true;
 		}
-		if (ImGui::MenuItem("New", NULL)) {
+		if (ImGui::MenuItem("New", "CTRL+N")) {
 			createNewGUILayer();
 		}
 		if (ImGui::MenuItem("Active Selecting",NULL,m_active_selecting)) {
 			m_active_selecting = !m_active_selecting;
-			if (!m_active_selecting) {
+			if (!m_active_selecting && m_gui_editor_mode==GUIEditorModeEnum::SELECT) {
 				m_current_gui_element_ptr = nullptr;
 			}
 		}

@@ -10,6 +10,7 @@ namespace SquareBox {
 			std::vector<SquareBox::AssetManager::GLTexture> single_textures;
 			std::vector<SquareBox::AssetManager::GLTexture> tiled_textures;
 			std::vector<SquareBox::RenderEngine::SpriteFont> sprite_fonts;
+			glm::vec2 editing_screen_dimensions;
 		};
 	}
 }

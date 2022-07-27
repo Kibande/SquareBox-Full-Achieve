@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\constants.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\enums.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Essentials.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-Core\GUIWrapper.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\IGameScreen.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\IMainGame.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\macros.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\SquareBox\SquareBox-Core\GUIWrapper.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IGameScreen.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IMainGame.cpp" />
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\main.cpp" />
@@ -74,6 +76,9 @@
     </ProjectReference>
     <ProjectReference Include="..\Camera\Camera.vcxproj">
       <Project>{391690bc-ef82-49b8-82fd-6e7c782fe62d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GUI\GUI.vcxproj">
+      <Project>{57c0314f-0822-4732-914a-e8e1c4a62c69}</Project>
     </ProjectReference>
     <ProjectReference Include="..\GWOM\GWOM.vcxproj">
       <Project>{ba900633-113e-4364-9f01-72b7e1dccfa8}</Project>

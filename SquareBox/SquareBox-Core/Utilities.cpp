@@ -1053,6 +1053,68 @@ namespace SquareBox {
 		}
 	}
 
+	void Utilities::loadGuiLayerTexturesAndFonts(SquareBox::GWOM::GuiLayer& gui_layer_, float dpi_)
+	{
+		//loading the textures
+		// singles
+		//copy the orignal list
+		auto original_single_textures = gui_layer_.single_textures;
+		gui_layer_.single_textures.clear();
+		for (unsigned int i = 0; i < original_single_textures.size(); i++)
+		{
+			auto& current_single_texture = original_single_textures[i];
+			SquareBox::AssetManager::GLTexture tmp_single_texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_single_texture.display_name, dpi_);
+			SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_single_texture.id, current_single_texture.tiling);
+			gui_layer_.single_textures.push_back(tmp_single_texture);
+		}
+
+		//copy the orignal list
+		//tiled
+		auto original_tiled_textures = gui_layer_.tiled_textures;
+		gui_layer_.tiled_textures.clear();
+		for (unsigned int i = 0; i < original_tiled_textures.size(); i++)
+		{
+			auto& current_tiled_texture = original_tiled_textures[i];
+			SquareBox::AssetManager::GLTexture tmp_tiled_texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_tiled_texture.display_name, dpi_);
+			SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_tiled_texture.id, current_tiled_texture.tiling);
+			gui_layer_.tiled_textures.push_back(tmp_tiled_texture);
+		}
+
+
+		//the sprite fonts
+		auto original_sprite_fonts = gui_layer_.sprite_fonts;
+		gui_layer_.sprite_fonts.clear();
+		for (unsigned int i = 0; i < original_sprite_fonts.size(); i++)
+		{
+			SquareBox::RenderEngine::SpriteFont tmp_sprite_font;
+			//this has to be edited so that sprite fonts are also loaded from 
+			//respective folders like textures
+			tmp_sprite_font.initWithName(original_sprite_fonts[i].getDisplayName(), original_sprite_fonts[i].getFontSize());
+			tmp_sprite_font.setDisplayName(original_sprite_fonts[i].getDisplayName());
+			gui_layer_.sprite_fonts.push_back(tmp_sprite_font);
+		}
+
+
+		//upating the texture infos texture_id
+		for (unsigned int i = 0; i < gui_layer_.gui_elements.size(); i++)
+		{
+			for (unsigned int j = 0; j < gui_layer_.gui_elements[i].textures.size(); j++) {
+				auto& focus_texture_info = gui_layer_.gui_elements[i].textures[j];
+				if (focus_texture_info.texture_type == SquareBox::TextureEnum::SINGLE) {
+					if (gui_layer_.single_textures.size() > focus_texture_info.texture_index) {
+						focus_texture_info.texture_id = gui_layer_.single_textures[focus_texture_info.texture_index].id;
+					}
+				}
+				else {
+					//tile sheet
+					if (gui_layer_.tiled_textures.size() > focus_texture_info.texture_index) {
+						focus_texture_info.texture_id = gui_layer_.tiled_textures[focus_texture_info.texture_index].id;
+					}
+				}
+			}
+		}
+	}
+
 	Utilities::creationDetails  Utilities::createClusterObjectIntoWorld(bool drawingPlotedCords, bool rebirth, bool editPosition, glm::vec2 newPosition_, SquareBox::GWOM::ClusterObject * ClusterObject_, std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::PhysicsCollisionEngine::PhysicsWorld* targetPhysicsWorld_, bool autoNewClusterObjectCreation, bool respectAncestor_)
 	{
 		creationDetails detials;

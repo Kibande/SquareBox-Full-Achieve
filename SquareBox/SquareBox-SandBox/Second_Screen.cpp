@@ -40,7 +40,7 @@ void Second_Screen::build()
 void Second_Screen::onEntry()
 {
 	// this is where  stuff  the screen will use are  initialized from
-	m_sprite_font.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithFilePath("Assets/Fonts/Comfortaa-Bold.ttf", 32);
 
 	//Init Shaders
 	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
@@ -344,8 +344,7 @@ void Second_Screen::drawGUI()
 	showMenuMain();
 	ImGuiWindowFlags physics_tab_window_flags = 0;
 	physics_tab_window_flags |= ImGuiWindowFlags_NoMove;
-	bool* physics_tab_open = false;
-	ImGui::Begin("Control Panel", physics_tab_open, physics_tab_window_flags);
+	ImGui::Begin("Control Panel", nullptr, physics_tab_window_flags);
 
 	ImGui::SetWindowPos(ImVec2(m_game_ptr->getWindow()->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
 	{
@@ -556,7 +555,7 @@ void Second_Screen::showMenuMain()
 			{
 				for (unsigned int i = 0; i < m_vec_of_texture_objects.size(); i++)
 				{
-					auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[i].texture_info.texture_id);
+					const auto& retrieved_texture = SquareBox::AssetManager::TextureManager::getTextureById(m_vec_of_texture_objects[i].texture_info.texture_id);
 					if (ImGui::MenuItem(retrieved_texture.asset_file_path.c_str(), NULL, false, true)) {
 						m_active_texture_object_index = i;
 						m_current_texture_object_tiling = retrieved_texture.tiling;
@@ -605,7 +604,7 @@ void Second_Screen::loadTextureObject(std::string file_path_, std::string file_n
 	m_vec_of_texture_objects.emplace_back();
 	auto& new_texture_object = m_vec_of_texture_objects.back();
 	//Setting up our object
-	new_texture_object.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
+	new_texture_object.texture_info.color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white).getIVec4();
 	glm::vec2 screen_dimensions = glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	new_texture_object.position = screen_dimensions * glm::vec2(0.5f); //position the texture at the center 
 	//of the screen

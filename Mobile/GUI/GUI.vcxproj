@@ -44,6 +44,23 @@
     <ClCompile Include="..\..\SquareBox\GUI\BoxGUIElement.cpp" />
     <ClCompile Include="..\..\SquareBox\GUI\CircleGUIElement.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GWOM\GWOM.vcxproj">
+      <Project>{ba900633-113e-4364-9f01-72b7e1dccfa8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Input-Manager\Input-Manager.vcxproj">
+      <Project>{7270a291-bee9-40c0-a95e-82217ee47aab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.vcxproj">
+      <Project>{cf5cc0c6-c7d4-41b8-a134-1e515e8a2996}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Render-Engine\Render-Engine.vcxproj">
+      <Project>{9d8602b0-e87e-4f15-a522-d3a5eb880ed1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
+      <Project>{9fa4b4a8-b6aa-434b-b6bf-133a54ed5f17}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{57c0314f-0822-4732-914a-e8e1c4a62c69}</ProjectGuid>
     <Keyword>Android</Keyword>
@@ -127,7 +144,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -142,7 +159,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -157,7 +174,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -172,7 +189,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -187,7 +204,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -202,7 +219,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -217,7 +234,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID;__STDC_LIMIT_MACROS;</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>
@@ -232,7 +249,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/SquareBox-Logger;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SQB_PLATFORM_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
       <CppLanguageStandard>c++1z</CppLanguageStandard>

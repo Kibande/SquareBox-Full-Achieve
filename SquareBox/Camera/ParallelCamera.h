@@ -15,7 +15,7 @@ namespace SquareBox {
 			bool isBoxInView(const glm::vec2 & position_, const glm::vec2& dimensions_);
 
 			//setters
-			void setPosition(const glm::vec2 & new_position_) { m_position = new_position_; m_needs_matrix_update = true; }
+			void setPosition(glm::vec2 new_position_);
 			void setScale(float new_scale_) { if (new_scale_ > 0.00001f) { m_scale = new_scale_; } m_needs_matrix_update = true; }
 			void setCameraRotation(glm::vec2 rotation_) { m_rotation = rotation_; m_needs_matrix_update = true; }
 
@@ -32,9 +32,16 @@ namespace SquareBox {
 			float getScale() { return m_scale; }
 			glm::mat4 getModalViewProjectionMatrix() { return m_camera_matrix; }
 			glm::vec2 getCameraRotation() const { return m_rotation; }
-
+			void bindCameraPositionToDestRect(glm::vec4& dest_rect_) {
+				m_bounding_dest_rect = dest_rect_;
+				m_bound_to_dest_rect = true;
+			};
+			void unbindCameraPositionToDestRect() { m_bound_to_dest_rect = false; }
 			void dispose() {};
 		private:
+			bool isInBox(const  glm::vec2& testCoordinates_, const glm::vec4& testBoxDestRect_);
+			glm::vec4 m_bounding_dest_rect;
+			bool m_bound_to_dest_rect = false;
 			unsigned int m_screen_width, m_screen_height;
 			bool m_needs_matrix_update;
 			float m_scale;

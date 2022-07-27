@@ -191,9 +191,9 @@ namespace SquareBox {
 				vertices[cv++] = _glyphPointers[cg]->topLeft;
 				offset += 6;
 			}
-			//upload the vertices to our vertex buffer object
+			//upload the vertices to our vertex m_buffer object
 			SBX_GLCall(glBindBuffer(GL_ARRAY_BUFFER, _vbo));
-			//orphan the buffer
+			//orphan the m_buffer
 			SBX_GLCall(glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW));
 			//upload the Data
 			SBX_GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data()));
@@ -210,11 +210,11 @@ namespace SquareBox {
 
 			glBindVertexArray(_vao);
 			if (_vbo == 0) {
-				//generate a vertex buffer object
+				//generate a vertex m_buffer object
 				SBX_GLCall(glGenBuffers(1, &_vbo));
 			}
-			//bind the buffer as a reflenece to vertext array objects binding
-			//hence no need to bind the buffer manually each time
+			//bind the m_buffer as a reflenece to vertext array objects binding
+			//hence no need to bind the m_buffer manually each time
 			SBX_GLCall(glBindBuffer(GL_ARRAY_BUFFER, _vbo));
 
 		

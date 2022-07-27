@@ -268,7 +268,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ClusterObject.h" />
+    <ClInclude Include="DSUGUIV1_generated.h" />
     <ClInclude Include="DSUGUI_generated.h" />
+    <ClInclude Include="DSUGWOMV1_generated.h" />
     <ClInclude Include="DSUGWOM_generated.h" />
     <ClInclude Include="DSUString_generated.h" />
     <ClInclude Include="Entities.h" />
@@ -281,6 +283,8 @@
     <ClInclude Include="Joint.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LevelReaderWriter.h" />
+    <ClInclude Include="OldGuiReaderWriter.h" />
+    <ClInclude Include="OldLevelReaderWriter.h" />
     <ClInclude Include="StringReaderWriter.h" />
     <ClInclude Include="TextureInfo.h" />
     <ClInclude Include="TileSystem.h" />
@@ -291,12 +295,16 @@
     <ClCompile Include="GuiReaderWriter.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="LevelReaderWriter.cpp" />
+    <ClCompile Include="OldGuiReaderWriter.cpp" />
+    <ClCompile Include="OldLevelReaderWriter.cpp" />
     <ClCompile Include="StringReaderWriter.cpp" />
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DSUGUI.fbs" />
+    <None Include="DSUGUIV1.fbs" />
     <None Include="DSUGWOM.fbs" />
+    <None Include="DSUGWOMV1.fbs" />
     <None Include="DSUString.fbs" />
     <None Include="NetworkMessage.fbs" />
   </ItemGroup>

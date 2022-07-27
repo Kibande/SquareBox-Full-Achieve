@@ -3,7 +3,7 @@
 #include <random>
 #include <ctime>
 #include "LayerIndicies.h"
-#include "Bullet.h".h
+#include "Bullet.h"
 class Gun
 {
 public:

@@ -120,7 +120,7 @@ namespace SquareBox {
 			//	if (std::string(filename)==m_file_path)
 			//	{
 			//		AAsset* asset = AAssetManager_open(mgr, filename, AASSET_MODE_BUFFER);
-			//		//AAsset_getBuffer(asset);//point to the buffer with all the data
+			//		//AAsset_getBuffer(asset);//point to the m_buffer with all the data
 			//		char data_[BUFSIZ];
 			//		int nb_read = 0;
 			//		FILE* out = fopen(filename, "w");
@@ -132,7 +132,7 @@ namespace SquareBox {
 			//			/*
 			//			Writing to a file doesn't work
 			//			i think android doesn't let us write to a FILE dynamically
-			//			so this little function will only give you a buffer of the asset files data
+			//			so this little function will only give you a m_buffer of the asset files data
 			//			And its important to remember that the files you are accessing should be in the root of the
 			//			assets folder
 			//			Author Kibande Steven

@@ -100,7 +100,7 @@ public:
 		int32 velocityIterations,
 		int32 positionIterations);
 
-	/// Manually clear the force buffer on all bodies. By default, forces are cleared automatically
+	/// Manually clear the force m_buffer on all bodies. By default, forces are cleared automatically
 	/// after each call to Step. The default behavior is modified by calling SetAutoClearForces.
 	/// The purpose of this function is to support sub-stepping. Sub-stepping is often used to maintain
 	/// a fixed sized time step under a variable frame-rate.

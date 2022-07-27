@@ -443,7 +443,7 @@ static const char *searchpath(lua_State *L, const char *name,
 	if (*sep != '\0' && strchr(name, *sep) != NULL)
 		name = luaL_gsub(L, name, sep, dirsep);  /* replace it by 'dirsep' */
 	luaL_buffinit(L, &buff);
-	/* add path to the buffer, replacing marks ('?') with the file name */
+	/* add path to the m_buffer, replacing marks ('?') with the file name */
 	luaL_addgsub(&buff, path, LUA_PATH_MARK, name);
 	luaL_addchar(&buff, '\0');
 	pathname = luaL_buffaddr(&buff);  /* writable list of file names */

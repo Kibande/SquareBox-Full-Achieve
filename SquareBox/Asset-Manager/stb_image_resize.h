@@ -539,14 +539,14 @@ typedef struct
     int horizontal_num_contributors;
     int vertical_num_contributors;
 
-    int ring_buffer_length_bytes;   // The length of an individual entry in the ring buffer. The total number of ring buffers is stbir__get_filter_pixel_width(filter)
-    int ring_buffer_num_entries;    // Total number of entries in the ring buffer.
+    int ring_buffer_length_bytes;   // The length of an individual entry in the ring m_buffer. The total number of ring buffers is stbir__get_filter_pixel_width(filter)
+    int ring_buffer_num_entries;    // Total number of entries in the ring m_buffer.
     int ring_buffer_first_scanline;
     int ring_buffer_last_scanline;
-    int ring_buffer_begin_index;    // first_scanline is at this index in the ring buffer
+    int ring_buffer_begin_index;    // first_scanline is at this index in the ring m_buffer
     float* ring_buffer;
 
-    float* encode_buffer; // A temporary buffer to store floats so we don't lose precision while we do multiply-adds.
+    float* encode_buffer; // A temporary m_buffer to store floats so we don't lose precision while we do multiply-adds.
 
     int horizontal_contributors_size;
     int horizontal_coefficients_size;
@@ -1234,8 +1234,8 @@ static void stbir__calculate_filters(stbir__contributors* contributors, float* c
 
 static float* stbir__get_decode_buffer(stbir__info* stbir_info)
 {
-    // The 0 index of the decode buffer starts after the margin. This makes
-    // it okay to use negative indexes on the decode buffer.
+    // The 0 index of the decode m_buffer starts after the margin. This makes
+    // it okay to use negative indexes on the decode m_buffer.
     return &stbir_info->decode_buffer[stbir_info->horizontal_filter_pixel_margin * stbir_info->channels];
 }
 
@@ -1654,35 +1654,35 @@ static void stbir__resample_horizontal_downsample(stbir__info* stbir_info, float
 
 static void stbir__decode_and_resample_upsample(stbir__info* stbir_info, int n)
 {
-    // Decode the nth scanline from the source image into the decode buffer.
+    // Decode the nth scanline from the source image into the decode m_buffer.
     stbir__decode_scanline(stbir_info, n);
 
-    // Now resample it into the ring buffer.
+    // Now resample it into the ring m_buffer.
     if (stbir__use_width_upsampling(stbir_info))
         stbir__resample_horizontal_upsample(stbir_info, stbir__add_empty_ring_buffer_entry(stbir_info, n));
     else
         stbir__resample_horizontal_downsample(stbir_info, stbir__add_empty_ring_buffer_entry(stbir_info, n));
 
-    // Now it's sitting in the ring buffer ready to be used as source for the vertical sampling.
+    // Now it's sitting in the ring m_buffer ready to be used as source for the vertical sampling.
 }
 
 static void stbir__decode_and_resample_downsample(stbir__info* stbir_info, int n)
 {
-    // Decode the nth scanline from the source image into the decode buffer.
+    // Decode the nth scanline from the source image into the decode m_buffer.
     stbir__decode_scanline(stbir_info, n);
 
     memset(stbir_info->horizontal_buffer, 0, stbir_info->output_w * stbir_info->channels * sizeof(float));
 
-    // Now resample it into the horizontal buffer.
+    // Now resample it into the horizontal m_buffer.
     if (stbir__use_width_upsampling(stbir_info))
         stbir__resample_horizontal_upsample(stbir_info, stbir_info->horizontal_buffer);
     else
         stbir__resample_horizontal_downsample(stbir_info, stbir_info->horizontal_buffer);
 
-    // Now it's sitting in the horizontal buffer ready to be distributed into the ring buffers.
+    // Now it's sitting in the horizontal m_buffer ready to be distributed into the ring buffers.
 }
 
-// Get the specified scan line from the ring buffer.
+// Get the specified scan line from the ring m_buffer.
 static float* stbir__get_ring_buffer_scanline(int get_scanline, float* ring_buffer, int begin_index, int first_scanline, int ring_buffer_num_entries, int ring_buffer_length)
 {
     int ring_buffer_index = (begin_index + (get_scanline - first_scanline)) % ring_buffer_num_entries;
@@ -2085,7 +2085,7 @@ static void stbir__buffer_loop_upsample(stbir__info* stbir_info)
             {
                 if (stbir_info->ring_buffer_first_scanline == stbir_info->ring_buffer_last_scanline)
                 {
-                    // We just popped the last scanline off the ring buffer.
+                    // We just popped the last scanline off the ring m_buffer.
                     // Reset it to the empty state.
                     stbir_info->ring_buffer_begin_index = -1;
                     stbir_info->ring_buffer_first_scanline = 0;
@@ -2143,7 +2143,7 @@ static void stbir__empty_ring_buffer(stbir__info* stbir_info, int first_necessar
 
             if (stbir_info->ring_buffer_first_scanline == stbir_info->ring_buffer_last_scanline)
             {
-                // We just popped the last scanline off the ring buffer.
+                // We just popped the last scanline off the ring m_buffer.
                 // Reset it to the empty state.
                 stbir_info->ring_buffer_begin_index = -1;
                 stbir_info->ring_buffer_first_scanline = 0;
@@ -2193,7 +2193,7 @@ static void stbir__buffer_loop_downsample(stbir__info* stbir_info)
         while (out_last_scanline > stbir_info->ring_buffer_last_scanline)
             stbir__add_empty_ring_buffer_entry(stbir_info, stbir_info->ring_buffer_last_scanline + 1);
 
-        // Now the horizontal buffer is ready to write to all ring buffer rows.
+        // Now the horizontal m_buffer is ready to write to all ring m_buffer rows.
         stbir__resample_vertical_downsample(stbir_info, y);
     }
 
@@ -2269,12 +2269,12 @@ static stbir_uint32 stbir__calculate_memory(stbir__info *info)
     STBIR_ASSERT(info->vertical_filter < STBIR__ARRAY_SIZE(stbir__filter_info_table)); // this now happens too late
 
     if (stbir__use_height_upsampling(info))
-        // The horizontal buffer is for when we're downsampling the height and we
-        // can't output the result of sampling the decode buffer directly into the
+        // The horizontal m_buffer is for when we're downsampling the height and we
+        // can't output the result of sampling the decode m_buffer directly into the
         // ring buffers.
         info->horizontal_buffer_size = 0;
     else
-        // The encode buffer is to retain precision in the height upsampling method
+        // The encode m_buffer is to retain precision in the height upsampling method
         // and isn't used when height downsampling.
         info->encode_buffer_size = 0;
 
@@ -2396,7 +2396,7 @@ static int stbir__resize_allocated(stbir__info *info,
 
 #undef STBIR__NEXT_MEMPTR
 
-    // This signals that the ring buffer is empty
+    // This signals that the ring m_buffer is empty
     info->ring_buffer_begin_index = -1;
 
     stbir__calculate_filters(info->horizontal_contributors, info->horizontal_coefficients, info->horizontal_filter, info->horizontal_scale, info->horizontal_shift, info->input_w, info->output_w);

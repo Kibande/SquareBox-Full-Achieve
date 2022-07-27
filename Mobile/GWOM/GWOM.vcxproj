@@ -69,7 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\GWOM\ClusterObject.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUGUIV1_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGUI_generated.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOMV1_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOM_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUString_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Entities.h" />
@@ -82,6 +84,8 @@
     <ClInclude Include="..\..\SquareBox\GWOM\Joint.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Layer.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\LevelReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\OldGuiReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\OldLevelReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\StringReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TextureInfo.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TileSystem.h" />
@@ -92,6 +96,8 @@
     <ClCompile Include="..\..\SquareBox\GWOM\GuiReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\Layer.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\LevelReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\OldGuiReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\OldLevelReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\StringReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\TileSystem.cpp" />
   </ItemGroup>
@@ -205,7 +211,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -220,7 +226,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -235,7 +241,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -250,7 +256,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -265,7 +271,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -280,7 +286,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -295,7 +301,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -310,7 +316,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -325,7 +331,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -337,7 +343,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
@@ -355,7 +361,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -370,7 +376,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);SQB_PLATFORM_ANDROID</PreprocessorDefinitions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <EnableNeonCodegen>true</EnableNeonCodegen>
-      <CppLanguageStandard>c++14</CppLanguageStandard>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)../SquareBox/GWOM;$(SolutionDir)../SquareBox/vendor/include;$(SolutionDir)../SquareBox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

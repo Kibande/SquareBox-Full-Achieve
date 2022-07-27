@@ -206,7 +206,7 @@ namespace SquareBox
 			void WriteHeader()
 			{
 				// If this function is called, we know the outgoing message queue must have 
-				// at least one message to send. So allocate a transmission buffer to hold
+				// at least one message to send. So allocate a transmission m_buffer to hold
 				// the message, and issue the work - asio, send these bytes
 				asio::async_write(m_socket, asio::buffer(&m_qMessagesOut.front().header, sizeof(message_header<T>)),
 					[this](std::error_code ec, std::size_t length)
@@ -252,7 +252,7 @@ namespace SquareBox
 			void WriteBody()
 			{
 				// If this function is called, a header has just been sent, and that header
-				// indicated a body existed for this message. Fill a transmission buffer
+				// indicated a body existed for this message. Fill a transmission m_buffer
 				// with the body data, and send it!
 				asio::async_write(m_socket, asio::buffer(m_qMessagesOut.front().body.data(), m_qMessagesOut.front().body.size()),
 					[this](std::error_code ec, std::size_t length)
@@ -284,7 +284,7 @@ namespace SquareBox
 			{
 				// If this function is called, we are expecting asio to wait until it receives
 				// enough bytes to form a header of a message. We know the headers are a fixed
-				// size, so allocate a transmission buffer large enough to store it. In fact, 
+				// size, so allocate a transmission m_buffer large enough to store it. In fact, 
 				// we will construct the message in a "temporary" message object as it's 
 				// convenient to work with.
 				asio::async_read(m_socket, asio::buffer(&m_msgTemporaryIn.header, sizeof(message_header<T>)),

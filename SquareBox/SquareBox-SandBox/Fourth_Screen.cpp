@@ -38,9 +38,9 @@ void Fourth_Screen::build()
 	m_debug_program.linkShaders();
 
 #ifdef SQB_PLATFORM_ANDROID
-	m_sprite_font.init("fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithFilePath("fonts/Comfortaa-Bold.ttf", 32);
 #else
-	m_sprite_font.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_sprite_font.initWithFilePath("Assets/Fonts/Comfortaa-Bold.ttf", 32);
 #endif
 
 	//layer

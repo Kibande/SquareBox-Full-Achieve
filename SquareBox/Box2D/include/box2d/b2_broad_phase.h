@@ -172,7 +172,7 @@ inline float b2BroadPhase::GetTreeQuality() const
 template <typename T>
 void b2BroadPhase::UpdatePairs(T* callback)
 {
-	// Reset pair buffer
+	// Reset pair m_buffer
 	m_pairCount = 0;
 
 	// Perform tree queries for all moving proxies.
@@ -188,7 +188,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		// we don't fail to create a pair that may touch later.
 		const b2AABB& fatAABB = m_tree.GetFatAABB(m_queryProxyId);
 
-		// Query tree, create pairs and add them pair buffer.
+		// Query tree, create pairs and add them pair m_buffer.
 		m_tree.Query(this, fatAABB);
 	}
 
@@ -214,7 +214,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 		m_tree.ClearMoved(proxyId);
 	}
 
-	// Reset move buffer
+	// Reset move m_buffer
 	m_moveCount = 0;
 }
 

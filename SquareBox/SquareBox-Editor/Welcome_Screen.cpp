@@ -41,7 +41,7 @@ void Welcome_Screen::onEntry()
 	//Init Cameras
 	m_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_camera.setScale(1.0f);
-	m_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() / 2, m_game_ptr->getWindow()->getScreenHeight() / 2));//Center the camera
+	m_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));//Center the camera
 	// SquareBox::AudioSystem::Music music= m_game->getAudioEngine().loadMusic("Assets/Audio/Stranded.mp3");
 	// music.play(0);
 	initGUI();
@@ -75,38 +75,6 @@ void Welcome_Screen::update(const float & deltaTime_)
 		m_game_ptr->setProcessingInput(true);
 	}
 	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::MouseEnum::LEFT_CLICK)) {
-		std::cout << "Mouse Click \n";
-	}
-	if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::LEFT_SHIFT) && m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::TAB)) {
-		std::cout << "SHift and Tab are being pressed"<<std::endl;
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_1)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_1);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_2)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_2);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_3)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_3);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_4)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_4);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_6)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_6);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_7)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_7);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_8)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_8);
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEYPAD_NUM_9)) {
-		std::cout << ToString(SquareBox::KeyBoardEnum::KEYPAD_NUM_9);
-	}
-	
-	
 }
 
 void Welcome_Screen::draw()
@@ -173,7 +141,11 @@ void Welcome_Screen::drawGUI()
 	ImGui::NewFrame();
 
 	{
-		ImGui::Begin("Route Panel");
+		ImGuiWindowFlags physics_tab_window_flags = 0;
+		physics_tab_window_flags |= ImGuiWindowFlags_NoMove;
+		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+		ImGui::Begin("Route Panel", NULL, physics_tab_window_flags);
 
 		// Buttons
 

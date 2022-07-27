@@ -196,7 +196,7 @@ static int str_char(lua_State *L) {
 ** push stuff.)
 */
 struct str_Writer {
-	int init;  /* true iff buffer has been initialized */
+	int init;  /* true iff m_buffer has been initialized */
 	luaL_Buffer B;
 };
 
@@ -837,7 +837,7 @@ static void add_s(MatchState *ms, luaL_Buffer *b, const char *s,
 }
 
 /*
-** Add the replacement value to the string buffer 'b'.
+** Add the replacement value to the string m_buffer 'b'.
 ** Return true if the original string was changed. (Function calls and
 ** table indexing resulting in nil or false do not change the subject.)
 */
@@ -858,7 +858,7 @@ static int add_value(MatchState *ms, luaL_Buffer *b, const char *s,
 		break;
 	}
 	default: {  /* LUA_TNUMBER or LUA_TSTRING */
-		add_s(ms, b, s, e);  /* add value to the buffer */
+		add_s(ms, b, s, e);  /* add value to the m_buffer */
 		return 1;  /* something changed */
 	}
 	}
@@ -944,12 +944,12 @@ static int str_gsub(lua_State *L) {
 #define L_NBFD		((l_floatatt(MANT_DIG) - 1)%4 + 1)
 
 /*
-** Add integer part of 'x' to buffer and return new 'x'
+** Add integer part of 'x' to m_buffer and return new 'x'
 */
 static lua_Number adddigit(char *buff, int n, lua_Number x) {
 	lua_Number dd = l_mathop(floor)(x);  /* get integer part from 'x' */
 	int d = (int)dd;
-	buff[n] = (d < 10 ? d + '0' : d - 10 + 'a');  /* add to buffer */
+	buff[n] = (d < 10 ? d + '0' : d - 10 + 'a');  /* add to m_buffer */
 	return x - dd;  /* return what is left */
 }
 
@@ -1011,7 +1011,7 @@ static int lua_number2strx(lua_State *L, char *buff, int sz,
 ** All formats except '%f' do not need that large limit.  The other
 ** float formats use exponents, so that they fit in the 99 limit for
 ** significant digits; 's' for large strings and 'q' add items directly
-** to the buffer; all integer formats also fit in the 99 limit.  The
+** to the m_buffer; all integer formats also fit in the 99 limit.  The
 ** worst case are floats: they may need 99 significant digits, plus
 ** '0x', '-', '.', 'e+XXXX', and '\0'. Adding some extra, 120.
 */
@@ -1437,7 +1437,7 @@ static void packint(luaL_Buffer *b, lua_Unsigned n,
 		for (i = SZINT; i < size; i++)  /* correct extra bytes */
 			buff[islittle ? i : size - 1 - i] = (char)MC;
 	}
-	luaL_addsize(b, size);  /* add result to buffer */
+	luaL_addsize(b, size);  /* add result to m_buffer */
 }
 
 /*
@@ -1462,7 +1462,7 @@ static int str_pack(lua_State *L) {
 	int arg = 1;  /* current argument to pack */
 	size_t totalsize = 0;  /* accumulate total size of result */
 	initheader(L, &h);
-	lua_pushnil(L);  /* mark to separate arguments from string buffer */
+	lua_pushnil(L);  /* mark to separate arguments from string m_buffer */
 	luaL_buffinit(L, &b);
 	while (*fmt != '\0') {
 		int size, ntoalign;

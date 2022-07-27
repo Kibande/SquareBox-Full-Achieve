@@ -3,7 +3,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\SquareBox\GWOM\ClusterObject.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGUI_generated.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUGUIV1_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOM_generated.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\DSUGWOMV1_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\DSUString_generated.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Entities.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\FontInfo.h" />
@@ -15,6 +17,8 @@
     <ClInclude Include="..\..\SquareBox\GWOM\Joint.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\Layer.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\LevelReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\OldGuiReaderWriter.h" />
+    <ClInclude Include="..\..\SquareBox\GWOM\OldLevelReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\StringReaderWriter.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TextureInfo.h" />
     <ClInclude Include="..\..\SquareBox\GWOM\TileSystem.h" />
@@ -25,6 +29,8 @@
     <ClCompile Include="..\..\SquareBox\GWOM\GuiReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\Layer.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\LevelReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\OldGuiReaderWriter.cpp" />
+    <ClCompile Include="..\..\SquareBox\GWOM\OldLevelReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\StringReaderWriter.cpp" />
     <ClCompile Include="..\..\SquareBox\GWOM\TileSystem.cpp" />
   </ItemGroup>

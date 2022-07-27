@@ -7,11 +7,8 @@ public:
 	static const int concerate_layer_index;
 	static const std::string concerate_layer_name;
 
-	static const int roads_layer_index;
-	static const std::string roads_layer_name;
-
-	static const int grass_layer_index;
-	static const std::string grass_layer_name;
+	static const int roads_and_grass_layer_index;
+	static const std::string roads_and_grass_layer_name;
 
 	static const int house_tops_layer_index;
 	static const std::string house_tops_layer_name;
@@ -35,13 +32,21 @@ public:
 	/*
 		The layer indicies are used to arrange and keep track of the layers during the game play
 
-		while the layer names are used at load time , to be able to idenitiy while layer is currently
+		while the layer names are used at load time , to be able to idenitiy which layer is currently
 		being loaded.
 
 		This is import because a different kind of setup maybe required depending on the layers contents
 
 		The layer names should match the names given to the layers in the Editor while the indcies should match the ones
 		given to the layers in the Editor
+
+
+		--------------------------
+		get the layer indicies and names from the level file
+
+		layer indicies that are skipped are those that were merged eg the players layer is merged into 
+		the humans layer hence its index is skipped since we shall not be dealing with it during game 
+		play , the rest are maintaing their indicies
 
 	*/
 };

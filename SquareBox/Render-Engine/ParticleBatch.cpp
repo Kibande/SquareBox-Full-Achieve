@@ -59,7 +59,7 @@ namespace SquareBox {
 		{
 			/*
 			 since we don't want be be called new and delete all the time, we
-			 just want to have a big buffer of particle memory, that
+			 just want to have a big m_buffer of particle memory, that
 			 we are constantly reducing
 
 			*/

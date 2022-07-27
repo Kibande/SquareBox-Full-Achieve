@@ -134,9 +134,9 @@ void Thrid_Screen::draw()
 	//		m_current_shape_ptr->draw(ccoj, m_sprite_batch);
 
 	//		//draw the index
-	//		char buffer[256];
-	//		sprintf(buffer, "%d :: %d", (*it).first,(*it).second->index);
-	//		m_sprite_font.draw(m_sprite_batch, buffer, ccoj.position, glm::vec2(0.004f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
+	//		char m_buffer[256];
+	//		sprintf(m_buffer, "%d :: %d", (*it).first,(*it).second->index);
+	//		m_sprite_font.draw(m_sprite_batch, m_buffer, ccoj.position, glm::vec2(0.004f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
 	//		}
 	//	}
 
@@ -146,10 +146,10 @@ void Thrid_Screen::draw()
 	//m_current_shape_ptr->draw(m_hovering_object, m_sprite_batch);
 
 	////Display the current FPS
-	////	char buffer[256];
+	////	char m_buffer[256];
 	////	m_sprite_font or m_sprite_batch draw
-	////	sprintf(buffer, "FPS %d", m_game_ptr->getFps());
-	////	m_sprite_font.draw(m_sprite_batch, buffer, m_layer.camera.getPosition(), glm::vec2(0.01f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
+	////	sprintf(m_buffer, "FPS %d", m_game_ptr->getFps());
+	////	m_sprite_font.draw(m_sprite_batch, m_buffer, m_layer.camera.getPosition(), glm::vec2(0.01f), 0.0f, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
 	//m_sprite_batch.end();
 	//m_sprite_batch.renderBatch();
 	//m_texture_program.unuse();

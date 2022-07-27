@@ -694,7 +694,7 @@ typedef struct Table {
 #define twoto(x)	(1<<(x))
 #define sizenode(t)	(twoto((t)->lsizenode))
 
-/* size of buffer for 'luaO_utf8esc' function */
+/* size of m_buffer for 'luaO_utf8esc' function */
 #define UTF8BUFFSZ	8
 
 LUAI_FUNC int luaO_utf8esc(char *buff, unsigned long x);

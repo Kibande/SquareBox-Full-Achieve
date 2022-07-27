@@ -229,7 +229,7 @@ static const char *l_str2dloc(const char *s, lua_Number *result, int mode) {
 ** This function accepts both the current locale or a dot as the radix
 ** mark. If the conversion fails, it may mean number has a dot but
 ** locale accepts something else. In that case, the code copies 's'
-** to a buffer (because 's' is read-only), changes the dot to the
+** to a m_buffer (because 's' is read-only), changes the dot to the
 ** current locale radix mark, and tries to convert again.
 ** The variable 'mode' checks for special characters in the string:
 ** - 'n' means 'inf' or 'nan' (which should be rejected)
@@ -248,7 +248,7 @@ static const char *l_str2d(const char *s, lua_Number *result) {
 		const char *pdot = strchr(s, '.');
 		if (pdot == NULL || strlen(s) > L_MAXLENNUM)
 			return NULL;  /* string too long or no dot; fail */
-		strcpy(buff, s);  /* copy string to buffer */
+		strcpy(buff, s);  /* copy string to m_buffer */
 		buff[pdot - s] = lua_getlocaledecpoint();  /* correct decimal point */
 		endptr = l_str2dloc(buff, result, mode);  /* try again */
 		if (endptr != NULL)
@@ -306,7 +306,7 @@ size_t luaO_str2num(const char *s, TValue *o) {
 }
 
 int luaO_utf8esc(char *buff, unsigned long x) {
-	int n = 1;  /* number of bytes put in buffer (backwards) */
+	int n = 1;  /* number of bytes put in m_buffer (backwards) */
 	lua_assert(x <= 0x7FFFFFFFu);
 	if (x < 0x80)  /* ascii? */
 		buff[UTF8BUFFSZ - 1] = cast_char(x);
@@ -333,7 +333,7 @@ int luaO_utf8esc(char *buff, unsigned long x) {
 #define MAXNUMBER2STR	44
 
 /*
-** Convert a number object to a string, adding it to a buffer
+** Convert a number object to a string, adding it to a m_buffer
 */
 static int tostringbuff(TValue *obj, char *buff) {
 	int len;
@@ -365,10 +365,10 @@ void luaO_tostring(lua_State *L, TValue *obj) {
 ** ===================================================================
 */
 
-/* size for buffer space used by 'luaO_pushvfstring' */
+/* size for m_buffer space used by 'luaO_pushvfstring' */
 #define BUFVFS		200
 
-/* buffer used by 'luaO_pushvfstring' */
+/* m_buffer used by 'luaO_pushvfstring' */
 typedef struct BuffFS {
 	lua_State *L;
 	int pushed;  /* number of string pieces already on the stack */
@@ -377,7 +377,7 @@ typedef struct BuffFS {
 } BuffFS;
 
 /*
-** Push given string to the stack, as part of the buffer, and
+** Push given string to the stack, as part of the m_buffer, and
 ** join the partial strings in the stack into one.
 */
 static void pushstr(BuffFS *buff, const char *str, size_t l) {
@@ -390,16 +390,16 @@ static void pushstr(BuffFS *buff, const char *str, size_t l) {
 }
 
 /*
-** empty the buffer space into the stack
+** empty the m_buffer space into the stack
 */
 static void clearbuff(BuffFS *buff) {
-	pushstr(buff, buff->space, buff->blen);  /* push buffer contents */
+	pushstr(buff, buff->space, buff->blen);  /* push m_buffer contents */
 	buff->blen = 0;  /* space now is empty */
 }
 
 /*
-** Get a space of size 'sz' in the buffer. If buffer has not enough
-** space, empty it. 'sz' must fit in an empty buffer.
+** Get a space of size 'sz' in the m_buffer. If m_buffer has not enough
+** space, empty it. 'sz' must fit in an empty m_buffer.
 */
 static char *getbuff(BuffFS *buff, int sz) {
 	lua_assert(buff->blen <= BUFVFS); lua_assert(sz <= BUFVFS);
@@ -411,23 +411,23 @@ static char *getbuff(BuffFS *buff, int sz) {
 #define addsize(b,sz)	((b)->blen += (sz))
 
 /*
-** Add 'str' to the buffer. If string is larger than the buffer space,
+** Add 'str' to the m_buffer. If string is larger than the m_buffer space,
 ** push the string directly to the stack.
 */
 static void addstr2buff(BuffFS *buff, const char *str, size_t slen) {
-	if (slen <= BUFVFS) {  /* does string fit into buffer? */
+	if (slen <= BUFVFS) {  /* does string fit into m_buffer? */
 		char *bf = getbuff(buff, cast_int(slen));
-		memcpy(bf, str, slen);  /* add string to buffer */
+		memcpy(bf, str, slen);  /* add string to m_buffer */
 		addsize(buff, cast_int(slen));
 	}
-	else {  /* string larger than buffer */
-		clearbuff(buff);  /* string comes after buffer's content */
+	else {  /* string larger than m_buffer */
+		clearbuff(buff);  /* string comes after m_buffer's content */
 		pushstr(buff, str, slen);  /* push string */
 	}
 }
 
 /*
-** Add a number to the buffer.
+** Add a number to the m_buffer.
 */
 static void addnum2buff(BuffFS *buff, TValue *num) {
 	char *numbuff = getbuff(buff, MAXNUMBER2STR);
@@ -502,7 +502,7 @@ const char *luaO_pushvfstring(lua_State *L, const char *fmt, va_list argp) {
 		fmt = e + 2;  /* skip '%' and the specifier */
 	}
 	addstr2buff(&buff, fmt, strlen(fmt));  /* rest of 'fmt' */
-	clearbuff(&buff);  /* empty buffer into the stack */
+	clearbuff(&buff);  /* empty m_buffer into the stack */
 	lua_assert(buff.pushed == 1);
 	return svalue(s2v(L->top - 1));
 }
@@ -525,7 +525,7 @@ const char *luaO_pushfstring(lua_State *L, const char *fmt, ...) {
 #define addstr(a,b,l)	( memcpy(a,b,(l) * sizeof(char)), a += (l) )
 
 void luaO_chunkid(char *out, const char *source, size_t srclen) {
-	size_t bufflen = LUA_IDSIZE;  /* free space in buffer */
+	size_t bufflen = LUA_IDSIZE;  /* free space in m_buffer */
 	if (*source == '=') {  /* 'literal' source */
 		if (srclen <= bufflen)  /* small enough? */
 			memcpy(out, source + 1, srclen * sizeof(char));

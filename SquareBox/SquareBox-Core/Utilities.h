@@ -100,6 +100,7 @@ namespace SquareBox {
 		void setCurrentShapePointer(SquareBox::BodyShapeEnum enum_, SquareBox::IShape** currentShape_);//used to prevent us from calling a wrong shapes
 		float scaleFloatAccordingToScreen(float original, glm::ivec2 orignalMaxWindow_,glm::ivec2 currentMaxWindow_);
 		void loadLayerTextures(SquareBox::GWOM::Layer& layer_,float dpi_);
+		void loadGuiLayerTexturesAndFonts(SquareBox::GWOM::GuiLayer& gui_layer_, float dpi_);
 		void dispose();
 	private:
 		std::vector<SquareBox::IShape*> m_vec_shapes_pointer;

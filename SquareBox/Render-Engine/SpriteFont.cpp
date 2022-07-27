@@ -21,13 +21,21 @@ namespace SquareBox {
 
 		void SpriteFont::initWithName(std::string font_name_, int size_) {
 			std::string relative_path;
-			relative_path = "Assets/Fonts/" + font_name_ + ".ttf";
+#ifdef SQB_PLATFORM_ANDROID
+			relative_path = "fonts/" + font_name_;
+#else
+			relative_path = "Assets/Fonts/" + font_name_;
+#endif
 			initWithFilePath(relative_path, size_, FIRST_PRINTABLE_CHAR, LAST_PRINTABLE_CHAR);
 		}
 
 		void SpriteFont::initWithName(std::string font_name_, int size_, char cs, char ce) {
 			std::string relative_path;
-			relative_path = "Assets/Fonts/" + font_name_ + "ttf";
+#ifdef SQB_PLATFORM_ANDROID
+			relative_path = "fonts/" + font_name_;
+#else
+			relative_path = "Assets/Fonts/" + font_name_;
+#endif
 			initWithFilePath(relative_path, size_, cs, ce);
 		}
 		// the font size considers a camera scale of 1

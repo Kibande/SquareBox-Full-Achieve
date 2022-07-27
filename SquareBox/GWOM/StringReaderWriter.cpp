@@ -16,7 +16,7 @@ bool SquareBox::GWOM::StringReaderWriter::saveStringDataAsBinary(const std::stri
 bool SquareBox::GWOM::StringReaderWriter::saveLoadDataAsBinary(const std::string& file_path_, std::string& data_)
 {
     std::pair<char*, int> fileInfo = SquareBox::AssetManager::IOManager::getRawDataFromFile(file_path_);
-    //construct a buffer object that knows its size
+    //construct a m_buffer object that knows its size
     char* dataBuffer = new char[fileInfo.second];
     dataBuffer = fileInfo.first;
 

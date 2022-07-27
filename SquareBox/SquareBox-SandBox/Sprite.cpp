@@ -53,12 +53,12 @@ void Sprite::init(float x, float y, float width, float height)
 	}
 
 
-	//Bind the buffer
+	//Bind the m_buffer
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-	//Upload to the buffer
+	//Upload to the m_buffer
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
-	//Unbind the buffer
+	//Unbind the m_buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
@@ -79,6 +79,6 @@ void Sprite::draw()
 	glDrawArrays(GL_TRIANGLES,0,3);
 
 	glDisableVertexAttribArray(0);
-	//Unbind the buffer
+	//Unbind the m_buffer
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
