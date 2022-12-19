@@ -24,4 +24,7 @@ private:
 
 	//our texture Program
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
+
+	//our audio system
+	SquareBox::AudioSystem::AudioEngine m_audio_engine;
 };

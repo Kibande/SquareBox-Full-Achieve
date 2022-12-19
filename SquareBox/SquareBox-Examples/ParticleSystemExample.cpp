@@ -8,8 +8,6 @@ namespace SquareBox {
 		void ParticleSystemExample::onEntry(SquareBox::RenderEngine::Window* _window)
 		{
 			m_particle_engine.init();
-			m_max_particles = 1000;
-			m_decay_rate = 0.05f;
 			m_texture = SquareBox::AssetManager::TextureManager::getTextureByName("circle.png", _window->getDDPI());
 			m_update_function = [](SquareBox::RenderEngine::Particle& particle_, float delta_time_) {
 				//particles attributes that can be changed 
@@ -29,7 +27,6 @@ namespace SquareBox {
 			//particle defaults
 			m_particle_velocity = glm::vec2(0.1f);
 			m_particle_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::red);
-			m_particle_width = 5.0f;
 
 			isExampleInitialised = true;
 			
@@ -69,18 +66,18 @@ namespace SquareBox {
 
 			ImGui::Separator();
 			ImGui::Text("Particle Batch Properties");
-			ImGui::Text("Max Partciles : "); ImGui::SameLine();
+			ImGui::Text("Max Partciles   : "); ImGui::SameLine();
 			ImGui::InputInt("##max_particles", &m_max_particles, 10, 100);
 			ImGui::Text("Partcile Decay  : "); ImGui::SameLine();
-			ImGui::InputFloat("###b_w", &m_decay_rate, 0.5f, 0, "%.1f");
+			ImGui::InputFloat("###b_w", &m_decay_rate, 0.5f, 0, "%.10f");
 			ImGui::Separator();
 
 
-			ImGui::Text("Indiviual Partcile Properties ");
+			ImGui::Text("Individual Partcile Properties ");
 			ImGui::InputInt("Emitted Particles", &m_num_emitted_particles, 1, 10);
-			ImGui::InputFloat("Width", &m_particle_width, 1.0f, 10.0f, "%.2f");
-			ImGui::InputFloat("velocity_x", &m_particle_velocity.x, 0.01f, 0, "%.2f");
-			ImGui::InputFloat("velocity_y", &m_particle_velocity.y, 0.01f, 0, "%.2f");
+			ImGui::InputFloat("Width", &m_particle_width, 1.0f, 10.0f, "%.3f");
+			ImGui::InputFloat("velocity_x", &m_particle_velocity.x, 0.01f, 0, "%.3f");
+			ImGui::InputFloat("velocity_y", &m_particle_velocity.y, 0.01f, 0, "%.3f");
 			glm::ivec4 particle_color_in_ivec4 = m_particle_color.getIVec4();
 			m_imgui_particle_color[0] = SquareBox::MathLib::Float::divideAndGetFloat(particle_color_in_ivec4.x, 255);
 			m_imgui_particle_color[1] = SquareBox::MathLib::Float::divideAndGetFloat(particle_color_in_ivec4.y, 255);

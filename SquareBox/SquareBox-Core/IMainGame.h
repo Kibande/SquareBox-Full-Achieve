@@ -26,7 +26,6 @@ namespace SquareBox {
 		}
 		
 		SquareBox::InputManager::IInputDevice * getInputDevice() { return m_input_manager; }
-		SquareBox::AudioSystem::AudioEngine* getAudioEngine() { return m_audio_engine_ptr; }
 		SquareBox::RenderEngine::Window* getWindow() { return &m_window; }
 #ifndef SQB_PLATFORM_ANDROID
 
@@ -85,7 +84,6 @@ namespace SquareBox {
 		Uint32 m_fps = 60;
 		SquareBox::RenderEngine::Window m_window;
 		SquareBox::InputManager::IInputDevice *m_input_manager = nullptr;
-		SquareBox::AudioSystem::AudioEngine* m_audio_engine_ptr = nullptr;
 #ifndef SQB_PLATFORM_ANDROID
 		std::vector<SquareBox::MediaPlayer::IPlayer *>m_vec_of_media_players;
 #endif

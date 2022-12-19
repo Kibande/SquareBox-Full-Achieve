@@ -11,7 +11,7 @@ namespace SquareBox {
 			/// can only load wave, aiff, ogg, and voc files
 			/// and even before this is done make sure the audio 
 			/// engine inti support it flags
-			SoundEffect(std::string  file_path_,char * data_=nullptr, int data_length_=0);
+			SoundEffect(std::string unique_name_, std::string  file_path_,char * data_=nullptr, int data_length_=0);
 			~SoundEffect();
 
 			friend class AudioEngine;
@@ -19,6 +19,7 @@ namespace SquareBox {
 		private:
 			Mix_Chunk* m_chunk = nullptr;
 			std::string m_file_path;
+			std::string m_unique_name;
 			int channel = 0;
 			char * m_data = nullptr;
 			int m_data_length = 0;

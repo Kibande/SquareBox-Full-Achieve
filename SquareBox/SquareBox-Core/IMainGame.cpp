@@ -111,9 +111,6 @@ namespace SquareBox {
 				m_screen_list->destroy();
 				m_screen_list.reset(); // frees all the smart pointer memory for us
 
-				m_audio_engine_ptr->dispose();
-				delete m_audio_engine_ptr;
-
 				m_input_manager->dispose(); //dispose the input manager and free up memory
 				delete m_input_manager;//release inputManager Memory
 				m_window.destory();//sdl clean up
@@ -144,14 +141,6 @@ namespace SquareBox {
 	{
 		SquareBox::init();
 
-		m_audio_engine_ptr = new SquareBox::AudioSystem::AudioEngine();
-		int audio_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
-		audio_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
-		m_audio_engine_ptr->init(audio_flags, 22050, SquareBox::AudioOutputFormatEnum::U8_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::MONO, 4096);
 
 		if (m_input_device == SquareBox::InputDevicesEnum::KeyBoardAndMouse) {
 			m_input_manager = new SquareBox::InputManager::Keyboard();

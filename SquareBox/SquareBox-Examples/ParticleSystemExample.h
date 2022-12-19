@@ -31,7 +31,7 @@ namespace SquareBox {
 			glm::vec2 m_particle_velocity;
 			SquareBox::RenderEngine::ColorRGBA8 m_particle_color;
 			float m_imgui_particle_color[4];
-			float m_particle_width = 5;
+			float m_particle_width = 5.0f;
 			bool m_fade_particle = true;
 			// for getting a new texture for the particles
 			bool m_showOpenTextureFileDialog = false;

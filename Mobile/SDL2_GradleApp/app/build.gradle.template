@@ -1,5 +1,6 @@
 apply plugin: 'com.android.model.$(ConfigurationType)'
 
+
 model {
     android {
         compileSdkVersion = $(AndroidAPILevelNumber)
@@ -7,7 +8,7 @@ model {
 
         defaultConfig.with {
             $(ApplicationId)
-            minSdkVersion.apiLevel = 16
+            minSdkVersion.apiLevel = 19
             targetSdkVersion.apiLevel = 23
         }
 

@@ -17,11 +17,15 @@ void GamePlayScreen::build()
 void GamePlayScreen::onEntry()
 {
 	//initailising the GUI camera
-	m_hud_gui_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-	m_game_play_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-
-	m_hud_gui_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));
-	m_game_play_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));
+	glm::ivec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(),m_game_ptr->getWindow()->getScreenHeight());
+	glm::vec2 screen_center = glm::vec2(screen_dimensions.x*0.5f, screen_dimensions.y*0.5f);
+	
+	m_hud_gui_camera.init(screen_dimensions);
+	m_hud_gui_camera.setPosition(screen_center);
+	
+	m_game_play_camera.init(screen_dimensions);
+	m_game_play_camera.setPosition(screen_center);
+	
 	m_hud_gui_camera.setScale(1.0f);
 	m_game_play_camera.setScale(1.0f);
 
@@ -33,16 +37,14 @@ void GamePlayScreen::onEntry()
 
 	//Initialize our texture program
 	m_texture_program.init();
-	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
-	m_texture_program.addAttribute("vertexPosition");
-	m_texture_program.addAttribute("vertexColor");
-	m_texture_program.addAttribute("vertexUV");
+	m_texture_program.compileDefaultTextureShaders();
+	m_texture_program.addDefaultTextureAttributes();
 	m_texture_program.linkShaders();
 
 	//the debugProgram
-	m_debug_program.compileShaders("Assets/Shaders/debugShading.vert", "Assets/Shaders/debugShading.frag");
-	m_debug_program.addAttribute("vertexPosition");
-	m_debug_program.addAttribute("vertexColor");
+	m_debug_program.init();
+	m_debug_program.compileDefaultDebugShaders();
+	m_debug_program.addDefaultDebugAttributes();
 	m_debug_program.linkShaders();
 
 	//game stats gui
@@ -99,13 +101,8 @@ void GamePlayScreen::onEntry()
 	m_game_play_camera.bindCameraPositionToDestRect(collision_grid_destRect);
 	//m_game_play_camera.unbindCameraPositionToDestRect();
 	
-	m_game_play_camera.setScale(3.5f); 
-	// investigate why some scales are causing issue when 
-	//retrieving collions objects
-	// to fix this we need to fix the way we determine which cells are in view, because the current
-	// methods is not sufficient for big cells , and this is something that i saw in the tile engine as well
 	//m_object_show_coordinates = true;
-	//m_show_grid = true;
+	m_show_grid = false;
 }
 
 void GamePlayScreen::update(const float& deltaTime_)
@@ -319,6 +316,10 @@ void GamePlayScreen::draw()
 		for (auto it_2 = (*it).second->member_cordinates.begin(); it_2 != (*it).second->member_cordinates.end(); it_2++)
 		{
 			std::pair<int, std::pair<int, int>> focus_cell_member_coordinates = (*it_2);
+
+			if (focus_cell_member_coordinates == m_player_coordinates) {
+				int a = 3;
+			}
 			SquareBox::GWOM::ClusterObject& focus_cluster_object = m_layers[focus_cell_member_coordinates.first].world_clusters[focus_cell_member_coordinates.second.first].cluster_objects[focus_cell_member_coordinates.second.second];
 			//converting direction to angle
 			const glm::vec2 right(1.0f, 0.0f);
@@ -390,6 +391,45 @@ void GamePlayScreen::draw()
 		m_sprite_batch.renderBatch();
 		m_texture_program.unuse();
 	}
+
+	if (m_show_grid) {
+		//cameras boxes
+		float tile_size = m_agents_collision_grid.getCellSize();
+		//replicate the grid layout but inside this box
+		int num_x_tiles = (int)std::ceil((float)camera_destRect.z / tile_size);
+		int num_y_tiles = (int)std::ceil((float)camera_destRect.w / tile_size);
+
+		for (auto x = 0; x < num_x_tiles; x++) {
+			for (auto y = 0; y < num_y_tiles; y++) {
+
+				glm::vec4 destRect(glm::vec2(camera_destRect.x + (x * tile_size), camera_destRect.y + (y * tile_size)), glm::vec2(tile_size));
+				//left bottom corner
+				m_debug_renderer.drawBox(destRect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::purple), 0.0f);
+
+			}
+
+		}
+
+
+		//collision grid boxes
+		for (auto it = collision_grid_cells_in_view.begin(); it != collision_grid_cells_in_view.end(); it++)
+		{
+			for (auto it_2 = (*it).second->member_cordinates.begin(); it_2 != (*it).second->member_cordinates.end(); it_2++)
+			{
+				glm::vec2 cell_size(m_agents_collision_grid.getCellSize());
+				glm::vec4 cell_dest_rect((*it).second->position-(cell_size*0.5f), cell_size);
+				m_debug_renderer.drawBox(cell_dest_rect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::blue), 0.0f);
+
+			}
+		}
+
+		m_debug_renderer.end();
+		//render all our debug shapes
+		m_debug_program.use();
+		uploadCameraInfo(&m_debug_program, &m_game_play_camera, "P");
+		m_debug_renderer.render();
+		m_debug_program.unuse();
+	}
 }
 
 void GamePlayScreen::onExit()
@@ -417,22 +457,23 @@ void GamePlayScreen::destroy()
 	m_utilities.dispose();
 }
 
+
 void GamePlayScreen::drawLayer(SquareBox::RenderEngine::SpriteBatch& sprite_batch_, SquareBox::Camera::ParallelCamera& camera_, SquareBox::RenderEngine::GLSLProgram& texture_program_, SquareBox::GWOM::Layer& layer_)
 {
 	float camera_width = camera_.getCameraDimensions().x;
 	float camera_height = camera_.getCameraDimensions().y;
 	glm::vec4 camera_destRect(camera_.getPosition() - (glm::vec2(camera_width, camera_height) * 0.5f), glm::vec2(camera_width, camera_height));
 
-	auto vector_of_visible_roof_tops_tiles = layer_.tile_system.getAllTilesInDestRect(camera_destRect, true);
+	auto vector_of_visible_tiles = layer_.tile_system.getAllTilesInDestRect(camera_destRect, true);
 
 	sprite_batch_.begin();
 
-	for (auto it = vector_of_visible_roof_tops_tiles.begin(); it != vector_of_visible_roof_tops_tiles.end(); it++)
+	for (auto it = vector_of_visible_tiles.begin(); it != vector_of_visible_tiles.end(); it++)
 	{
 		if ((*it).second->key != -1) {
 			auto specific_texturing_details = layer_.getTextureIdAndUvReactFromKey((*it).second->key);
-			glm::vec4 texture_uvRect = specific_texturing_details.second;
 			int texture_id = specific_texturing_details.first;
+			glm::vec4 texture_uvRect = specific_texturing_details.second;
 			//we need ot figure these out using the key that this tile has 
 			sprite_batch_.draw(glm::vec4((*it).second->position - glm::vec2(layer_.tile_system.getTileSize()) * 0.5f, glm::vec2(layer_.tile_system.getTileSize())), texture_uvRect, texture_id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * (layer_.opacity * 0.01)));
 		}

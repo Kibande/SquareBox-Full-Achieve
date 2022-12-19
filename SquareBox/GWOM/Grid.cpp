@@ -140,81 +140,200 @@ namespace SquareBox {
 				//replicate the grid layout but inside this box
 				int num_x_cells = (int)std::ceil((float)dest_rect_.z / tile_size);
 				int num_y_cells = (int)std::ceil((float)dest_rect_.w / tile_size);
+				if (num_x_cells > 1 && num_y_cells >= 1) {
 
-				for (auto x = 0; x < num_x_cells; x++) {
-					for (auto y = 0; y < num_y_cells; y++) {
+					for (auto x = 0; x < num_x_cells; x++) {
+						for (auto y = 0; y < num_y_cells; y++) {
 
-						glm::vec4 destRect(glm::vec2(dest_rect_.x + (x * tile_size), dest_rect_.y + (y * tile_size)), glm::vec2(tile_size));
-						//left bottom corner
-						auto  left_bottom_cell = getCell(glm::vec2(destRect.x, destRect.y));
-						if (only_populated_cells_) {
-							if (left_bottom_cell->member_cordinates.size() > 0) {
+							glm::vec4 destRect(glm::vec2(dest_rect_.x + (x * tile_size), dest_rect_.y + (y * tile_size)), glm::vec2(tile_size));
+							//left bottom corner
+							auto  left_bottom_cell = getCell(glm::vec2(destRect.x, destRect.y));
+							if (only_populated_cells_) {
+								if (left_bottom_cell->member_cordinates.size() > 0) {
+									cells_in_box[left_bottom_cell->index] = left_bottom_cell;
+								}
+							}
+							else {
 								cells_in_box[left_bottom_cell->index] = left_bottom_cell;
 							}
-						}
-						else {
-							cells_in_box[left_bottom_cell->index] = left_bottom_cell;
-						}
-						
 
-						//only do these other checks when they are needed
-						if (x == 0 && y == num_y_cells - 1) {
-							//left top corner
-							auto  left_top_cell = getCell(glm::vec2(destRect.x, destRect.y + tile_size));
-							if (only_populated_cells_) {
-								if (left_top_cell->member_cordinates.size() > 0) {
+
+							//only do these other checks when they are needed
+							if (x == 0 && y == num_y_cells - 1) {
+								//left top corner
+								auto  left_top_cell = getCell(glm::vec2(destRect.x, destRect.y + tile_size));
+								if (only_populated_cells_) {
+									if (left_top_cell->member_cordinates.size() > 0) {
+										cells_in_box[left_top_cell->index] = left_top_cell;
+									}
+								}
+								else {
 									cells_in_box[left_top_cell->index] = left_top_cell;
 								}
+
 							}
-							else {
-								cells_in_box[left_top_cell->index] = left_top_cell;
-							}
-							
-						}
-						else if ((x == num_x_cells - 1 && y == num_y_cells - 1) || (x == num_x_cells - 1 && y == 0)) {
-							//right bottom corner
-							auto  right_bottom_cell = getCell(glm::vec2(destRect.x + tile_size, destRect.y));
-							if (only_populated_cells_) {
-								if (right_bottom_cell->member_cordinates.size() > 0) {
+							else if ((x == num_x_cells - 1 && y == num_y_cells - 1) || (x == num_x_cells - 1 && y == 0)) {
+								//right bottom corner
+								auto  right_bottom_cell = getCell(glm::vec2(destRect.x + tile_size, destRect.y));
+								if (only_populated_cells_) {
+									if (right_bottom_cell->member_cordinates.size() > 0) {
+										cells_in_box[right_bottom_cell->index] = right_bottom_cell;
+									}
+								}
+								else {
 									cells_in_box[right_bottom_cell->index] = right_bottom_cell;
 								}
-							}
-							else {
-								cells_in_box[right_bottom_cell->index] = right_bottom_cell;
-							}
-							
-						}
 
-						if (x == num_x_cells - 1) {
-							//right top corner
-							auto  right_top_cell = getCell(glm::vec2(destRect.x + tile_size, destRect.y + tile_size));
-							if (only_populated_cells_) {
-								if (right_top_cell->member_cordinates.size() > 0) {
+							}
+
+							if (x == num_x_cells - 1) {
+								//right top corner
+								auto  right_top_cell = getCell(glm::vec2(destRect.x + tile_size, destRect.y + tile_size));
+								if (only_populated_cells_) {
+									if (right_top_cell->member_cordinates.size() > 0) {
+										cells_in_box[right_top_cell->index] = right_top_cell;
+									}
+								}
+								else {
 									cells_in_box[right_top_cell->index] = right_top_cell;
 								}
 							}
-							else {
-								cells_in_box[right_top_cell->index] = right_top_cell;
-							}
-						}
 
 
-						if (x >= 0 && x < num_x_cells && y == num_y_cells - 1) {
-							auto  left_top_cell = getCell(glm::vec2(destRect.x, destRect.y + tile_size));
-							if (only_populated_cells_) {
-								if (left_top_cell->member_cordinates.size() > 0) {
+							if (x >= 0 && x < num_x_cells && y == num_y_cells - 1) {
+								auto  left_top_cell = getCell(glm::vec2(destRect.x, destRect.y + tile_size));
+								if (only_populated_cells_) {
+									if (left_top_cell->member_cordinates.size() > 0) {
+										cells_in_box[left_top_cell->index] = left_top_cell;
+									}
+								}
+								else {
 									cells_in_box[left_top_cell->index] = left_top_cell;
 								}
-							}
-							else {
-								cells_in_box[left_top_cell->index] = left_top_cell;
-							}
-							
-						}
 
+							}
+
+						}
 					}
 				}
+				else {
+					// the camera is too small in comparision to the world so just get the cells 
+					//next to the camera center
 
+					auto  center_of_tile = getCell(glm::vec2(dest_rect_.x, dest_rect_.y) + (glm::vec2(dest_rect_.z, dest_rect_.w) * 0.5f));
+					cells_in_box[center_of_tile->index] = center_of_tile;
+
+					int max_index = getNumXCells() * getNumYCells();
+
+					//left
+					int target_index = center_of_tile->index - 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() >0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					//right
+					target_index = center_of_tile->index + 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					//top
+					target_index = center_of_tile->index + getNumXCells();
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					target_index = center_of_tile->index + getNumXCells() - 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					target_index = center_of_tile->index + getNumXCells() + 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					//bottom
+					target_index = center_of_tile->index - getNumXCells();
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					target_index = center_of_tile->index - getNumXCells() + 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+					target_index = center_of_tile->index - getNumXCells() - 1;
+					if (target_index >= 0 && target_index < max_index) {
+						auto target_cell = getCellByIndex(target_index);
+						if (only_populated_cells_) {
+							if (target_cell->member_cordinates.size() > 0) {
+								cells_in_box[target_cell->index] = target_cell;
+							}
+						}
+						else {
+							cells_in_box[target_cell->index] = target_cell;
+						}
+					}
+
+				}
 			return cells_in_box;
 		}
 

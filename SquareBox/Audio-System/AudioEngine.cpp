@@ -13,7 +13,7 @@ namespace SquareBox {
 			dispose();
 		}
 
-		void AudioEngine::init(int input_audio_format_flags_,int frequency_, SquareBox::AudioOutputFormatEnum audio_output_format_, SquareBox::AudioChannlesEnum channels_, int chunk_size_)
+		void AudioEngine::init(int input_audio_format_flags_,int audio_frequency_, SquareBox::AudioOutputFormatEnum audio_output_format_, SquareBox::AudioChannlesEnum audio_channels_, int audio_buffer_size_)
 		{
 			if (m_is_initialized) {
 				SBX_CORE_ERROR("The Audio Engine is already initialised !");
@@ -24,54 +24,31 @@ namespace SquareBox {
 				// Parameter can be a bitwise combination of MIX_INIT_FAC,
 				//MIX_INIT_MOD,MIX_INIT_MP3,MIX_INIT_OGG
 				
-				int initted = Mix_Init(input_audio_format_flags_);
-				if (initted&input_audio_format_flags_ != input_audio_format_flags_) {
-					SBX_CORE_ERROR("Failed to load support for some audio formats {} {} ",__FILE__,__LINE__);
-					SBX_CORE_ERROR("Mix_Init error {} : ", std::string(Mix_GetError()));
-				};
+	
 
 				//initialize the frequency and format
-				//and the number of bits to handle at once
-				if (Mix_OpenAudio(frequency_, static_cast<int>(audio_output_format_), static_cast<int>(channels_), chunk_size_) == -1) {
+				m_buffer_size = audio_buffer_size_;
+				if (Mix_OpenAudio(audio_frequency_, static_cast<int>(audio_output_format_), static_cast<int>(audio_channels_), audio_buffer_size_) <0) {
 					SBX_CORE_ERROR("Mix_Init error :{} ", std::string(Mix_GetError()));
+					dispose();
+				}
+				else {
+					int initted = Mix_Init(input_audio_format_flags_);
+					if ((initted&input_audio_format_flags_) != input_audio_format_flags_) {
+						SBX_CORE_ERROR("Failed to load support for some audio formats {} {} ",__FILE__,__LINE__);
+						SBX_CORE_ERROR("Mix_Init error {} : ", std::string(Mix_GetError()));
+					};
+
+					
+
 				};
-				//step up channels of channels
-				m_total_channel = Mix_AllocateChannels(m_total_channel);
-				SBX_CORE_INFO(" {} Audio Mix Channels Initialised ", m_total_channel);
+
 				m_is_initialized = true;
 			}
-			//__debugbreak();
-				SBX_CORE_INFO("Audio Engine has a read me file at {} {} and is scheduled for renovation",__FILE__,__LINE__);
-				/*
-				i dont have time to continue with this right now with papers coming up.
-				i started a small personal drive to always have a project out every weekend .
-				for this weekend i set a target to have a local hosted communication radio system .
-				My plan is to record audio in small small frames and send it to over or network lib,
-				and play it on the recieving end . CUrrenet issues are , 
-				. Our Engine currently can't handle recording audio
-				. Our Network Lib has an intellisense error that forced me to exclude it from the general
-				  exposed API.
-
-				This whole project idea came in while i was working on the audio Engine. I had decied
-				to read through SDL_Mixers documentation while furnishing out nd fully builidng out the,
-				audio Engine . The desire to enable recording , audio recording sent me down a rabbit hole in 
-				search for answers.
-
-				This rbbit hole delivered me to the door steps to Lazy Foo' Production. 
-				A site i had been at before , but who glory had been buried in the hip of work 
-				This site has airticles on some many topic that if i learn , the engine will  
-				be propelled to really go far. Some of these features are Gamepads and Joysticks, Force Feedback,
-				Timing, Advanced Timers, Audio Recording, Multiple Displays, Mutexes and Conditions, Touches
-				MultiTouche
-
-				Link: http://lazyfoo.net/tutorials/SDL/index.php
-				SDL homepage tutorials: https://wiki.libsdl.org/Tutorials
-				Game Dev with SDL tutorials: https://www.parallelrealities.co.uk/tutorials/
-				*/
+		
 		}
 
 		void AudioEngine::loadSoundBank(SoundBank & bank_) {
-			//Try to find the AudioEngine in the cache
 
 			//load all sound  Effects
 			for (unsigned int i = 0; i < bank_.sound_effects.size(); i++)
@@ -100,11 +77,15 @@ namespace SquareBox {
 					m_effect_map[sound.m_file_path] = chunk;
 					
 				}
-				//else it is already cached
+				else {
+					//else it is already cached
+					sound.m_chunk = it->second;
+				}
+				
 
 			}
-			bank_.m_total_channels = m_total_channel;
 			bank_.m_is_loaded = true;
+
 		}
 		void AudioEngine::loadMusic(Music & music) {
 			//Try to find the AudioEngine in the cache
@@ -118,6 +99,9 @@ namespace SquareBox {
 						std::string errorMessage = std::string(Mix_GetError());
 						SBX_CORE_ERROR("Failed to load AudioEngine file : {} ", errorMessage);
 					}
+					else {
+						music.m_is_music_loaded = true;
+					}
 				}
 				else {
 					mixMusic = Mix_LoadMUS(music.m_file_path.c_str());
@@ -125,13 +109,21 @@ namespace SquareBox {
 						std::string errorMessage = std::string(Mix_GetError());
 						SBX_CORE_ERROR("Failed to load AudioEngine file {} : {} ",music.m_file_path, errorMessage);
 					}
+					else {
+						music.m_is_music_loaded = true;
+					}
 				}
 
 				//cache the chuck
 				music.m_music = mixMusic;
 				m_music_map[music.m_file_path] = mixMusic;
 			}
-			//else it is already cached
+			else {
+				music.m_is_music_loaded = true;
+				//else it is already cached so retrive the cached data
+				music.m_music = it->second;
+			}
+		
 		}
 		void AudioEngine::update(glm::vec2 listerner_location_) {
 			//this is where the reducing in volume , pitch and other stuff will be done from
@@ -139,7 +131,13 @@ namespace SquareBox {
 
 		SquareBox::AudioOutputFormatEnum AudioEngine::getAudioOutputFormatEnum()
 		{
-			switch (static_cast<int>(m_output_format))
+			int quered_audio_rate;
+			Uint16  quered_format;
+			int quered_channels;
+
+			Mix_QuerySpec(&quered_audio_rate, &quered_format, &quered_channels);
+
+			switch (static_cast<int>(quered_format))
 			{
 				case static_cast<int>(SquareBox::AudioOutputFormatEnum::S8_AUDIO_OUTPUT) :
 					return SquareBox::AudioOutputFormatEnum::S8_AUDIO_OUTPUT;
@@ -160,6 +158,8 @@ namespace SquareBox {
 		{
 			if (m_is_initialized) {
 				m_is_initialized = false;
+
+
 				//free all the cached audios
 				for (auto& it : m_effect_map) {
 					if (it.second != nullptr) {
@@ -175,24 +175,47 @@ namespace SquareBox {
 
 				m_effect_map.clear();
 				m_music_map.clear();
+
+
+				/* 
+				* 
+					this while loop once called will close up all the 
+					Instances of the AudioEngine that are currently open 
+				*
+				*/
+
+
+			
+
 				while (Mix_Init(0))
 				{
 					Mix_Quit();
 				}
 				//Close the AudioEngine
-				int num_opened_times = Mix_QuerySpec(&m_frequency, &m_output_format, &m_channel);
+				int quered_audio_rate;
+				Uint16  quered_format;
+				int quered_channels;
+
+				
+				int num_opened_times = Mix_QuerySpec(&quered_audio_rate, &quered_format, &quered_channels);
 				for (unsigned int i = 0; i < num_opened_times; i++)
 				{
 					Mix_CloseAudio();
 				}
 			}
 		}
-		void AudioEngine::refreshAudioProperties()
+		void AudioEngine::queryAudioParameters()
 		{
-			if (!Mix_QuerySpec(&m_frequency, &m_output_format, &m_channel)) {
-				SBX_CORE_ERROR("Failed to refresh Audio Properties");
-				SBX_CORE_ERROR(" {}: {} {} ", std::string(Mix_GetError()),__FILE__,__LINE__);
-			}
+			int quered_audio_rate;
+			Uint16  quered_format;
+			int quered_channels;
+
+			Mix_QuerySpec(&quered_audio_rate, &quered_format, &quered_channels);
+			SBX_CORE_INFO("Opened audio at {} Hz {} bit {} {} {} bytes audio buffer\n", quered_audio_rate,
+				(quered_format & 0xFF),
+				(SDL_AUDIO_ISFLOAT(quered_format) ? " (float)" : ""),
+				(quered_channels > 2) ? "surround" : (quered_channels > 1) ? "stereo" : "mono",
+				m_buffer_size);
 		}
 	}
 }

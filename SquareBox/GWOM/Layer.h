@@ -14,27 +14,30 @@
 
 namespace SquareBox {
 	namespace GWOM {
-		/*
-		  TABLE OF PARENT TEXTURES (These can be either single or tiled textures)
-		  texture_index , texture;
+			/*
+			  TABLE OF PARENT TEXTURES (These can be either single or tiled textures)
+			  texture_index , texture;
 
-		  TABLE OF SUB TEXTURES 
-		  sub_texture_char,parent_texture_index,tiling_index
-		*/
+			  TABLE OF SUB TEXTURES 
+			  sub_texture_char,parent_texture_index,tiling_index
+			*/
 
 		class ParentTexture {
 		public:
-			int texture_index = 0;//index of its loaction in the associated vector
+			int texture_index = 0; // index of its location in the associated vector
 			AssetManager::GLTexture texture;
 		};
 
 		class SubTexture {
 		public:
 			TextureEnum parent_type = TextureEnum::SINGLE;
-			int sub_texture_key = 0; // its identifer, its the same as the key found in the sub_textures_table
-			int parent_texture_index = 0;// its index in the category it belongs (either single or tile textures)
+			int sub_texture_key = 0; // it's identifer, its the same as the key found in the sub_textures_table
+			int parent_texture_index = 0; // it's index in the category it belongs (either single or tile textures)
 			int tiling_index = 0;
-			/* we shall use the tile sheet to extract the uv_rect of each tile_index */
+
+			/* 
+				we shall use the tile sheet to extract the uv_rect of each tile_index 
+			*/
 		};
 
 		class Layer
@@ -83,6 +86,8 @@ namespace SquareBox {
 
 			//helper functions
 			std::pair<int, glm::vec4> getTextureIdAndUvReactFromKey(int key_);
+
+			// helper objects
 
 			std::vector<SquareBox::GWOM::Joint> temp_joint_definitions;
 			/*

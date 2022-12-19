@@ -81,6 +81,14 @@
   <ItemDefinitionGroup>
     <GradlePackage>
       <ProjectDirectory>$(ProjectDir)app</ProjectDirectory>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>Gradle</GradlePlugin>
+      <GradlePlugin>GradleExperimental</GradlePlugin>
     </GradlePackage>
   </ItemDefinitionGroup>
   <ImportGroup Label="ExtensionSettings" />
@@ -112,6 +120,9 @@
     <ProjectReference Include="..\SDL2_image\SDL2_image.vcxproj" />
     <ProjectReference Include="..\SDL2_mixer\SDL2_mixer.vcxproj" />
     <ProjectReference Include="..\SDL2_ttf\SDL2_ttf.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\google-services.json" />
   </ItemGroup>
   <Import Project="$(AndroidTargetsPath)\Android.targets" />
   <ImportGroup Label="ExtensionTargets" />

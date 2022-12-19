@@ -74,6 +74,29 @@ namespace SquareBox {
 			compileShader(fragmentSource, fragmentShader, _fragmentShaderID);
 		}
 
+		void GLSLProgram::addDefaultTextureAttributes()
+		{
+			addAttribute("vertexPosition");
+			addAttribute("vertexColor");
+			addAttribute("vertexUV");
+		}
+
+		void GLSLProgram::addDefaultDebugAttributes()
+		{
+			addAttribute("vertexPosition");
+			addAttribute("vertexColor");
+		}
+
+		void GLSLProgram::compileDefaultTextureShaders()
+		{
+			compileShadersFromSource(m_default_texture_vertex_shader, m_default_texture_fragment_shader);
+		}
+
+
+		void GLSLProgram::compileDefaultDebugShaders()
+		{
+			compileShadersFromSource(m_default_debug_vertex_shader, m_default_debug_fragment_shader);
+		}
 		void GLSLProgram::linkShaders()
 		{
 			if (_programID == 0 || _vertexShaderID == 0 || _fragmentShaderID == 0) {

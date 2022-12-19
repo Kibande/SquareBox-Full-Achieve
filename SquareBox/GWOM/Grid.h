@@ -19,14 +19,15 @@ namespace SquareBox {
 			void init(float origin_x_, float orign_y_, float width_, float height_, float cell_size_);
 			void resetGrid();
 			~Grid();
-			/// and object to the appropriate cell
+			/// add object to the appropriate cell
 			void addObject(SquareBox::GWOM::ClusterObject& cluster_object_);
 			/// adds an object to a specific cell
 			void addObject(SquareBox::GWOM::ClusterObject& cluster_object_, Cell* cell_);
+			// removes object from grid
 			void removeObject(SquareBox::GWOM::ClusterObject& cluster_object_);
-			///Get cel based on cell coordinates
+			// Get cel based on cell coordinates
 			Cell* getCell(unsigned x_, unsigned y_);
-			///Get Cell based on window coordinates
+			// Get Cell based on window coordinates
 			Cell* getCell(const glm::vec2& pos_);
 			bool isInGrid(const glm::vec2 pos_);
 			std::map<int, SquareBox::GWOM::Cell*> getAllCellsInDestRect(glm::vec4 & dest_rect_, bool only_populated_cells_=false);

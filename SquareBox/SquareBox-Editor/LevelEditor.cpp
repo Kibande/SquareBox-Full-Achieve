@@ -1211,7 +1211,7 @@ void LevelEditor::drawGUI()
 			filePath = filePath.substr(0, filePath.size() - ext.size());
 		}
 		m_utilities.worldIndiciesCleanUp(m_layers);
-		if (m_level_reader_writer.saveLevelDataAsBinary(filePath + m_file_dialog.ext, m_layers, m_universal_camera_scale, m_universal_camera_position,glm::vec2(m_game_ptr->getWindow()->getScreenWidth(),m_game_ptr->getWindow()->getScreenHeight()), m_active_layer_index))
+		if (m_level_reader_writer.saveLevelDataAsBinary(filePath + m_file_dialog.ext, m_layers, m_universal_camera_scale, m_universal_camera_position,glm::vec2(m_game_ptr->getWindow()->getMaxMaxScreenWidth(),m_game_ptr->getWindow()->getMaxMaxScreenHeight()), m_active_layer_index))
 		{
 			SBX_INFO("Level Data Saved at {}.{}", m_file_dialog.selected_path, m_file_dialog.ext);
 			m_is_all_work_saved = true;

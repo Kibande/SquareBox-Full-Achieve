@@ -15,12 +15,12 @@ public:
 private:
 	void fire(const glm::vec2& position_, const glm::vec2& direction_, std::vector<SquareBox::GWOM::Layer> & layers_,SquareBox::GWOM::Grid * collision_grid_ptr_);
 	std::string m_name;
-	int m_bullets_per_shoot=0;
+	int m_bullets_per_shoot = 0;
 	int m_fire_rate=0;
-	float m_frame_counter=0.0f;
-	float m_spread=0.0f;
+	float m_frame_counter = 0.0f;
+	float m_spread = 0.0f;
 	SquareBox::AudioSystem::SoundBank m_sound_bank;
-	Bullet* m_bullet_ptr =nullptr;
+	Bullet* m_bullet_ptr = nullptr;
 	SquareBox::Utilities m_utilities;
 };
 

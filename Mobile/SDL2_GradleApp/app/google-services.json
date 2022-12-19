@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "572165182992",
+    "firebase_url": "https://test-af20d.firebaseio.com",
+    "project_id": "test-af20d",
+    "storage_bucket": "test-af20d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572165182992:android:4bfb3b215f3aa9087f5c95",
+        "android_client_info": {
+          "package_name": "com.SDL2_GradleApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572165182992-imgv0tj9ipqpq3mj3j337g4i62sm9pbm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkDocCn7Dj9BBY3MGFACalFMif_NBcLvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572165182992-imgv0tj9ipqpq3mj3j337g4i62sm9pbm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

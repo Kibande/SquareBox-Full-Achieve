@@ -1,13 +1,14 @@
 apply plugin: 'com.android.model.application'
 
+
 model {
     android {
         compileSdkVersion = 30
-        buildToolsVersion = "25.0.3"
+        buildToolsVersion = "30.0.2"
 
         defaultConfig.with {
             applicationId = "com.SDL2_GradleApp"
-            minSdkVersion.apiLevel = 16
+            minSdkVersion.apiLevel = 19
             targetSdkVersion.apiLevel = 23
         }
 

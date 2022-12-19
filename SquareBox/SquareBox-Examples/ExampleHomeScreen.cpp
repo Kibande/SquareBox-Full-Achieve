@@ -48,18 +48,29 @@ void ExampleHomeScreen::onEntry()
 {
 	// this is where  stuff  the screen will use are  initialized from
 	m_spriteBatch.init();
-	m_spriteFont.init("Assets/Fonts/Comfortaa-Bold.ttf", 32);
+	m_spriteFont.initWithName("Comfortaa-Bold.ttf", 32);
 	//Init Cameras
 	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_camera.setScale(1.0f);
 	//m_camera.setScale(162.0f);//this is because we want to project meters in game play
 
 	//Init Shaders
-	m_textureProgram.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
-	m_textureProgram.addAttribute("vertexPosition");
-	m_textureProgram.addAttribute("vertexColor");
-	m_textureProgram.addAttribute("vertexUV");
+	//Initialize our texture program
+	m_textureProgram.init();
+	m_textureProgram.compileDefaultTextureShaders();
+	m_textureProgram.addDefaultTextureAttributes();
 	m_textureProgram.linkShaders();
+
+
+
+	/* or we can use the engine can mannually specific the shader settings that we would like to use 
+			m_textureProgram.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
+			m_textureProgram.addAttribute("vertexPosition");
+			m_textureProgram.addAttribute("vertexColor");
+			m_textureProgram.addAttribute("vertexUV");
+			m_textureProgram.linkShaders();
+	*/
+
 
 	//this is where the screens default paramiters are set
 	m_camera.setScale(1.0f);//The Zoom of the Camera
@@ -67,6 +78,7 @@ void ExampleHomeScreen::onEntry()
 
 
 	m_vec_examples_pointer.push_back(new SquareBox::Example::ParticleSystemExample());
+	m_vec_examples_pointer.push_back(new SquareBox::Example::AudioSystemExample());
 	initGUI();
 }
 
@@ -122,10 +134,10 @@ void ExampleHomeScreen::drawGUI()
 	physics_tab_window_flags |= ImGuiWindowFlags_NoResize;
 	physics_tab_window_flags |= ImGuiWindowFlags_NoTitleBar;
 	bool* physics_tab_open = false;
-	ImGui::Begin("Physics Tab", physics_tab_open, physics_tab_window_flags);
+	ImGui::Begin("Settings Tab", physics_tab_open, physics_tab_window_flags);
 
 	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
-	ImGui::SetWindowSize("Physics Tab", ImVec2(m_window->getScreenWidth()*0.25, m_window->getScreenHeight()));
+	ImGui::SetWindowSize("Settings Tab", ImVec2(m_window->getScreenWidth()*0.35, m_window->getScreenHeight()));
 	{
 		ImGui::Text("Examples");
 		//Object Types
@@ -147,7 +159,7 @@ void ExampleHomeScreen::drawGUI()
 
 	if (ImGui::BeginPopupModal("About?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("This is an Application that shows how different SquareBox Engine Packages can be implemented. The source is provided so you can look at the implmentaions of each of the examples ");
+		ImGui::Text("This is an Application that shows how different SquareBox Engine Packages can be implemented. The source is provided so you can look at the implmentations of each of the examples ");
 		ImGui::Separator();
 
 		//static int unused_i = 0;
@@ -178,7 +190,7 @@ void ExampleHomeScreen::showMainMenu()
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
-			if (ImGui::MenuItem("Respect Ancestor", NULL, m_autoClearLogs)) {
+			if (ImGui::MenuItem("Clear logos", NULL, m_autoClearLogs)) {
 				m_autoClearLogs = !m_autoClearLogs;
 			}
 
@@ -246,29 +258,43 @@ void ExampleHomeScreen::update(const float& deltaTime_)
 	//Called once every game loop , and updates what will be drawn
 	m_window->update();
 	m_camera.update(m_window->getScreenWidth(), m_window->getScreenHeight());
-	if (m_active_example != nullptr) {
-		if (!m_active_example->isExampleInitialised) {
-			m_active_example->onEntry(m_window);
-			m_active_example->isExampleInitialised = true;
-		}
-
-		else if (m_active_example->isExampleInitialised) {
+	if (m_active_example != nullptr && m_active_example->isExampleInitialised) {
+		
 			// for a PC screen we always have mouse coordinates
 			m_active_example->onUpdate(deltaTime_,m_game_ptr,m_camera);
-		}
+		
 	}
 }
 
 void ExampleHomeScreen::setActiveExample(int index)
 {
-	if (index < m_vec_examples_pointer.size()) {
-		if (m_active_example != m_vec_examples_pointer[index]) {
+	//first example being loaded
+	if (m_active_example == nullptr) {
+		if (index < m_vec_examples_pointer.size()) {
 			m_active_example = m_vec_examples_pointer[index];
+			m_active_example->onEntry(m_window);
+			m_active_example->isExampleInitialised = true;
 			if (m_autoClearLogs) {
 				console.ClearLog();
 			}
 		}
 	}
+	else if (index < m_vec_examples_pointer.size()) {
+			if (m_active_example != m_vec_examples_pointer[index]) {
+				m_active_example->onExit();
+				m_active_example->isExampleInitialised = false;
+
+				m_active_example = m_vec_examples_pointer[index];
+				m_active_example->onEntry(m_window);
+				m_active_example->isExampleInitialised = true;
+
+				if (m_autoClearLogs) {
+					console.ClearLog();
+				}
+			}
+		
+	}
+	
 }
 
 void ExampleHomeScreen::draw()
@@ -299,12 +325,8 @@ void ExampleHomeScreen::onExit()
 	m_spriteFont.dispose();
 	m_textureProgram.dispose();
 
-	for (unsigned int i = 0; i < m_vec_examples_pointer.size(); i++)
-	{
-		if (m_vec_examples_pointer[i]->isExampleInitialised) {
-			m_vec_examples_pointer[i]->onExit();
-		}
-		delete m_vec_examples_pointer[i];
+	if (m_active_example != nullptr) {
+		m_active_example->onExit();
 	}
 }
 

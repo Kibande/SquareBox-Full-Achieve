@@ -46,12 +46,15 @@ private:
 
 	const int AMO_VECTOR_DEFAULT_SIZE = 400;
 
+	Gun m_gun;
+
 	Human m_human;
 	Player m_player;
 	Zombie m_zombie;
 	Bullet m_bullet;
-	Gun m_gun;
-  /* layer indicies*/
+
+	/* layer indicies*/
+
 	ICollisionAgent * m_collision_agent_ptr = nullptr;
 	std::vector<SquareBox::GWOM::Layer> m_layers_backup;
 };

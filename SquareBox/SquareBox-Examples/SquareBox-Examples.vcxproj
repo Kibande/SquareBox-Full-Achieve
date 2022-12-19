@@ -268,6 +268,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AudioSystemExample.h" />
     <ClInclude Include="CustomAppConsole.h" />
     <ClInclude Include="ExampleHomeScreen.h" />
     <ClInclude Include="IExample.h" />
@@ -276,6 +277,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AudioSystemExample.cpp" />
     <ClCompile Include="ExampleHomeScreen.cpp" />
     <ClCompile Include="ParticleSystemExample.cpp" />
     <ClCompile Include="main.cpp" />

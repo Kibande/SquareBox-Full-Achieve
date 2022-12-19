@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 	int height = mode.h;
 
 	app.run("SquareBox Example", width, height,false, windowFlags, SquareBox::InputDevicesEnum::KeyBoardAndMouse, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255));
-	/* Argumets
+	/* Arguments
 		The Windows Title
 		Window Dimensions
 		Window flags
@@ -20,6 +20,6 @@ int main(int argc, char** argv) {
 		Background Color of The window
 
 */
-//	the int argc, char** argv  main commandline agrugments are required by sdl 
+//	the int argc, char** argv  main commandline arguments are required by sdl
 //  so they are must have 
 }

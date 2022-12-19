@@ -6,9 +6,5 @@
     {
         "merged": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\build\\intermediates\\res\\merged\\arm8\\debug\\mipmap-hdpi-v4\\bricks_light_top.png",
         "source": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\mipmap-hdpi\\bricks_light_top.png"
-    },
-    {
-        "merged": "C:\\SquareBox\\Mobile\\SDL2_GradleApp\\app\\build\\intermediates\\res\\merged\\arm8\\debug\\mipmap-hdpi-v4\\ic_launcher.png",
-        "source": "C:\\SquareBox\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     }
 ]

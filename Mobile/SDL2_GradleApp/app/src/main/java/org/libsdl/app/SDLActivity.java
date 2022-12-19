@@ -372,6 +372,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (!mHasMultiWindow) {
             resumeNativeThread();
         }
+
+
     }
 
     @Override
@@ -435,6 +437,16 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
            SDLActivity.handleNativeState();
            nativeFocusChanged(true);
+
+		   	//custom code to hide the action and status bar
+			View decorderView = getWindow().getDecorView();
+			// Hide the status bar.
+			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+			decorderView.setSystemUiVisibility(uiOptions);
+			// Remember that you should never show the action bar if the
+			// status bar is hidden, so hide that too if necesary.
+			//ActionBar actionBar = getActionBar();
+			//actionBar.hide();
 
         } else {
            nativeFocusChanged(false);

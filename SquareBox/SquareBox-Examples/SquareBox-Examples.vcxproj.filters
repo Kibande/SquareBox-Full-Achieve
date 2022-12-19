@@ -27,6 +27,9 @@
     <ClInclude Include="ScreenIndices.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AudioSystemExample.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -39,6 +42,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystemExample.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

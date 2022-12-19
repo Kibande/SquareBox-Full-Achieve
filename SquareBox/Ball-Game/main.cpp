@@ -12,7 +12,7 @@ int main(int argc, char ** argv) {
 #else
 	input_device_type = SquareBox::InputDevicesEnum::KeyBoardAndMouse;
 #endif
-	app.run("Ball Game", 1000, 600, window_flags, 0.8f, input_device_type, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255));
+	app.run("Ball Game", 1000, 600, window_flags,60,0.8f,input_device_type,SquareBox::VideoDecorderEnum::None,SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::grey),"logFile.txt",false);
 	return 0;
 	//exit(1);
 }

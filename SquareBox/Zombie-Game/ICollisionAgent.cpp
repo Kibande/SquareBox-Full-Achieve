@@ -152,16 +152,19 @@ void ICollisionAgent::turnHumanIntoZombie(SquareBox::GWOM::ClusterObject & human
 	m_utilities.removePairFromVector(layers_[human_.layer_index].alive_cluster_objects, std::pair<int, int>(human_.cluster_index, human_.index));
 
 	int source_zombie_layer_index = zombie_.layer_index;
-	//create zombie
-	// all the previous zombies attributes
+	//  create zombie
+	//  all the previous zombies attributes
+
 	layers_[source_zombie_layer_index].world_clusters.back().cluster_objects.push_back(zombie_);
 	SquareBox::GWOM::ClusterObject & new_zombie = layers_[source_zombie_layer_index].world_clusters.back().cluster_objects.back();
-	//restore unique attributes like 
+	
+    //  restore unique attributes like 
 	new_zombie.position = human_.position;
 	new_zombie.life_span = 10;
 	new_zombie.cluster_index = layers_[source_zombie_layer_index].world_clusters.back().index;
 	new_zombie.index = layers_[source_zombie_layer_index].world_clusters.back().cluster_objects.size() - 1;
-	//register with the system
+	
+    //  register with the system
 	m_utilities.addPairToVector(layers_[source_zombie_layer_index].alive_cluster_objects, std::pair<int, int>(new_zombie.cluster_index, new_zombie.index));
 	collision_grid_ptr_->addObject(new_zombie);
 }

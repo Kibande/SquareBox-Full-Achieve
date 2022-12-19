@@ -14,30 +14,25 @@ SquareBox::AudioSystem::SoundBank::~SoundBank()
 {
 }
 
-void SquareBox::AudioSystem::SoundBank::play(int loops)
+void SquareBox::AudioSystem::SoundBank::play(int loops, int sound_effect_index_)
 {
 	
-	if (sound_effects.size() > m_last_play_sound_effect_index) {
+	if (sound_effects.size() > 0) {
 		static std::mt19937 randomEngine(static_cast<unsigned int>(time(nullptr)));
 		std::uniform_int_distribution<unsigned int> randonIndex(0, sound_effects.size() - 1);
 
 		static int m_last_sound_effect_channel = 0;
 		//We shall randomly select a sound to play
-		m_last_play_sound_effect_index = randonIndex(randomEngine);
-		SoundEffect & sound = sound_effects[m_last_play_sound_effect_index];
-
-		if (Mix_PlayChannel(-1, sound.m_chunk, loops) == -1) {
+		SoundEffect & sound = sound_effects[sound_effect_index_==-1?randonIndex(randomEngine): sound_effect_index_];
+		m_active_channel = Mix_PlayChannel(-1, sound.m_chunk, loops);
+		if (m_active_channel == -1) {
 			//if the there was no available channel
 			//manually force a channel
 
-			//this is not a very good solution as it causes the AudioEngine to chock
-			if (m_last_sound_effect_channel < m_total_channels) {
-				m_last_sound_effect_channel++;
-			}
-			else {
-				m_last_sound_effect_channel = 0;
-			}
-			if (Mix_PlayChannel(m_last_sound_effect_channel, sound.m_chunk, loops) == -1) {//if we have an issue again
+			//allocate a new channel
+			Mix_AllocateChannels(Mix_AllocateChannels(-1) + 1);
+			m_active_channel = Mix_PlayChannel(-1, sound.m_chunk, loops);
+			if (m_active_channel == -1) {//if we have an issue again
 				//then throw an error , we really have a problem
 				SBX_CORE_ERROR("Failed to play effect audio {} {} ", sound.m_file_path, std::string(Mix_GetError()));
 			}
@@ -49,14 +44,82 @@ void SquareBox::AudioSystem::SoundBank::play(int loops)
 	}
 	
 }
+void SquareBox::AudioSystem::SoundBank::timedPlay(int milliseconds_, int loops, int sound_effect_index_)
+{
+	if (sound_effects.size() > 0) {
+		static std::mt19937 randomEngine(static_cast<unsigned int>(time(nullptr)));
+		std::uniform_int_distribution<unsigned int> randonIndex(0, sound_effects.size() - 1);
+
+		static int m_last_sound_effect_channel = 0;
+		//We shall randomly select a sound to play
+		SoundEffect& sound = sound_effects[sound_effect_index_ == -1 ? randonIndex(randomEngine) : sound_effect_index_];
+		m_active_channel = Mix_PlayChannelTimed(-1, sound.m_chunk, loops, milliseconds_);
+		if (m_active_channel == -1) {
+			//if the there was no available channel
+			//manually force a channel
+
+			//allocate a new channel
+			Mix_AllocateChannels(Mix_AllocateChannels(-1) + 1);
+			m_active_channel = Mix_PlayChannelTimed(-1, sound.m_chunk, loops, milliseconds_);
+			if (m_active_channel == -1) {//if we have an issue again
+				//then throw an error , we really have a problem
+				SBX_CORE_ERROR("Failed to play effect audio {} {} ", sound.m_file_path, std::string(Mix_GetError()));
+			}
+		};
+
+	}
+	else {
+		SBX_CORE_ERROR("Sound Bank is Empty");
+	}
+}
+void SquareBox::AudioSystem::SoundBank::unLoad()
+{
+	// actual freeing of data is done on dispose of the audio Engine
+	stop();
+	sound_effects.clear();
+	m_is_loaded = false;
+}
+
+void SquareBox::AudioSystem::SoundBank::pause()
+{
+	Mix_Pause(-1);
+}
+
+void SquareBox::AudioSystem::SoundBank::resume()
+{
+	Mix_Resume(-1);
+}
+
 void SquareBox::AudioSystem::SoundBank::stop()
 {
+	Mix_HaltChannel(-1);
+}
 
-	if (sound_effects.size() > m_last_play_sound_effect_index) {
-		SoundEffect & sound = sound_effects[m_last_play_sound_effect_index];
-		if (sound.m_chunk != nullptr) {
-			Mix_FreeChunk(sound.m_chunk);
+void SquareBox::AudioSystem::SoundBank::setSoundBankVolume(float volume_percentage_)
+{
+	for each (const SoundEffect & sound in sound_effects)
+	{
+		Mix_VolumeChunk(sound.m_chunk, MIX_MAX_VOLUME * volume_percentage_);
+	}
+}
+
+void SquareBox::AudioSystem::SoundBank::setSoundEffectVolume(std::string unique_sound_effect_name_, float volume_percentage_)
+{
+	for (unsigned i = 0; i < sound_effects.size(); i++)
+	{
+		SoundEffect& sound = sound_effects[i];
+		if (sound.m_unique_name == unique_sound_effect_name_) {
+			Mix_VolumeChunk(sound.m_chunk, MIX_MAX_VOLUME * volume_percentage_);
+			return;
 		}
 	}
-	
+}
+
+void SquareBox::AudioSystem::SoundBank::listSoundEffectDecorders()
+{
+	unsigned int num_sound_effect_decoders = getNumSoundEffectDecorders();
+	for (unsigned int i = 0; i < num_sound_effect_decoders; i++)
+	{
+		SBX_CORE_INFO("Sound Effect Decorder {} ", Mix_GetChunkDecoder(i));
+	}
 }

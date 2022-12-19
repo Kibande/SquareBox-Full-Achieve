@@ -24,25 +24,24 @@ namespace SquareBox {
 			AudioEngine();
 			~AudioEngine();
 
-			void init(int input_audio_format_flags_,int frequency_=static_cast<int>(MIX_DEFAULT_FREQUENCY), SquareBox::AudioOutputFormatEnum audio_output_format_= SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT,SquareBox::AudioChannlesEnum channels_=SquareBox::AudioChannlesEnum::MONO,int chunk_size_=4096);
+			void init(int input_audio_format_flags_,int audio_frequency_=static_cast<int>(MIX_DEFAULT_FREQUENCY), SquareBox::AudioOutputFormatEnum audio_output_format_= SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT,SquareBox::AudioChannlesEnum audio_channels_=SquareBox::AudioChannlesEnum::MONO,int audio_buffer_size_=4096);
 			void dispose();
-			void refreshAudioProperties();
+			void queryAudioParameters();
 			void loadSoundBank(SoundBank & bank_);
 			void loadMusic(Music & music_data_);//orign of -1,-1 means that its a general sound
 			void update(glm::vec2 listerner_location_);//the location of the person hearing this audio engines out put
-			int getFrequency() { return m_frequency; }
-			int getChannel() { return m_channel; }
 			SquareBox::AudioOutputFormatEnum getAudioOutputFormatEnum();
+
+
+			
+			
 		private:
-			int m_frequency = 0;
-			int m_channel = 0;
-			Uint16 m_output_format = 0;
+			int m_buffer_size;
 			bool m_is_initialized = false;
 			//our variable to hold the cached AudioEngine files
 			std::map<std::string, Mix_Music*> m_music_map;
 			std::map<std::string, Mix_Chunk*> m_effect_map;
 			std::vector<SoundEffect> m_active_sound_effects;
-			int m_total_channel = 7;//these are the total number of channels we are going to work with
 		};
 	};
 };

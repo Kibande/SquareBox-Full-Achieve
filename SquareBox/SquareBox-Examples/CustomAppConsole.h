@@ -66,7 +66,7 @@ struct CustomAppConsole
 		console_window_flags |= ImGuiWindowFlags_NoTitleBar;
 		ImGui::Begin(title, p_open, console_window_flags);
 		ImGui::SetWindowPos(ImVec2(0, height - height * 0.3));
-		ImGui::SetWindowSize(title, ImVec2(width - (width*0.25), height*0.3));
+		ImGui::SetWindowSize(title, ImVec2(width - (width*0.35), height*0.3));
 
 		// As a specific feature guaranteed by the library, after calling Begin() the last Item represent the title bar.
 		// So e.g. IsItemHovered() will return true when hovering the title bar.

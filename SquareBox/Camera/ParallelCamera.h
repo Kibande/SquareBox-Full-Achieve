@@ -9,6 +9,7 @@ namespace SquareBox {
 		public:
 			ParallelCamera();
 			~ParallelCamera();
+			void init(glm::ivec2 screen_dimensions_);
 			void init(unsigned camera_width_, unsigned camera_height_);
 			void update(unsigned screen_width_, unsigned screen_height_);
 
