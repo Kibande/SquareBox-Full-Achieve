@@ -4,10 +4,9 @@
 #include <ImGUI/imgui.h>
 #include <ImGui/ImGuiFileBrowser.h>
 
-namespace SquareBox {
-	namespace Example {
+namespace SquareBoxExample {
 
-		class AudioSystemExample :public SquareBox::Example::IExample
+		class AudioSystemExample :public SquareBoxExample::IExample
 		{
 		public:
 			AudioSystemExample();
@@ -16,7 +15,7 @@ namespace SquareBox {
 			virtual void onEntry(SquareBox::RenderEngine::Window* _window) override;
 			virtual void onUpdate(float delta_time_, SquareBox::IMainGame* m_game_ptr_, SquareBox::Camera::ParallelCamera& m_parallel_camera) override;
 			virtual void onDraw(SquareBox::RenderEngine::SpriteBatch* _spriteBatch, SquareBox::RenderEngine::SpriteFont* _spriteFont, SquareBox::RenderEngine::DebugRenderer* _debugRenderer) override;
-			virtual void imGuiControls(CustomAppConsole* _console) override;
+			virtual void imGuiControls(SquareBoxExample::CustomConsole* _console) override;
 			virtual void onExit() override;
 			virtual void reset() override;
 
@@ -39,6 +38,6 @@ namespace SquareBox {
 		};
 
 	};
-};
+
 
 

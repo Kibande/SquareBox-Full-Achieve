@@ -8,7 +8,8 @@
 #include <ImGui/ImGuiFileBrowser.h>
 #include "ParticleSystemExample.h"
 #include "AudioSystemExample.h"
-
+#include "CustomAppConsole.h"
+#include "Assistant.h"
 class ExampleHomeScreen :public SquareBox::IGameScreen
 {
 public:
@@ -37,15 +38,14 @@ private:
 	SquareBox::RenderEngine::Window* m_window;
 	SquareBox::RenderEngine::GLSLProgram m_textureProgram;
 	SquareBox::Camera::ParallelCamera m_camera;
-	std::vector<SquareBox::Example::IExample*> m_vec_examples_pointer;
-	SquareBox::Example::IExample* m_active_example = nullptr;
-	float m_kContstantForScaleAndZoom = 1.0f;
-	float m_cameraPaningSpeed = 50.0f;
+	std::vector<SquareBoxExample::IExample*> m_vec_examples_pointer;
+	SquareBoxExample::IExample* m_active_example = nullptr;
 	int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 	int m_previousScreenIndex = SCREEN_INDEX_NO_SCREEN;
 	bool m_autoClearLogs = false;//should the log be clear each time we switch examples
 	bool m_showAbout = false;
 	int m_selectedExampleIndex = 0;
-
-
+	SquareBoxExample::CustomConsole m_console;
+	bool m_show_console = true;
+	SquareBoxExample::Assistant m_assistant;
 };

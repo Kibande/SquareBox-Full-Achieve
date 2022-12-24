@@ -1,8 +1,9 @@
 #include "TimeDependantAnimation.h"
 
-SquareBox::AnimationSystem::TimeDependantAnimation::TimeDependantAnimation(std::string ClusterObjectName_, std::vector<SquareBox::AnimationSystem::AnimationSquence> animation_specifications_)
+SquareBox::AnimationSystem::TimeDependantAnimation::TimeDependantAnimation(std::string ClusterObjectName_,std::pair<int,int> target_cluster_object_coordinates_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_)
 {
 	animationObjectName = ClusterObjectName_;
+	target_cluster_object_coordinates = target_cluster_object_coordinates_;
 	animation_type = SquareBox::AnimationTypeEnum::timeDependant;
 	for (unsigned int i = 0; i < animation_specifications_.size(); i++)
 	{
@@ -22,7 +23,7 @@ bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	float perFrameSpeedGain = 0.0f;
 
 	if (m_currentAnimationSquence.duration <= 0) {
-		SBX_CORE_INFO("TimeDependantAnimation Can't have a duration of 0 seconds or less");
+		SBX_CORE_ERROR("TimeDependantAnimation Can't have a duration of 0 seconds or less");
 		animationComplete = true;
 		return animationComplete;
 	}
@@ -37,7 +38,9 @@ bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	//Apply Animation
 	m_currentTileIndex = m_currentAnimationSquence.startTile + (int)m_animeTime;
 	//get the uvCoords
-	SBX_CORE_ERROR("We need to update the the TimeDependantAnimation System");
+	// 
+	//SBX_CORE_ERROR("We need to update the the TimeDependantAnimation System"); to be doing what ??
+	
 	glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_currentTileIndex);
 
 	//change spriteDirection
@@ -52,9 +55,9 @@ bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	return animationComplete;
 }
 
-void SquareBox::AnimationSystem::TimeDependantAnimation::setAnimationSquence(SquareBox::AnimationSystem::AnimationSquence animationSquence_)
+void SquareBox::AnimationSystem::TimeDependantAnimation::setAnimationSquence(SquareBox::AnimationSystem::AnimationSpecifications animationSquence_)
 {
-	if (animationComplete)//can only set an animation when the current One is compete
+	if (animationComplete)//can only set an animation when the current One is complete
 	{
 		m_currentAnimationSquence = animationSquence_;
 		m_currentTileIndex = m_currentAnimationSquence.startTile;

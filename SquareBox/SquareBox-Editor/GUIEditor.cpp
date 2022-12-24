@@ -304,6 +304,10 @@ void GUIEditor::draw()
 
 	m_debug_renderer.begin();
 	m_debug_renderer.end();
+	/*
+	 having this end here is confusing, my logic must be very wrong
+	
+	*/
 	m_debug_renderer.drawBox(m_visiable_dest_rect, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), 0.0f);
 
 	//trace drawing

@@ -44,10 +44,16 @@ namespace SquareBox {
 			m_original_screen_height = m_screen_height;
 			m_sdl_window = SDL_CreateWindow(windowName.c_str(), window_pos_x, window_pos_y, m_screen_width, m_screen_height, flags);
 
-			//Error checking
+			//SDL_DisplayMode mode;
+			//SDL_GetDisplayMode(0, 0, &mode);
+			//int width = mode.w;
+			//int height = mode.h;
+			//m_sdl_window = SDL_CreateWindow(NULL, 0, 0, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_RESIZABLE);
+			////Error checking
 
 			if (m_sdl_window == nullptr) {
 				SBX_CORE_CRITICAL("SDL Window could not be created!");
+				return 0;
 			}
 			//get the windows Dpi infor
 			if (SDL_GetDisplayDPI(0, &m_ddpi, &m_hdpi, &m_vdpi) != 0) {

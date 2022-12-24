@@ -5,7 +5,7 @@
 namespace SquareBox {
 	namespace AnimationSystem
 	{
-		struct AnimationSquence {
+		struct AnimationSpecifications {
 		public:
 			AnimationMotionStateEnum motionState = AnimationMotionStateEnum::stationary;
 			float animationSpeed = 0.2f;
@@ -39,12 +39,13 @@ namespace SquareBox {
 		public:
 			~IAnimation() {};
 			std::string animationObjectName;
+			std::pair<int, int> target_cluster_object_coordinates;
 			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) = 0;
-			void defineSequence(AnimationSquence animationSequence_);
+			void defineSequence(AnimationSpecifications animationSequence_);
 			void resetAnimation();
-
-			SquareBox::AnimationSystem::AnimationSquence m_currentAnimationSquence;
-			std::vector<SquareBox::AnimationSystem::AnimationSquence> vec_of_animation_Squence;
+			 
+			SquareBox::AnimationSystem::AnimationSpecifications m_currentAnimationSquence;
+			std::vector<SquareBox::AnimationSystem::AnimationSpecifications> vec_of_animation_Squence;
 			/*Enums*/
 			SquareBox::AnimationTypeEnum animation_type;
 			int m_currentTileIndex = 1;

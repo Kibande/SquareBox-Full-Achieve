@@ -44,7 +44,7 @@ namespace SquareBox {
 				//check if it is active
 				if (m_particles[i].life > 0.0f) {
 					auto& p = m_particles[i];
-					glm::vec4 destRect(p.position.x, p.position.y, p.width, p.width);
+					glm::vec4 destRect(glm::vec2(p.position.x, p.position.y)-(glm::vec2(p.width)*0.5f), p.width, p.width);
 					spriteBatch->draw(destRect, uvRect, m_texture.id, 0.0f, p.color);
 				}
 			}

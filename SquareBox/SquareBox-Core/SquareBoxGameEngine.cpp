@@ -65,9 +65,9 @@ namespace SquareBox {
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-		// anti - aliasing
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
+		// anti - aliasing, this brought problems on janes Samsung
+	/*	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);*/
 
 		return 0;
 	}

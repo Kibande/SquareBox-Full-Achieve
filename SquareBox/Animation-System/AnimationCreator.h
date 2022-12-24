@@ -12,6 +12,7 @@ namespace SquareBox {
 		struct LimboAnimation
 		{
 			std::string target_cluster_object = "";
+			std::string source_animation_file = "";
 			/*bools*/
 			bool applyDamping = true;
 			/*glm::vecs*/
@@ -19,7 +20,7 @@ namespace SquareBox {
 			/*Enums*/
 			SquareBox::AnimationTypeEnum animation_type = SquareBox::AnimationTypeEnum::forceDependant;
 			/*Externals*/
-			std::vector<SquareBox::AnimationSystem::AnimationSquence> animation_specifications;
+			std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications;
 		};
 
 		class AnimationCreator

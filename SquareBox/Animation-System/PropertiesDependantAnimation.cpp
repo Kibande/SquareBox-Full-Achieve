@@ -1,8 +1,9 @@
 #include "PropertiesDependantAnimation.h"
 
-SquareBox::AnimationSystem::PropertiesDependantAnimation::PropertiesDependantAnimation(std::string ClusterObjectName_, std::vector<SquareBox::AnimationSystem::AnimationSquence> animation_specifications_)
+SquareBox::AnimationSystem::PropertiesDependantAnimation::PropertiesDependantAnimation(std::string ClusterObjectName_, std::pair<int, int> target_cluster_object_coordinates_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_)
 {
 	animationObjectName = ClusterObjectName_;
+	target_cluster_object_coordinates = target_cluster_object_coordinates_;
 	animation_type = SquareBox::AnimationTypeEnum::propertiesDependant;
 	for (unsigned int i = 0; i < animation_specifications_.size(); i++)
 	{

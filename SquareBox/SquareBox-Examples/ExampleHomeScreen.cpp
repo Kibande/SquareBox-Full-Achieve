@@ -1,5 +1,5 @@
 #include "ExampleHomeScreen.h"
-#include "CustomAppConsole.h"
+
 /*
 Order of Methods Calling
 	Constructor
@@ -18,11 +18,22 @@ Order of Methods Calling
 
 */
 
-static CustomAppConsole console;
 
-static void ShowCustomAppConsole(bool* p_open, int width, int height)
-{
-	console.Draw("Example: Console", p_open, width, height);
+std::vector<std::string> m_fresh_logs_vec;
+int last_line_count_index = 0;
+void onModifty(std::string file_path_) {
+	std::ifstream logFileRead(file_path_);
+	std::string my_text;
+	int current_line_count = 0;
+	while (std::getline(logFileRead, my_text))
+	{
+		if (current_line_count >= last_line_count_index) {
+			m_fresh_logs_vec.push_back(my_text);
+			last_line_count_index++;
+		}
+		current_line_count++;
+	}
+	logFileRead.close();
 }
 
 ExampleHomeScreen::ExampleHomeScreen(SquareBox::RenderEngine::Window* window) :m_window(window)
@@ -76,10 +87,11 @@ void ExampleHomeScreen::onEntry()
 	m_camera.setScale(1.0f);//The Zoom of the Camera
 	m_camera.setPosition(glm::vec2(m_window->getScreenWidth()* 0.5f, m_window->getScreenHeight() * 0.5f));//Center the camera
 
+	m_vec_examples_pointer.push_back(new SquareBoxExample::ParticleSystemExample());
+	m_vec_examples_pointer.push_back(new SquareBoxExample::AudioSystemExample());
 
-	m_vec_examples_pointer.push_back(new SquareBox::Example::ParticleSystemExample());
-	m_vec_examples_pointer.push_back(new SquareBox::Example::AudioSystemExample());
 	initGUI();
+	m_assistant.init();
 }
 
 void ExampleHomeScreen::initGUI()
@@ -131,18 +143,33 @@ void ExampleHomeScreen::drawGUI()
 	}
 	ImGuiWindowFlags physics_tab_window_flags = 0;
 	physics_tab_window_flags |= ImGuiWindowFlags_NoMove;
-	physics_tab_window_flags |= ImGuiWindowFlags_NoResize;
+	
 	physics_tab_window_flags |= ImGuiWindowFlags_NoTitleBar;
 	bool* physics_tab_open = false;
-	ImGui::Begin("Settings Tab", physics_tab_open, physics_tab_window_flags);
+
+	float settings_tab_width;
+	if(ImGui::Begin("Settings Tab", physics_tab_open, physics_tab_window_flags)){
+
+	if (m_show_console) {
+		physics_tab_window_flags |= ImGuiWindowFlags_NoResize;
+		settings_tab_width = m_window->getScreenWidth() * 0.35f;
+	}
+	else {
+		physics_tab_window_flags |= ImGuiWindowFlags_NoResize;
+
+		settings_tab_width = static_cast<float>(ImGui::GetWindowWidth());
+	}
+
 
 	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
-	ImGui::SetWindowSize("Settings Tab", ImVec2(m_window->getScreenWidth()*0.35, m_window->getScreenHeight()));
+
+
+	ImGui::SetWindowSize("Settings Tab", ImVec2(settings_tab_width, m_window->getScreenHeight()));
 	{
 		ImGui::Text("Examples");
 		//Object Types
 
-		const char** example_labels = new const char*[m_vec_examples_pointer.size()];
+		const char** example_labels = new const char* [m_vec_examples_pointer.size()];
 
 		for (unsigned int i = 0; i < m_vec_examples_pointer.size(); i++)
 		{
@@ -152,14 +179,18 @@ void ExampleHomeScreen::drawGUI()
 		ImGui::Combo("Example ", &m_selectedExampleIndex, example_labels, m_vec_examples_pointer.size());
 		delete example_labels;
 		setActiveExample(m_selectedExampleIndex);
-		m_active_example->imGuiControls(&console);
+		m_active_example->imGuiControls(&m_console);
 	}
 
+	};
 	ImGui::End();
+
+	ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
 	if (ImGui::BeginPopupModal("About?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("This is an Application that shows how different SquareBox Engine Packages can be implemented. The source is provided so you can look at the implmentations of each of the examples ");
+		ImGui::Text("This is an Application that shows how different SquareBox Engine Packages can be implemented.\nThe source is provided so you can look at the implmentations of each of the examples ");
 		ImGui::Separator();
 
 		//static int unused_i = 0;
@@ -174,8 +205,25 @@ void ExampleHomeScreen::drawGUI()
 		ImGui::EndPopup();
 	}
 
-	static bool *demo;
-	ShowCustomAppConsole(demo, m_window->getScreenWidth(), m_window->getScreenHeight());
+	//file explore dialog - end
+	if (m_show_console) {
+		auto console_position = ImVec2(0.0f, m_game_ptr->getWindow()->getScreenHeight() * 0.75f);
+		auto console_size = ImVec2(static_cast<float>(m_game_ptr->getWindow()->getScreenWidth()*0.65f), m_game_ptr->getWindow()->getScreenHeight() * 0.25f);
+		ImGuiWindowFlags console_flags = 0;
+		console_flags |= ImGuiWindowFlags_NoTitleBar;
+		m_console.Draw("Console", &m_show_console, console_flags, console_position, console_size);
+
+		for each (auto log_message in m_fresh_logs_vec)
+		{
+			m_console.AddLog(log_message.c_str());
+		}
+		m_fresh_logs_vec.clear();
+	}
+	else {
+		if (m_fresh_logs_vec.size() > 0) {
+			m_fresh_logs_vec.clear();
+		}
+	}
 	ImGui::EndFrame();
 
 	// Rendering
@@ -190,6 +238,10 @@ void ExampleHomeScreen::showMainMenu()
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
+			if (ImGui::MenuItem("Show Console", NULL, m_show_console)) {
+				m_show_console = !m_show_console;
+			}
+
 			if (ImGui::MenuItem("Clear logos", NULL, m_autoClearLogs)) {
 				m_autoClearLogs = !m_autoClearLogs;
 			}
@@ -228,32 +280,7 @@ void ExampleHomeScreen::update(const float& deltaTime_)
 	*/
 	if (m_game_ptr->isProcessingInput()) {
 		//zooming and moving the camera in our world
-		//Calculated movement Speed
-		float cMS = (m_kContstantForScaleAndZoom / m_camera.getScale());
-
-		//Calculated Zooming Speed
-		float cZS = (m_kContstantForScaleAndZoom / m_cameraPaningSpeed);
-		//Camera Controls
-		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_LEFT))
-		{
-			m_camera.setPosition(glm::vec2(m_camera.getPosition().x + cMS, m_camera.getPosition().y));
-		}
-		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_RIGHT)) {
-			m_camera.setPosition(glm::vec2(m_camera.getPosition().x - cMS, m_camera.getPosition().y));
-		}
-		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_DOWN))
-		{
-			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y + cMS));
-		}
-		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::ARROW_UP)) {
-			m_camera.setPosition(glm::vec2(m_camera.getPosition().x, m_camera.getPosition().y - cMS));
-		}
-		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEY_q)) {
-			m_camera.setScale(m_camera.getScale() + cZS);
-		}
-		else if (m_game_ptr->getInputDevice()->isInputIdBeingReceived((int)SquareBox::KeyBoardEnum::KEY_e)) {
-			m_camera.setScale(m_camera.getScale() - cZS);
-		}
+		m_assistant.cameraControls(m_camera, m_game_ptr);
 	}
 	//Called once every game loop , and updates what will be drawn
 	m_window->update();
@@ -275,7 +302,7 @@ void ExampleHomeScreen::setActiveExample(int index)
 			m_active_example->onEntry(m_window);
 			m_active_example->isExampleInitialised = true;
 			if (m_autoClearLogs) {
-				console.ClearLog();
+				m_console.ClearLog();
 			}
 		}
 	}
@@ -289,7 +316,7 @@ void ExampleHomeScreen::setActiveExample(int index)
 				m_active_example->isExampleInitialised = true;
 
 				if (m_autoClearLogs) {
-					console.ClearLog();
+					m_console.ClearLog();
 				}
 			}
 		
@@ -324,7 +351,7 @@ void ExampleHomeScreen::onExit()
 	m_spriteBatch.dispose();
 	m_spriteFont.dispose();
 	m_textureProgram.dispose();
-
+	m_assistant.dispose();
 	if (m_active_example != nullptr) {
 		m_active_example->onExit();
 	}

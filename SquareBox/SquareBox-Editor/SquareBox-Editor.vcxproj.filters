@@ -57,6 +57,9 @@
     <ClInclude Include="Welcome_Screen.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -99,6 +102,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationEditor.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

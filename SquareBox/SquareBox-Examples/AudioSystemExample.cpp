@@ -1,11 +1,11 @@
 #include "AudioSystemExample.h"
 
-SquareBox::Example::AudioSystemExample::AudioSystemExample()
+SquareBoxExample::AudioSystemExample::AudioSystemExample()
 {
 	exampleTitle = "Audio System";
 }
 
-void SquareBox::Example::AudioSystemExample::onEntry(SquareBox::RenderEngine::Window* _window)
+void SquareBoxExample::AudioSystemExample::onEntry(SquareBox::RenderEngine::Window* _window)
 {
 	// set up our audio Engine
 	m_input_audio_format_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
@@ -17,41 +17,20 @@ void SquareBox::Example::AudioSystemExample::onEntry(SquareBox::RenderEngine::Wi
 	m_audio_engine.init(m_input_audio_format_flags, MIX_DEFAULT_FREQUENCY, SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::STEREO, 4096);
 }
 
-void SquareBox::Example::AudioSystemExample::onUpdate(float delta_time_, SquareBox::IMainGame* m_game_ptr_, SquareBox::Camera::ParallelCamera& m_parallel_camera)
+void SquareBoxExample::AudioSystemExample::onUpdate(float delta_time_, SquareBox::IMainGame* m_game_ptr_, SquareBox::Camera::ParallelCamera& m_parallel_camera)
 {
 	m_fps = m_game_ptr_->getFps();
 }
 
-void SquareBox::Example::AudioSystemExample::onDraw(SquareBox::RenderEngine::SpriteBatch* _spriteBatch, SquareBox::RenderEngine::SpriteFont* _spriteFont, SquareBox::RenderEngine::DebugRenderer* _debugRenderer)
+void SquareBoxExample::AudioSystemExample::onDraw(SquareBox::RenderEngine::SpriteBatch* _spriteBatch, SquareBox::RenderEngine::SpriteFont* _spriteFont, SquareBox::RenderEngine::DebugRenderer* _debugRenderer)
 {
 
 }
 
-void SquareBox::Example::AudioSystemExample::imGuiControls(CustomAppConsole* _console)
+void SquareBoxExample::AudioSystemExample::imGuiControls(SquareBoxExample::CustomConsole* _console)
 {
 	//File Exposer
-	if (m_file_dialog.showFileDialog("Open Music File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310)))
-	{
-		m_music.unLoad();
-		m_music = SquareBox::AudioSystem::Music(m_file_dialog.selected_path);
-		m_audio_engine.loadMusic(m_music);
 
-		m_show_open_music_file_dialog = false;
-	}
-	if (m_show_open_music_file_dialog) {
-		ImGui::OpenPopup("Open Music File");
-	}
-
-
-	if (m_file_dialog.showFileDialog("Open Sound Effect File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310)))
-	{
-		m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect(m_file_dialog.selected_fn, m_file_dialog.selected_path));
-		m_audio_engine.loadSoundBank(m_sound_bank);
-		m_show_open_sound_effect_file_dialog = false;
-	}
-	if (m_show_open_sound_effect_file_dialog) {
-		ImGui::OpenPopup("Open Sound Effect File");
-	}
 	ImGui::Spacing();
 
 	ImGui::Text("Music Controls");
@@ -95,6 +74,19 @@ void SquareBox::Example::AudioSystemExample::imGuiControls(CustomAppConsole* _co
 	if (ImGui::Button("+ New Music")) {
 		m_show_open_music_file_dialog = true;
 	}
+
+	if (m_show_open_music_file_dialog) {
+		ImGui::OpenPopup("Open Music File");
+	}
+
+	if (m_file_dialog.showFileDialog("Open Music File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310)))
+	{
+		m_music.unLoad();
+		m_music = SquareBox::AudioSystem::Music(m_file_dialog.selected_path);
+		m_audio_engine.loadMusic(m_music);
+
+		
+	}
 	ImGui::Spacing();
 	ImGui::Spacing();
 
@@ -103,27 +95,30 @@ void SquareBox::Example::AudioSystemExample::imGuiControls(CustomAppConsole* _co
 
 	if (m_sound_bank.isLoaded()) {
 
-		if (ImGui::Button("Play")) {
+		ImGui::Text("%d Sound Effects loaded ",m_sound_bank.sound_effects.size());
+		ImGui::Spacing();
+
+		if (ImGui::Button("Play_")) {
 			m_sound_bank.play();
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Stop")) {
+		if (ImGui::Button("Stop_")) {
 			m_sound_bank.stop();
 		}
 		ImGui::SameLine();
 
 		
-		if (ImGui::Button("unLoad")) {
+		if (ImGui::Button("unLoad_")) {
 			m_sound_bank.unLoad();
 		}
 	
 
-		if (ImGui::Button("Resume")) {
+		if (ImGui::Button("Resume_")) {
 			m_sound_bank.resume();
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button("Pause")) {
+		if (ImGui::Button("Pause_")) {
 			m_sound_bank.pause();
 		}
 
@@ -143,6 +138,16 @@ void SquareBox::Example::AudioSystemExample::imGuiControls(CustomAppConsole* _co
 	if (ImGui::Button("+ New Sound")) {
 		m_show_open_sound_effect_file_dialog = true;
 	}
+
+	if (m_show_open_sound_effect_file_dialog) {
+		ImGui::OpenPopup("Open Sound Effect File");
+	}
+
+	if (m_file_dialog.showFileDialog("Open Sound Effect File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310)))
+	{
+		m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect(m_file_dialog.selected_fn, m_file_dialog.selected_path));
+		m_audio_engine.loadSoundBank(m_sound_bank);
+	}
 	ImGui::Spacing();
 	ImGui::Separator();
 	if (ImGui::Button("Reset")) {
@@ -150,15 +155,18 @@ void SquareBox::Example::AudioSystemExample::imGuiControls(CustomAppConsole* _co
 	}
 	ImGui::Text("FPS Counter: %.2f", static_cast<float>(m_fps));
 
+	m_show_open_music_file_dialog = false;
+	m_show_open_sound_effect_file_dialog = false;
+
 }
 
-void SquareBox::Example::AudioSystemExample::onExit()
+void SquareBoxExample::AudioSystemExample::onExit()
 {
 	m_music.unLoad();
 	m_sound_bank.unLoad();
 	m_audio_engine.dispose();
 }
 
-void SquareBox::Example::AudioSystemExample::reset()
+void SquareBoxExample::AudioSystemExample::reset()
 {
 }

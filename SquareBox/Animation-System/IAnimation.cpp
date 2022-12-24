@@ -1,6 +1,6 @@
 #include "IAnimation.h"
 
-void SquareBox::AnimationSystem::IAnimation::defineSequence(AnimationSquence animationSequence_)
+void SquareBox::AnimationSystem::IAnimation::defineSequence(AnimationSpecifications animationSequence_)
 {
 	{
 		bool absent = true;

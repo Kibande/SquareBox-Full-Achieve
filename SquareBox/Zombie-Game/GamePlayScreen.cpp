@@ -103,6 +103,26 @@ void GamePlayScreen::onEntry()
 	
 	//m_object_show_coordinates = true;
 	m_show_grid = false;
+
+	int m_input_audio_format_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
+	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
+	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
+	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
+	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
+	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
+	m_audio_engine.init(m_input_audio_format_flags, MIX_DEFAULT_FREQUENCY, SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::STEREO, 4096);
+
+	m_music = SquareBox::AudioSystem::Music("Assets/Audio/Stranded.ogg");
+	m_audio_engine.loadMusic(m_music);
+
+	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("Sound Effect 1", "Assets/Audio/cg1.wav"));
+	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("Sound Effect 2", "Assets/Audio/pistol.wav"));
+	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("Sound Effect 3", "Assets/Audio/rifle.wav"));
+	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("Sound Effect 4", "Assets/Audio/shotgun.wav"));
+	m_audio_engine.loadSoundBank(m_sound_bank);
+	
+	//play the music
+	m_music.play();
 }
 
 void GamePlayScreen::update(const float& deltaTime_)
@@ -174,6 +194,9 @@ void GamePlayScreen::update(const float& deltaTime_)
 
 					m_update_game_world = false;
 					gui_pause_button.is_hidden = true;
+
+					m_music.pause();
+					m_sound_bank.pause();
 			}
 		}
 		else {
@@ -201,6 +224,9 @@ void GamePlayScreen::update(const float& deltaTime_)
 				m_display_game_pause_controls = true;
 
 				m_update_game_world = false;
+
+				m_music.pause();
+				m_sound_bank.pause();
 			}
 		}
 
@@ -221,6 +247,9 @@ void GamePlayScreen::update(const float& deltaTime_)
 				m_update_game_world = true;
 				SquareBox::GWOM::GUIElement& gui_pause_button = m_game_mobile_controls_gui.getGuiElementByIndex(m_game_play_gui_elements_coordinates.find(m_pause_gui_id)->second);
 				gui_pause_button.is_hidden = false;
+
+				m_music.resume();
+				m_sound_bank.resume();
 			}
 		}
 		else {
@@ -234,6 +263,10 @@ void GamePlayScreen::update(const float& deltaTime_)
 				m_display_game_pause_controls = false;
 
 				m_update_game_world = true;
+
+				// i don't know whether this is really un possing 
+				m_music.resume();
+				m_sound_bank.resume();
 			}
 		}
 	}
@@ -279,7 +312,14 @@ void GamePlayScreen::update(const float& deltaTime_)
 
 			m_display_game_over_controls = false;
 			m_process_game_over_controls = false;
+
+			m_music.rewind();
+			m_sound_bank.stop();
 		}
+	}
+
+	if (player_set_to_fire) {
+		m_sound_bank.play();
 	}
 }
 
@@ -438,6 +478,7 @@ void GamePlayScreen::onExit()
 	m_game_pause_huds_and_gui.dispose();
 	m_game_stats_huds_and_gui.dispose();
 	m_game_over_huds_and_gui.dispose();
+	m_audio_engine.dispose();
 }
 
 void GamePlayScreen::destroy()

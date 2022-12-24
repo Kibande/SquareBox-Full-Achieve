@@ -1,6 +1,5 @@
 #include "ParticleSystemExample.h"
-namespace SquareBox {
-	namespace Example {
+namespace SquareBoxExample {
 		ParticleSystemExample::ParticleSystemExample()
 		{
 			exampleTitle = "Particle System";
@@ -51,7 +50,7 @@ namespace SquareBox {
 			m_particle_engine.draw(_spriteBatch);
 		}
 
-		void ParticleSystemExample::imGuiControls(CustomAppConsole* _console)
+		void ParticleSystemExample::imGuiControls(SquareBoxExample::CustomConsole * _console)
 		{
 			//File Exposer
 			if (m_file_dialog.showFileDialog("Open Texture File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".png"))
@@ -124,4 +123,4 @@ namespace SquareBox {
 		}
 
 	}
-}
+

@@ -28,22 +28,6 @@ void Welcome_Screen::destroy()
 
 void Welcome_Screen::onEntry()
 {
-	m_spriteBatch.init();
-	m_spriteFont.initWithName("Comfortaa-Bold", 32);
-
-	//Init Shaders
-	m_textureProgram.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
-	m_textureProgram.addAttribute("vertexPosition");
-	m_textureProgram.addAttribute("vertexColor");
-	m_textureProgram.addAttribute("vertexUV");
-	m_textureProgram.linkShaders();
-
-	//Init Cameras
-	m_camera.init(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-	m_camera.setScale(1.0f);
-	m_camera.setPosition(glm::vec2(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() * 0.5f));//Center the camera
-	// SquareBox::AudioSystem::Music music= m_game->getAudioEngine().loadMusic("Assets/Audio/Stranded.mp3");
-	// music.play(0);
 	initGUI();
 }
 
@@ -52,10 +36,6 @@ void Welcome_Screen::onExit()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-	m_spriteBatch.dispose();
-	m_spriteFont.dispose();
-	m_textureProgram.dispose();
 }
 
 void Welcome_Screen::update(const float & deltaTime_)
@@ -74,24 +54,10 @@ void Welcome_Screen::update(const float & deltaTime_)
 	else {
 		m_game_ptr->setProcessingInput(true);
 	}
-	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 }
 
 void Welcome_Screen::draw()
 {
-	m_textureProgram.use();
-
-	IGameScreen::preUpdateShader(&m_textureProgram, "mySampler");
-
-	IGameScreen::uploadCameraInfo(&m_textureProgram, &m_camera, "P");
-
-	m_spriteBatch.begin();
-
-	//m_sprite_font or m_sprite_batch draw
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-
-	m_textureProgram.unuse();
 	drawGUI();
 }
 
@@ -166,6 +132,11 @@ void Welcome_Screen::drawGUI()
 
 		if (ImGui::Button("GUI Editor")) {
 			m_nextScreenIndex = GUI_EDITOR_SCREEN_INDEX;
+			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
+		}
+
+		if (ImGui::Button("Animation Editor")) {
+			m_nextScreenIndex = ANIMATION_EDITOR_SCREEN_INDEX;
 			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
 		}
 

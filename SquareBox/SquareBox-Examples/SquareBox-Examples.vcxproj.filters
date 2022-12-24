@@ -30,6 +30,9 @@
     <ClInclude Include="AudioSystemExample.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Assistant.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -45,6 +48,9 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystemExample.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Assistant.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

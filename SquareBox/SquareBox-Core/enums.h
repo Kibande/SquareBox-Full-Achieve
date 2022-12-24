@@ -166,6 +166,10 @@ namespace SquareBox {
 			(backward, "backward", 2)
 			(up, "up", 3)
 			(down, "down", 4)
+			(forwardup, "forwardup", 5)
+			(forwarddown, "forwarddown", 6)
+			(backwardup, "backwardup", 7)
+			(backwarddown, "backwarddown", 8)
 		)
 
 		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(BodyTypeEnum,

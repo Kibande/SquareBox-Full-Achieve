@@ -5,6 +5,7 @@
 #include "DesktopAppEditor_Screen.h"
 #include "LevelEditor.h"
 #include "GUIEditor.h"
+#include "AnimationEditor.h"
 
 class App : public SquareBox::IMainGame
 {
@@ -27,4 +28,5 @@ private:
 	std::unique_ptr<DesktopAppEditor_Screen> desktop_app_editor_screen = nullptr;
 	std::unique_ptr<MobileAppEditor_Screen> mobile_app_editor_screen = nullptr;
 	std::unique_ptr<GUIEditor> m_gui_editor_screen = nullptr;
+	std::unique_ptr<AnimationEditor> m_animation_editor_screen = nullptr;
 };

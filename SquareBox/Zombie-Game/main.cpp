@@ -5,7 +5,7 @@
 
 //#define TESTMODE 1
 
-#ifdef TESTMODE
+#ifdef TESTMODE2
 
 #ifdef SQB_PLATFORM_ANDROID
 
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 	SquareBox::InputDevicesEnum input_device;
 #ifdef SQB_PLATFORM_ANDROID
 	input_device = SquareBox::InputDevicesEnum::TouchScreen;
-	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
+	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
 	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_BORDERLESS;
 	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN_DESKTOP;
 	//windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_MAXIMIZED;

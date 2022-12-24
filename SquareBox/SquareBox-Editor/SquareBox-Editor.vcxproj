@@ -267,6 +267,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationEditor.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="CustomConsole.h" />
     <ClInclude Include="DesktopAppEditor_Screen.h" />
@@ -285,6 +286,7 @@
     <ClInclude Include="Welcome_Screen.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationEditor.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="DesktopAppEditor_Screen.cpp" />
     <ClCompile Include="Editor_Assistant.cpp" />

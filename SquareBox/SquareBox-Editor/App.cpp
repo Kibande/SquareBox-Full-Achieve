@@ -33,6 +33,9 @@ void App::addScreens()
 	m_gui_editor_screen = std::make_unique<GUIEditor>();
 	m_screen_list->addScreen(m_gui_editor_screen.get());
 	
+	m_animation_editor_screen = std::make_unique<AnimationEditor>();
+	m_screen_list->addScreen(m_animation_editor_screen.get());
+
 	// Our starting Screen
 	m_screen_list->setScreen(m_welcome_screen->getScreenIndex());
 	//m_screen_list->setScreen(m_gui_editor_screen->getScreenIndex());

@@ -1,9 +1,10 @@
 #include "ForceDependantAnimation.h"
 #include <Asset-Manager/Asset-Manager.h>
 #include <Physics-Collision-Engine/PhysicsCollisionEngine.h>
-SquareBox::AnimationSystem::ForceDependantAnimation::ForceDependantAnimation(std::string ClusterObjectName_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSquence> animation_specifications_)
+SquareBox::AnimationSystem::ForceDependantAnimation::ForceDependantAnimation(std::string ClusterObjectName_, std::pair<int, int> target_cluster_object_coordinates_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_)
 {
 	animationObjectName = ClusterObjectName_;
+	target_cluster_object_coordinates = target_cluster_object_coordinates_;
 	animation_type = SquareBox::AnimationTypeEnum::forceDependant;
 	m_applyDamping = applyDamping_;
 	m_maxLinearVelocity = maxLinearVelocity_;

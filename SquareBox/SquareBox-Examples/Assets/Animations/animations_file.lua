@@ -25,8 +25,8 @@ animations[0]={
 					KeyCode=32,
 					NumTiles=1,
 					StartTile=0
-				},
-				{
+		},
+		{
 					--Running Forward Animation
 					AnimationForceX=10.0,
 					AnimationForceY=0.0,
@@ -43,8 +43,8 @@ animations[0]={
 					KeyCode=100,
 					NumTiles=6,
 					StartTile=10
-				},
-				{
+		},
+		{
 					--Running Backward Animation
 					AnimationForceX=-10.0,
 					AnimationForceY=0.0,

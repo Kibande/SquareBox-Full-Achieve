@@ -6,7 +6,7 @@
 #include <MathLib/MathLib.h>
 
 /*
-  This animations is used to cutomize how a physics Objects texture coordinates are manipulated due to
+  This animations is used to customize how a physics Objects' texture coordinates are manipulated due to
   the various  directed thrusts a body expriences
   e.g which set of texture indexs to play over as a player which has physics is
   running (force in +x or -x)
@@ -25,7 +25,7 @@ namespace SquareBox {
 		{
 		public:
 
-			ForceDependantAnimation(std::string ClusterObjectName_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSquence> animation_specifications_);
+			ForceDependantAnimation(std::string ClusterObjectName_, std::pair<int, int> target_cluster_object_coordinates_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_);
 			// Inherited via IAnimation
 			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) override;
 			void setMotionState(SquareBox::AnimationMotionStateEnum movementState_);

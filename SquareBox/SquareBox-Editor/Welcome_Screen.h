@@ -34,12 +34,7 @@ private:
 	void drawGUI();
 
 private:
-	SquareBox::RenderEngine::SpriteBatch m_spriteBatch;
-	SquareBox::RenderEngine::SpriteFont m_spriteFont;
-	SquareBox::RenderEngine::GLSLProgram m_textureProgram;
-	SquareBox::Camera::ParallelCamera m_camera;
 
-	bool show_demo_window = true;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;

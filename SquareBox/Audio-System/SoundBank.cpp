@@ -97,9 +97,12 @@ void SquareBox::AudioSystem::SoundBank::stop()
 
 void SquareBox::AudioSystem::SoundBank::setSoundBankVolume(float volume_percentage_)
 {
-	for each (const SoundEffect & sound in sound_effects)
+
+	for (unsigned i = 0; i < sound_effects.size(); i++)
 	{
+		SoundEffect& sound = sound_effects[i];
 		Mix_VolumeChunk(sound.m_chunk, MIX_MAX_VOLUME * volume_percentage_);
+
 	}
 }
 

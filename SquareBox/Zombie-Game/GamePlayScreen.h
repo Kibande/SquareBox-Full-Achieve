@@ -133,7 +133,11 @@ public:
 	bool m_update_game_world= true;
 
 
-	
+	SquareBox::AudioSystem::AudioEngine m_audio_engine;
+
+	SquareBox::AudioSystem::Music m_music;
+
+	SquareBox::AudioSystem::SoundBank m_sound_bank;
 
 };
 
