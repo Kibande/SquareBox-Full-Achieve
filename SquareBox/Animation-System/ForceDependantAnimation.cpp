@@ -12,10 +12,13 @@ SquareBox::AnimationSystem::ForceDependantAnimation::ForceDependantAnimation(std
 	{
 		defineSequence(animation_specifications_[i]);
 	}
+	animation_type = AnimationTypeEnum::forceDependant;
 }
 
 bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & deltaTime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 {
+	SquareBox::AnimationSystem::AnimationSpecifications& focus_animation = vec_of_animation_Squence[m_current_animation_squence_index];
+
 	//Update Our Animation State
 	glm::vec2 linerVelocity;
 	if (clusterObject_.physics_properties != nullptr && clusterObject_.physics_properties->isIntialised()) {
@@ -126,22 +129,22 @@ bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & d
 			}
 		}
 
-		float perFrameSpeedGain = SquareBox::MathLib::Float::divideAndGetFloat(m_currentAnimeSpeed, m_currentAnimationSquence.numTiles);
-		//	std::cout << m_currentAnimeSpeed << " : " << m_currentAnimationSquence.numTiles << " = " << perFrameSpeedGain << '\n';
+		float perFrameSpeedGain = SquareBox::MathLib::Float::divideAndGetFloat(m_currentAnimeSpeed, focus_animation.numTiles);
+		//	std::cout << m_currentAnimeSpeed << " : " << focus_animation.numTiles << " = " << perFrameSpeedGain << '\n';
 			//getting the UvCoords
 		m_animeTime += perFrameSpeedGain;
-		if (m_animeTime > m_currentAnimationSquence.numTiles) {
+		if (m_animeTime > focus_animation.numTiles) {
 			setMotionState(SquareBox::AnimationMotionStateEnum::stationary);
 		}
 
 		//Apply Animation
-		m_currentTileIndex = m_currentAnimationSquence.startTile + m_animeTime;
+		m_currentTileIndex = focus_animation.startTile + m_animeTime;
 		//should not go past the animations specified
 		// this for the case were the stationary position is already our stationary position
-		if (m_currentTileIndex > (m_currentAnimationSquence.startTile + m_currentAnimationSquence.numTiles)) {
-			m_currentTileIndex = m_currentAnimationSquence.startTile + m_currentAnimationSquence.numTiles;
+		if (m_currentTileIndex > (focus_animation.startTile + focus_animation.numTiles)) {
+			m_currentTileIndex = focus_animation.startTile + focus_animation.numTiles;
 		}
-		//std::cout << "SpeedGain : " << perFrameSpeedGain << " m_animeTime " << m_animeTime << " numtiles " << m_currentAnimationSquence.numTiles<<" index "<<m_currentTileIndex << '\n';
+		//std::cout << "SpeedGain : " << perFrameSpeedGain << " m_animeTime " << m_animeTime << " numtiles " << focus_animation.numTiles<<" index "<<m_currentTileIndex << '\n';
 
 		//get the uvCoords
 		auto retrieved_texture = AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
@@ -169,7 +172,7 @@ bool SquareBox::AnimationSystem::ForceDependantAnimation::Update(const float & d
 
 void SquareBox::AnimationSystem::ForceDependantAnimation::setMotionState(SquareBox::AnimationMotionStateEnum movementState_)
 {
-	if (movementState_ != m_currentAnimationSquence.motionState)
+	if (movementState_ != vec_of_animation_Squence[m_current_animation_squence_index].motionState)
 	{
 		bool animationDefined = false;
 		for (unsigned int i = 0; i < vec_of_animation_Squence.size(); i++)
@@ -178,7 +181,7 @@ void SquareBox::AnimationSystem::ForceDependantAnimation::setMotionState(SquareB
 			if (vec_of_animation_Squence[i].motionState == movementState_)
 			{
 				//make it our current, we we shall get all reference values
-				m_currentAnimationSquence = vec_of_animation_Squence[i];
+				m_current_animation_squence_index = i;
 				animationDefined = true;
 			}
 		}
@@ -187,7 +190,7 @@ void SquareBox::AnimationSystem::ForceDependantAnimation::setMotionState(SquareB
 		}
 		//this will ensure we always start our animation at the right time
 		m_animeTime = 0.0f;
-		m_currentAnimeSpeed = m_currentAnimationSquence.animationSpeed;
-		m_currentTileIndex = m_currentAnimationSquence.startTile;
+		m_currentAnimeSpeed = vec_of_animation_Squence[m_current_animation_squence_index].animationSpeed;
+		m_currentTileIndex = vec_of_animation_Squence[m_current_animation_squence_index].startTile;
 	}
 }

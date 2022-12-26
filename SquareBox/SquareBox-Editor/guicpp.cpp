@@ -435,7 +435,7 @@
 //	}
 //
 //	//run update loop for our world objects
-//	if (m_play_simulation) {
+//	if (m_run_physics) {
 //		m_physics_world.update();//update our physics
 //		m_automation.update(m_world_clusters, m_alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds());
 //		m_animation_creator.update(1.0f, m_world_clusters, m_alive_cluster_objects, m_game_ptr->getFps(), m_game_ptr->getGameLoopElapsedSeconds(), m_game_ptr->getInputDevice());
@@ -1463,14 +1463,14 @@
 //
 //	ImGui::SetWindowPos(ImVec2(m_window->getScreenWidth() - ImGui::GetWindowWidth() - 2, 20));
 //	{
-//		if (m_play_simulation) {
+//		if (m_run_physics) {
 //			if (ImGui::Button("Pause")) {
-//				m_play_simulation = false;
+//				m_run_physics = false;
 //			}
 //		}
 //		else {
 //			if (ImGui::Button("Play")) {
-//				m_play_simulation = true;
+//				m_run_physics = true;
 //			}
 //		}
 //

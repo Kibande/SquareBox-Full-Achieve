@@ -11,6 +11,8 @@ enum SelectModeEnum
 	JOINTSSELECT = 3
 };
 
+
+
 //the actual cluster object selection
 	/*
 		WORLDCLUSTER - Cluster Select, used to select many related objects at once(a fullCluster)
@@ -49,7 +51,9 @@ public:
 
 	//Object Shape
 	int m_selected_shape = 0; //in reference to m_vec_shapes_pointer (vector of pointer of all shapes avaliable to us);
-
+	int m_selected_animation = 0;
+	int m_temp_limbo_selected_animation = 0;
+	int m_temp_limbo_selected_animation_motion_state = 0;
 	float m_free_select_rotation_padding = 0.0f;
 	float m_free_select_rotation_universal_angle = 0.0f;
 
@@ -102,10 +106,12 @@ public:
 
 	/*vectors*/
 	std::vector<SquareBox::IShape*> m_vec_shapes_pointer;
-
+	std::vector<SquareBox::AnimationSystem::IAnimation*> m_vec_animations_pointer;
 	std::vector<glm::vec2> m_vector_of_joint_ploting_points;
 
 	std::vector<std::pair<int, int>> m_selected_cluster_objects;
+
+	SquareBox::AnimationSystem::LimboAnimation m_temp_limbo_animation;
 
 	SquareBox::RenderEngine::ColorRGBA8 m_debug_static_body_color = SquareBox::RenderEngine::ColorRGBA8(255, 0, 0, 255);
 	SquareBox::RenderEngine::ColorRGBA8 m_debug_dynamic_body_color = SquareBox::RenderEngine::ColorRGBA8(0, 255, 0, 255);
@@ -126,12 +132,14 @@ public:
 	SquareBox::GWOM::ClusterObject m_temp_bridge_joints_object;
 
 	//Automation
-	SquareBox::AI::Automation m_automation;
 	SquareBox::AnimationSystem::AnimationCreator m_animation_creator;
-	std::string m_animation_script, m_automation_script;
+	std::string m_animation_script="Assets/Animations/animations_file.lua";
 	std::vector<std::pair<int, std::pair<int, int>>> m_cluster_objects_to_delete; //[layer_index[world_cluster_index,cluster_object_index]]
 
 	const char** shapes_labels_ptr = nullptr;
+	const char** animations_labels_ptr = nullptr;
+	std::vector<SquareBox::AnimationMotionStateEnum> m_vec_of_animation_motion_states;
+	const char** animation_motion_states_labels_ptr = nullptr;
 	SquareBox::PhysicsCollisionEngine::PhysicsWorld m_physics_world;
 	int m_target_shift_to_layer_index = 0;// when shifting cluster objects from one layer to 
 	glm::vec2  m_drag_select_origin;
@@ -174,8 +182,8 @@ public:
 
 	SquareBoxEditor::Editor_Assistant m_editor_assitant;
 
-	bool m_play_simulation = false;//controls physics and animations update loops
-
+	bool m_run_physics = false;//controls physics and animations update loops
+	bool m_play_animations = false;
 	bool m_draw_plotted_shape = false;// determines if its time to draw the chain or polygon, or whose coordinates we have so
 	bool m_show_polygon_plots = false;
 

@@ -31,7 +31,7 @@ namespace SquareBox {
 			//physics
 			//if applyingForceAccordingToMass This will be taken as a rate
 			glm::vec2 animationForce = glm::vec2(0.0f);
-			int duration = 0;
+			int duration = 1;
 		};
 
 		class IAnimation
@@ -43,8 +43,7 @@ namespace SquareBox {
 			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) = 0;
 			void defineSequence(AnimationSpecifications animationSequence_);
 			void resetAnimation();
-			 
-			SquareBox::AnimationSystem::AnimationSpecifications m_currentAnimationSquence;
+			int m_current_animation_squence_index = 0;
 			std::vector<SquareBox::AnimationSystem::AnimationSpecifications> vec_of_animation_Squence;
 			/*Enums*/
 			SquareBox::AnimationTypeEnum animation_type;

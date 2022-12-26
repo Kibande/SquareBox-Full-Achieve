@@ -94,7 +94,7 @@ animations[1]={
 		{
 					AnimationForceX=0.0,
 					AnimationForceY=0.0,
-					AnimationSpeed=0.0,
+					AnimationSpeed=1.0,
 					Duration=1,
 					ApplyForceAccordingToMass=false,
 					MotionState=0,
@@ -105,8 +105,8 @@ animations[1]={
 					IsReversedMovementOrientied=false,
 					KeyActivationSquence=0,
 					KeyCode=0,
-					NumTiles=8,
-					StartTile=0
+					NumTiles=3,
+					StartTile=11
 		}
 
 

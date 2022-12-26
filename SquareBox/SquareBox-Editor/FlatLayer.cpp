@@ -93,8 +93,6 @@ void FlatLayer::onInit()
 	//animations
 	m_animation_creator.init();
 	m_animation_creator.loadAnimationScript(m_animation_script);
-	m_automation.init();
-	m_automation.loadAutomationScript(m_automation_script);
 
 	//The shapes we can create and edit in the world
 	m_vec_shapes_pointer.push_back(new SquareBox::Shapes::BoxShape());
@@ -108,9 +106,32 @@ void FlatLayer::onInit()
 	m_vec_shapes_pointer.push_back(new SquareBox::Shapes::CalculatedLightShape());
 	shapes_labels_ptr = new const char* [m_vec_shapes_pointer.size()];
 
+	m_vec_animations_pointer.push_back(new SquareBox::AnimationSystem::ForceDependantAnimation);
+	m_vec_animations_pointer.push_back(new SquareBox::AnimationSystem::TimeDependantAnimation);
+	m_vec_animations_pointer.push_back(new SquareBox::AnimationSystem::PropertiesDependantAnimation);
+	animations_labels_ptr = new const char* [m_vec_animations_pointer.size()];
+
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::stationary);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forward);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backward);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::up);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::down);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forwardup);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forwarddown);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backwardup);
+	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backwarddown);
+
+	animation_motion_states_labels_ptr = new const char* [m_vec_of_animation_motion_states.size()];
+
 	layer_type = SquareBox::LayerTypeEnum::FlatLayer;
 	m_physics_world.init();
 	m_utilities.init();
+
+	m_temp_limbo_animation.animation_specifications.emplace_back(); 
+/* 
+																		we need to have atleast one animation specification
+																		because we are using it in our adding motion states logic
+																	*/
 }
 
 void FlatLayer::onLayerInit(SquareBox::GWOM::Layer& layer_)
@@ -285,354 +306,354 @@ void FlatLayer::onOutOfFocus(SquareBox::GWOM::Layer& layer_)
 
 void FlatLayer::onUpdateProcessingInput(float deltaTime_, std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_, SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_)
 {
-		SquareBox::GWOM::Layer& active_layer = layers_[active_layer_index_];
-		const std::vector<std::pair<int, int>>& active_layer_alive_cluster_objects = active_layer.alive_cluster_objects;
+	SquareBox::GWOM::Layer& active_layer = layers_[active_layer_index_];
+	const std::vector<std::pair<int, int>>& active_layer_alive_cluster_objects = active_layer.alive_cluster_objects;
 
-		glm::vec2& mouse_in_world = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
+	glm::vec2& mouse_in_world = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
 
-		if (editor_mode_ == EditorModeEnum::SELECT) {
-			bool hoveringOverCluster = false;
-			bool hoveringOverClusterObject = false;
-			for (unsigned int i = 0; i < active_layer_alive_cluster_objects.size(); i++)
-			{
-				SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[active_layer_alive_cluster_objects[i].first].cluster_objects[active_layer_alive_cluster_objects[i].second];
-				m_utilities.setCurrentShapePointer(ccobj.shape, &m_current_shape_ptr);
-				// is being hovered and doesn't belong to a camera which is closed
-				if (m_current_shape_ptr->containtsPoint(ccobj, mouse_in_world)) {
-					hoveringOverCluster = true;
-					hoveringOverClusterObject = true;
-					m_current_hovered_world_cluster_index = active_layer_alive_cluster_objects[i].first;
-					m_current_hovered_cluster_object_index = active_layer_alive_cluster_objects[i].second;
+	if (editor_mode_ == EditorModeEnum::SELECT) {
+		bool hoveringOverCluster = false;
+		bool hoveringOverClusterObject = false;
+		for (unsigned int i = 0; i < active_layer_alive_cluster_objects.size(); i++)
+		{
+			SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[active_layer_alive_cluster_objects[i].first].cluster_objects[active_layer_alive_cluster_objects[i].second];
+			m_utilities.setCurrentShapePointer(ccobj.shape, &m_current_shape_ptr);
+			// is being hovered and doesn't belong to a camera which is closed
+			if (m_current_shape_ptr->containtsPoint(ccobj, mouse_in_world)) {
+				hoveringOverCluster = true;
+				hoveringOverClusterObject = true;
+				m_current_hovered_world_cluster_index = active_layer_alive_cluster_objects[i].first;
+				m_current_hovered_cluster_object_index = active_layer_alive_cluster_objects[i].second;
+			}
+		}
+
+		//selection implementation
+		if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER) {
+			//if we are hovering over a cluster object and we Left click let that objects' whole cluster become selected in our world scene
+			if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(world_cluster_selection_input_key)) {
+				m_selected_cluster_objects.clear();
+				//loop through our alive Objects and select this HoveredWorld Cluster
+				for (size_t i = 0; i < active_layer_alive_cluster_objects.size(); i++)
+				{
+					if (active_layer_alive_cluster_objects[i].first == m_current_hovered_world_cluster_index) {
+						m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(active_layer_alive_cluster_objects[i].first, active_layer_alive_cluster_objects[i].second));
+					}
+				}
+				/*
+					keep track of where the mouse was in the world cluster when we selected this world
+					cluster , we shall use this while dragging the world cluster later
+				*/
+				clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
+			}
+		}
+		else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT) {
+			//Cluster object Selection
+			//this is the only place where we actually set the active worldClusters and Objects
+			//if we are hovering over a cluster object and we Left click let that object become the current active object in our world scene
+			if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(cluster_object_selection_input_key)) {
+				m_current_cluster_object_ptr = &active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
+				updateStates();//this updates the imGui variables
+				m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
+				m_selected_cluster_objects.clear();
+				m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index));
+
+				//check if we just clicked on one of chains or edge ends , if so record this progress
+				if (m_current_shape_ptr->is_selected_through_ends) {
+					if (m_current_cluster_object_ptr->is_first_hovered) {
+						m_current_cluster_object_ptr->is_first_hovered = false;
+						m_current_cluster_object_ptr->is_last_hovered = false;
+
+						m_current_cluster_object_ptr->is_first_selected = true;
+						m_current_cluster_object_ptr->is_last_selected = false;
+					}
+					else if (m_current_cluster_object_ptr->is_last_hovered) {
+						m_current_cluster_object_ptr->is_first_hovered = false;
+						m_current_cluster_object_ptr->is_last_hovered = false;
+
+						m_current_cluster_object_ptr->is_first_selected = false;
+						m_current_cluster_object_ptr->is_last_selected = true;
+					}
 				}
 			}
 
-			//selection implementation
-			if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER) {
-				//if we are hovering over a cluster object and we Left click let that objects' whole cluster become selected in our world scene
-				if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(world_cluster_selection_input_key)) {
-					m_selected_cluster_objects.clear();
-					//loop through our alive Objects and select this HoveredWorld Cluster
+			/* Duplicate  the current Cluster Object if its being requested by the user */
+			std::pair<int, int> m_new_cluster_object_coordinates = m_editor_assitant.currentClusterObjectDuplicator(m_physics_world, layers_, m_selected_cluster_objects, m_current_cluster_object_ptr, m_current_shape_ptr, game_ptr_, m_utilities);
+			if (m_new_cluster_object_coordinates.first != -1 && m_new_cluster_object_coordinates.second != -1) { //Why would this be (-1,-1) in the first case !!!! i need to better comment this 
+				m_current_cluster_object_ptr = &active_layer.world_clusters[m_new_cluster_object_coordinates.first].cluster_objects[m_new_cluster_object_coordinates.second];
+			}
+		}
+		else if (m_selection_mode_index == SelectModeEnum::FREESELECT) {
+			//Free selection
+			if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(free_selection_input_key)) {
+				m_utilities.addPairToVector(m_selected_cluster_objects, std::pair<int, int>(m_current_hovered_world_cluster_index, m_current_hovered_cluster_object_index));
+				/*
+					keep track of where the mouse was in the world cluster when we selected this
+					cluster object , we shall use this while dragging the world cluster later
+				*/
+				clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
+			}
+
+			//drag select
+			if (game_ptr_->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_1) && game_ptr_->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_2)) {
+				//if we are currently not drag selection
+				if (!m_is_drag_selecting) {
+					m_drag_select_origin = mouse_in_world;
+					m_is_drag_selecting = true;
+				}
+				else {
+					glm::vec4 drag_select_destRect(m_drag_select_origin, (mouse_in_world - m_drag_select_origin));
+					//add the objects that are currently in our dest to the selected object
 					for (size_t i = 0; i < active_layer_alive_cluster_objects.size(); i++)
 					{
-						if (active_layer_alive_cluster_objects[i].first == m_current_hovered_world_cluster_index) {
+						SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[active_layer_alive_cluster_objects[i].first].cluster_objects[active_layer_alive_cluster_objects[i].second];
+						if (!ccobj.is_hidden && m_utilities.isInBox(ccobj.position, drag_select_destRect)) {
 							m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(active_layer_alive_cluster_objects[i].first, active_layer_alive_cluster_objects[i].second));
 						}
 					}
-					/*
-						keep track of where the mouse was in the world cluster when we selected this world
-						cluster , we shall use this while dragging the world cluster later
-					*/
-					clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
 				}
+				/*
+					keep track of where the mouse was in the world cluster when we selected this
+					cluster object , we shall use this while dragging the world cluster later
+				*/
+				clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
 			}
-			else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT) {
-				//Cluster object Selection
-				//this is the only place where we actually set the active worldClusters and Objects
-				//if we are hovering over a cluster object and we Left click let that object become the current active object in our world scene
-				if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(cluster_object_selection_input_key)) {
-					m_current_cluster_object_ptr = &active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
-					updateStates();//this updates the imGui variables
-					m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
-					m_selected_cluster_objects.clear();
-					m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index));
-
-					//check if we just clicked on one of chains or edge ends , if so record this progress
-					if (m_current_shape_ptr->is_selected_through_ends) {
-						if (m_current_cluster_object_ptr->is_first_hovered) {
-							m_current_cluster_object_ptr->is_first_hovered = false;
-							m_current_cluster_object_ptr->is_last_hovered = false;
-
-							m_current_cluster_object_ptr->is_first_selected = true;
-							m_current_cluster_object_ptr->is_last_selected = false;
-						}
-						else if (m_current_cluster_object_ptr->is_last_hovered) {
-							m_current_cluster_object_ptr->is_first_hovered = false;
-							m_current_cluster_object_ptr->is_last_hovered = false;
-
-							m_current_cluster_object_ptr->is_first_selected = false;
-							m_current_cluster_object_ptr->is_last_selected = true;
-						}
-					}
-				}
-
-				/* Duplicate  the current Cluster Object if its being requested by the user */
-				std::pair<int, int> m_new_cluster_object_coordinates = m_editor_assitant.currentClusterObjectDuplicator(m_physics_world, layers_, m_selected_cluster_objects, m_current_cluster_object_ptr, m_current_shape_ptr, game_ptr_, m_utilities);
-				if (m_new_cluster_object_coordinates.first != -1 && m_new_cluster_object_coordinates.second != -1) { //Why would this be (-1,-1) in the first case !!!! i need to better comment this 
-					m_current_cluster_object_ptr = &active_layer.world_clusters[m_new_cluster_object_coordinates.first].cluster_objects[m_new_cluster_object_coordinates.second];
-				}
-			}
-			else if (m_selection_mode_index == SelectModeEnum::FREESELECT) {
-				//Free selection
-				if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(free_selection_input_key)) {
-					m_utilities.addPairToVector(m_selected_cluster_objects, std::pair<int, int>(m_current_hovered_world_cluster_index, m_current_hovered_cluster_object_index));
-					/*
-						keep track of where the mouse was in the world cluster when we selected this
-						cluster object , we shall use this while dragging the world cluster later
-					*/
-					clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
-				}
-
-				//drag select
-				if (game_ptr_->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_1) && game_ptr_->getInputDevice()->isInputIdBeingReceived(free_selection_drag_input_key_2)) {
-					//if we are currently not drag selection
-					if (!m_is_drag_selecting) {
-						m_drag_select_origin = mouse_in_world;
-						m_is_drag_selecting = true;
-					}
-					else {
-						glm::vec4 drag_select_destRect(m_drag_select_origin, (mouse_in_world - m_drag_select_origin));
-						//add the objects that are currently in our dest to the selected object
-						for (size_t i = 0; i < active_layer_alive_cluster_objects.size(); i++)
-						{
-							SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[active_layer_alive_cluster_objects[i].first].cluster_objects[active_layer_alive_cluster_objects[i].second];
-							if (!ccobj.is_hidden && m_utilities.isInBox(ccobj.position, drag_select_destRect)) {
-								m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(active_layer_alive_cluster_objects[i].first, active_layer_alive_cluster_objects[i].second));
-							}
-						}
-					}
-					/*
-						keep track of where the mouse was in the world cluster when we selected this
-						cluster object , we shall use this while dragging the world cluster later
-					*/
-					clustermousepos = active_layer.camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
-				}
-				else {
-					m_is_drag_selecting = false;
-				}
-			}
-			else if (m_selection_mode_index == SelectModeEnum::JOINTSSELECT) {
-				//Joint Creation
-				//only two objects can be selected at once
-				//and only one joint can exit between two bodies
-				if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(joint_selection_input_key)) {
-					//clicked on object
-					SquareBox::GWOM::ClusterObject& clicked_on_object = active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
-					if (clicked_on_object.physics_properties != nullptr) {
-						//only physics Objects can be part of joints
-						if (m_selected_cluster_objects.size() == 2) {
-							//remove the top most cluster Object Coordinates so that we maintain only two selected cluster Objects
-							m_selected_cluster_objects.erase(m_selected_cluster_objects.begin());
-						}
-						if (m_selected_cluster_objects.size() > 2) {
-							SBX_ERROR("m_selectedClusterObjects size is greater than 2, for SelectionMode joint ");
-						}
-						m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(m_current_hovered_world_cluster_index, m_current_hovered_cluster_object_index), false);
-					}
-				}
-
-				//plotting joint points
-				if(m_current_joint_ptr!=nullptr){
-					if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
-						if (game_ptr_->getInputDevice()->isInputIdReceived(pulley_plotting_input_key)) {
-							glm::vec2 mouse_in_world = layers_[active_layer_index_].camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
-							if (m_current_joint_ptr->vec_of_points.size() < 2) {
-								m_current_joint_ptr->vec_of_points.push_back(mouse_in_world);
-							}
-						}
-					}
-				}
-			
-			}
-			if (m_selection_mode_index != SelectModeEnum::FREESELECT) {
+			else {
 				m_is_drag_selecting = false;
 			}
-
-			//dragging and copying implementations
-			if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER || m_selection_mode_index == SelectModeEnum::FREESELECT && !(game_ptr_->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_activation_input_key))) {
-				//dont drag and drag select at the same time
-				if (game_ptr_->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_input_key))
-				{
-					float diplacementinX = mouse_in_world.x - clustermousepos.x;
-					float diplacementinY = mouse_in_world.y - clustermousepos.y;
-					for (unsigned int i = 0; i < m_selected_cluster_objects.size(); i++)
-					{
-						SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[m_selected_cluster_objects[i].first].cluster_objects[m_selected_cluster_objects[i].second];
-						m_utilities.setCurrentShapePointer(ccobj.shape, &m_current_shape_ptr);
-
-						if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
-							for (unsigned int j = 0; j < ccobj.vertices.size(); j++)
-							{
-								ccobj.vertices[j].x += diplacementinX;
-								ccobj.vertices[j].y += diplacementinY;
-							}
-							//need to do the logic for displacing edges,chains and ploygons and bridges since
-							//we want to displace the vertices based on the mouses motion
-							m_utilities.createClusterObjectIntoWorld(true, true, false, glm::vec2(0), &ccobj, layers_, &m_physics_world, false, false);
-							m_is_all_work_saved = false;
-						}
-						else
-						{
-							ccobj.position.x += diplacementinX;
-							ccobj.position.y += diplacementinY;
-							m_utilities.createClusterObjectIntoWorld(false, true, false, glm::vec2(0), &ccobj, layers_, &m_physics_world, false, false);
-							m_is_all_work_saved = false;
-						}
-					}
-					clustermousepos = mouse_in_world;
-					m_current_shape_ptr = nullptr;
-				}
-
-				//copying with Ctrl-C implementation ,
-				//Ctrl-V is not yet implemented thou, nno need for that
-				if (
-					m_selected_cluster_objects.size() > 0
-					&&
-					(
-						game_ptr_->getInputDevice()->isInputIdBeingReceived(left_ctrl_input_key) ||
-						game_ptr_->getInputDevice()->isInputIdBeingReceived(right_ctrl_input_key)
-						)
-					&&
-					game_ptr_->getInputDevice()->isInputIdReceived(c_input_key)
-					)
-				{
-					m_is_all_work_saved = false;
-					//make a copy of all the seleceted objects
-					std::vector<std::pair<int, int>> copy_of_selected_objects = m_selected_cluster_objects;
-					//clear out the original selected obejcts
-					m_selected_cluster_objects.clear();
-					//create copies of the previously selected ojects but in new locations in our worldClusters vector
-
-					SquareBox::GWOM::ClusterObject* new_ccobj = nullptr;
-					std::pair<int, int> got_shell_coordinates = std::pair<int, int>(-1, -1);
-
-					for (unsigned int i = 0; i < copy_of_selected_objects.size(); i++)
-					{
-						if (i == 0) {
-							//for the first one we will have to create the new objects template manually
-							//create the first object mannually 
-							const int world_cluster_index = copy_of_selected_objects[0].first;
-
-							//a copy not reference
-							SquareBox::GWOM::ClusterObject copy_of_original_ccobj = active_layer.world_clusters[copy_of_selected_objects[0].first].cluster_objects[copy_of_selected_objects[0].second];
-
-							copy_of_original_ccobj.is_alive = false;
-
-							//TODO :
-							//joints are not copied , i will implement this later
-							copy_of_original_ccobj.joints.clear();
-							//change its index 
-							copy_of_original_ccobj.index = active_layer.world_clusters[world_cluster_index].cluster_objects.size();
-							// rename it
-							m_utilities.nameClusterObjectByIndex(copy_of_original_ccobj);
-
-							//add the copy to the worldClusters
-							active_layer.world_clusters[world_cluster_index].cluster_objects.push_back(copy_of_original_ccobj);
-
-							// get a referenece to it 
-							new_ccobj = &active_layer.world_clusters[world_cluster_index].cluster_objects.back();
-
-						}
-						else {
-							//depend on the shell we got 
-							if (got_shell_coordinates.first >= 0 && got_shell_coordinates.second >= 0) {
-								//copy properties
-								active_layer.world_clusters[got_shell_coordinates.first].cluster_objects[got_shell_coordinates.second] = active_layer.world_clusters[copy_of_selected_objects[i].first].cluster_objects[copy_of_selected_objects[i].second];
-								//point to our object
-								new_ccobj = &active_layer.world_clusters[got_shell_coordinates.first].cluster_objects[got_shell_coordinates.second];
-								//restore the cluster_index && index
-								new_ccobj->cluster_index = got_shell_coordinates.first;
-								new_ccobj->index = got_shell_coordinates.second;
-								//restore the default name
-								m_utilities.nameClusterObjectByIndex(*new_ccobj);
-								new_ccobj->is_alive = false;
-								//joints are not copied , i will implement this later
-								new_ccobj->joints.clear();
-							}
-							else {
-
-								SBX_ERROR("Invalid shell coordinates");
-								__debugbreak();
-							}
-						}
-
-						//The actual creation into the world starts here
-						m_utilities.setCurrentShapePointer(new_ccobj->shape, &m_current_shape_ptr);
-						//the world placement
-
-						//the core should not create a shell after we create the last  cluster object
-						bool create_shell = i < (copy_of_selected_objects.size() - 1);
-						int desired_shell_world_cluster_index = -1;//only remain true if we are not creating a shell 
-						if (create_shell) {
-							desired_shell_world_cluster_index = copy_of_selected_objects[i + 1].first;
-							/*
-							* world cluster index
-							* of next cluster objects in the copy_of_selected_objects
-							*/
-						}
-						SquareBox::Utilities::creationDetails  details;
-						if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
-							details = m_utilities.createClusterObjectIntoWorld(true, false, false, glm::vec2(0), new_ccobj, layers_, &m_physics_world, create_shell, false);
-						}
-						else {
-							details = m_utilities.createClusterObjectIntoWorld(false, false, false, glm::vec2(0), new_ccobj, layers_, &m_physics_world, create_shell, false);
-						}
-						if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
-							m_utilities.addPairToVector(active_layer.alive_cluster_objects, details.settlementCoordinates);
-							m_utilities.addPairToVector(m_selected_cluster_objects, details.settlementCoordinates);
-						}
-						else {
-							SBX_ERROR("We failed to get back settlement coordinates when copying a world cluster ");
-						}
-						if (details.shellCoordinates.first >= 0 && details.shellCoordinates.second >= 0) {
-							got_shell_coordinates = details.shellCoordinates;
-						}
-						else {
-							got_shell_coordinates = std::pair<int, int>(-1, -1);
-						}
-					}
-				}
-			}
-			else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT && m_current_cluster_object_ptr != nullptr) {
-				//ClusterObject Mode
-				if (m_utilities.isPairVectorMember(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index))) {
-					if (game_ptr_->getInputDevice()->isInputIdBeingReceived(cluster_object_drag_selection_input_key))
-					{
-						m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
-						//we are trusting our program to always make the selected object the current object ,which it does perfectly
-						if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
-							//need to do the logic for displacing edges,chains and ploygons and bridges since
-							//we want to displace the vertices basinf on the mouses motion
-							m_utilities.createClusterObjectIntoWorld(true, true, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, false, false);
-							m_is_all_work_saved = false;
-						}
-						else
-						{
-							m_utilities.createClusterObjectIntoWorld(false, true, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, false, false);
-							m_is_all_work_saved = false;
-						}
-					}
-				}
-			}
-			else if (m_selection_mode_index == SelectModeEnum::JOINTSSELECT) {
-				/*
-					Joints dragging is handled when the individual cluster Objects are dragged
-				*/
-			}
 		}
-		else if (editor_mode_ == EditorModeEnum::PLACE) {
-			if (game_ptr_->getInputDevice()->isInputIdReceived(non_tiled_layer_placement_input_ley)) {
-				//place plotting points for the ploted shapes , and draw the other objects
-				SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(false, false, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, true, m_respect_ancestor);
-				//add to m_alive_cluster_objects Objects if its alive
-				if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
-					if (active_layer.world_clusters[details.settlementCoordinates.first].cluster_objects[details.settlementCoordinates.second].is_alive) {
-						m_utilities.addPairToVector(active_layer.alive_cluster_objects, details.settlementCoordinates);
+		else if (m_selection_mode_index == SelectModeEnum::JOINTSSELECT) {
+			//Joint Creation
+			//only two objects can be selected at once
+			//and only one joint can exit between two bodies
+			if (hoveringOverClusterObject && game_ptr_->getInputDevice()->isInputIdReceived(joint_selection_input_key)) {
+				//clicked on object
+				SquareBox::GWOM::ClusterObject& clicked_on_object = active_layer.world_clusters[m_current_hovered_world_cluster_index].cluster_objects[m_current_hovered_cluster_object_index];
+				if (clicked_on_object.physics_properties != nullptr) {
+					//only physics Objects can be part of joints
+					if (m_selected_cluster_objects.size() == 2) {
+						//remove the top most cluster Object Coordinates so that we maintain only two selected cluster Objects
+						m_selected_cluster_objects.erase(m_selected_cluster_objects.begin());
+					}
+					if (m_selected_cluster_objects.size() > 2) {
+						SBX_ERROR("m_selectedClusterObjects size is greater than 2, for SelectionMode joint ");
+					}
+					m_utilities.addPairToVector(m_selected_cluster_objects, std::pair(m_current_hovered_world_cluster_index, m_current_hovered_cluster_object_index), false);
+				}
+			}
+
+			//plotting joint points
+			if (m_current_joint_ptr != nullptr) {
+				if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
+					if (game_ptr_->getInputDevice()->isInputIdReceived(pulley_plotting_input_key)) {
+						glm::vec2 mouse_in_world = layers_[active_layer_index_].camera.convertScreenToWorld(game_ptr_->getInputDevice()->getScreenLocations()[0].coordinates);
+						if (m_current_joint_ptr->vec_of_points.size() < 2) {
+							m_current_joint_ptr->vec_of_points.push_back(mouse_in_world);
+						}
+					}
+				}
+			}
+
+		}
+		if (m_selection_mode_index != SelectModeEnum::FREESELECT) {
+			m_is_drag_selecting = false;
+		}
+
+		//dragging and copying implementations
+		if (m_selection_mode_index == SelectModeEnum::WORLDCLUSTER || m_selection_mode_index == SelectModeEnum::FREESELECT && !(game_ptr_->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_activation_input_key))) {
+			//dont drag and drag select at the same time
+			if (game_ptr_->getInputDevice()->isInputIdBeingReceived(world_cluster_and_free_selection_dragging_input_key))
+			{
+				float diplacementinX = mouse_in_world.x - clustermousepos.x;
+				float diplacementinY = mouse_in_world.y - clustermousepos.y;
+				for (unsigned int i = 0; i < m_selected_cluster_objects.size(); i++)
+				{
+					SquareBox::GWOM::ClusterObject& ccobj = active_layer.world_clusters[m_selected_cluster_objects[i].first].cluster_objects[m_selected_cluster_objects[i].second];
+					m_utilities.setCurrentShapePointer(ccobj.shape, &m_current_shape_ptr);
+
+					if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
+						for (unsigned int j = 0; j < ccobj.vertices.size(); j++)
+						{
+							ccobj.vertices[j].x += diplacementinX;
+							ccobj.vertices[j].y += diplacementinY;
+						}
+						//need to do the logic for displacing edges,chains and ploygons and bridges since
+						//we want to displace the vertices based on the mouses motion
+						m_utilities.createClusterObjectIntoWorld(true, true, false, glm::vec2(0), &ccobj, layers_, &m_physics_world, false, false);
 						m_is_all_work_saved = false;
 					}
-					else {
-						SBX_ERROR("Tried Adding a Dead Object to m_aliveClusterObjects");
-						__debugbreak();
+					else
+					{
+						ccobj.position.x += diplacementinX;
+						ccobj.position.y += diplacementinY;
+						m_utilities.createClusterObjectIntoWorld(false, true, false, glm::vec2(0), &ccobj, layers_, &m_physics_world, false, false);
+						m_is_all_work_saved = false;
 					}
 				}
-				//get a pointer to the shell
-				if (details.shellCoordinates.first >= 0 && details.shellCoordinates.second >= 0) {
-					m_current_cluster_object_ptr = &active_layer.world_clusters[details.shellCoordinates.first].cluster_objects[details.shellCoordinates.second];
-					checkPhysicsStatus(layers_,active_layer_index_,editor_mode_);
-					updateStates();
-				}
+				clustermousepos = mouse_in_world;
+				m_current_shape_ptr = nullptr;
+			}
 
+			//copying with Ctrl-C implementation ,
+			//Ctrl-V is not yet implemented thou, nno need for that
+			if (
+				m_selected_cluster_objects.size() > 0
+				&&
+				(
+					game_ptr_->getInputDevice()->isInputIdBeingReceived(left_ctrl_input_key) ||
+					game_ptr_->getInputDevice()->isInputIdBeingReceived(right_ctrl_input_key)
+					)
+				&&
+				game_ptr_->getInputDevice()->isInputIdReceived(c_input_key)
+				)
+			{
+				m_is_all_work_saved = false;
+				//make a copy of all the seleceted objects
+				std::vector<std::pair<int, int>> copy_of_selected_objects = m_selected_cluster_objects;
+				//clear out the original selected obejcts
+				m_selected_cluster_objects.clear();
+				//create copies of the previously selected ojects but in new locations in our worldClusters vector
+
+				SquareBox::GWOM::ClusterObject* new_ccobj = nullptr;
+				std::pair<int, int> got_shell_coordinates = std::pair<int, int>(-1, -1);
+
+				for (unsigned int i = 0; i < copy_of_selected_objects.size(); i++)
+				{
+					if (i == 0) {
+						//for the first one we will have to create the new objects template manually
+						//create the first object mannually 
+						const int world_cluster_index = copy_of_selected_objects[0].first;
+
+						//a copy not reference
+						SquareBox::GWOM::ClusterObject copy_of_original_ccobj = active_layer.world_clusters[copy_of_selected_objects[0].first].cluster_objects[copy_of_selected_objects[0].second];
+
+						copy_of_original_ccobj.is_alive = false;
+
+						//TODO :
+						//joints are not copied , i will implement this later
+						copy_of_original_ccobj.joints.clear();
+						//change its index 
+						copy_of_original_ccobj.index = active_layer.world_clusters[world_cluster_index].cluster_objects.size();
+						// rename it
+						m_utilities.nameClusterObjectByIndex(copy_of_original_ccobj);
+
+						//add the copy to the worldClusters
+						active_layer.world_clusters[world_cluster_index].cluster_objects.push_back(copy_of_original_ccobj);
+
+						// get a referenece to it 
+						new_ccobj = &active_layer.world_clusters[world_cluster_index].cluster_objects.back();
+
+					}
+					else {
+						//depend on the shell we got 
+						if (got_shell_coordinates.first >= 0 && got_shell_coordinates.second >= 0) {
+							//copy properties
+							active_layer.world_clusters[got_shell_coordinates.first].cluster_objects[got_shell_coordinates.second] = active_layer.world_clusters[copy_of_selected_objects[i].first].cluster_objects[copy_of_selected_objects[i].second];
+							//point to our object
+							new_ccobj = &active_layer.world_clusters[got_shell_coordinates.first].cluster_objects[got_shell_coordinates.second];
+							//restore the cluster_index && index
+							new_ccobj->cluster_index = got_shell_coordinates.first;
+							new_ccobj->index = got_shell_coordinates.second;
+							//restore the default name
+							m_utilities.nameClusterObjectByIndex(*new_ccobj);
+							new_ccobj->is_alive = false;
+							//joints are not copied , i will implement this later
+							new_ccobj->joints.clear();
+						}
+						else {
+
+							SBX_ERROR("Invalid shell coordinates");
+							__debugbreak();
+						}
+					}
+
+					//The actual creation into the world starts here
+					m_utilities.setCurrentShapePointer(new_ccobj->shape, &m_current_shape_ptr);
+					//the world placement
+
+					//the core should not create a shell after we create the last  cluster object
+					bool create_shell = i < (copy_of_selected_objects.size() - 1);
+					int desired_shell_world_cluster_index = -1;//only remain true if we are not creating a shell 
+					if (create_shell) {
+						desired_shell_world_cluster_index = copy_of_selected_objects[i + 1].first;
+						/*
+						* world cluster index
+						* of next cluster objects in the copy_of_selected_objects
+						*/
+					}
+					SquareBox::Utilities::creationDetails  details;
+					if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
+						details = m_utilities.createClusterObjectIntoWorld(true, false, false, glm::vec2(0), new_ccobj, layers_, &m_physics_world, create_shell, false);
+					}
+					else {
+						details = m_utilities.createClusterObjectIntoWorld(false, false, false, glm::vec2(0), new_ccobj, layers_, &m_physics_world, create_shell, false);
+					}
+					if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
+						m_utilities.addPairToVector(active_layer.alive_cluster_objects, details.settlementCoordinates);
+						m_utilities.addPairToVector(m_selected_cluster_objects, details.settlementCoordinates);
+					}
+					else {
+						SBX_ERROR("We failed to get back settlement coordinates when copying a world cluster ");
+					}
+					if (details.shellCoordinates.first >= 0 && details.shellCoordinates.second >= 0) {
+						got_shell_coordinates = details.shellCoordinates;
+					}
+					else {
+						got_shell_coordinates = std::pair<int, int>(-1, -1);
+					}
+				}
 			}
 		}
+		else if (m_selection_mode_index == SelectModeEnum::CLUSTEROBJECT && m_current_cluster_object_ptr != nullptr) {
+			//ClusterObject Mode
+			if (m_utilities.isPairVectorMember(m_selected_cluster_objects, std::pair(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index))) {
+				if (game_ptr_->getInputDevice()->isInputIdBeingReceived(cluster_object_drag_selection_input_key))
+				{
+					m_utilities.setCurrentShapePointer(m_current_cluster_object_ptr->shape, &m_current_shape_ptr);
+					//we are trusting our program to always make the selected object the current object ,which it does perfectly
+					if (m_current_shape_ptr->is_plotted || m_current_shape_ptr->is_calculated_light) {
+						//need to do the logic for displacing edges,chains and ploygons and bridges since
+						//we want to displace the vertices basinf on the mouses motion
+						m_utilities.createClusterObjectIntoWorld(true, true, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, false, false);
+						m_is_all_work_saved = false;
+					}
+					else
+					{
+						m_utilities.createClusterObjectIntoWorld(false, true, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, false, false);
+						m_is_all_work_saved = false;
+					}
+				}
+			}
+		}
+		else if (m_selection_mode_index == SelectModeEnum::JOINTSSELECT) {
+			/*
+				Joints dragging is handled when the individual cluster Objects are dragged
+			*/
+		}
+	}
+	else if (editor_mode_ == EditorModeEnum::PLACE) {
+		if (game_ptr_->getInputDevice()->isInputIdReceived(non_tiled_layer_placement_input_ley)) {
+			//place plotting points for the ploted shapes , and draw the other objects
+			SquareBox::Utilities::creationDetails details = m_utilities.createClusterObjectIntoWorld(false, false, true, mouse_in_world, m_current_cluster_object_ptr, layers_, &m_physics_world, true, m_respect_ancestor);
+			//add to m_alive_cluster_objects Objects if its alive
+			if (details.settlementCoordinates.first >= 0 && details.settlementCoordinates.second >= 0) {
+				if (active_layer.world_clusters[details.settlementCoordinates.first].cluster_objects[details.settlementCoordinates.second].is_alive) {
+					m_utilities.addPairToVector(active_layer.alive_cluster_objects, details.settlementCoordinates);
+					m_is_all_work_saved = false;
+				}
+				else {
+					SBX_ERROR("Tried Adding a Dead Object to m_aliveClusterObjects");
+					__debugbreak();
+				}
+			}
+			//get a pointer to the shell
+			if (details.shellCoordinates.first >= 0 && details.shellCoordinates.second >= 0) {
+				m_current_cluster_object_ptr = &active_layer.world_clusters[details.shellCoordinates.first].cluster_objects[details.shellCoordinates.second];
+				checkPhysicsStatus(layers_, active_layer_index_, editor_mode_);
+				updateStates();
+			}
+
+		}
+	}
 }
 
 void FlatLayer::onUpdateWithOrWithoutProcessing(float deltaTime_, std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_, SquareBox::IMainGame* game_ptr_, EditorModeEnum editor_mode_)
@@ -660,7 +681,7 @@ void FlatLayer::onUpdateWithOrWithoutProcessing(float deltaTime_, std::vector<Sq
 		 doing this for all none tiled layers because updating the physics engine does not only update the active layers
 		 objects
 		*/
-		if (m_play_simulation) {
+		if (m_run_physics) {
 			for (unsigned int i = 0; i < layer.alive_cluster_objects.size(); i++)
 			{
 				SquareBox::GWOM::ClusterObject& ccobj = layer.world_clusters[layer.alive_cluster_objects[i].first].cluster_objects[layer.alive_cluster_objects[i].second];
@@ -741,12 +762,12 @@ void FlatLayer::onUpdateWithOrWithoutProcessing(float deltaTime_, std::vector<Sq
 
 
 	//run update loop for our world objects
-	if (m_play_simulation) {
+	if (m_run_physics) {
 		m_physics_world.update();//update our physics
-		for each (auto & layer in layers_) {
-			m_automation.update(active_layer.world_clusters, layer.alive_cluster_objects, deltaTime_);
-			//	m_animation_creator.update(1.0f, m_world_clusters, layer.alive_cluster_objects, game_ptr_->getFps(), game_ptr_->getGameLoopElapsedSeconds(), game_ptr_->getInputDevice());
-		}
+	}
+
+	for each (auto & layer in layers_) {
+		m_animation_creator.update(deltaTime_, layers_[layer.index].world_clusters, layer.alive_cluster_objects, game_ptr_->getFps(), game_ptr_->getGameLoopElapsedSeconds(), game_ptr_->getInputDevice(), m_play_animations);
 	}
 
 	//usefull key board short cuts
@@ -1178,7 +1199,7 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 			{
 				if (m_selected_shape == i) {
 					ImGui::Spacing();
-					ImGui::Text("%s Dimensions", ToString(m_vec_shapes_pointer[i]->body_shape)); 
+					ImGui::Text("%s Dimensions", ToString(m_vec_shapes_pointer[i]->body_shape));
 					ImGui::Spacing();
 					ImGui::Separator();
 					ImGui::Spacing();
@@ -1326,7 +1347,7 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
 					ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
 					ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
-		
+
 					ImGui::Text("Preview");
 					//ImVec2 uv_min = ImVec2(m_current_cluster_object_ptr->texture_info.uv_rect.x, m_current_cluster_object_ptr->texture_info.uv_rect.y);                 // Top-left
 					//ImVec2 uv_max = ImVec2(uv_min.x + m_current_cluster_object_ptr->texture_info.uv_rect.z, uv_min.y+ m_current_cluster_object_ptr->texture_info.uv_rect.w );                 // Lower-right
@@ -1365,7 +1386,7 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					m_current_cluster_object_ptr->texture_info.texture_index = m_selected_tile_sheet_texture_index;
 					m_current_cluster_object_ptr->texture_info.texture_id = selected_tile_sheet_texture.id;
 					//current active texture
-					ImTextureID my_tex_id= (ImTextureID)selected_tile_sheet_texture.id;
+					ImTextureID my_tex_id = (ImTextureID)selected_tile_sheet_texture.id;
 					float my_tex_w = 50;
 					float my_tex_h = 50;
 					float zoom = 4.0f;
@@ -1387,19 +1408,19 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					float region_height = m_current_cluster_object_ptr->texture_info.uv_rect.w * texture_height;
 
 					float region_x_orign = (m_current_cluster_object_ptr->texture_info.uv_rect.x) * texture_width;
-					float region_y_orign = (1-m_current_cluster_object_ptr->texture_info.uv_rect.w -m_current_cluster_object_ptr->texture_info.uv_rect.y) * texture_height;
+					float region_y_orign = (1 - m_current_cluster_object_ptr->texture_info.uv_rect.w - m_current_cluster_object_ptr->texture_info.uv_rect.y) * texture_height;
 					/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
 					ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
 					ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
-					
+
 					ImVec2 texture_dimensions(selected_tile_sheet_texture.width, selected_tile_sheet_texture.height);
 					//ImVec2 uv_min = ImVec2(uvRect.x, uvRect.y);   // Top-left
 					//ImVec2 uv_max = ImVec2(uv_min.x +uvRect.z , uv_min.y + uvRect.w);  // Lower-right
 					ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 					ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
-					
 
-					ImGui::Image(my_tex_id, ImVec2(my_tex_w* zoom, my_tex_h* zoom), uv0, uv1, tint_col, border_col);
+
+					ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv0, uv1, tint_col, border_col);
 					ImGui::Text("Index: "); ImGui::SameLine();
 					//ImGui::InputInt("", &m_current_cluster_object_ptr->texture_info.tile_sheet_index);
 					ImGui::DragInt("###m_current_tile_sheet_index", &m_current_cluster_object_ptr->texture_info.tile_sheet_index, 1, 0, (selected_tile_sheet_texture.tiling.x * selected_tile_sheet_texture.tiling.y) - 1, "%d", ImGuiSliderFlags_AlwaysClamp);
@@ -1474,17 +1495,10 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 void FlatLayer::onLayerPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& layers_, int active_layer_index_, EditorModeEnum editor_mode_)
 {
 	SquareBox::GWOM::Layer& active_layer = layers_[active_layer_index_];
-	if (m_play_simulation) {
-		if (ImGui::Button("Pause Physics")) {
-			m_play_simulation = false;
-		}
-	}
-	else {
-		if (ImGui::Button("Play Physics")) {
-			m_play_simulation = true;
-		}
-	}
+
 	ImGui::NewLine();
+	ImGui::Checkbox("Run Physics             ", &m_run_physics);
+	ImGui::Checkbox("Play Animations         ", &m_play_animations);
 	ImGui::Checkbox("Respect Ancesor         ", &m_respect_ancestor);
 	ImGui::Checkbox("Draw Edges              ", &m_always_draw_edges);
 	ImGui::Checkbox("Show scaling lines      ", &m_show_scaling_in_debug_mode);
@@ -1586,11 +1600,6 @@ void FlatLayer::onLayerPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& la
 	if (ImGui::Button("Reload Animations Script"))
 	{
 		m_animation_creator.loadAnimationScript(m_animation_script);
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Reload Automation Script"))
-	{
-		m_automation.loadAutomationScript(m_automation_script);
 	}
 
 	ImGui::NewLine();
@@ -1730,7 +1739,7 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 				ImGui::BeginDisabled();
 
 			}
-			
+
 			ImGui::Spacing();
 			ImGui::Text("Body Type");
 			ImGui::Spacing();
@@ -2129,11 +2138,11 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 		else if (m_selection_mode_index == SelectModeEnum::JOINTSSELECT && editor_mode_ == EditorModeEnum::SELECT) {
 			ImGui::Checkbox("Show Joints", &m_debug_show_joints);
 
-			
+
 			//for the pulley Joint
 			if (m_current_joint_ptr != nullptr) {
-			
-					if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
+
+				if (m_current_joint_ptr->joint_type == SquareBox::JointTypeEnum::pulley_joint) {
 
 					if (ImGui::Button("Clear Plots")) {
 						m_current_joint_ptr->vec_of_points.clear();
@@ -2147,9 +2156,9 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 				SquareBox::GWOM::ClusterObject& ccobjB = active_layer.world_clusters[m_selected_cluster_objects[1].first].cluster_objects[m_selected_cluster_objects[1].second];
 				for (unsigned int i = 0; i < ccobjA.joints.size(); i++)
 				{
-					SquareBox::GWOM::Joint& focus_joint= ccobjA.joints[i];
-					const std::pair<int, int> & bodyAACoordinates = std::pair(focus_joint.body_a_coordinates.first, focus_joint.body_a_coordinates.second);
-					const std::pair<int, int> & bodyABCoordinates = std::pair(focus_joint.body_b_coordinates.first, focus_joint.body_b_coordinates.second);
+					SquareBox::GWOM::Joint& focus_joint = ccobjA.joints[i];
+					const std::pair<int, int>& bodyAACoordinates = std::pair(focus_joint.body_a_coordinates.first, focus_joint.body_a_coordinates.second);
+					const std::pair<int, int>& bodyABCoordinates = std::pair(focus_joint.body_b_coordinates.first, focus_joint.body_b_coordinates.second);
 					if (
 						(
 							bodyAACoordinates == std::pair(ccobjA.cluster_index, ccobjA.index)
@@ -2514,7 +2523,177 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 
 	}
 	else if (m_object_properties_enum == ObjectPropertiesEnum::ANIMATION) {
-		ImGui::Text("Not Yet Implemented.");
+		if (m_current_cluster_object_ptr != nullptr) {
+			bool atleast_one_animation_found = false;
+			
+			for each (auto & focus_animation in m_animation_creator.m_animations)
+			{
+				if (focus_animation->target_cluster_object_coordinates == std::pair<int, int>(m_current_cluster_object_ptr->cluster_index, m_current_cluster_object_ptr->index)) {
+					m_selected_animation = static_cast<int>(focus_animation->animation_type);
+					ImGui::Spacing();
+					//display our shapes names
+					ImGui::Text("Animation     : "); ImGui::SameLine();
+					ImGui::Text(ToString(focus_animation->animation_type));
+
+					atleast_one_animation_found = true;
+					/*
+					
+					  this animation part still needs alot of editing
+
+					  i have to add appropriate buttons for editing, deleting and adding new animations
+
+					  ability to save the animations currently in the animation vec to the animation  
+					  script so that they can be loaded in next time
+					
+					*/
+
+					for (unsigned int i = 0; i < m_vec_animations_pointer.size(); i++)
+					{
+						if (m_selected_animation == i) {
+
+							if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::forceDependant) {
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								{
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
+									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+
+										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
+										ImGui::Checkbox("Is Forward Movement Oriented  :  ", &focus_animation_squence.isForwardMovementOrientied);
+										ImGui::Checkbox("Is Reverse Movement Oriented  :  ", &focus_animation_squence.isReversedMovementOrientied);
+										ImGui::Checkbox("Is Ground Dependant           :  ", &focus_animation_squence.isGroundDependant);
+										ImGui::Checkbox("Linked to Vertical Velocity   :  ", &focus_animation_squence.isAnimationSpeedLinkedToVerticalVelocity);
+										ImGui::Checkbox("Linked to Horizontal Velocity :  ", &focus_animation_squence.isAnimationSpeedLinkedToHorizontalVelocity);
+										ImGui::Checkbox("Force by Mass                 :  ", &focus_animation_squence.applyForceAccordingToMass);
+										ImGui::Checkbox("is Position Editing           :  ", &focus_animation_squence.isPositionEditing);
+										ImGui::InputFloat("Gain in X        		   :  ", &focus_animation_squence.gainInX, 0.1, 1.0f);
+										ImGui::InputFloat("Gain in Y        		   :  ", &focus_animation_squence.gainInY, 0.1, 1.0f);
+										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
+										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										/*
+										0 - onTap
+										1 - onLongPress
+										2 - isBeingPressed
+										i will give this an enum class when i get time
+										*/
+										ImGui::InputInt("Key Activation Squence        :  ", &focus_animation_squence.keyActivationSquence);
+										ImGui::InputInt("Key Code                      :  ", &focus_animation_squence.keycode);
+										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
+										ImGui::InputFloat("Animation Force  X 		   :  ", &focus_animation_squence.animationForce.x, 0.1, 1.0f);
+										ImGui::InputFloat("Animation Force  Y 		   :  ", &focus_animation_squence.animationForce.y, 0.1, 1.0f);
+										
+										ImGui::TreePop();
+									}
+								}
+							}
+							else if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::timeDependant) {
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								{
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
+									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
+										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
+										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										/*
+										0 - onTap
+										1 - onLongPress
+										2 - isBeingPressed
+										i will give this an enum class when i get time
+										*/
+										ImGui::InputInt("Key Activation Squence        :  ", &focus_animation_squence.keyActivationSquence);
+										ImGui::InputInt("Key Code                      :  ", &focus_animation_squence.keycode);
+										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
+										
+										// the animations duration can not be less than one
+										if (focus_animation_squence.duration<1) {
+											focus_animation_squence.duration = 1;
+										}
+
+										ImGui::TreePop();
+									}
+								}
+							}
+							else if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::propertiesDependant) {
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								{
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
+									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+
+										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
+										ImGui::Checkbox("Is Forward Movement Oriented  :  ", &focus_animation_squence.isForwardMovementOrientied);
+										ImGui::Checkbox("Is Reverse Movement Oriented  :  ", &focus_animation_squence.isReversedMovementOrientied);
+										ImGui::Checkbox("Is Ground Dependant           :  ", &focus_animation_squence.isGroundDependant);
+										ImGui::Checkbox("Linked to Vertical Velocity   :  ", &focus_animation_squence.isAnimationSpeedLinkedToVerticalVelocity);
+										ImGui::Checkbox("Linked to Horizontal Velocity :  ", &focus_animation_squence.isAnimationSpeedLinkedToHorizontalVelocity);
+										ImGui::Checkbox("Force by Mass                 :  ", &focus_animation_squence.applyForceAccordingToMass);
+										ImGui::Checkbox("is Position Editing           :  ", &focus_animation_squence.isPositionEditing);
+										ImGui::InputFloat("Gain in X        		   :  ", &focus_animation_squence.gainInX, 0.1, 1.0f);
+										ImGui::InputFloat("Gain in Y        		   :  ", &focus_animation_squence.gainInY, 0.1, 1.0f);
+										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
+										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										/*
+										0 - onTap
+										1 - onLongPress
+										2 - isBeingPressed
+										i will give this an enum class when i get time
+										*/
+										ImGui::InputInt("Key Activation Squence        :  ", &focus_animation_squence.keyActivationSquence);
+										ImGui::InputInt("Key Code                      :  ", &focus_animation_squence.keycode);
+										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
+										ImGui::InputFloat("Animation Force  X 		   :  ", &focus_animation_squence.animationForce.x, 0.1, 1.0f);
+										ImGui::InputFloat("Animation Force  Y 		   :  ", &focus_animation_squence.animationForce.y, 0.1, 1.0f);
+										ImGui::TreePop();
+									}
+								}
+							}
+						}
+					}
+
+
+				}
+			}
+		    
+			if (editor_mode_==EditorModeEnum::SELECT) {
+				//can only add animations to objects that are already inside alive_cluster_objects_array
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Spacing();
+				ImGui::Text("NEW ANIMATION");
+				ImGui::Spacing();
+				ImGui::Spacing();
+
+				m_temp_limbo_animation.target_cluster_object = std::string(m_current_cluster_object_ptr->name);
+
+
+				ImGui::Text("Animation     : "); ImGui::SameLine();
+
+				for (unsigned int i = 0; i < m_vec_animations_pointer.size(); i++)
+				{
+					animations_labels_ptr[i] = ToString(m_vec_animations_pointer[i]->animation_type);
+				}
+
+
+				ImGui::Combo("###TempAnimation", &m_temp_limbo_selected_animation, animations_labels_ptr, m_vec_animations_pointer.size());
+				m_temp_limbo_animation.animation_type = m_vec_animations_pointer[m_temp_limbo_selected_animation]->animation_type;
+
+			
+				ImGui::Text("Motion State  : "); ImGui::SameLine();
+				/* motion states are added during the editing phase*/
+
+
+				for (unsigned int i = 0; i < m_vec_of_animation_motion_states.size(); i++)
+				{
+					animation_motion_states_labels_ptr[i] = ToString(m_vec_of_animation_motion_states[i]);
+				}
+
+				m_temp_limbo_selected_animation_motion_state = static_cast<int>(m_temp_limbo_animation.animation_specifications.back().motionState);
+				ImGui::Combo("###AnimationMotionState", &m_temp_limbo_selected_animation_motion_state, animation_motion_states_labels_ptr, m_vec_of_animation_motion_states.size());
+				m_temp_limbo_animation.animation_specifications.back().motionState = m_vec_of_animation_motion_states[m_temp_limbo_selected_animation_motion_state];
+				
+				if (ImGui::Button("Add")) {
+					m_animation_creator.addNewLimboAnimation(m_temp_limbo_animation);
+				}
+			}
+		}
 	}
 }
 

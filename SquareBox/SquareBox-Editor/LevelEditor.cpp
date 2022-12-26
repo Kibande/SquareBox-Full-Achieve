@@ -34,7 +34,7 @@ int LevelEditor::getPreviousScreenIndex() const
 
 void LevelEditor::build()
 {
-	SBX_INFO("Level Editor loaded into memory");
+	SBX_INFO("Level Editor Screen loaded into memory");
 }
 
 void LevelEditor::onEntry()
@@ -283,8 +283,7 @@ void LevelEditor::onExit()
 		m_texture_program = SquareBox::RenderEngine::GLSLProgram();
 		m_debug_program = SquareBox::RenderEngine::GLSLProgram();
 
-		//m_automation.dispose();
-		//m_animatioCreator.dispose();
+		
 		for each (const auto & ref_layer in m_layers) {
 			auto& layer = m_layers[ref_layer.index];
 			for each (auto & layer_type in m_vec_of_layer_types)
@@ -565,6 +564,8 @@ void LevelEditor::drawGUI()
 		if (ImGui::Button("+ Single")) {
 			m_show_open_texture_file_dialog = true;
 		}
+		ImGui::NewLine();
+		ImGui::NewLine();
 
 		ImGui::Separator();
 
@@ -577,9 +578,9 @@ void LevelEditor::drawGUI()
 		if (ImGui::Button("+ TileSheet")) {
 			m_show_open_tile_sheet_file_dialog = true;
 		}
+		ImGui::NewLine();
+		ImGui::NewLine();
 
-		ImGui::NewLine();
-		ImGui::NewLine();
 	}
 	ImGui::End();
 
@@ -602,10 +603,9 @@ void LevelEditor::drawGUI()
 		ImGui::SetWindowPos(ImVec2(m_game_ptr->getWindow()->getScreenWidth() - ImGui::GetWindowWidth() - 2, m_main_menu_bar_height));
 		int right_tab_subject = static_cast<int>(m_side_view);
 
-		ImGui::Text("FPS Counter: %.2f", static_cast<float>(m_game_ptr->getFps()));
+		ImGui::Text("FPS Counter: %i", static_cast<int>(m_game_ptr->getFps()));
 		ImGui::Text("Active Layer: %s", m_layers[m_active_layer_index].name);
 		ImGui::NewLine();
-
 
 		if (ImGui::BeginTabBar("SidePanelTabs"))
 		{

@@ -40,7 +40,8 @@ namespace SquareBox {
 		const int & MAX_UPATE_LOOPS = 8; // Max number of physics steps per frame
 		const float & MS_PER_SECOND = 1000; // Number of milliseconds in a second
 		const float & DESIRED_FRAMETIME = MS_PER_SECOND / DESRED_FPS; // The desired frame time per frame
-		
+		Uint32 start_timer = SDL_GetTicks();
+
 		SquareBox::RenderEngine::FpsLimiter limiter;
 		limiter.setMaxFPS(DESRED_FPS);
 		
@@ -57,6 +58,9 @@ namespace SquareBox {
 				continue;
 			}
 			else {
+
+
+
 				m_window.update();
 				// Calculate the frameTime in milliseconds
 				limiter.begin();
@@ -91,11 +95,9 @@ namespace SquareBox {
 
 				draw();
 				m_fps = limiter.end();
-				m_current_frame_count++;
-				if (std::fabs(m_fps - m_current_frame_count) <= 2) {
-					m_game_loop_elapsed_seconds++;
-					m_current_frame_count = 0;
-				}
+
+				m_game_loop_elapsed_seconds = (SDL_GetTicks() - start_timer) * 0.001;
+				
 				m_window.swapBuffer();
 			}
 		}

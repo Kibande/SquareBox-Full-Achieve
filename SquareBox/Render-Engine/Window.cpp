@@ -98,6 +98,8 @@ namespace SquareBox {
 
 		void Window::setWindowIcon(unsigned char* pixelBuffer_, unsigned int width_, unsigned int height_)
 		{
+			/* a good icon dimensions should be below 75 x 75*/
+
 			Uint32 rmask = 0x000000ff;
 			Uint32 gmask = 0x0000ff00;
 			Uint32 bmask = 0x00ff0000;

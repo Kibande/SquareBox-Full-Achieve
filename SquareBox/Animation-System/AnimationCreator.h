@@ -28,12 +28,13 @@ namespace SquareBox {
 		public:
 			void init();
 			bool loadAnimationScript(std::string filePath_);
-			void update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const  std::vector<std::pair<int, int >> & aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_);
+			void addNewLimboAnimation(LimboAnimation & new_limbo_animation_); // added for the editor
+			void update(const float & deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const  std::vector<std::pair<int, int >> & aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_, bool run_animations_);
 			void dispose();
+			std::vector<std::shared_ptr<SquareBox::AnimationSystem::IAnimation>> m_animations;
 		private:
 			lua_State *L = nullptr;
 			bool CheckLua(lua_State *L, int r);
-			std::vector<std::shared_ptr<SquareBox::AnimationSystem::IAnimation>> m_Animations;
 		};
 	};
 }

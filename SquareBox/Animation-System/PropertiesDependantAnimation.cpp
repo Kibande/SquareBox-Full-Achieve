@@ -9,6 +9,7 @@ SquareBox::AnimationSystem::PropertiesDependantAnimation::PropertiesDependantAni
 	{
 		defineSequence(animation_specifications_[i]);
 	}
+	animation_type = AnimationTypeEnum::propertiesDependant;
 }
 
 bool SquareBox::AnimationSystem::PropertiesDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)

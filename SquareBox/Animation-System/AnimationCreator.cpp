@@ -20,7 +20,7 @@ namespace SquareBox {
 		{
 			lua_register(L, "lua_HostLogFunction", lua_HostLogFunction);
 			limboAnimations.clear();
-			m_Animations.clear();
+			m_animations.clear();
 
 			std::string lua_file_string = "";
 
@@ -205,7 +205,14 @@ namespace SquareBox {
 			}
 			return true;
 		}
-		void AnimationCreator::update(const float& deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const std::vector<std::pair<int, int>>& aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice* input_)
+
+		void AnimationCreator::addNewLimboAnimation(LimboAnimation& new_limbo_animation_)
+		{
+			new_limbo_animation_.source_animation_file = "Created by level Editor";
+			limboAnimations.push_back(new_limbo_animation_);
+		}
+
+		void AnimationCreator::update(const float& deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const std::vector<std::pair<int, int>>& aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice* input_, bool run_animations_)
 		{
 			//Update the Manipulators
 			for (unsigned int i = 0; i < limboAnimations.size(); i++)
@@ -219,13 +226,13 @@ namespace SquareBox {
 
 					if (std::string(cwobj.name) == CLA.target_cluster_object) {
 						if (CLA.animation_type == SquareBox::AnimationTypeEnum::forceDependant) {
-							m_Animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::ForceDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.maxLinearVelocity, CLA.applyDamping, CLA.animation_specifications));
+							m_animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::ForceDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.maxLinearVelocity, CLA.applyDamping, CLA.animation_specifications));
 						}
 						else if (CLA.animation_type == SquareBox::AnimationTypeEnum::timeDependant) {
-							m_Animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::TimeDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.animation_specifications));
+							m_animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::TimeDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.animation_specifications));
 						}
 						else if (CLA.animation_type == SquareBox::AnimationTypeEnum::propertiesDependant) {
-							m_Animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::PropertiesDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.animation_specifications));
+							m_animations.emplace_back(std::make_unique<SquareBox::AnimationSystem::PropertiesDependantAnimation>(CLA.target_cluster_object, aliveClusterObjects_[j], CLA.animation_specifications));
 						}
 						else {
 							SBX_CORE_INFO("Undefined Animation Type in {}", CLA.source_animation_file);
@@ -238,36 +245,42 @@ namespace SquareBox {
 			}
 
 			limboAnimations.clear();
+			if (run_animations_) {
+				for (auto& a : m_animations) {
+					if (a != nullptr) {//using remove if leaves behind a nullptr
+						bool notFound = true;
 
-			for (auto& a : m_Animations) {
-				if (a != nullptr) {//using remove if leaves behind a nullptr
-					bool notFound = true;
+						SquareBox::GWOM::ClusterObject& cwobj = worldClusters_[a->target_cluster_object_coordinates.first].cluster_objects[a->target_cluster_object_coordinates.second];
 
-					SquareBox::GWOM::ClusterObject& cwobj = worldClusters_[a->target_cluster_object_coordinates.first].cluster_objects[a->target_cluster_object_coordinates.second];
+						// if this is to ever give an error, it means that the coordinates system changed else where 
+						// and we forgot to update the animation system.
 
-					// if this is to ever give an error, it means that the coordinates system changed else where 
-					// and we forgot to update the animation system.
+						if (cwobj.name == a->animationObjectName) {
 
-					if (cwobj.name == a->animationObjectName) {
+							notFound = false;
+							if (a->Update(deltatime_, fElapsedTime, cwobj, FPS_, fElapsedTime, input_)) {
+								//	std::cout << "Animation Completed for "<<a->animationObjectName << std::endl;
+									//Remove from m_animations
+								a->animationComplete = true;//its time here is done
 
-						notFound = false;
-						if (a->Update(deltatime_, fElapsedTime, cwobj, FPS_, fElapsedTime, input_)) {
-							//	std::cout << "Animation Completed for "<<a->animationObjectName << std::endl;
-								//Remove from m_Animations
-							a = nullptr;//so that we skip this in the next run , the best option is to
-							//ofcourse fix our remove if to erase if
+								a = nullptr;//so that we skip this in the next run , the best option is to
+								//ofcourse fix our remove if to erase if, which i thought was working but it is not..
+
+							}
+						}
+
+						if (notFound) {
+							a->animationComplete = true;//its time here is done
 						}
 					}
-
-					if (notFound) {
-						a->animationComplete = true;//its time here is done
-					}
 				}
-			}
 
-			//Remove Completed manipulators, we are checking for also null instances due to using remove_if
-			std::remove_if(m_Animations.begin(), m_Animations.end(), [](const std::shared_ptr<SquareBox::AnimationSystem::IAnimation>& a) {
-				return a == nullptr ? true : a->animationComplete; });
+				//Remove Completed manipulators, we are checking for also null instances due to using remove_if
+				std::remove_if(m_animations.begin(), m_animations.end(), [](const std::shared_ptr<SquareBox::AnimationSystem::IAnimation>& a) {
+					return a == nullptr ? true : a->animationComplete; 
+				});
+			}
+			
 		}
 		void AnimationCreator::dispose()
 		{

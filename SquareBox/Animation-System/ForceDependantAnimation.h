@@ -24,6 +24,9 @@ namespace SquareBox {
 		class ForceDependantAnimation :public SquareBox::AnimationSystem::IAnimation
 		{
 		public:
+			ForceDependantAnimation() {
+				animation_type = AnimationTypeEnum::forceDependant;
+			};
 
 			ForceDependantAnimation(std::string ClusterObjectName_, std::pair<int, int> target_cluster_object_coordinates_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_);
 			// Inherited via IAnimation
