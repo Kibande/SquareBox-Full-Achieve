@@ -985,6 +985,7 @@ void GUIEditor::drawGUI()
 			for (size_t i = 0; i < m_gui_layer.single_textures.size(); i++)
 			{
 				if (m_gui_layer.single_textures[i].asset_file_path == temp_texture.asset_file_path) {
+					m_selected_single_texture_index = i;
 					isAlreadyPresent = true;
 					break;
 				}
@@ -994,6 +995,7 @@ void GUIEditor::drawGUI()
 
 				SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(temp_texture.id, m_file_dialog.selected_fn);
 				m_gui_layer.single_textures.push_back(SquareBox::AssetManager::TextureManager::getTextureById(temp_texture.id));
+				m_selected_single_texture_index = m_gui_layer.single_textures.size() - 1;
 			}
 		}
 
@@ -1008,6 +1010,7 @@ void GUIEditor::drawGUI()
 			for (size_t i = 0; i < m_gui_layer.tiled_textures.size(); i++)
 			{
 				if (m_gui_layer.tiled_textures[i].asset_file_path == temp_texture.asset_file_path) {
+					m_selected_tile_sheet_texture_index = i;
 					isAlreadyPresent = true;
 					break;
 				}
@@ -1017,6 +1020,7 @@ void GUIEditor::drawGUI()
 
 				SquareBox::AssetManager::TextureManager::setTextureDisplayNameById(temp_texture.id, m_file_dialog.selected_fn);
 				m_gui_layer.tiled_textures.push_back(SquareBox::AssetManager::TextureManager::getTextureById(temp_texture.id));
+				m_selected_tile_sheet_texture_index = m_gui_layer.tiled_textures.size() - 1;
 			}
 		}
 
@@ -1183,6 +1187,8 @@ void GUIEditor::cleanOutGUILayer()
 	{
 		m_gui_layer.sprite_fonts[i].dispose();
 	}
+	m_selected_single_texture_index = 0;
+	m_selected_tile_sheet_texture_index	 = 0;
 	m_gui_layer.gui_elements.clear();
 	m_gui_layer.single_textures.clear();
 	m_gui_layer.tiled_textures.clear();

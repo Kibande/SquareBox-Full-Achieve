@@ -135,10 +135,10 @@ void Welcome_Screen::drawGUI()
 			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
 		}
 
-		if (ImGui::Button("Animation Editor")) {
-			m_nextScreenIndex = ANIMATION_EDITOR_SCREEN_INDEX;
-			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
-		}
+		//if (ImGui::Button("Animation Editor")) {
+		//	m_nextScreenIndex = ANIMATION_EDITOR_SCREEN_INDEX;
+		//	m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
+		//}
 
 		ImGui::End();
 	}

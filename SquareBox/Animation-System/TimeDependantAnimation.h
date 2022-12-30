@@ -26,8 +26,7 @@ namespace SquareBox {
 			TimeDependantAnimation(std::string ClusterObjectName_,std::pair<int, int> target_cluster_object_coordinates_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_);
 
 			// Inherited via IAnimation
-			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) override;
-			void setAnimationSquence(int index_);
+			virtual void Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) override;
 		};
 	};
 };

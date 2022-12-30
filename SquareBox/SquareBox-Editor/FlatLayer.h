@@ -53,7 +53,6 @@ public:
 	int m_selected_shape = 0; //in reference to m_vec_shapes_pointer (vector of pointer of all shapes avaliable to us);
 	int m_selected_animation = 0;
 	int m_temp_limbo_selected_animation = 0;
-	int m_temp_limbo_selected_animation_motion_state = 0;
 	float m_free_select_rotation_padding = 0.0f;
 	float m_free_select_rotation_universal_angle = 0.0f;
 
@@ -138,8 +137,6 @@ public:
 
 	const char** shapes_labels_ptr = nullptr;
 	const char** animations_labels_ptr = nullptr;
-	std::vector<SquareBox::AnimationMotionStateEnum> m_vec_of_animation_motion_states;
-	const char** animation_motion_states_labels_ptr = nullptr;
 	SquareBox::PhysicsCollisionEngine::PhysicsWorld m_physics_world;
 	int m_target_shift_to_layer_index = 0;// when shifting cluster objects from one layer to 
 	glm::vec2  m_drag_select_origin;

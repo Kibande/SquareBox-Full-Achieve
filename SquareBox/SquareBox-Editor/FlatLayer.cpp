@@ -111,18 +111,6 @@ void FlatLayer::onInit()
 	m_vec_animations_pointer.push_back(new SquareBox::AnimationSystem::PropertiesDependantAnimation);
 	animations_labels_ptr = new const char* [m_vec_animations_pointer.size()];
 
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::stationary);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forward);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backward);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::up);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::down);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forwardup);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::forwarddown);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backwardup);
-	m_vec_of_animation_motion_states.push_back(SquareBox::AnimationMotionStateEnum::backwarddown);
-
-	animation_motion_states_labels_ptr = new const char* [m_vec_of_animation_motion_states.size()];
-
 	layer_type = SquareBox::LayerTypeEnum::FlatLayer;
 	m_physics_world.init();
 	m_utilities.init();
@@ -2552,10 +2540,10 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 						if (m_selected_animation == i) {
 
 							if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::forceDependant) {
-								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_specification.size(); j++)
 								{
-									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
-									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_specification[j];
+									if (ImGui::TreeNode((void*)(intptr_t)j, "id: %d", focus_animation_squence.specification_id)) {
 
 										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
 										ImGui::Checkbox("Is Forward Movement Oriented  :  ", &focus_animation_squence.isForwardMovementOrientied);
@@ -2564,11 +2552,8 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 										ImGui::Checkbox("Linked to Vertical Velocity   :  ", &focus_animation_squence.isAnimationSpeedLinkedToVerticalVelocity);
 										ImGui::Checkbox("Linked to Horizontal Velocity :  ", &focus_animation_squence.isAnimationSpeedLinkedToHorizontalVelocity);
 										ImGui::Checkbox("Force by Mass                 :  ", &focus_animation_squence.applyForceAccordingToMass);
-										ImGui::Checkbox("is Position Editing           :  ", &focus_animation_squence.isPositionEditing);
-										ImGui::InputFloat("Gain in X        		   :  ", &focus_animation_squence.gainInX, 0.1, 1.0f);
-										ImGui::InputFloat("Gain in Y        		   :  ", &focus_animation_squence.gainInY, 0.1, 1.0f);
-										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
 										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
 										/*
 										0 - onTap
 										1 - onLongPress
@@ -2580,32 +2565,50 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
 										ImGui::InputFloat("Animation Force  X 		   :  ", &focus_animation_squence.animationForce.x, 0.1, 1.0f);
 										ImGui::InputFloat("Animation Force  Y 		   :  ", &focus_animation_squence.animationForce.y, 0.1, 1.0f);
-										
+										ImGui::InputInt("Loops                         :  ", &focus_animation_squence.loops);
+
+										ImGui::Spacing();
+										if (ImGui::Button("Play")) {
+											focus_animation->setCurrentAnimationSpecification(focus_animation_squence.specification_id);
+										}
+										ImGui::SameLine();
+										if (ImGui::Button("Delete")) {
+											focus_animation->deleteAnimationSpecificationById(focus_animation_squence.specification_id);
+										}
+
 										ImGui::TreePop();
 									}
 								}
 							}
 							else if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::timeDependant) {
-								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_specification.size(); j++)
 								{
-									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
-									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_specification[j];
+									if (ImGui::TreeNode((void*)(intptr_t)j, "id: %d", focus_animation_squence.specification_id)) {
 										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
-										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
 										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
 										/*
 										0 - onTap
 										1 - onLongPress
 										2 - isBeingPressed
 										i will give this an enum class when i get time
 										*/
-										ImGui::InputInt("Key Activation Squence        :  ", &focus_animation_squence.keyActivationSquence);
-										ImGui::InputInt("Key Code                      :  ", &focus_animation_squence.keycode);
 										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
-										
+										ImGui::InputInt("Loops                         :  ", &focus_animation_squence.loops);
+
 										// the animations duration can not be less than one
 										if (focus_animation_squence.duration<1) {
 											focus_animation_squence.duration = 1;
+										}
+
+										ImGui::Spacing();
+										if (ImGui::Button("Play")) {
+											focus_animation->setCurrentAnimationSpecification(focus_animation_squence.specification_id);
+										}
+										ImGui::SameLine();
+										if (ImGui::Button("Delete")) {
+											focus_animation->deleteAnimationSpecificationById(focus_animation_squence.specification_id);
 										}
 
 										ImGui::TreePop();
@@ -2613,42 +2616,47 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 								}
 							}
 							else if (m_vec_animations_pointer[m_selected_animation]->animation_type == SquareBox::AnimationTypeEnum::propertiesDependant) {
-								for (unsigned int j = 0; j < focus_animation->vec_of_animation_Squence.size(); j++)
+								for (unsigned int j = 0; j < focus_animation->vec_of_animation_specification.size(); j++)
 								{
-									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_Squence[j];
-									if (ImGui::TreeNode(ToString(focus_animation_squence.motionState))) {
+									SquareBox::AnimationSystem::AnimationSpecifications& focus_animation_squence = focus_animation->vec_of_animation_specification[j];
+									if (ImGui::TreeNode((void*)(intptr_t)j, "id: %d", focus_animation_squence.specification_id)) {
 
+										  ImGui::Checkbox("is Position Editing         :  ", &focus_animation_squence.isPositionEditing);
 										ImGui::InputFloat("Animation Speed			   :  ", &focus_animation_squence.animationSpeed, 0.1, 1.0f);
-										ImGui::Checkbox("Is Forward Movement Oriented  :  ", &focus_animation_squence.isForwardMovementOrientied);
-										ImGui::Checkbox("Is Reverse Movement Oriented  :  ", &focus_animation_squence.isReversedMovementOrientied);
-										ImGui::Checkbox("Is Ground Dependant           :  ", &focus_animation_squence.isGroundDependant);
-										ImGui::Checkbox("Linked to Vertical Velocity   :  ", &focus_animation_squence.isAnimationSpeedLinkedToVerticalVelocity);
-										ImGui::Checkbox("Linked to Horizontal Velocity :  ", &focus_animation_squence.isAnimationSpeedLinkedToHorizontalVelocity);
-										ImGui::Checkbox("Force by Mass                 :  ", &focus_animation_squence.applyForceAccordingToMass);
-										ImGui::Checkbox("is Position Editing           :  ", &focus_animation_squence.isPositionEditing);
 										ImGui::InputFloat("Gain in X        		   :  ", &focus_animation_squence.gainInX, 0.1, 1.0f);
 										ImGui::InputFloat("Gain in Y        		   :  ", &focus_animation_squence.gainInY, 0.1, 1.0f);
-										ImGui::InputInt("Number of Tiles               :  ", &focus_animation_squence.numTiles);
-										ImGui::InputInt("Start Tiles	               :  ", &focus_animation_squence.startTile);
+										ImGui::InputInt("Loops                         :  ", &focus_animation_squence.loops);
+
+										ImGui::Spacing();
+										if (ImGui::Button("Play")) {
+											focus_animation->setCurrentAnimationSpecification(focus_animation_squence.specification_id);
+										}
+
+										ImGui::SameLine();
+										if (ImGui::Button("Delete")) {
+											focus_animation->deleteAnimationSpecificationById(focus_animation_squence.specification_id);
+										}
+										
 										/*
 										0 - onTap
 										1 - onLongPress
 										2 - isBeingPressed
 										i will give this an enum class when i get time
 										*/
-										ImGui::InputInt("Key Activation Squence        :  ", &focus_animation_squence.keyActivationSquence);
-										ImGui::InputInt("Key Code                      :  ", &focus_animation_squence.keycode);
-										ImGui::InputInt("Duration                      :  ", &focus_animation_squence.duration);
-										ImGui::InputFloat("Animation Force  X 		   :  ", &focus_animation_squence.animationForce.x, 0.1, 1.0f);
-										ImGui::InputFloat("Animation Force  Y 		   :  ", &focus_animation_squence.animationForce.y, 0.1, 1.0f);
 										ImGui::TreePop();
 									}
 								}
 							}
 						}
 					}
+					ImGui::Spacing();
+					std::string deletion_button_text = "Delete " + std::string(ToString(focus_animation->animation_type));
+					if (ImGui::Button(deletion_button_text.c_str())) {
+						focus_animation->discard_animation = true;
+					}
 
-
+					ImGui::Separator();
+					ImGui::Spacing();
 				}
 			}
 		    
@@ -2676,18 +2684,7 @@ void FlatLayer::onObjectPropertiesGUIDraw(std::vector<SquareBox::GWOM::Layer>& l
 				m_temp_limbo_animation.animation_type = m_vec_animations_pointer[m_temp_limbo_selected_animation]->animation_type;
 
 			
-				ImGui::Text("Motion State  : "); ImGui::SameLine();
-				/* motion states are added during the editing phase*/
-
-
-				for (unsigned int i = 0; i < m_vec_of_animation_motion_states.size(); i++)
-				{
-					animation_motion_states_labels_ptr[i] = ToString(m_vec_of_animation_motion_states[i]);
-				}
-
-				m_temp_limbo_selected_animation_motion_state = static_cast<int>(m_temp_limbo_animation.animation_specifications.back().motionState);
-				ImGui::Combo("###AnimationMotionState", &m_temp_limbo_selected_animation_motion_state, animation_motion_states_labels_ptr, m_vec_of_animation_motion_states.size());
-				m_temp_limbo_animation.animation_specifications.back().motionState = m_vec_of_animation_motion_states[m_temp_limbo_selected_animation_motion_state];
+				ImGui::InputInt("Specification id      		   :  ", &m_temp_limbo_animation.animation_specifications.back().specification_id);
 				
 				if (ImGui::Button("Add")) {
 					m_animation_creator.addNewLimboAnimation(m_temp_limbo_animation);

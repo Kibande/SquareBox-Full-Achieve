@@ -7,38 +7,46 @@ SquareBox::AnimationSystem::TimeDependantAnimation::TimeDependantAnimation(std::
 	animation_type = SquareBox::AnimationTypeEnum::timeDependant;
 	for (unsigned int i = 0; i < animation_specifications_.size(); i++)
 	{
-		defineSequence(animation_specifications_[i]);
+		defineSpecification(animation_specifications_[i]);
 	}
 	//for timeDependant Animations will set the first recieved animations as the default currentAnimations
 	// though others can also still be set up later
 	//we are doing these because we dont depend on move state here
-	animationComplete = true;//Clear the way so that we can set the current animation
 	if (animation_specifications_.size() > 0) {
-		setAnimationSquence(0);
+		setCurrentAnimationSpecification(0);
 	}
 
 	animation_type = AnimationTypeEnum::timeDependant;
 }
 
-bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
+void SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_)
 {
-	float perFrameSpeedGain = 0.0f;
-	SquareBox::AnimationSystem::AnimationSpecifications& focus_animation = vec_of_animation_Squence[m_current_animation_squence_index];
-	if (focus_animation.duration <= 0) {
-		SBX_CORE_ERROR("TimeDependantAnimation Can't have a duration of 0 seconds or less");
-		animationComplete = true;
-		return animationComplete;
+	if (m_current_animation_specification_index >= vec_of_animation_specification.size()) {
+		return;
 	}
 
-	perFrameSpeedGain = (1 / FPS_)*SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(focus_animation.numTiles), static_cast<float>(focus_animation.duration));
-	//getting the UvCoords
-	m_animeTime += (perFrameSpeedGain * focus_animation.animationSpeed);
-	if (m_animeTime > focus_animation.numTiles) {
-		m_animeTime = 0.0f;//when the animation is done we should just reset , which will loop stuff
+	SquareBox::AnimationSystem::AnimationSpecifications& focus_specification = vec_of_animation_specification[m_current_animation_specification_index];
+	if (focus_specification.loops < 1) {
+		return;
 	}
+
+	if (focus_specification.duration <= 0) {
+		SBX_CORE_ERROR("TimeDependantAnimation Can't have a duration of 0 seconds or less");
+	
+		return;
+	}
+
+	float perFrameSpeedGain = (1 / FPS_)*SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(focus_specification.numTiles), static_cast<float>(focus_specification.duration));
+	//getting the UvCoords
+	m_animeTime += (perFrameSpeedGain * focus_specification.animationSpeed);
+	if (m_animeTime > focus_specification.numTiles) {
+		m_animeTime = 0.0f;
+		focus_specification.loops += -1;
+	}
+
 	auto retrieved_texture = AssetManager::TextureManager::getTextureById(clusterObject_.texture_info.texture_id);
 	//Apply Animation
-	m_currentTileIndex = focus_animation.startTile + (int)m_animeTime;
+	m_currentTileIndex = focus_specification.startTile + (int)m_animeTime;
 	//get the uvCoords
 	// 
 	//SBX_CORE_ERROR("We need to update the the TimeDependantAnimation System"); to be doing what ??
@@ -54,16 +62,4 @@ bool SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	}
 
 	clusterObject_.texture_info.uv_rect = uvRect;
-	return animationComplete;
-}
-
-void SquareBox::AnimationSystem::TimeDependantAnimation::setAnimationSquence(int index_)
-{
-	if (animationComplete)//can only set an animation when the current One is complete
-	{
-		m_current_animation_squence_index = index_;
-		m_currentTileIndex =vec_of_animation_Squence[m_current_animation_squence_index].startTile;
-		m_animeTime = 0.0f;
-		animationComplete = false;
-	}
 }

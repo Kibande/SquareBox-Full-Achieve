@@ -141,7 +141,7 @@ namespace SquareBox {
 
 														lua_pushstring(L, "MotionState");
 														lua_gettable(L, -2);
-														new_limbo_animation.animation_specifications[currentAnimationSpecificationIndex].motionState = static_cast<SquareBox::AnimationMotionStateEnum>(lua_tointeger(L, -1));
+														new_limbo_animation.animation_specifications[currentAnimationSpecificationIndex].specification_id = lua_tointeger(L, -1);
 														lua_pop(L, 1);
 
 														lua_pushstring(L, "IsAnimationSpeedLinkedToHorizontalVelocity");
@@ -208,8 +208,24 @@ namespace SquareBox {
 
 		void AnimationCreator::addNewLimboAnimation(LimboAnimation& new_limbo_animation_)
 		{
-			new_limbo_animation_.source_animation_file = "Created by level Editor";
-			limboAnimations.push_back(new_limbo_animation_);
+			bool animation_type_already_defined = false;
+			for (unsigned int i = 0; i < m_animations.size(); i++)
+			{
+				std::shared_ptr<SquareBox::AnimationSystem::IAnimation>& focus_animation = m_animations[i];
+
+				if (focus_animation->animationObjectName == new_limbo_animation_.target_cluster_object)
+				{
+					if (focus_animation->animation_type==new_limbo_animation_.animation_type) {
+						animation_type_already_defined = true;
+						focus_animation->defineSpecification(new_limbo_animation_.animation_specifications.back());
+					}
+				}
+			}
+
+			if (!animation_type_already_defined) {
+				new_limbo_animation_.source_animation_file = "Created by level Editor";
+				limboAnimations.push_back(new_limbo_animation_);
+			}
 		}
 
 		void AnimationCreator::update(const float& deltatime_, std::vector<SquareBox::GWOM::WorldCluster>& worldClusters_, const std::vector<std::pair<int, int>>& aliveClusterObjects_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice* input_, bool run_animations_)
@@ -243,12 +259,24 @@ namespace SquareBox {
 					}
 				}
 			}
-
 			limboAnimations.clear();
+
+			bool animation_got_discarded = false;
+
+			// this helps when the animation is ended externally 
+
+			for (auto& a : m_animations) {
+				if (a != nullptr) {//using remove if leaves behind a nullptr
+
+					animation_got_discarded = a->discard_animation ? true : animation_got_discarded;
+				}
+			}
+
 			if (run_animations_) {
 				for (auto& a : m_animations) {
 					if (a != nullptr) {//using remove if leaves behind a nullptr
-						bool notFound = true;
+
+						animation_got_discarded = a->discard_animation ? true : animation_got_discarded;
 
 						SquareBox::GWOM::ClusterObject& cwobj = worldClusters_[a->target_cluster_object_coordinates.first].cluster_objects[a->target_cluster_object_coordinates.second];
 
@@ -257,30 +285,29 @@ namespace SquareBox {
 
 						if (cwobj.name == a->animationObjectName) {
 
-							notFound = false;
-							if (a->Update(deltatime_, fElapsedTime, cwobj, FPS_, fElapsedTime, input_)) {
-								//	std::cout << "Animation Completed for "<<a->animationObjectName << std::endl;
-									//Remove from m_animations
-								a->animationComplete = true;//its time here is done
-
-								a = nullptr;//so that we skip this in the next run , the best option is to
-								//ofcourse fix our remove if to erase if, which i thought was working but it is not..
-
-							}
-						}
-
-						if (notFound) {
-							a->animationComplete = true;//its time here is done
+							a->Update(deltatime_, fElapsedTime, cwobj, FPS_, fElapsedTime, input_);
 						}
 					}
 				}
-
-				//Remove Completed manipulators, we are checking for also null instances due to using remove_if
-				std::remove_if(m_animations.begin(), m_animations.end(), [](const std::shared_ptr<SquareBox::AnimationSystem::IAnimation>& a) {
-					return a == nullptr ? true : a->animationComplete; 
-				});
+	
 			}
 			
+			if (animation_got_discarded) {
+				std::vector<std::shared_ptr<SquareBox::AnimationSystem::IAnimation>> m_original_animations = m_animations;
+				m_animations.clear();
+				for (auto& a : m_original_animations) {
+					bool keep = false;
+					if (a != nullptr) {
+						if (!a->discard_animation) {
+							keep = true;
+						}
+					}
+
+					if (keep) {
+						m_animations.push_back(a);
+					}
+				}
+			}
 		}
 		void AnimationCreator::dispose()
 		{

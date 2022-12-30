@@ -30,8 +30,7 @@ namespace SquareBox {
 
 			ForceDependantAnimation(std::string ClusterObjectName_, std::pair<int, int> target_cluster_object_coordinates_, glm::vec2 maxLinearVelocity_, bool applyDamping_, std::vector<SquareBox::AnimationSystem::AnimationSpecifications> animation_specifications_);
 			// Inherited via IAnimation
-			virtual bool Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) override;
-			void setMotionState(SquareBox::AnimationMotionStateEnum movementState_);
+			virtual void Update(const float & deltatime_, float currentGameLoopElapsedTime_, SquareBox::GWOM::ClusterObject & clusterObject_, float FPS_, float fElapsedTime, SquareBox::InputManager::IInputDevice * input_) override;
 		private:
 			float m_currentAnimeSpeed = 0.0f;//this is important , it helps us adjust speed accordig to velocity
 			bool m_applyDamping = true;

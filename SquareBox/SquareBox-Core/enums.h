@@ -160,17 +160,6 @@ namespace SquareBox {
 			(prismatic_joint, "prismatic_joint", 2)
 			(pulley_joint, "pulley_joint", 3)
 		)
-		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(AnimationMotionStateEnum,
-		(stationary, "stationary", 0)
-			(forward, "forward", 1)
-			(backward, "backward", 2)
-			(up, "up", 3)
-			(down, "down", 4)
-			(forwardup, "forwardup", 5)
-			(forwarddown, "forwarddown", 6)
-			(backwardup, "backwardup", 7)
-			(backwarddown, "backwarddown", 8)
-		)
 
 		DEFINE_ENUM_CLASS_WITH_ToString_METHOD(BodyTypeEnum,
 		(StaticBody, "StaticBody", b2_staticBody)
