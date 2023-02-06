@@ -12,6 +12,9 @@
     <ClInclude Include="Essentials.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="GUIWrapper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="IGameScreen.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -42,9 +45,14 @@
     <ClInclude Include="sqbpch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GUIWrapper.h" />
+    <ClInclude Include="Timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GUIWrapper.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="IGameScreen.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -66,6 +74,5 @@
     <ClCompile Include="sqbpch.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GUIWrapper.cpp" />
   </ItemGroup>
 </Project>

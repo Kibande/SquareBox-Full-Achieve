@@ -27,7 +27,7 @@ namespace SquareBox {
 				return new_texture;
 			}
 			else {
-				SBX_CORE_INFO("Cache Loaded  Texture  {} ", texture_path_);
+			//	SBX_CORE_INFO("Cache Loaded  Texture  {} ", texture_path_);
 			}
 			return mit->second;//the element that the pointer is pointing to , which is the Texture
 		}

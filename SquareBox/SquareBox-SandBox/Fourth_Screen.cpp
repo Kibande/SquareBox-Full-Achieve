@@ -71,17 +71,17 @@ void Fourth_Screen::onEntry()
 	m_audio_engine_ptr_1->loadMusic(m_music_1);
 	m_music_1.play();
 	auto raw_data = SquareBox::AssetManager::IOManager::getRawDataFromFile("Assets/Audio/rifle.wav");
-	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("", raw_data.first, raw_data.second));
+	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("", "", raw_data.first, raw_data.second));
 	
 	m_audio_engine_ptr_1->loadSoundBank(m_sound_bank);
 	//m_sound_bank.play();
 
-	auto sound_effect1=SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
-	auto sound_effect2=SquareBox::AudioSystem::SoundEffect("Assets/Audio/Patoranking-Love-You-Die-ft.-Diamond-Platnumz.mp3");
-	auto sound_effect3=SquareBox::AudioSystem::SoundEffect("Assets/Audio/prettyboydo, Wani - Mentally (320).mp3");
-	auto sound_effect4=SquareBox::AudioSystem::SoundEffect("Assets/Audio/Reminisce-ft-Fireboy-DML-Ogaranya.mp3");
-	auto sound_effect5=SquareBox::AudioSystem::SoundEffect("Assets/Audio/Rudeboy-Reason-With-Me.mp3");
-	auto sound_effect6=SquareBox::AudioSystem::SoundEffect("Assets/Audio/Tion Wayne feat. Afro B - Cant Go Broke.mp3");
+	auto sound_effect1=SquareBox::AudioSystem::SoundEffect("","Assets/Audio/Rudeboy-Reason-With-Me.mp3");
+	auto sound_effect2=SquareBox::AudioSystem::SoundEffect("", "Assets/Audio/Patoranking-Love-You-Die-ft.-Diamond-Platnumz.mp3");
+	auto sound_effect3=SquareBox::AudioSystem::SoundEffect("", "Assets/Audio/prettyboydo, Wani - Mentally (320).mp3");
+	auto sound_effect4=SquareBox::AudioSystem::SoundEffect("", "Assets/Audio/Reminisce-ft-Fireboy-DML-Ogaranya.mp3");
+	auto sound_effect5=SquareBox::AudioSystem::SoundEffect("", "Assets/Audio/Rudeboy-Reason-With-Me.mp3");
+	auto sound_effect6=SquareBox::AudioSystem::SoundEffect("", "Assets/Audio/Tion Wayne feat. Afro B - Cant Go Broke.mp3");
 	m_sound_bank = SquareBox::AudioSystem::SoundBank(SquareBox::FallOffEnum::LINEAR, 5.0f, 30.0f,glm::vec2(0.0f));
 	//m_sound_bank.sound_effects.push_back(sound_effect1);
 	//m_sound_bank.sound_effects.push_back(sound_effect2);

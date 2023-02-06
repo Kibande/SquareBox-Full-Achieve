@@ -1,5 +1,7 @@
 #include "First_Screen.h"
-
+#include <iostream>
+#include <Windows.h>
+#include <sapi.h>
 /*
 Order of Methods Calling
 	Constructor
@@ -73,6 +75,32 @@ void First_Screen::build()
 	m_layers[m_active_layer_index].alive_cluster_objects.push_back(std::pair<int, int>(0, 1));
 
 
+	// Initialize COM library
+	CoInitialize(NULL);
+
+	// Create voice object
+	ISpVoice* pVoice = NULL;
+	if (FAILED(::CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void**)&pVoice)))
+	{
+		std::cout << "Error creating voice object" << std::endl;
+	}
+
+	std::string text = "something of converting text to speech";
+	wchar_t wtext[20];
+	mbstowcs(wtext, text.c_str(), text.length());//includes null
+	LPWSTR ptr = wtext;
+	// Convert text to speech
+	if (FAILED(pVoice->Speak(wtext, SPF_DEFAULT, NULL)))
+	{
+		std::cout << "Error converting text to speech" << std::endl;
+	}
+
+	// Release voice object
+	pVoice->Release();
+	pVoice = NULL;
+
+	// Uninitialize COM library
+	CoUninitialize();
 }
 
 void First_Screen::onEntry()

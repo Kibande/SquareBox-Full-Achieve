@@ -279,6 +279,7 @@
     <ClInclude Include="IMainGame.h" />
     <ClInclude Include="ScreenList.h" />
     <ClInclude Include="SquareBoxGameEngine.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="constants.h" />

@@ -15,7 +15,16 @@
     <ClInclude Include="ClusterObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DSUGUIV1_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="DSUGUI_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DSUGWOMV1_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DSUGWOM_generated.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="DSUString_generated.h">
@@ -51,6 +60,12 @@
     <ClInclude Include="LevelReaderWriter.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="OldGuiReaderWriter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OldLevelReaderWriter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="StringReaderWriter.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -61,19 +76,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WorldCluster.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="OldLevelReaderWriter.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="DSUGWOMV1_generated.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="DSUGWOM_generated.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="OldGuiReaderWriter.h" />
-    <ClInclude Include="DSUGUIV1_generated.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -90,19 +92,27 @@
     <ClCompile Include="LevelReaderWriter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="OldGuiReaderWriter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="OldLevelReaderWriter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="StringReaderWriter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="TileSystem.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="OldLevelReaderWriter.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="OldGuiReaderWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DSUGUI.fbs">
+      <Filter>Docs</Filter>
+    </None>
+    <None Include="DSUGUIV1.fbs">
+      <Filter>Docs</Filter>
+    </None>
+    <None Include="DSUGWOM.fbs">
       <Filter>Docs</Filter>
     </None>
     <None Include="DSUGWOMV1.fbs">
@@ -112,12 +122,6 @@
       <Filter>Docs</Filter>
     </None>
     <None Include="NetworkMessage.fbs">
-      <Filter>Docs</Filter>
-    </None>
-    <None Include="DSUGWOM.fbs">
-      <Filter>Docs</Filter>
-    </None>
-    <None Include="DSUGUIV1.fbs">
       <Filter>Docs</Filter>
     </None>
   </ItemGroup>

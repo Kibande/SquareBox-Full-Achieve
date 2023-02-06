@@ -102,6 +102,12 @@ namespace SquareBox {
 		void loadLayerTextures(SquareBox::GWOM::Layer& layer_,float dpi_);
 		void loadGuiLayerTexturesAndFonts(SquareBox::GWOM::GuiLayer& gui_layer_, float dpi_);
 		void dispose();
+		std::string intToString(int i)
+		{
+			std::ostringstream convert;   // stream used for the conversion
+			convert << i;      // insert the textual representation of 'Number' in the characters in the stream
+			return convert.str();
+		}
 	private:
 		std::vector<SquareBox::IShape*> m_vec_shapes_pointer;
 	};

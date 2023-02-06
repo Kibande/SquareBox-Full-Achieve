@@ -15,6 +15,7 @@ int main(int argc, char** argv) {
 	windowFlags |= SquareBox::RenderEngine::WindowFlags::WINDOW_RESIZABLE;
 	app.run("TileSheet Visualizer", 600, 600, windowFlags, 60, 0.8f, input_device, SquareBox::VideoDecorderEnum::None, SquareBox::RenderEngine::ColorRGBA8(43, 43, 48, 255),"tilesheet_visualizer_logs.logs",true);
 
+
 	exit(0);
 }
 

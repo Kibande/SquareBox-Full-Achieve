@@ -17,7 +17,7 @@ bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::st
 
         for (unsigned int j = 0; j < focus_gui_element.fonts.size(); j++)
         {
-            const SquareBox::GWOM::FontInfo& focus_font_info = focus_gui_element.fonts[j];
+            const SquareBox::GWOM::Text& focus_font_info = focus_gui_element.fonts[j];
             auto fb_font_info_color = SquareBox::DSUGUI::Ivec4(focus_font_info.color.x, focus_font_info.color.y, focus_font_info.color.z, focus_font_info.color.w);
             fb_gui_element_fonts.push_back(SquareBox::DSUGUI::CreateFontInfo(builder,
                 &fb_font_info_color,
@@ -154,7 +154,7 @@ bool SquareBox::GWOM::OldGuiReaderWriter::loadGuiLayerDataAsBinary(const std::st
         for (unsigned int j = 0; j < fb_gui_element->fonts()->size(); j++)
         {
             auto fb_font = fb_gui_element->fonts()->Get(j);
-            SquareBox::GWOM::FontInfo font_info;
+            SquareBox::GWOM::Text font_info;
 
             font_info.color = glm::ivec4(fb_font->color()->x(), fb_font->color()->y(), fb_font->color()->z(), fb_font->color()->w());
             font_info.font_index = fb_font->font_index();
