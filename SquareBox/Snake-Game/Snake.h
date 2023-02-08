@@ -7,7 +7,7 @@
 struct SnakeNode
 {
     int x, y;
-    double c, maxC;
+    double c=0.0, maxC=0.0;
     SnakeNode(int arg_x, int arg_y, double arg_maxC=10) : x(arg_x), y(arg_y), maxC(arg_maxC) {}
 };
 
@@ -18,9 +18,9 @@ public:
     Snake(int arg_x, int arg_y);
 
     void update();
-    void progress();
+    void progress(const int word_width, const int world_height);
     void kill() {_snake.clear();}
-    void draw(SquareBox::RenderEngine::SpriteBatch  & renderer, SquareBox::RenderEngine::SpriteBatch& rendererBloom);
+    void draw(SquareBox::RenderEngine::SpriteBatch  & renderer,const float heightScore);
     void addNode(int x, int y);
     void setDirection(int vx, int vy) {_vx = vx; _vy = vy;}
     void addLife(double life);

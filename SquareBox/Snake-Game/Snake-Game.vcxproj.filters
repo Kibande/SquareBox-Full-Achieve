@@ -68,8 +68,5 @@
     <ClCompile Include="App.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

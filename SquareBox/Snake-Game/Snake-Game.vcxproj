@@ -288,7 +288,6 @@
     <ClCompile Include="ReplayInputs.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj">

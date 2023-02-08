@@ -13,6 +13,18 @@ namespace SquareBox {
 			dispose();
 		}
 
+		void AudioEngine::init() {
+			
+			int m_input_audio_format_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
+			m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
+			m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
+			m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
+			m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
+			m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
+			init(m_input_audio_format_flags, MIX_DEFAULT_FREQUENCY, SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::STEREO, 4096);
+		
+		}
+
 		void AudioEngine::init(int input_audio_format_flags_,int audio_frequency_, SquareBox::AudioOutputFormatEnum audio_output_format_, SquareBox::AudioChannlesEnum audio_channels_, int audio_buffer_size_)
 		{
 			if (m_is_initialized) {

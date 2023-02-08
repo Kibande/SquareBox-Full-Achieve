@@ -6,7 +6,7 @@ Snake::Snake(int arg_x, int arg_y)
 {
 	addNode(arg_x, arg_y);
 	_dead = false;
-	_life = 100.0;
+	_life = 100.0; 
 }
 
 void Snake::addLife(double life)
@@ -22,27 +22,27 @@ void Snake::update()
 {
 	if (_life <= 0) _dead = true;
 
-	// apparition de la tête
+	// appearance of the head
 	for (SnakeNode& sn : _snake) { if (sn.c < sn.maxC) sn.c += 0.5; }
 
-	// disparition des nodes morts
+	// dead nodes being deleted
 	for (SnakeNode& sn : _deadNodes) { if (sn.c > 0) sn.c -= 0.5; }
 	_deadNodes.remove_if([](SnakeNode& sn) { return sn.c <= 0; });
 
 }
 
-void Snake::progress()
+void Snake::progress(const int world_width,const int world_height)
 {
 	SnakeNode head = _snake.front();
 	_deadNodes.push_front(_snake.back());
 
 	head.x += _vx;
 	head.y += _vy;
-	head.x %= 50;
-	head.y %= 46;
+	head.x %= world_width;
+	head.y %= world_height;
 
-	if (head.x < 0) head.x += 50;
-	if (head.y < 0) head.y += 46;
+	if (head.x < 0) head.x += world_width;
+	if (head.y < 0) head.y += world_height;
 
 	checkAutoCollision();
 
@@ -59,6 +59,7 @@ void Snake::addNode(int x, int y)
 
 void Snake::checkAutoCollision()
 {
+	// life colliding with body kill the snake 
 	SnakeNode& head = _snake.front();
 	int n_collision = 0;
 	for (SnakeNode& sn : _snake)
@@ -73,10 +74,9 @@ void Snake::checkAutoCollision()
 	}
 }
 
-void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer, SquareBox::RenderEngine::SpriteBatch& rendererBloom)
+void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,const float heightScore)
 {
 	double time = _timer.Elapsed();
-	double heightScore = 40;
 	double lifeRatio = 1.0 - _life / 100.0;
 
 

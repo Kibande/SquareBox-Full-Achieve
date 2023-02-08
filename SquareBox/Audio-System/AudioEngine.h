@@ -23,7 +23,7 @@ namespace SquareBox {
 		public:
 			AudioEngine();
 			~AudioEngine();
-
+			void init();
 			void init(int input_audio_format_flags_,int audio_frequency_=static_cast<int>(MIX_DEFAULT_FREQUENCY), SquareBox::AudioOutputFormatEnum audio_output_format_= SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT,SquareBox::AudioChannlesEnum audio_channels_=SquareBox::AudioChannlesEnum::MONO,int audio_buffer_size_=4096);
 			void dispose();
 			void queryAudioParameters();

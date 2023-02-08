@@ -1,26 +1,9 @@
 #include "GameScreen.h"
 std::vector<WavePoint>* Wave::surround;
 
-//META PROGRAMMING   
-
-template<typename T>
-T print(T value) {
-    std::cout << value << std:: endl;
-    return value;
-}
-
-template<typename T, int N>
-class Array {
-private:
-    T m_Array[N];
-public:
-    int GetSize(){ const return N };
-};
 
 int GameScreen::getNextScreenIndex() const
 {
-    print<std::string>("");
-    Array<int, 20> arrays; 
     return m_nextScreenIndex;
 }
 
@@ -36,6 +19,9 @@ void GameScreen::build()
 
 void GameScreen::onEntry()
 {
+    world_width = m_game_ptr->getWindow()->getScreenWidth()*0.1f;
+    world_height = m_game_ptr->getWindow()->getScreenHeight() * 0.1f;
+
     m_utilities.init();
     m_sprite_batch.init();
 
@@ -43,7 +29,7 @@ void GameScreen::onEntry()
     m_texture_program.compileDefaultTextureShaders();
     m_texture_program.addDefaultTextureAttributes();
     m_texture_program.linkShaders();
-    glm::vec2 screen_dimensions = glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
+    glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
     m_camera.init(screen_dimensions);
 
     m_camera.setPosition(screen_dimensions * 0.5f);
@@ -51,44 +37,33 @@ void GameScreen::onEntry()
 
     snake = Snake(25, 23);
 
-    life = snake.getLife();
-
     waves.push_front(Wave(25, 23, 30, 1));
     waves.front().ampl = 400;
 
-    int m_input_audio_format_flags = static_cast<int>(SquareBox::AudioInputFormatEnum::MP3_FORMAT);
-    m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OGG_FORMAT);
-    m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MOD_FORMAT);
-    m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::MID_FORMAT);
-    m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::FLAC_FORMAT);
-    m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
-    m_audio_engine.init(m_input_audio_format_flags, MIX_DEFAULT_FREQUENCY, SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::STEREO, 4096);
+    m_audio_engine.init();
 
-    SquareBox::AudioSystem::Music music = SquareBox::AudioSystem::Music("Assets/Audio/ambience.ogg");
-    
+    music = SquareBox::AudioSystem::Music("Assets/Audio/ambience.ogg");
+
     m_audio_engine.loadMusic(music);
     music.play(-1);
 
-    bip_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bip","Assets/Audio/bip.flac"));
+    bip_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bip", "Assets/Audio/bip.flac"));
     m_audio_engine.loadSoundBank(bip_sound_bank);
 
-
-    boom_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("boom","Assets/Audio/boom.ogg"));
+    boom_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("boom", "Assets/Audio/boom.ogg"));
     m_audio_engine.loadSoundBank(boom_sound_bank);
 
-
-    bouns_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bonus","Assets/Audio/bonus.flac"));
+    bouns_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bonus", "Assets/Audio/bonus.flac"));
     m_audio_engine.loadSoundBank(bouns_sound_bank);
 
-
-    lose_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("lose","Assets/Audio/lose.flac"));
+    lose_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("lose", "Assets/Audio/lose.flac"));
     m_audio_engine.loadSoundBank(lose_sound_bank);
 
     srand(time(NULL));
 
-    for (int i(0); i < 50; ++i)
+    for (int i(0); i < world_width; ++i)
     {
-        for (int j(0); j < 46; ++j) { map.push_back(WavePoint(i, j)); }
+        for (int j(0); j < world_height; ++j) { map.push_back(WavePoint(i, j)); }
     }
 
     Wave::surround = &map;
@@ -97,20 +72,14 @@ void GameScreen::onEntry()
     scoreText.setString(m_utilities.intToString(score));
     warning.setString("WARNING <!>");
 
-
-    if (argc > 1)
-        eventProvider = new ReplayInputs("replay");
-    else
-        eventProvider = new PlayerInputs();
+    eventProvider = new PlayerInputs();
 
     if (eventProvider->getBonusLocation(bonus.x, bonus.y))
     {
-        bonus = Bonus(rand() % 50, rand() % 45);
+        bonus = Bonus(rand() % world_width, rand() % world_height);
     }
 
     replay.push_back(GameAction(tick, 1, bonus.x, bonus.y, 0, 0, 0));
-
-
 }
 
 void GameScreen::update(const float& deltaTime_)
@@ -121,7 +90,6 @@ void GameScreen::update(const float& deltaTime_)
     tick++;
     m_time = timer.Elapsed();
 
-    glm::vec2& localPosition = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
     Move snakeMove = eventProvider->getMove(m_game_ptr);
 
@@ -160,8 +128,10 @@ void GameScreen::update(const float& deltaTime_)
 
     if (bonusClock.ElapsedMillis() >= 2000)
     {
-        waves.push_front(Wave(bonus.x, bonus.y, 5, 1));
-        waves.front().ampl = 50;
+        waves.push_front(Wave(bonus.x, bonus.y, 10, 2));
+        waves.front().ampl = 100;
+
+
 
         bip_sound_bank.play();
 
@@ -189,7 +159,7 @@ void GameScreen::update(const float& deltaTime_)
             Bomb b(0, 0);
             if (eventProvider->getBombLocation(b.x, b.y, b.delay))
             {
-                b = Bomb(rand() % 50, rand() % 45);
+                b = Bomb(rand() % world_width, rand() % world_height);
             }
             bombs.push_back(b);
             replay.push_back(GameAction(tick, 2, b.x, b.y, 0, 0, b.delay));
@@ -202,29 +172,26 @@ void GameScreen::update(const float& deltaTime_)
     {
         if (bomb.ready)
         {
-            //bomb.reset();
             waves.push_back(Wave(bomb.x, bomb.y, 10, 10)); waves.back().ampl = 250;
             waves.push_back(Wave(bomb.x, bomb.y, 40, 1)); waves.back().ampl = 200;
             boom_sound_bank.play();
             bouns_sound_bank.play();
-            //if (snake.isDead()) return;
+            if (snake.isDead()) return;
             const SnakeNode& head = snake.getHead();
-            double vx = head.x - bomb.x;
-            double vy = head.y - bomb.y;
+            double x_head_boom = head.x - bomb.x;
+            double y_head_boom = head.y - bomb.y;
 
-            double distToSnake = sqrt(vx * vx + vy * vy);
+            double distToSnakeHead = sqrt(x_head_boom * x_head_boom + y_head_boom * y_head_boom);
 
-            if (distToSnake < 15)
-                snake.addLife(-100 / (distToSnake + 1));
-
- 
+            if (distToSnakeHead < 15)
+                snake.addLife(-100 / (distToSnakeHead + 1));
 
             if (bombCount > 0)
             {
                 Bomb b(0, 0);
                 if (eventProvider->getBombLocation(b.x, b.y, b.delay))
                 {
-                    b = Bomb(rand() % 50, rand() % 45);
+                    b = Bomb(rand() % world_width, rand() % world_height);
                 }
                 bombs.push_back(b);
                 replay.push_back(GameAction(tick, 2, b.x, b.y, 0, 0, b.delay));
@@ -261,10 +228,7 @@ void GameScreen::update(const float& deltaTime_)
                 score += dangerCount - 1;
             }
 
-          
-
             bouns_sound_bank.play();
-
             waves.push_front(Wave(bonus.x, bonus.y, 10, 4));
 
             snake.addNode(bonus.x, bonus.y);
@@ -280,12 +244,10 @@ void GameScreen::update(const float& deltaTime_)
 
             newScore = true;
             score++;
-
-            scoreTransition.setString(m_utilities.intToString(score));
         }
         else
         {
-            snake.progress();
+            snake.progress(world_width,world_height);
 
             if (!(tick % 6))
             {
@@ -306,7 +268,8 @@ void GameScreen::update(const float& deltaTime_)
         }
 
         snake.kill();
-        //ambience.setVolume(ambience.getVolume()*0.99);
+
+        music.setVolume(0.8f);
         gameOver = true;
     }
 
@@ -315,8 +278,10 @@ void GameScreen::update(const float& deltaTime_)
     for (Bomb& bomb : bombs)
         bomb.update();
 
+    float magic_8 = 8.0f;
     if (newScore)
     {
+
         if (heightScore - yScore < 0.1)
         {
             scoreText.setColor(SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white));
@@ -326,14 +291,12 @@ void GameScreen::update(const float& deltaTime_)
         }
         else
         {
-            yScore += (heightScore - yScore) / 8.0;
+            yScore += (heightScore - yScore) / magic_8;
             double alpha = 1 - (yScore / double(heightScore));
             scoreText.setColor(SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * alpha));
-            scoreTransition.setColor(SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * (1 - alpha)));
         }
     }
-    scoreText.setPosition(5, m_game_ptr->getWindow()->getScreenHeight()*0.9f - yScore - 8);
-    scoreTransition.setPosition(5, m_game_ptr->getWindow()->getScreenHeight() *0.9f - yScore - heightScore - 8);
+    scoreText.setPosition(5, m_game_ptr->getWindow()->getScreenHeight() * 0.9f - yScore - magic_8);
 
     // disparition des bonus morts
     for (Bonus& db : deadBonus) { if (db.radius < 50) db.radius += 2.5; }
@@ -358,7 +321,7 @@ void GameScreen::draw()
     for (int i = 0; i < n_points; i++)
     {
         WavePoint& wp = map[i];
-        SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(wp.color, wp.color, wp.color,255);
+        SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(wp.color, wp.color, wp.color, 255);
         double x = wp.x * 10 - wp.delta;
         double y = wp.y * 10 - wp.delta + heightScore;
         int g = 1;
@@ -366,118 +329,125 @@ void GameScreen::draw()
 
         SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
         m_sprite_batch.draw(glm::vec4(glm::vec2(x, y), glm::vec2(g)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, col);
-
     }
 
     for (Bonus& db : deadBonus)
     {
-    
-         double alpha = 1 - (db.radius) / 50.0;
-         SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * alpha);
+        double alpha = 1 - (db.radius) / 50.0;
+        SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 255, 255 * alpha);
 
-         glm::vec2 position = glm::vec2(10 * db.x + 5, 10 * db.y + 5 + heightScore);
-         float radius = db.radius;
+        glm::vec2 position = glm::vec2(10 * db.x + 5, 10 * db.y + 5 + heightScore);
+        float radius = db.radius;
 
-         glm::vec2 orign = (position - glm::vec2(radius) * 0.5f);
-         SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
-         m_sprite_batch.draw(glm::vec4(orign, glm::vec2(radius)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, col);
+        glm::vec2 orign = (position - glm::vec2(radius) * 0.5f);
+        SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
+        m_sprite_batch.draw(glm::vec4(orign, glm::vec2(radius)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, col);
 
     }
 
-    snake.draw(m_sprite_batch, m_sprite_batch);
+    snake.draw(m_sprite_batch, heightScore);
 
-    SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 0, 255);
 
-    glm::vec2 position = glm::vec2(10 * bonus.x + 5, 10 * bonus.y + 5 + heightScore);
-    float radius = 5;
+    const glm::vec2 position = glm::vec2(10 * bonus.x + 5, 10 * bonus.y + 5 + heightScore);
+
+    const  float radius = 5;
+    const SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
+
+
+
+    SquareBox::RenderEngine::ColorRGBA8 new_col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 100, 255);
+    double bonusScale = 0.8 + 0.7 * pow(sin(3.14159 * m_time / 2), 2);
+    float big_radius = radius * bonusScale;
+    glm::vec2 big_orign = glm::vec2((position - glm::vec2(big_radius) * 0.5f));
+    m_sprite_batch.draw(glm::vec4(big_orign, glm::vec2(big_radius)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, new_col);
+
+
+    SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 0,255);
     glm::vec2 orign(position - glm::vec2(radius) * 0.5f);
-    SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
     m_sprite_batch.draw(glm::vec4(orign, glm::vec2(radius)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, col);
 
-
-    
-    SquareBox::RenderEngine::ColorRGBA8 new_col = SquareBox::RenderEngine::ColorRGBA8(255, 255, 100, 255);
-
-    double bonusScale = 0.8 + 0.7 * pow(sin(3.14159 * m_time / 2), 2);
-    radius= radius*bonusScale;
-    m_sprite_batch.draw(glm::vec4(orign, glm::vec2(radius)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, new_col);
 
 
     for (Bomb& bomb : bombs)
     {
-       
         SquareBox::RenderEngine::ColorRGBA8 boom_color = SquareBox::RenderEngine::ColorRGBA8(100, 0, 0, 255);
         glm::vec2 boom_position(bomb.x * 10 + 5, bomb.y * 10 + 5 + heightScore);
-        float size = 10*1.2f;
+        float size = 10 * 1.2f;
         glm::vec2 boom_orign = (boom_position - glm::vec2(size) * 0.5f);
         m_sprite_batch.draw(glm::vec4(boom_orign, glm::vec2(size)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, boom_color);
-
 
         SquareBox::RenderEngine::ColorRGBA8 new_boom_color = SquareBox::RenderEngine::ColorRGBA8(150, 0, 0, 255);
 
         double bombScale = 1 + 0.8 * pow(sin(3.14159 * m_time * 2.0), 2.0);
         size = size * bombScale;
+        boom_orign = (boom_position - glm::vec2(size) * 0.5f);
         m_sprite_batch.draw(glm::vec4(boom_orign, glm::vec2(size)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, new_boom_color);
 
         SquareBox::RenderEngine::ColorRGBA8 new_new_boom_color = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white);
-        size = size * (bombScale/4.0);
-        
+        size = size * (bombScale / 4.0);
+        boom_orign = (boom_position - glm::vec2(size) * 0.5f);
         m_sprite_batch.draw(glm::vec4(boom_orign, glm::vec2(size)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, new_new_boom_color);
-
     }
 
-    life += (snake.getLife() - life) / 8.0;
-
-   
-    glm::vec2 life_bar_dimensions(2 * life, 10);
-    glm::vec2 life_bar_position(m_game_ptr->getWindow()->getScreenWidth() - life - 10, m_game_ptr->getWindow()->getScreenHeight()-16);
-    SquareBox::RenderEngine::ColorRGBA8 life_bar_color(255 - 255 * life / 100.0, 255 * life / 100.0, 0, 255);
-
+    float life_bar_height = 10;
+    float life_bar_width = m_game_ptr->getWindow()->getScreenWidth()*0.2f;
+    glm::vec2 life_bar_dimensions(life_bar_width, life_bar_height);
+    glm::vec2 life_bar_position(m_game_ptr->getWindow()->getScreenWidth() - life_bar_width - 10, m_game_ptr->getWindow()->getScreenHeight() - 16);
+    SquareBox::RenderEngine::ColorRGBA8 life_bar_color(SquareBox::Color::grey);
     glm::vec2 life_bar_orign = (life_bar_position - life_bar_dimensions * 0.5f);
-
-
     m_sprite_batch.draw(glm::vec4(life_bar_orign, life_bar_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, life_bar_color);
+    
+
+    float snake_life = snake.getLife();
+    float energy_bar_width = life_bar_width * (snake_life / 100.0f);
+    glm::vec2 energy_level_dimensions(energy_bar_width, life_bar_height);
+    glm::vec2 energy_level_position(m_game_ptr->getWindow()->getScreenWidth() - energy_bar_width - 10, m_game_ptr->getWindow()->getScreenHeight() - 16);
+    SquareBox::RenderEngine::ColorRGBA8 energy_level_color(255 - 255 * snake_life / 100.0, 255 * snake_life / 100.0, 0, 255);
+    glm::vec2 energy_level_bar_orign = (energy_level_position - energy_level_dimensions * 0.5f);
+    m_sprite_batch.draw(glm::vec4(energy_level_bar_orign, energy_level_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, energy_level_color);
+
+    
+    glm::vec2 life_bar_frame_orign;
+    glm::vec2 life_bar_frame_dimensions(life_bar_dimensions.x*0.01f, life_bar_dimensions.y);
+    SquareBox::RenderEngine::ColorRGBA8 life_bar_frame_color(SquareBox::Color::grey);
+   
+    life_bar_frame_orign = life_bar_orign;
+    life_bar_frame_orign.x = life_bar_orign.x + life_bar_dimensions.x * 0.2f;
+    m_sprite_batch.draw(glm::vec4(life_bar_frame_orign, life_bar_frame_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, life_bar_frame_color);
+
+    life_bar_frame_orign.x = life_bar_orign.x + life_bar_dimensions.x * 0.4f;
+    m_sprite_batch.draw(glm::vec4(life_bar_frame_orign, life_bar_frame_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, life_bar_frame_color);
 
 
-    //sf::vertexarray lifeframe(sf::linesstrip, 5);
-    //lifeframe[0].position = glm::vec2(289, 9);
-    //lifeframe[1].position = glm::vec2(289 + 203, 9);
-    //lifeframe[2].position = glm::vec2(289 + 203, 9 + 13);
-    //lifeframe[3].position = glm::vec2(288, 9 + 13);
-    //lifeframe[4].position = glm::vec2(289, 9);
-    //screen.draw(lifeframe);
+    life_bar_frame_orign.x = life_bar_orign.x + life_bar_dimensions.x * 0.6f;
+    m_sprite_batch.draw(glm::vec4(life_bar_frame_orign, life_bar_frame_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, life_bar_frame_color);
 
-    if (danger)
+
+    life_bar_frame_orign.x = life_bar_orign.x + life_bar_dimensions.x * 0.8f;
+    m_sprite_batch.draw(glm::vec4(life_bar_frame_orign, life_bar_frame_dimensions), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, life_bar_frame_color);
+
+
+    if (false)
     {
-        warning.setPosition(m_game_ptr->getWindow()->getScreenWidth()*0.5f, m_game_ptr->getWindow()->getScreenHeight()-5);
+        warning.setPosition(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() *0.9f);
         double c = 50 * sin(m_time * 20);
         warning.setColor(SquareBox::RenderEngine::ColorRGBA8(255, 100 + c, 100 + c, 255));
-        m_sprite_font.draw(m_sprite_batch, warning.text, warning.position,glm::vec2(1.0f),1.0f,SquareBox::RenderEngine::ColorRGBA8(warning.color));
-
-
-        warning.setColor(SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::red));
-        m_sprite_font.draw(m_sprite_batch, warning.text, warning.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(warning.color));
-
+        m_sprite_font.draw(m_sprite_batch, warning.text, warning.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(warning.color),SquareBox::JustificationEnum::MIDDLE);
     }
     else if (waiting)
     {
-        warning.setPosition(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight() - 5);
+        warning.setPosition(m_game_ptr->getWindow()->getScreenWidth() * 0.5f, m_game_ptr->getWindow()->getScreenHeight()*0.9f);
         double c = 50 * sin(m_time * 5);
         warning.setColor(SquareBox::RenderEngine::ColorRGBA8(50 + c, 10, 10, 255));
         m_sprite_font.draw(m_sprite_batch, warning.text, warning.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(warning.color));
-
-
-        warning.setColor(SquareBox::RenderEngine::ColorRGBA8(50 + c, 0, 0, 255));
-        m_sprite_font.draw(m_sprite_batch, warning.text, warning.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(warning.color));
-
     }
 
-
     m_sprite_font.draw(m_sprite_batch, scoreText.text, scoreText.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(scoreText.color));
-   m_sprite_font.draw(m_sprite_batch, scoreTransition.text, scoreTransition.position, glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(scoreTransition.color));
-    m_sprite_font.draw(m_sprite_batch, warning.text, warning.position,glm::vec2(1.0f),1.0f,SquareBox::RenderEngine::ColorRGBA8(warning.color));
+    scoreTransition.setString(m_utilities.intToString(m_game_ptr->getFps()));
+    m_sprite_font.draw(m_sprite_batch, scoreTransition.text, scoreText.position+ glm::vec2(12.0f), glm::vec2(1.0f), 1.0f, SquareBox::RenderEngine::ColorRGBA8(scoreText.color));
+
     m_sprite_batch.end();
-   
+
     m_texture_program.use();
     IGameScreen::preUpdateShader(&m_texture_program, "mySampler");
     //maintaining our backGround Color

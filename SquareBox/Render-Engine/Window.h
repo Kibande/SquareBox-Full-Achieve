@@ -14,7 +14,7 @@
 namespace SquareBox {
 	namespace RenderEngine {
 		enum  WindowFlags {
-			WINDOW_FULLSCREEN = SDL_WINDOW_FULLSCREEN,         /**< fullscreen window  but custom edited to level the taskbar area unoccupied*/
+			//Removed because it crashed program when two monitors were ding used WINDOW_FULLSCREEN = SDL_WINDOW_FULLSCREEN,         /**< fullscreen window  but custom edited to level the taskbar area unoccupied*/
 			WINDOW_SHOWN = SDL_WINDOW_SHOWN,              /**< window is visible */
 			WINDOW_HIDDEN = SDL_WINDOW_HIDDEN,             /**< window is not visible */
 			WINDOW_BORDERLESS = SDL_WINDOW_BORDERLESS,         /**< no window decoration */

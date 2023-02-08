@@ -26,20 +26,6 @@ namespace SquareBox {
 			Uint32 flags = SDL_WINDOW_OPENGL;//Every one of our windows should use an openglContext
 			flags |= currentflags;
 
-			if (flags & SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN)
-			{
-
-				flags = excludeTargetWindowFlag(flags, SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN);
-				SDL_Rect usable_display_dimensions;
-				SDL_GetDisplayUsableBounds(0, &usable_display_dimensions);
-				m_screen_width = usable_display_dimensions.w;
-				m_screen_height = usable_display_dimensions.h;
-				window_pos_x = usable_display_dimensions.x;
-				window_pos_y = usable_display_dimensions.y;
-
-				SBX_CORE_INFO("Default Screen : X - {} Y - {}  Width - {} , Height - {}", window_pos_x, window_pos_y, m_max_max_screen_width, m_max_max_screen_height);
-				SBX_CORE_INFO("Usable Screen : X - {} Y - {}  Width - {} , Height - {}", window_pos_x, window_pos_y, m_screen_width, m_screen_height);
-			}
 			m_original_screen_width	 = m_screen_width;
 			m_original_screen_height = m_screen_height;
 			m_sdl_window = SDL_CreateWindow(windowName.c_str(), window_pos_x, window_pos_y, m_screen_width, m_screen_height, flags);
@@ -93,6 +79,11 @@ namespace SquareBox {
 			if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
 				SBX_CORE_ERROR("Failed to set SDL_HINT_RENDER_SCALE_QUALITY");
 			}
+
+			SDL_GL_GetDrawableSize(m_sdl_window, &m_screen_width, &m_screen_height); //gets for us the correct window size
+			// this is important because the screen dimensions specified by the enum classes like SquareBox::RenderEngine::WindowFlags::WINDOW_MAXIMIZED; 
+			// are not yet refelcted in the screen dimensions till this point 
+
 			return 0;
 		}
 
@@ -199,12 +190,6 @@ namespace SquareBox {
 			if (collection_ & target_flag_) {
 				int cleaned_up_flags=0;
 			
-
-				if ((SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN != target_flag_) && (collection_ & SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN)) {
-					cleaned_up_flags |= SquareBox::RenderEngine::WindowFlags::WINDOW_FULLSCREEN;
-				}
-
-
 				if ((SquareBox::RenderEngine::WindowFlags::WINDOW_SHOWN != target_flag_) && (collection_ & SquareBox::RenderEngine::WindowFlags::WINDOW_SHOWN)) {
 					cleaned_up_flags |= SquareBox::RenderEngine::WindowFlags::WINDOW_SHOWN;
 				}

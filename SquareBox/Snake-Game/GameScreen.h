@@ -38,7 +38,8 @@ public:
 	Snake snake;
 	std::list<Bonus> deadBonus;
 	std::list<Wave> waves;
-
+	int world_width = 50;
+	int world_height = 46;
 
 	SquareBox::AudioSystem::AudioEngine m_audio_engine;
 
@@ -79,7 +80,7 @@ public:
 	int argc = 1;
 
 	Bonus bonus;
-
+	SquareBox::AudioSystem::Music music;
 	SquareBox::AudioSystem::SoundBank bip_sound_bank;
 	SquareBox::AudioSystem::SoundBank boom_sound_bank;
 	SquareBox::AudioSystem::SoundBank bouns_sound_bank;
@@ -88,7 +89,5 @@ public:
 	std::vector<WavePoint> map;
 
 	double m_time = 0.0f;
-
-	double life = 0.0f;
 };
 
