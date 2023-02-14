@@ -3,10 +3,7 @@
 #include "Snake.h"
 #include "Wave.h"
 #include "GameObjects.h"
-#include "GameWorld.h"
-#include "GameAction.h"
 #include "PlayerInputs.h"
-#include "ReplayInputs.h"
 
 
 class GameScreen: public SquareBox::IGameScreen
@@ -38,15 +35,15 @@ public:
 	Snake snake;
 	std::list<Bonus> deadBonus;
 	std::list<Wave> waves;
-	int world_width = 50;
-	int world_height = 46;
+	int world_width;
+	int world_height;
 
 	SquareBox::AudioSystem::AudioEngine m_audio_engine;
 
 	SquareBox::Utilities m_utilities;
 
 	long tick = 0;
-
+	int bouns_shock_wave_rate = 2000; // in milliseconds
 	int score = 0;
 
 	int choosingVx = 1;
@@ -58,9 +55,6 @@ public:
 	bool danger=false, waiting=false;
 	int bombCount = 0;
 	int dangerCount = 0;
-	SquareBox::Timer dangerClock;
-
-	int moveDelay = 75;
 	double yScore = 0;
 	bool newScore = false;
 
@@ -70,14 +64,9 @@ public:
 
 	bool gameOver = false;
 
-	SquareBox::Timer speedClock, bonusClock, timer;
+	SquareBox::Timer speedClock, bonusClock, timer,dangerClock;
 
-
-	std::vector<GameAction> replay;
-
-	EventProvider* eventProvider;
-
-	int argc = 1;
+	PlayerInputs player_inputs;
 
 	Bonus bonus;
 	SquareBox::AudioSystem::Music music;
@@ -85,9 +74,7 @@ public:
 	SquareBox::AudioSystem::SoundBank boom_sound_bank;
 	SquareBox::AudioSystem::SoundBank bouns_sound_bank;
 	SquareBox::AudioSystem::SoundBank lose_sound_bank;
-
 	std::vector<WavePoint> map;
-
 	double m_time = 0.0f;
 };
 

@@ -46,4 +46,6 @@ private:
 	SquareBox::IShape * m_shape_pointer = nullptr;
 	int m_num_fingers_on_screen = 0;
 
+	SquareBox::AssetManager::GLTexture m_texture;
+
 };

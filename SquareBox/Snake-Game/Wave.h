@@ -35,8 +35,8 @@ struct Wave
 
         for (WavePoint& wp : *surround)
         {
-            double vx = wp.x - x - 1;
-            double vy = wp.y - y - 1;
+            int vx = wp.x - x - 1;
+            int vy = wp.y - y - 1;
 
             double dist = sqrt(vx*vx+vy*vy);
             double delta = -dist/phi;

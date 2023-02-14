@@ -9,6 +9,7 @@ namespace SquareBox {
 		public:
 			TextureCache();
 			~TextureCache();
+			GLTexture getTexture(std::pair<float*, int> file_buffer_info_, int width_, int height_);
 			GLTexture getTexture(std::string texture_file_path_);
 			GLTexture getTexture(int texture_id_);
 			void setTextureTilingById(int texture_id_, glm::ivec2 tiling_);

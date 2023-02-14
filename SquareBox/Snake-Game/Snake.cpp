@@ -41,8 +41,13 @@ void Snake::progress(const int world_width,const int world_height)
 	head.x %= world_width;
 	head.y %= world_height;
 
-	if (head.x < 0) head.x += world_width;
-	if (head.y < 0) head.y += world_height;
+	if (head.x < 0) {
+		head.x += world_width;
+	}
+
+	if (head.y < 0) { 
+		head.y += world_height; 
+	}
 
 	checkAutoCollision();
 
@@ -96,9 +101,9 @@ void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,const float heig
 		double g = 255 - lifeRatio * 255 + c; if (g > 255) g = 255;
 		double b = c; if (b > 255) b = 255;
 
-		double x = sn.x * 10 + 5;
-		double y = sn.y * 10 + heightScore + 5;
-		double s = sn.c / 2.0;
+		int x = sn.x * 10 + 5;
+		int y = sn.y * 10 + heightScore + 5;
+		double s = sn.c / 2.0f;
 		SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
 
 		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));

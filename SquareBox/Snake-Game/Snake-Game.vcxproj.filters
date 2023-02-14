@@ -9,22 +9,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EventProvider.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameAction.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjects.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GameWorld.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerInputs.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ReplayInputs.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Snake.h">
@@ -47,13 +35,7 @@
     <ClCompile Include="EventProvider.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameWorld.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerInputs.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="ReplayInputs.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="Snake.cpp">

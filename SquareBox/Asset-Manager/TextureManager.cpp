@@ -4,10 +4,17 @@ namespace SquareBox {
 	namespace AssetManager {
 		TextureCache TextureManager::m_texture_cache;//since it a static variable we had to re declare it
 
+		GLTexture TextureManager::createTextureFromFileBuffer(std::pair<float*, int> file_buffer_info_, int width_, int height_)
+		{
+			return m_texture_cache.getTexture(file_buffer_info_,width_,height_);
+		}
+
 		GLTexture TextureManager::getTextureByFilePath(std::string texture_path_)
 		{//this is a wrapper function because all it does is call another function
 			return m_texture_cache.getTexture(texture_path_);
 		}
+
+
 
 		GLTexture TextureManager::getTextureByName(std::string texture_name_, float dpi_)
 		{

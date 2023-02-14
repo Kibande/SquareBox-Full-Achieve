@@ -268,13 +268,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="EventProvider.h" />
-    <ClInclude Include="GameAction.h" />
     <ClInclude Include="GameObjects.h" />
     <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="PlayerInputs.h" />
-    <ClInclude Include="ReplayInputs.h" />
     <ClInclude Include="ScreenIndicies.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Wave.h" />
@@ -283,9 +279,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="EventProvider.cpp" />
     <ClCompile Include="GameScreen.cpp" />
-    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="PlayerInputs.cpp" />
-    <ClCompile Include="ReplayInputs.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

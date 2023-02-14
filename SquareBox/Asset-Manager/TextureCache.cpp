@@ -11,6 +11,15 @@ namespace SquareBox {
 		{
 		}
 
+		GLTexture TextureCache::getTexture(std::pair<float*, int> file_buffer_info_, int width_, int height_)
+		{
+			GLTexture new_texture= ImageLoader::getTextureFromImageBuffer(file_buffer_info_,width_,height_);
+			//insert the new texture into our map
+			m_id_texture_map[new_texture.id] = new_texture;// keep the ids map upto date
+			SBX_CORE_INFO("Live Loaded  Texture Buffer Texture ");
+			return new_texture;
+		}
+
 		GLTexture TextureCache::getTexture(std::string texture_path_)
 		{
 			std::map<std::string, GLTexture>::iterator mit = m_file_path_texture_map.find(texture_path_);

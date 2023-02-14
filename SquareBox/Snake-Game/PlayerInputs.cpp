@@ -1,7 +1,6 @@
 #include "PlayerInputs.h"
 
-PlayerInputs::PlayerInputs() :
-    EventProvider()
+PlayerInputs::PlayerInputs()
 {
 
 }

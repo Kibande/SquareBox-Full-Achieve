@@ -1,16 +1,20 @@
 #ifndef PLAYERINPUTS_H_INCLUDED
 #define PLAYERINPUTS_H_INCLUDED
-
-#include "EventProvider.h"
-
-class PlayerInputs : public EventProvider
+#include<SquareBox-Core/SquareBoxGameEngine.h>
+enum class Move
+{
+    NONE = -1,
+    UP = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3
+};
+class PlayerInputs
 {
 public:
     PlayerInputs();
 
     Move getMove(SquareBox::IMainGame * _game_ptr);
-    bool getBombLocation(int& x, int& y, int& timer) {return true;}
-    bool getBonusLocation(int& x, int &y) {return true;}
 };
 
 
