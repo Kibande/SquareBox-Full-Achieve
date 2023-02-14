@@ -79,11 +79,10 @@ void Snake::checkAutoCollision()
 	}
 }
 
-void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,const float heightScore)
+void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,float heightScore,int texture_id_)
 {
 	double time = _timer.Elapsed();
 	double lifeRatio = 1.0 - _life / 100.0;
-
 
 	int i = 0;
 	bool endLight = true;
@@ -104,11 +103,8 @@ void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,const float heig
 		int x = sn.x * 10 + 5;
 		int y = sn.y * 10 + heightScore + 5;
 		double s = sn.c / 2.0f;
-		SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
-
-		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
+		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
 		i++;
-
 	}
 
 	int j = i;
@@ -127,11 +123,10 @@ void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,const float heig
 		double g = 255 - lifeRatio * 255 + c; if (g > 255) g = 255;
 		double b = c; if (b > 255) b = 255;
 
-		double x = sn.x * 10 + 5;
-		double y = sn.y * 10 + heightScore + 5;
+		int x = sn.x * 10 + 5;
+		int y = sn.y * 10 + heightScore + 5;
 		double s = sn.c / 2.0;
-		SquareBox::AssetManager::GLTexture m_texture = SquareBox::AssetManager::TextureManager::getTextureByFilePath("Assets/Textures/nodpi/white background.png");
-		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
+		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
 		i++;
 	}
 

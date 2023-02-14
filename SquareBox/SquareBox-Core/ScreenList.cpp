@@ -52,7 +52,6 @@ namespace SquareBox {
 		{
 			m_screens[i]->destroy();
 		}
-
 		m_screens.resize(0);
 		m_currentScreenIndex = SCREEN_INDEX_NO_SCREEN;
 	}

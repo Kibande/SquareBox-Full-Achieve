@@ -4,7 +4,7 @@
 #include "Wave.h"
 #include "GameObjects.h"
 #include "PlayerInputs.h"
-
+#include "ScreenIndicies.h"
 
 class GameScreen: public SquareBox::IGameScreen
 {
@@ -25,7 +25,7 @@ public:
 	virtual void destroy() override;
 
 	int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
-	int m_previousScreenIndex = SCREEN_INDEX_NO_SCREEN;
+	int m_previousScreenIndex = SPLASH_SCREEN_INDEX;
 
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
@@ -48,8 +48,6 @@ public:
 
 	int choosingVx = 1;
 	int choosingVy = 0;
-	int vx = 1;
-	int vy = 0;
 	std::list<Bomb> bombs;
 
 	bool danger=false, waiting=false;
@@ -68,6 +66,8 @@ public:
 
 	PlayerInputs player_inputs;
 
+	SquareBox::AssetManager::GLTexture m_box_texture;
+	SquareBox::AssetManager::GLTexture m_circle_texture;
 	Bonus bonus;
 	SquareBox::AudioSystem::Music music;
 	SquareBox::AudioSystem::SoundBank bip_sound_bank;

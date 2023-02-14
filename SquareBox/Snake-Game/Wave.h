@@ -1,3 +1,4 @@
+
 #ifndef WAVE_H_INCLUDED
 #define WAVE_H_INCLUDED
 
@@ -47,7 +48,6 @@ struct Wave
                 double move = sin(speed*t+delta);
                 totalInfluence += move;
                 double reflect = (10*amp)*move*move;
-
                 wp.delta += amp*move;
                 wp.color += reflect;
 

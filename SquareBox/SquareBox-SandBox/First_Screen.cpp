@@ -74,7 +74,6 @@ void First_Screen::build()
 	m_layers[m_active_layer_index].alive_cluster_objects.push_back(std::pair<int, int>(0, 0));
 	m_layers[m_active_layer_index].alive_cluster_objects.push_back(std::pair<int, int>(0, 1));
 
-
 	const int width = 1000;
 	const int height = 1000;
 	const int length = (width * height) * 4;
@@ -97,7 +96,7 @@ void First_Screen::build()
 	auto  fileBuffer = std::pair<float*, int>(data, length);
 	m_texture = SquareBox::AssetManager::TextureManager::createTextureFromFileBuffer(fileBuffer,width,height);
 	
-	delete data; // since the data is stored on the cpu
+	delete [] data; // since the data is stored on the cpu
 
 }
 
@@ -121,9 +120,7 @@ void First_Screen::onEntry()
 
 	//this is where the screens default parameters are set
 	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-
 	m_layers[m_active_layer_index].camera.setPosition(glm::vec2(screen_dimensions.x / 2, screen_dimensions.y / 2));//Center the camera
-																			  
 }
 
 void First_Screen::update(const float & deltaTime_)
@@ -131,14 +128,10 @@ void First_Screen::update(const float & deltaTime_)
 	//Called once every game loop , and updates what will be drawn
 	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 	m_layers[m_active_layer_index].camera.update(screen_dimensions.x, screen_dimensions.y);
-
-
-
 }
 
 void First_Screen::draw()
 {
-	
 	////Draw call
 	m_texture_program.use();
 
@@ -151,8 +144,6 @@ void First_Screen::draw()
 
 	SquareBox::RenderEngine::ColorRGBA8 col = SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::green);
 	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-	
-
 	m_sprite_batch.draw(glm::vec4(screen_dimensions*0.5f, screen_dimensions*0.1f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 1.0f, col);
 
 	m_sprite_batch.end();

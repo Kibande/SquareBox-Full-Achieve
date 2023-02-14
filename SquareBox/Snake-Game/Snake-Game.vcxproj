@@ -273,6 +273,7 @@
     <ClInclude Include="PlayerInputs.h" />
     <ClInclude Include="ScreenIndicies.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="Wave.h" />
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +283,7 @@
     <ClCompile Include="PlayerInputs.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SquareBox-Core\SquareBox-Core.vcxproj">

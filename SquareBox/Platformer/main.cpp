@@ -1,6 +1,6 @@
 #pragma once
 #include "App.h"
-
+#include<SquareBox-Core/SquareBoxGameEngine.h>
 int main(int argc, char** argv) {
 	App app;
 	unsigned window_flags = SquareBox::RenderEngine::WindowFlags::WINDOW_RESIZABLE;

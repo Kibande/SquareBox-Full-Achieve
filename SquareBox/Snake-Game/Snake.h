@@ -20,7 +20,7 @@ public:
     void update();
     void progress(const int word_width, const int world_height);
     void kill() {_snake.clear();}
-    void draw(SquareBox::RenderEngine::SpriteBatch  & renderer,const float heightScore);
+    void draw(SquareBox::RenderEngine::SpriteBatch  & renderer,float heightScore,int texture_id_);
     void addNode(int x, int y);
     void setDirection(int vx, int vy) {_vx = vx; _vy = vy;}
     void addLife(double life);
@@ -32,12 +32,10 @@ public:
 
 private:
     void checkAutoCollision();
-
     std::list<SnakeNode> _snake, _deadNodes;
     int _vx, _vy;
     double _life;
     bool _dead;
-
     SquareBox::Timer _timer;
 };
 
