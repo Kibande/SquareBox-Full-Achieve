@@ -19,11 +19,6 @@ enum class GUIEditorModeEnum {
 	SELECT = 1
 };
 
-enum class GUIEditorOrientationEnum {
-	LANDSCAPE = 0,
-	PORTRIAT = 1
-};
-
 class GUIEditor : public SquareBox::IGameScreen
 {
 public:
@@ -57,7 +52,7 @@ private:
 
 	void updateState();//updates the state that the gui is in
 
-	void guiElementShapeShellSetter(SquareBox::GWOM::GUIElement& gui_element_);
+	void guiElementShapeShellSetter(const SquareBox::GWOM::GUIElement& gui_element_);
 
 	void setCurrentGuiElementPtrLocationRatio();
 
@@ -80,7 +75,6 @@ private:
 	std::vector<SquareBox::GUI::IGUIElement*> m_gui_element_shapes_ptr_vec;
 	bool m_debug_mode = false;
 	GUIEditorModeEnum m_gui_editor_mode = GUIEditorModeEnum::PLACE;
-	GUIEditorOrientationEnum m_orientation = GUIEditorOrientationEnum::LANDSCAPE;
 	glm::vec4 m_visiable_dest_rect;
 	float m_main_menu_bar_height = 0.0f;
 	float m_controls_panel_width = 0.0f;
@@ -93,7 +87,7 @@ private:
 	bool m_show_open_tile_sheet_texture_file_dialog = false;
 	bool m_show_open_font_file_dialog = false;
 
-	std::string m_gui_layer_extensions = ".dat,.sbx";
+	std::string m_gui_layer_extensions = ".dat,.gui";
 	std::string m_texture_file_extensions = ".png,.jpg";
 	std::string m_font_file_extensions = ".ttf";
 	const char** m_shapes_labels_ptr = nullptr;
@@ -105,13 +99,12 @@ private:
 	SquareBox::GWOM::GUIElement* m_current_gui_element_ptr = nullptr;
 	SquareBox::GUI::IGUIElement* m_current_gui_element_shape_shell_ptr = nullptr;
 	glm::ivec2 m_tiling = { 0.0f,0.0f };
-	int m_selected_gui_element_shape = 0;
-	int m_selected_gui_element_state = 0;
+	int m_selected_gui_element_shape_index = 0;
+	int m_selected_gui_element_state_index = 0;
 	int m_selected_single_texture_index = 0;
 	int m_selected_tile_sheet_texture_index = 0;
 	int m_selected_font_index = 0;
 	int m_font_size = 32;
-	int m_selected_texture_type = 0;
 	bool m_active_selecting = true;//this helps us be able to interact with the GUI like the user would
-	char m_buffer[20];
+	char m_buffer[100];
 };

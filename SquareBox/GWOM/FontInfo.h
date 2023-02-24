@@ -28,7 +28,7 @@ namespace SquareBox {
 			glm::vec2 position;
 			glm::vec2 scale;
 			unsigned int font_index=0;
-			char text[20];
+			char text[100];
 			bool show_text = false;
 			float text_to_box_height_scale = 1.0f;
 			int opacity = 100;

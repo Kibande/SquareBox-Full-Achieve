@@ -9,33 +9,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObjects.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerInputs.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Snake.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Wave.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenIndicies.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameScreen.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInputs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenIndicies.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="SplashScreen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="EventProvider.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScreen.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInputs.cpp">
@@ -44,16 +50,10 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScreen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="SplashScreen.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,21 +39,17 @@ void GUIEditor::build()
 void GUIEditor::onEntry()
 {
 	//Init Shaders
-	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
-	m_texture_program.addAttribute("vertexPosition");
-	m_texture_program.addAttribute("vertexColor");
-	m_texture_program.addAttribute("vertexUV");
+	m_texture_program.compileDefaultTextureShaders();
+	m_texture_program.addDefaultTextureAttributes();
 	m_texture_program.linkShaders();
 
-	m_sprite_batch.init();
 	//the debugProgram
-	m_debug_program.compileShaders("Assets/Shaders/debugShading.vert", "Assets/Shaders/debugShading.frag");
-	m_debug_program.addAttribute("vertexPosition");
-	m_debug_program.addAttribute("vertexColor");
+	m_debug_program.compileDefaultDebugShaders();
+	m_debug_program.addDefaultDebugAttributes();
 	m_debug_program.linkShaders();
 
+	m_sprite_batch.init();
 	m_debug_renderer.init();
-
 
 	//Init Cameras
 	glm::vec2 screen_dimensions = glm::vec2(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
@@ -79,21 +75,14 @@ void GUIEditor::onEntry()
 	m_gui_element_states_labels_ptr[4] = ToString(SquareBox::GUIElementStateEnum::HOVER);
 	m_gui_element_states_labels_ptr[5] = ToString(SquareBox::GUIElementStateEnum::SELECTED);
 
-
-	m_text_justification_lables_ptr = new const char* [6];
+	m_text_justification_lables_ptr = new const char* [3];
 	m_text_justification_lables_ptr[0] = ToString(SquareBox::JustificationEnum::LEFT);
 	m_text_justification_lables_ptr[1] = ToString(SquareBox::JustificationEnum::RIGHT);
 	m_text_justification_lables_ptr[2] = ToString(SquareBox::JustificationEnum::MIDDLE);
 
 	initGUI();
 
-	//window icon
-	auto icon_pixel_data = SquareBox::AssetManager::IOManager::getPixelDataFromImageFile("Assets/Textures/nodpi/bricks_light_top.png");
-	m_game_ptr->getWindow()->setWindowIcon(icon_pixel_data.pixels, icon_pixel_data.width, icon_pixel_data.height);
-	SquareBox::AssetManager::IOManager::freePixelData(icon_pixel_data);
-
 	updateState();//Since m_current_gui_element_ptr has just been assigned
-
 }
 
 void GUIEditor::update(const float& deltaTime_)
@@ -121,22 +110,27 @@ void GUIEditor::update(const float& deltaTime_)
 		if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::KeyBoardEnum::ESCAPE))) {
 			ImGui::SetNextFrameWantCaptureMouse(true);
 			ImGui::SetNextFrameWantCaptureKeyboard(true);
-			/* this is the hack that i have come up with to solve the issue of imgui freezing up 
+			/* 
+			
+			this is the hack that i have come up with to solve the issue of imgui freezing up 
 			and not allowing any more user input, this block of code  forces it to start
 			taking user input but it disoragnises sdls input manager 
-			so this function only helps you be able to save your work */
+			so this function only helps you be able to save your work
+			
+			*/
 		}
 	}
 
 	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-
 	//Called once every game loop , and updates what will be drawn
 	m_camera.update(screen_dimensions.x, screen_dimensions.y);
+
 	float visable_area_ratio = 0.9f;
 	float calculated_area_width = screen_dimensions.x - m_controls_panel_width;
 	float working_area_width = 0.0f;
 	float working_area_height = 0.0f;
-	if (m_orientation == GUIEditorOrientationEnum::LANDSCAPE) {
+
+	if (m_gui_layer.orientation == 0) {
 		working_area_width = calculated_area_width;
 		working_area_height = calculated_area_width * 0.7f;// a propotional height to width ratio
 
@@ -146,7 +140,7 @@ void GUIEditor::update(const float& deltaTime_)
 			working_area_width = working_area_height * (1.0f / 0.7f);// this maintains the ratio
 		}
 	}
-	else {
+	else if(m_gui_layer.orientation == 1){
 		//Portriat
 		working_area_width = calculated_area_width * 0.4f;
 		working_area_height = calculated_area_width * 0.7f;// a propotional height to width ratio
@@ -157,46 +151,54 @@ void GUIEditor::update(const float& deltaTime_)
 			working_area_width = working_area_height * (0.4f / 0.7f);// this maintains the ratio
 		}
 	}
+	else {
+		SBX_CRITICAL("Invalid layer orientation type");
+	}
 
 
 	if (working_area_height > screen_dimensions.y * visable_area_ratio) {
 		working_area_height = screen_dimensions.y * visable_area_ratio;
-
 	}
 
 	glm::vec2 working_area_center(calculated_area_width * 0.5f, screen_dimensions.y * 0.5f);
-
 	glm::vec2 visable_area_dimenions(working_area_width * visable_area_ratio, working_area_height * visable_area_ratio);
 	m_visiable_dest_rect = glm::vec4((working_area_center - visable_area_dimenions * 0.5f), visable_area_dimenions);
 
+	// The default button state should be default
+	// Until changed by user input
 
-	//with or without processing the default button state should be default
 	for (unsigned int i = 0; i < m_gui_layer.gui_elements.size(); i++)
 	{
 		m_gui_layer.gui_elements[i].state = SquareBox::GUIElementStateEnum::DEFAULT;
 	}
 
 	if (m_game_ptr->isProcessingInput()) {
-		if (m_gui_editor_mode == GUIEditorModeEnum::PLACE) {
+		if (m_gui_editor_mode == GUIEditorModeEnum::PLACE){
 			if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK))) {
 
 				glm::vec2& mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 
 				if (m_utilities.isInBox(mouse_in_world, m_visiable_dest_rect)) {
-					setCurrentGuiElementPtrLocationRatio();
 					bool well_built = false;
 					if (m_current_gui_element_shape_shell_ptr->needs_height_width) {
 						if (m_current_gui_element_ptr->height_ratio > 0.0f && m_current_gui_element_ptr->width_ratio > 0.0f) {
 							well_built = true;
+						}
+						else {
+							SBX_ERROR("Invalid Box Shape dimensions");
 						}
 					}
 					else if (m_current_gui_element_shape_shell_ptr->needs_radius) {
 						if (m_current_gui_element_ptr->radius_ratio > 0.0f) {
 							well_built = true;
 						}
+						else {
+							SBX_ERROR("Invalid Circle Shape dimensions");
+						}
 					}
 
 					if (well_built) {
+						setCurrentGuiElementPtrLocationRatio();
 						m_current_gui_element_ptr->is_alive = true;
 						//move on to the next
 						m_gui_layer.gui_elements.emplace_back();
@@ -204,14 +206,17 @@ void GUIEditor::update(const float& deltaTime_)
 						updateState();
 					}
 					else {
-						SBX_ERROR("Invalid {} Gui Element Dimensions", ToString(static_cast<SquareBox::GUIElementShapeEnum>(m_selected_gui_element_shape)));
+						SBX_ERROR("Invalid {} Gui Element Dimensions", ToString(static_cast<SquareBox::GUIElementShapeEnum>(m_selected_gui_element_shape_index)));
 					}
+				}
+				else {
+					SBX_ERROR("Can not place elements out side the visable area");
 				}
 			}
 		}
 		else if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
 			for (auto& it = m_gui_layer.gui_elements.rbegin(); it != m_gui_layer.gui_elements.rend(); ++it) {
-				auto& gui_element = (*it);
+				 auto& gui_element = (*it);
 				if (gui_element.is_alive) {
 					glm::vec2& mouse_in_world = m_camera.convertScreenToWorld(m_game_ptr->getInputDevice()->getScreenLocations()[0].coordinates);
 					guiElementShapeShellSetter(gui_element);
@@ -239,7 +244,7 @@ void GUIEditor::update(const float& deltaTime_)
 				}
 			}
 
-			//changinig position
+			//changing position or dragging an element
 			if (
 				m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::MouseEnum::RIGHT_CLICK))
 				) {
@@ -258,19 +263,15 @@ void GUIEditor::update(const float& deltaTime_)
 				}
 			}
 
-			for (auto &  it = m_gui_layer.gui_elements.begin(); it != m_gui_layer.gui_elements.end();)
+			for (auto & it = m_gui_layer.gui_elements.begin(); it != m_gui_layer.gui_elements.end();)
 			{
-				bool erased = false;
 				if ((*it).is_to_be_deleted) {
 					it = m_gui_layer.gui_elements.erase(it);
 					m_current_gui_element_ptr = nullptr;
 					/* since the selected the object will always be the m_current_gui_element_ptr and thats */
-					erased = true;
 					break; // since 
 				}
-				if (!erased) {
-					++it;
-				}
+				++it;
 			}
 		}
 	}
@@ -280,17 +281,16 @@ void GUIEditor::draw()
 {
 	m_sprite_batch.begin(SquareBox::RenderEngine::NONE);
 
-	for (unsigned int i = 0; i < m_gui_layer.gui_elements.size(); i++)
+	for each (const auto & gui_element in m_gui_layer.gui_elements)
 	{
-		auto& focus_gui_element = m_gui_layer.gui_elements[i];
-		guiElementShapeShellSetter(focus_gui_element);
-		m_current_gui_element_shape_shell_ptr->drawTexture(focus_gui_element, m_sprite_batch, m_visiable_dest_rect);
-		auto& font_info = focus_gui_element.fonts[static_cast<int>(focus_gui_element.state)];
-
+		guiElementShapeShellSetter(gui_element);
+		m_current_gui_element_shape_shell_ptr->drawTexture(gui_element, m_sprite_batch, m_visiable_dest_rect);
+		const auto& font_info = gui_element.fonts[static_cast<int>(gui_element.state)];
 		if (font_info.show_text && m_gui_layer.sprite_fonts.size() > 0) {
-			m_current_gui_element_shape_shell_ptr->drawText(focus_gui_element, m_gui_layer.sprite_fonts[font_info.font_index], m_sprite_batch, m_camera.getScale(), m_visiable_dest_rect);
+			m_current_gui_element_shape_shell_ptr->drawText(gui_element, m_gui_layer.sprite_fonts[font_info.font_index], m_sprite_batch, m_camera.getScale(), m_visiable_dest_rect);
 		}
 	}
+
 
 	m_sprite_batch.end();
 	m_texture_program.use();
@@ -301,7 +301,6 @@ void GUIEditor::draw()
 
 
 	//debug draw
-
 	m_debug_renderer.begin();
 	m_debug_renderer.end();
 	/*
@@ -323,7 +322,7 @@ void GUIEditor::draw()
 		float line_height = m_visiable_dest_rect.w * 0.5f;
 
 		glm::vec2 visiable_area_center = (glm::vec2(m_visiable_dest_rect.x, m_visiable_dest_rect.y) + (glm::vec2(m_visiable_dest_rect.z, m_visiable_dest_rect.w) * 0.5f));
-		//+X
+		// +X
 		m_debug_renderer.drawLine(visiable_area_center, glm::vec2(visiable_area_center.x + line_width, visiable_area_center.y), SquareBox::RenderEngine::ColorRGBA8(255, 0, 0, 200));
 		// -X axis
 		m_debug_renderer.drawLine(visiable_area_center, glm::vec2(visiable_area_center.x - line_width, visiable_area_center.y), SquareBox::RenderEngine::ColorRGBA8(255, 0, 0, 100));
@@ -333,11 +332,11 @@ void GUIEditor::draw()
 		// -Y axis
 		m_debug_renderer.drawLine(visiable_area_center, glm::vec2(visiable_area_center.x, visiable_area_center.y - line_height), SquareBox::RenderEngine::ColorRGBA8(0, 255, 0, 100));
 
-		//elements
-		for (unsigned int i = 0; i < m_gui_layer.gui_elements.size(); i++)
+		// elements
+		for each (auto & gui_element in m_gui_layer.gui_elements)
 		{
-			guiElementShapeShellSetter(m_gui_layer.gui_elements[i]);
-			m_current_gui_element_shape_shell_ptr->debugDraw(m_gui_layer.gui_elements[i], m_debug_renderer, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), m_visiable_dest_rect);
+			guiElementShapeShellSetter(gui_element);
+			m_current_gui_element_shape_shell_ptr->debugDraw(gui_element, m_debug_renderer, SquareBox::RenderEngine::ColorRGBA8(SquareBox::Color::white), m_visiable_dest_rect);
 		}
 	}
 
@@ -356,7 +355,7 @@ void GUIEditor::draw()
 	if (m_current_gui_element_ptr != nullptr) {
 		before_is_locked = m_current_gui_element_ptr->is_locked;
 	}
-	drawGUI();//this is where is_locked changes from
+	drawGUI();//this is where is_locked changes from when the user uses the gui to unlock a gui element
 	//having this here avoids Imgui end frame crashes
 	if (m_current_gui_element_ptr != nullptr) {
 		if (m_current_gui_element_ptr->is_locked && !before_is_locked && m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
@@ -383,9 +382,10 @@ void GUIEditor::onExit()
 
 	m_gui_layer= SquareBox::GWOM::GuiLayer();
 	disposeGUI();
-	for (unsigned int i = 0; i < m_gui_element_shapes_ptr_vec.size(); i++)
+
+	for each (auto & m_gui_element_shapes_ptr in m_gui_element_shapes_ptr_vec)
 	{
-		delete m_gui_element_shapes_ptr_vec[i];
+		delete m_gui_element_shapes_ptr;
 	}
 	m_gui_element_shapes_ptr_vec.clear();
 
@@ -472,10 +472,8 @@ void GUIEditor::drawGUI()
 			}
 		}
 		ImGui::Checkbox("Debug Mode", &m_debug_mode);
-		static int orientaion = 0;
-		ImGui::RadioButton("Landscape   ", &orientaion, 0); ImGui::SameLine();
-		ImGui::RadioButton("Portriat     ", &orientaion, 1);
-		m_orientation = static_cast<GUIEditorOrientationEnum>(orientaion);
+		ImGui::RadioButton("Landscape   ", &m_gui_layer.orientation, 0); ImGui::SameLine();
+		ImGui::RadioButton("Portriat     ", &m_gui_layer.orientation, 1);
 		if (ImGui::BeginTabBar("Panel A"))
 		{
 			if (ImGui::BeginTabItem("Element")) {
@@ -489,13 +487,13 @@ void GUIEditor::drawGUI()
 					ImGui::Text("Name      : "); ImGui::SameLine();
 					ImGui::InputText("###button_name", m_current_gui_element_ptr->name, 20);
 					ImGui::Text("Text      : "); ImGui::SameLine();
-					ImGui::InputText("###state_text", m_current_gui_element_ptr->fonts[m_selected_gui_element_state].text, 20);
+					ImGui::InputText("###state_text", m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].text, 20);
 					ImGui::Text("Show Text : "); ImGui::SameLine();
-					ImGui::Checkbox("###show_text", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state].show_text);
+					ImGui::Checkbox("###show_text", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].show_text);
 					ImGui::Text("Show Just : "); ImGui::SameLine();
-					int target_text_justification = static_cast<int>(m_current_gui_element_ptr->fonts[m_selected_gui_element_state].justification);
+					int target_text_justification = static_cast<int>(m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].justification);
 					ImGui::Combo("###TextJustification", &target_text_justification, m_text_justification_lables_ptr, 3);
-					m_current_gui_element_ptr->fonts[m_selected_gui_element_state].justification = static_cast<SquareBox::JustificationEnum>(target_text_justification);
+					m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].justification = static_cast<SquareBox::JustificationEnum>(target_text_justification);
 					//text color
 					ImGui::Text("Text Color: "); ImGui::SameLine();
 					static float col2[4];
@@ -506,7 +504,7 @@ void GUIEditor::drawGUI()
 					*/
 
 
-					auto& state_font_color = m_current_gui_element_ptr->fonts[m_selected_gui_element_state].color;
+					auto& state_font_color = m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].color;
 
 					col2[0] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(state_font_color.x), static_cast<float>(255));
 					col2[1] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(state_font_color.y), static_cast<float>(255));
@@ -522,7 +520,7 @@ void GUIEditor::drawGUI()
 					ImGui::Text("Angle     : "); ImGui::SameLine();
 					ImGui::InputFloat("###button_angle", &m_current_gui_element_ptr->angle, 0.01, 1.0f);
 					ImGui::Text("Color     : "); ImGui::SameLine();
-					auto& state_texture_color = m_current_gui_element_ptr->textures[m_selected_gui_element_state].color;
+					auto& state_texture_color = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].color;
 
 					col2[0] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(state_texture_color.x), static_cast<float>(255));
 					col2[1] = SquareBox::MathLib::Float::divideAndGetFloat(static_cast<float>(state_texture_color.y), static_cast<float>(255));
@@ -535,14 +533,14 @@ void GUIEditor::drawGUI()
 					state_texture_color.z = static_cast<int>(col2[2] * 255);
 					state_texture_color.w = static_cast<int>(col2[3] * 255);
 
-					SquareBox::GWOM::TextureInfo& texture_info = m_current_gui_element_ptr->textures[m_selected_gui_element_state];
+					SquareBox::GWOM::TextureInfo& texture_info = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index];
 					ImGui::Text("Opacity   : "); ImGui::SameLine();
 					ImGui::InputInt("###button_opactity", &texture_info.opacity, 1, 10);
 					ImGui::Text("Tx Opacity: "); ImGui::SameLine();
-					ImGui::InputInt("###text_opactity", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state].opacity, 1, 10);
+					ImGui::InputInt("###text_opactity", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].opacity, 1, 10);
 
 					ImGui::Text("Text scale: "); ImGui::SameLine();
-					ImGui::InputFloat("###text_to_box_height_scale", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state].text_to_box_height_scale, 0.05f, 0, "%.3f");
+					ImGui::InputFloat("###text_to_box_height_scale", &m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].text_to_box_height_scale, 0.05f, 0, "%.3f");
 
 					ImGui::Text("Hidden    : "); ImGui::SameLine();
 					ImGui::Checkbox("###is_hidden", &m_current_gui_element_ptr->is_hidden);
@@ -553,12 +551,12 @@ void GUIEditor::drawGUI()
 					ImGui::Separator();
 
 					//display our shapes names
-					int beforeState = m_selected_gui_element_state;
+					int beforeState = m_selected_gui_element_state_index;
 					ImGui::Text("State     : "); ImGui::SameLine();
-					ImGui::Combo("###GUIElementState", &m_selected_gui_element_state, m_gui_element_states_labels_ptr, 6);
+					ImGui::Combo("###GUIElementState", &m_selected_gui_element_state_index, m_gui_element_states_labels_ptr, 6);
 
-					if (beforeState != m_selected_gui_element_state) {
-						m_current_gui_element_ptr->state = static_cast<SquareBox::GUIElementStateEnum>(m_selected_gui_element_state);
+					if (beforeState != m_selected_gui_element_state_index) {
+						m_current_gui_element_ptr->state = static_cast<SquareBox::GUIElementStateEnum>(m_selected_gui_element_state_index);
 						updateState();
 					}
 
@@ -568,22 +566,20 @@ void GUIEditor::drawGUI()
 						m_shapes_labels_ptr[i] = ToString(m_gui_element_shapes_ptr_vec[i]->shape);
 					}
 
-
 					if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
 						ImGui::BeginDisabled();
 					}
-					ImGui::Combo("###Shape", &m_selected_gui_element_shape, m_shapes_labels_ptr, m_gui_element_shapes_ptr_vec.size());
+					ImGui::Combo("###Shape", &m_selected_gui_element_shape_index, m_shapes_labels_ptr, m_gui_element_shapes_ptr_vec.size());
 					if (m_gui_editor_mode == GUIEditorModeEnum::SELECT) {
 						ImGui::EndDisabled();
 					}
 
-
-					m_current_gui_element_ptr->shape = m_gui_element_shapes_ptr_vec[m_selected_gui_element_shape]->shape;
+					m_current_gui_element_ptr->shape = m_gui_element_shapes_ptr_vec[m_selected_gui_element_shape_index]->shape;
 
 					for (unsigned int i = 0; i < m_gui_element_shapes_ptr_vec.size(); i++)
 					{
 						auto& focus_shape_ptr = m_gui_element_shapes_ptr_vec[i];
-						if (m_selected_gui_element_shape == i) {
+						if (m_selected_gui_element_shape_index == i) {
 							ImGui::Spacing();
 							ImGui::Text("%s Dimensions", ToString(focus_shape_ptr->shape));
 							ImGui::Spacing();
@@ -608,6 +604,7 @@ void GUIEditor::drawGUI()
 								ImGui::Text("Y axis     : "); ImGui::SameLine();
 								ImGui::InputFloat("###y_axis", &m_current_gui_element_ptr->location_ratio.y, 0.05f, 0, "%.3f");
 							}
+
 						}
 					}
 
@@ -615,21 +612,36 @@ void GUIEditor::drawGUI()
 					if (ImGui::BeginTabBar("State Propteries"))
 					{
 						if (ImGui::BeginTabItem("Texture")) {
-							m_selected_texture_type = static_cast<int>(m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_type);
+
+							ImGui::Spacing();
+							ImGui::Text("X Inverted: "); ImGui::SameLine();
+							bool inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x);
+							ImGui::Checkbox("###is_x_inverted", &inversion_state);
+							m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x=static_cast<int>(inversion_state);
+							
+							inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y);
+
+							ImGui::Text("Y Inverted: "); ImGui::SameLine();
+							ImGui::Checkbox("###is_y_inverted", &inversion_state);
+							m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y = static_cast<int>(inversion_state);
+
+							ImGui::Spacing();
+
+							int m_selected_texture_type = static_cast<int>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_type);
 							ImGui::RadioButton("Single", &m_selected_texture_type, static_cast<int>(SquareBox::TextureEnum::SINGLE)); ImGui::SameLine();
 							ImGui::RadioButton("TileSheet", &m_selected_texture_type, static_cast<int>(SquareBox::TextureEnum::TILESHEET));
-							m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_type = static_cast<SquareBox::TextureEnum>(m_selected_texture_type);
+							m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_type = static_cast<SquareBox::TextureEnum>(m_selected_texture_type);
+						
 							if (m_selected_texture_type == static_cast<int>(SquareBox::TextureEnum::SINGLE)) {
-
 								ImGui::Text("uvRect ");
 								ImGui::Text("uv_x      : "); ImGui::SameLine();
-								ImGui::InputFloat("###uv_x", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.x, 0.01f, 0, "%.2f");
+								ImGui::InputFloat("###uv_x", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.x, 0.01f, 0, "%.2f");
 								ImGui::Text("uv_y      : "); ImGui::SameLine();
-								ImGui::InputFloat("###uv_y", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.y, 0.01f, 0, "%.2f");
+								ImGui::InputFloat("###uv_y", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.y, 0.01f, 0, "%.2f");
 								ImGui::Text("uv_z      : "); ImGui::SameLine();
-								ImGui::InputFloat("###uv_z", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.z, 0.01f, 0, "%.2f");
+								ImGui::InputFloat("###uv_z", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.z, 0.01f, 0, "%.2f");
 								ImGui::Text("uv_w      : "); ImGui::SameLine();
-								ImGui::InputFloat("###uv_w", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.w, 0.01f, 0, "%.2f");
+								ImGui::InputFloat("###uv_w", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.w, 0.01f, 0, "%.2f");
 
 								//compute how many single textures we want to display
 								//we are only displaying those that are not empty strings
@@ -646,8 +658,8 @@ void GUIEditor::drawGUI()
 									ImGui::Text("Textures  : "); ImGui::SameLine();
 									ImGui::Combo("###Single", &m_selected_single_texture_index, &vc[0], m_gui_layer.single_textures.size());
 									//update the current objects texture info
-									m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_index = m_selected_single_texture_index;
-									m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_id = m_gui_layer.single_textures[m_selected_single_texture_index].id;
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_index = m_selected_single_texture_index;
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_id = m_gui_layer.single_textures[m_selected_single_texture_index].id;
 									//current active texture
 									ImTextureID my_tex_id;
 									my_tex_id = (ImTextureID)m_gui_layer.single_textures[m_selected_single_texture_index].id;
@@ -658,11 +670,11 @@ void GUIEditor::drawGUI()
 									float texture_width = m_gui_layer.single_textures[m_selected_single_texture_index].width;
 									float texture_height = m_gui_layer.single_textures[m_selected_single_texture_index].height;
 
-									float region_width = m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.z * texture_width;
-									float region_height = m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.w * texture_height;
+									float region_width = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.z * texture_width;
+									float region_height = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.w * texture_height;
 
-									float region_x_orign = (m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.x) * texture_width;
-									float region_y_orign = (1 - m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.w - m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.y) * texture_height;
+									float region_x_orign = (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.x) * texture_width;
+									float region_y_orign = (1 - m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.w - m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.y) * texture_height;
 									/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
 									ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
 									ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
@@ -685,7 +697,7 @@ void GUIEditor::drawGUI()
 							}
 							else {
 
-								//compfute how many single textures we want to display
+								//compfute how many tiled textures we want to display
 								//we are only displaying those that are not empty strings
 								if (m_gui_layer.tiled_textures.size() > 0) {
 
@@ -701,16 +713,17 @@ void GUIEditor::drawGUI()
 									});
 									ImGui::Text("Textures  : "); ImGui::SameLine();
 									ImGui::Combo("###TileSheet", &m_selected_tile_sheet_texture_index, &vc[0], m_gui_layer.tiled_textures.size());
-									ImGui::Text("Tiling:");
-									ImGui::Text("cols : "); ImGui::SameLine();
+									ImGui::Text("Tiling    :");
+
+									ImGui::Text("cols      : "); ImGui::SameLine();
 									ImGui::Text("%d", m_gui_layer.tiled_textures[m_selected_tile_sheet_texture_index].tiling.x);
-									ImGui::Text("rows : "); ImGui::SameLine();
+									ImGui::Text("rows      : "); ImGui::SameLine();
 									ImGui::Text("%d", m_gui_layer.tiled_textures[m_selected_tile_sheet_texture_index].tiling.y);
 
 									//update the current objects texture info
 									auto& selected_tile_sheet_texture = m_gui_layer.tiled_textures[m_selected_tile_sheet_texture_index];
-									m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_index = m_selected_tile_sheet_texture_index;
-									m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_id = selected_tile_sheet_texture.id;
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_index = m_selected_tile_sheet_texture_index;
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_id = selected_tile_sheet_texture.id;
 									//current active texture
 									ImTextureID my_tex_id = (ImTextureID)selected_tile_sheet_texture.id;
 									float my_tex_w = 50;
@@ -724,11 +737,11 @@ void GUIEditor::drawGUI()
 									float texture_width = selected_tile_sheet_texture.width;
 									float texture_height = selected_tile_sheet_texture.height;
 
-									float region_width = m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.z * texture_width;
-									float region_height = m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.w * texture_height;
+									float region_width = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.z * texture_width;
+									float region_height = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.w * texture_height;
 
-									float region_x_orign = (m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.x) * texture_width;
-									float region_y_orign = (1 - m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.w - m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect.y) * texture_height;
+									float region_x_orign = (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.x) * texture_width;
+									float region_y_orign = (1 - m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.w - m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect.y) * texture_height;
 									/*dont under stand why we have to subtract the height. this is a classic it works so dont touch it scenario*/
 									ImVec2 uv0 = ImVec2((region_x_orign) / texture_width, (region_y_orign) / texture_height);
 									ImVec2 uv1 = ImVec2((region_x_orign + region_width) / texture_width, (region_y_orign + region_height) / texture_height);
@@ -741,23 +754,23 @@ void GUIEditor::drawGUI()
 
 									ImGui::Image(my_tex_id, ImVec2(my_tex_w * zoom, my_tex_h * zoom), uv0, uv1, tint_col, border_col);
 									ImGui::Text("Index: "); ImGui::SameLine();
-									//ImGui::InputInt("", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].tile_sheet_index);
-									ImGui::DragInt("###m_current_tile_sheet_index", &m_current_gui_element_ptr->textures[m_selected_gui_element_state].tile_sheet_index, 1, 0, (selected_tile_sheet_texture.tiling.x * selected_tile_sheet_texture.tiling.y) - 1, "%d", ImGuiSliderFlags_AlwaysClamp);
-									m_current_gui_element_ptr->textures[m_selected_gui_element_state].uv_rect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_gui_element_ptr->textures[m_selected_gui_element_state].tile_sheet_index);
-									if (m_current_gui_element_ptr->textures[m_selected_gui_element_state].tile_sheet_index < 0) {
-										m_current_gui_element_ptr->textures[m_selected_gui_element_state].tile_sheet_index = 0;
-
+									//ImGui::InputInt("", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index);
+									ImGui::DragInt("###m_current_tile_sheet_index", &m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index, 1, 0, (selected_tile_sheet_texture.tiling.x * selected_tile_sheet_texture.tiling.y) - 1, "%d", ImGuiSliderFlags_AlwaysClamp);
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].uv_rect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index, m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions);
+									if (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index < 0) {
+										m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index = 0;
 									}
 								}
 								else {
+
 									ImGui::Text("Textures  : "); ImGui::SameLine();
 									ImGui::Combo("###TiledSheet", &m_selected_tile_sheet_texture_index, "Empty", m_gui_layer.tiled_textures.size());
 								}
 
 								ImGui::Text("New Texture Tiling:");
-								ImGui::Text("cols : "); ImGui::SameLine();
+								ImGui::Text("cols      : "); ImGui::SameLine();
 								ImGui::InputInt("###new cols", &m_tiling.x);
-								ImGui::Text("rows : "); ImGui::SameLine();
+								ImGui::Text("rows      : "); ImGui::SameLine();
 								ImGui::InputInt("###new rows", &m_tiling.y);
 
 								if (ImGui::Button("Load Tile Sheet Texture")) {
@@ -781,7 +794,7 @@ void GUIEditor::drawGUI()
 
 								ImGui::Text("Fonts     : "); ImGui::SameLine();
 								ImGui::Combo("###Font", &m_selected_font_index, &vc[0], m_gui_layer.sprite_fonts.size());
-								m_current_gui_element_ptr->fonts[m_selected_gui_element_state].font_index = m_selected_font_index;
+								m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].font_index = m_selected_font_index;
 
 							}
 							else {
@@ -865,7 +878,7 @@ void GUIEditor::drawGUI()
 
 								ImGui::TableNextColumn();
 								sprintf(m_buffer, "###gui_element_name%d", i);
-								ImGui::InputText(m_buffer, focus_gui_element.name, 20);
+								ImGui::InputText(m_buffer, focus_gui_element.name, 100);
 							}
 						}
 						ImGui::EndTable();
@@ -1148,26 +1161,25 @@ void GUIEditor::showMenuMain()
 
 void GUIEditor::updateState()
 {
-	m_selected_gui_element_shape = static_cast<int>(m_current_gui_element_ptr->shape);
-	m_selected_gui_element_state = m_selected_gui_element_state;
-	m_selected_texture_type = static_cast<int>(m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_type);
-
-	if (m_selected_texture_type == static_cast<int>(SquareBox::TextureEnum::SINGLE)) {
+	m_selected_gui_element_shape_index = static_cast<int>(m_current_gui_element_ptr->shape);
+	m_selected_gui_element_state_index = m_selected_gui_element_state_index;
+	
+	if (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_type == SquareBox::TextureEnum::SINGLE) {
 		//Singles
-		m_selected_single_texture_index = m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_index;
+		m_selected_single_texture_index = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_index;
 	}
 	else {
 		//sheets
-		m_selected_tile_sheet_texture_index = m_current_gui_element_ptr->textures[m_selected_gui_element_state].texture_index;
+		m_selected_tile_sheet_texture_index = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_index;
 	}
 
-	m_selected_font_index = m_current_gui_element_ptr->fonts[m_selected_gui_element_state].font_index;
+	m_selected_font_index = m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].font_index;
 }
 
-void GUIEditor::guiElementShapeShellSetter(SquareBox::GWOM::GUIElement& gui_element_)
+void GUIEditor::guiElementShapeShellSetter(const SquareBox::GWOM::GUIElement& gui_element_)
 {
 	m_current_gui_element_shape_shell_ptr = nullptr;
-	for each (auto & gui_shape in m_gui_element_shapes_ptr_vec)
+	for each (const auto & gui_shape in m_gui_element_shapes_ptr_vec)
 	{
 		if (gui_shape->shape == gui_element_.shape) {
 			m_current_gui_element_shape_shell_ptr = gui_shape;

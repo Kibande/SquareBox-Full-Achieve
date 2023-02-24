@@ -83,7 +83,7 @@ bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::st
     {
         const SquareBox::AssetManager::GLTexture& current_tiled_texture = gui_layer_.tiled_textures[i];
         auto temp_vec2 = SquareBox::DSUGUI::Ivec2(current_tiled_texture.tiling.x, current_tiled_texture.tiling.y);
-        fb_single_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
+        fb_tiled_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
             builder.CreateString(current_tiled_texture.asset_file_path),
             builder.CreateString(current_tiled_texture.display_name),
             &temp_vec2
@@ -217,7 +217,7 @@ bool SquareBox::GWOM::OldGuiReaderWriter::loadGuiLayerDataAsBinary(const std::st
             tiled_texture.display_name = fb_tiled_texture->display_name()->str();
             tiled_texture.tiling.x = fb_tiled_texture->tiling()->x();
             tiled_texture.tiling.y = fb_tiled_texture->tiling()->y();
-            gui_layer_.single_textures.push_back(tiled_texture);
+            gui_layer_.tiled_textures.push_back(tiled_texture);
         }
 
         gui_layer_.sprite_fonts.clear();

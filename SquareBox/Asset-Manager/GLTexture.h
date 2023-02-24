@@ -21,7 +21,7 @@ namespace SquareBox {
 			glm::ivec2 tiling = glm::ivec2(0);
 
 			//some texture helper functions
-			glm::vec4 getUVReactAtIndex(int index_) {
+			glm::vec4 getUVReactAtIndex(int index_, glm::ivec2 inversion) {
 				if (tiling.x > 0 && tiling.y > 0) {
 					int xTile = index_ % tiling.x;
 					int yTile = index_ / tiling.x;
@@ -31,6 +31,19 @@ namespace SquareBox {
 					uvs.y = yTile / (float)tiling.y;
 					uvs.z = 1.0f / tiling.x;
 					uvs.w = 1.0f / tiling.y;
+
+					// the inversion along axis
+
+					if (inversion.x) {
+						uvs.x += 1.0f / tiling.x;
+						uvs.z *= -1;
+					}
+					
+					if (inversion.y) {
+						uvs.y += 1.0f / tiling.y;
+						uvs.w *= -1;
+					}
+
 					return uvs;
 				}
 				else {

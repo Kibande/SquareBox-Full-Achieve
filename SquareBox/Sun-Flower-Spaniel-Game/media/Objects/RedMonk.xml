@@ -1,0 +1,41 @@
+<Object>
+    <BodyComponent>
+        <Position x="490" y="480"/>
+        <BodyType>Static</BodyType>
+        <FixedRotation>false</FixedRotation>
+        <LinearDamping>2</LinearDamping>
+    </BodyComponent>
+
+    <CollisionComponent>
+        <Dimensions height="2.5" width="2.5"/>
+        <Shape name="Circle">
+            <Density>1.0f</Density>
+            <Friction>0.3f</Friction>
+        </Shape>
+    </CollisionComponent>
+
+    <SpriteComponent>
+        <Texture>media/Textures/RedMonkSprite.png</Texture>
+        <Color r="255" g="255" b="255" a="255"/>
+        <Dimensions height="6" width="6"/>
+        <Position x="0" y="1"/>
+        <SpriteID>0</SpriteID>
+    </SpriteComponent>
+
+    <InteractiveComponent>
+        <Font size="16">media/Fonts/alagard.ttf</Font>
+        <Text scale="0.1">E: Talk</Text>
+        <Color r="255" g="255" b="255" a="255"/>
+        <InteractionKey>e</InteractionKey>
+        <InteractionType>Talk</InteractionType>
+    </InteractiveComponent>
+
+    <SpawnObjectComponent>
+
+    </SpawnObjectComponent>
+
+    <DialogueComponent>
+        <FilePath>media/Dialogues/RedMonk.xml</FilePath>
+    </DialogueComponent>
+
+</Object>

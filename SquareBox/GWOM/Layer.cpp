@@ -21,7 +21,7 @@ std::pair<int, glm::vec4> SquareBox::GWOM::Layer::getTextureIdAndUvReactFromKey(
 			}
 			else if (target_sub_texture.parent_type == SquareBox::TextureEnum::TILESHEET) {
 				texture_id = tiled_textures[target_sub_texture.parent_texture_index].texture.id;
-				texture_uvRect = tiled_textures[target_sub_texture.parent_texture_index].texture.getUVReactAtIndex(target_sub_texture.tiling_index);
+				texture_uvRect = tiled_textures[target_sub_texture.parent_texture_index].texture.getUVReactAtIndex(target_sub_texture.tiling_index, glm::ivec2(0));
 			}
 
 		}

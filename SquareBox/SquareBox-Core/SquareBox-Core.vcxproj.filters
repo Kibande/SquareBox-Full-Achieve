@@ -27,6 +27,9 @@
     <ClInclude Include="SquareBoxGameEngine.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -43,9 +46,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="sqbpch.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,7 +14,7 @@ namespace SquareBox {
 			GUIElementShapeEnum shape=SquareBox::GUIElementShapeEnum::CIRCLE;
 			GUIElementStateEnum state=SquareBox::GUIElementStateEnum::ACTIVE;
 			int id = 1;
-			char name[20];
+			char name[100];
 			bool is_hidden = false;
 			bool is_locked= false;
 			glm::vec2 location_ratio = { 0.0f,0.0f };
@@ -24,8 +24,8 @@ namespace SquareBox {
 			float angle = 0.0f;
 			bool is_alive = false;
 			bool is_to_be_deleted = false;
-			std::vector<Text> fonts = std::vector<Text>(6, Text());//	the number of memebers should match the possible
-			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of memebers should match the possible
+			std::vector<Text> fonts = std::vector<Text>(6, Text());//	the number of memebers should match the possible states
+			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of memebers should match the possible states
 			//	state count.
 		};
 	};

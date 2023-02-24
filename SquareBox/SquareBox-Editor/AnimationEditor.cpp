@@ -677,7 +677,7 @@ void AnimationEditor::drawGUI()
 							/*
 							we update the cluster objects uv coords here .if it is a freelance cluster Object
 							*/
-							glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_cluster_object_ptr->texture_info.tile_sheet_index);
+							glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_cluster_object_ptr->texture_info.tile_sheet_index, glm::ivec2(0));
 
 							if (m_current_cluster_object_ptr->controller_type == SquareBox::ControlledTypeEnum::freelance) {
 								m_current_cluster_object_ptr->texture_info.uv_rect = uvRect;

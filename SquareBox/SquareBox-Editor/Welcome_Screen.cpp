@@ -107,24 +107,13 @@ void Welcome_Screen::drawGUI()
 	ImGui::NewFrame();
 
 	{
-		ImGuiWindowFlags physics_tab_window_flags = 0;
-		physics_tab_window_flags |= ImGuiWindowFlags_NoMove;
+		ImGuiWindowFlags imgui_window_flags = 0;
+		imgui_window_flags |= ImGuiWindowFlags_NoMove;
 		ImVec2 center(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
 		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-		ImGui::Begin("Route Panel", NULL, physics_tab_window_flags);
+		ImGui::Begin("Route Panel", NULL, imgui_window_flags);
 
 		// Buttons
-
-		//if (ImGui::Button("Mobile App Editor")) {
-		//	m_nextScreenIndex = MOBILE_APP_EDITOR_SCREEN_INDEX;
-		//	m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
-		//}
-
-		//if (ImGui::Button("Desktop App Editor")) {
-		//	m_nextScreenIndex = DESKTOP_APP_EDITOR_SCREEN_INDEX;
-		//	m_current_state = SquareBox::ScreenState::CHANGE_NEXT;
-		//}
-
 		if (ImGui::Button("Level Editor")) {
 			m_nextScreenIndex = LEVEL_EDITOR_SCREEN_INDEX;
 			m_current_state = SquareBox::ScreenState::CHANGE_NEXT;

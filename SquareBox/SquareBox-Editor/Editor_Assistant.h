@@ -15,7 +15,7 @@ namespace SquareBoxEditor {
 		int cluster_object_selection_super_duplicate_input_key_1 = static_cast<int>(SquareBox::KeyBoardEnum::F1);
 		/*
 		 wish the supper key was something like shift but shit can not work with the keypad and alt was already taken by
-		 another service
+		 the camera controls systems
 		*/
 
 		//duplication direction keys

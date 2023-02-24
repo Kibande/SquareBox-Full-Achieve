@@ -17,6 +17,7 @@ namespace SquareBox {
 			glm::vec4 uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);//textures uvLayer out
 			glm::ivec4 color = glm::ivec4(255, 255, 255, 255);
 			int opacity = 100;
+			glm::ivec2 inversions = glm::ivec2(0); // determine whether the texture should be inverted in either the x or y axis
 		};
 
 	};

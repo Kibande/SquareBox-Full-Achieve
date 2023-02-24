@@ -1077,6 +1077,7 @@ namespace SquareBox {
 			auto& current_tiled_texture = original_tiled_textures[i];
 			SquareBox::AssetManager::GLTexture tmp_tiled_texture = SquareBox::AssetManager::TextureManager::getTextureByName(current_tiled_texture.display_name, dpi_);
 			SquareBox::AssetManager::TextureManager::setTextureTilingById(tmp_tiled_texture.id, current_tiled_texture.tiling);
+			tmp_tiled_texture.tiling = current_tiled_texture.tiling;
 			gui_layer_.tiled_textures.push_back(tmp_tiled_texture);
 		}
 

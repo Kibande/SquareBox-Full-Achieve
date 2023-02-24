@@ -295,7 +295,6 @@
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="TiledLayer.cpp" />
     <ClCompile Include="Welcome_Screen.cpp" />
-    <ClCompile Include="guicpp.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -312,4 +311,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>

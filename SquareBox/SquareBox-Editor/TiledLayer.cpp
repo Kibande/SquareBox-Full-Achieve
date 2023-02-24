@@ -436,7 +436,7 @@ void TiledLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_
 			/*
 			we update the cluster objects uv coords here .if it is a freelance cluster Object
 			*/
-			glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(selected_tiling_index);
+			glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(selected_tiling_index, glm::ivec2(0));
 
 			float texture_width = selected_tile_sheet_texture.width;
 			float texture_height = selected_tile_sheet_texture.height;

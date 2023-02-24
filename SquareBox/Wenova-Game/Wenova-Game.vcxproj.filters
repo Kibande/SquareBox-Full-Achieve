@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{C196CD9C-2D76-4C38-368E-D70EA2ECB299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{89565304-F535-D29F-FE4D-5D766AAC3801}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEnd.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Blood.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterSelectState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EditState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableFloor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Fighter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FighterMenu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FighterStats.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Flesh.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FleshUltimateEffect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="HealEffect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="JoystickButton.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="JoystickConfigState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Music.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelectState.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StateData.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCounter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UltimateEffect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleEnd.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Blood.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSelectState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="EditState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableFloor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Fighter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FighterMenu.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FighterStats.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Flesh.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FleshUltimateEffect.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Floor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="HealEffect.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="JoystickButton.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="JoystickConfigState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsState.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelectStage.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeCounter.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateEffect.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

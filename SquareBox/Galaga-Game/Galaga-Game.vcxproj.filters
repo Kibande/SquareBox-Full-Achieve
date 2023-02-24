@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{C196CD9C-2D76-4C38-368E-D70EA2ECB299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{89565304-F535-D29F-FE4D-5D766AAC3801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src">
+      <UniqueIdentifier>{2031D913-8CE6-5109-15DB-4BE0818F480D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\entity">
+      <UniqueIdentifier>{8CCD445D-78B1-05B3-E111-0006CD14F034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\infra">
+      <UniqueIdentifier>{3F1ECECC-AB34-CC62-F4AB-578460019DEA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\infra\olc_pge_impl">
+      <UniqueIdentifier>{B8F47CE8-A41A-474F-8D60-CC1A79256C1B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\infra\sdl2_impl">
+      <UniqueIdentifier>{74E410A6-E0F1-3E8C-69D8-3A77D5E40A43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\infra\sfml_impl">
+      <UniqueIdentifier>{71FFD952-DD0C-0839-66F3-0324D2FFD3EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\src\scene">
+      <UniqueIdentifier>{5D067DCD-C91C-7B63-1294-06857EE94BEB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\olcPGEX_Sound.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\olcPixelGameEngine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\entity\Actor.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\Enemy.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\EnemyBeam.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\EnemyBullet.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\EnemyExplosion.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\Fighter.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\FighterBullet.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\FighterExplosion.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\GameController.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\ScorePoint.cpp">
+      <Filter>Sources\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Collider.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Game.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Hud.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Keyboard.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Path.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\SceneManager.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\StageSymbols.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\StarsBackground.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Util.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\Vec2.cpp">
+      <Filter>Sources\src\infra</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\olc_pge_impl\AudioPlayer.cpp">
+      <Filter>Sources\src\infra\olc_pge_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\olc_pge_impl\Game.cpp">
+      <Filter>Sources\src\infra\olc_pge_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\olc_pge_impl\Renderer.cpp">
+      <Filter>Sources\src\infra\olc_pge_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sdl2_impl\AudioPlayer.cpp">
+      <Filter>Sources\src\infra\sdl2_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sdl2_impl\Game.cpp">
+      <Filter>Sources\src\infra\sdl2_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sdl2_impl\Renderer.cpp">
+      <Filter>Sources\src\infra\sdl2_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sfml_impl\AudioPlayer.cpp">
+      <Filter>Sources\src\infra\sfml_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sfml_impl\Game.cpp">
+      <Filter>Sources\src\infra\sfml_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infra\sfml_impl\Renderer.cpp">
+      <Filter>Sources\src\infra\sfml_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\Initializing.cpp">
+      <Filter>Sources\src\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\OlPresents.cpp">
+      <Filter>Sources\src\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\Stage.cpp">
+      <Filter>Sources\src\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\Title.cpp">
+      <Filter>Sources\src\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

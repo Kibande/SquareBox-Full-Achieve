@@ -51,7 +51,7 @@ void SquareBox::AnimationSystem::TimeDependantAnimation::Update(const float & de
 	// 
 	//SBX_CORE_ERROR("We need to update the the TimeDependantAnimation System"); to be doing what ??
 	
-	glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_currentTileIndex);
+	glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_currentTileIndex, glm::ivec2(0));
 
 	//change spriteDirection
 	if (!m_is_forward_direction)

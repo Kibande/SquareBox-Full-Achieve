@@ -34,7 +34,7 @@ namespace SquareBox {
 				}
 				//now actually sending our updated texture tiling
 				cluster_object_.texture_info.tile_sheet_index = new_tile;
-				cluster_object_.texture_info.uv_rect = object_texture.getUVReactAtIndex(new_tile);
+				cluster_object_.texture_info.uv_rect = object_texture.getUVReactAtIndex(new_tile,glm::ivec2(0));
 			}
 
 
