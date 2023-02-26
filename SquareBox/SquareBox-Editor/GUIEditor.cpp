@@ -613,19 +613,7 @@ void GUIEditor::drawGUI()
 					{
 						if (ImGui::BeginTabItem("Texture")) {
 
-							ImGui::Spacing();
-							ImGui::Text("X Inverted: "); ImGui::SameLine();
-							bool inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x);
-							ImGui::Checkbox("###is_x_inverted", &inversion_state);
-							m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x=static_cast<int>(inversion_state);
-							
-							inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y);
 
-							ImGui::Text("Y Inverted: "); ImGui::SameLine();
-							ImGui::Checkbox("###is_y_inverted", &inversion_state);
-							m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y = static_cast<int>(inversion_state);
-
-							ImGui::Spacing();
 
 							int m_selected_texture_type = static_cast<int>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_type);
 							ImGui::RadioButton("Single", &m_selected_texture_type, static_cast<int>(SquareBox::TextureEnum::SINGLE)); ImGui::SameLine();
@@ -760,6 +748,20 @@ void GUIEditor::drawGUI()
 									if (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index < 0) {
 										m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].tile_sheet_index = 0;
 									}
+
+									ImGui::Spacing();
+									ImGui::Text("X Inverted: "); ImGui::SameLine();
+									bool inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x);
+									ImGui::Checkbox("###is_x_inverted", &inversion_state);
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.x = static_cast<int>(inversion_state);
+
+									inversion_state = static_cast<bool>(m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y);
+
+									ImGui::Text("Y Inverted: "); ImGui::SameLine();
+									ImGui::Checkbox("###is_y_inverted", &inversion_state);
+									m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].inversions.y = static_cast<int>(inversion_state);
+
+									ImGui::Spacing();
 								}
 								else {
 

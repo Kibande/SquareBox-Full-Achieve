@@ -1,6 +1,6 @@
 // SquareBox DSUGUI Schema
 
-namespace SquareBox.DSUGUI;
+namespace SquareBox.DSUGUIV2;
 
 table PairOfInt {
   first:int;
@@ -68,6 +68,7 @@ table TextureInfo {
    uv_rect:Vec4;
    color:Ivec4;
    opacity:int;
+   inversions:Ivec2;
 }
 
 table FontInfo {
@@ -99,9 +100,11 @@ table GUIElement {
 
 table SquareBoxGuiLayer {
   gui_elements:[GUIElement];
+  orientation:int;
   single_textures:[GLTexture];
   tiled_textures:[GLTexture];
   sprite_fonts:[SpriteFont];
+  editing_screen_dimensions:Vec2;
 }
 
 root_type SquareBoxGuiLayer;

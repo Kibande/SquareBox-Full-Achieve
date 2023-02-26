@@ -17,7 +17,12 @@ namespace SquareBox {
 			glm::vec4 uv_rect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);//textures uvLayer out
 			glm::ivec4 color = glm::ivec4(255, 255, 255, 255);
 			int opacity = 100;
-			glm::ivec2 inversions = glm::ivec2(0); // determine whether the texture should be inverted in either the x or y axis
+			glm::ivec2 inversions = glm::ivec2(0); /*
+													  determine whether the texture should be inverted along the axis
+													  this inversion details are meant to be used by a tilesheet texture when its uvrect is 
+													  being generated, a single texture has access to its uvrect and can do the inversion there by its self
+
+												   */
 		};
 
 	};

@@ -269,7 +269,7 @@
   <ItemGroup>
     <ClInclude Include="ClusterObject.h" />
     <ClInclude Include="DSUGUIV1_generated.h" />
-    <ClInclude Include="DSUGUI_generated.h" />
+    <ClInclude Include="DSUGUIV2_generated.h" />
     <ClInclude Include="DSUGWOMV1_generated.h" />
     <ClInclude Include="DSUGWOM_generated.h" />
     <ClInclude Include="DSUString_generated.h" />
@@ -301,7 +301,7 @@
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DSUGUI.fbs" />
+    <None Include="DSUGUIV2.fbs" />
     <None Include="DSUGUIV1.fbs" />
     <None Include="DSUGWOM.fbs" />
     <None Include="DSUGWOMV1.fbs" />

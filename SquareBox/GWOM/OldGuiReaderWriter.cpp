@@ -1,25 +1,25 @@
 #include "OldGuiReaderWriter.h"
-#include "DSUGUI_generated.h"
+#include "DSUGUIV1_generated.h"
 
 bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::string& file_path_, const SquareBox::GWOM::GuiLayer& gui_layer_)
 {
     flatbuffers::FlatBufferBuilder builder(1024);
 
     //Serializing the Layer
-    
-    std::vector<flatbuffers::Offset<SquareBox::DSUGUI::GUIElement>>  fb_gui_elements;
-    for (unsigned int  i = 0; i < gui_layer_.gui_elements.size(); i++)
+
+    std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::GUIElement>>  fb_gui_elements;
+    for (unsigned int i = 0; i < gui_layer_.gui_elements.size(); i++)
     {
         const SquareBox::GWOM::GUIElement& focus_gui_element = gui_layer_.gui_elements[i];
-       
-        std::vector<flatbuffers::Offset<SquareBox::DSUGUI::FontInfo>> fb_gui_element_fonts;
-        std::vector<flatbuffers::Offset<SquareBox::DSUGUI::TextureInfo>> fb_gui_element_textures;
+
+        std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::FontInfo>> fb_gui_element_fonts;
+        std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::TextureInfo>> fb_gui_element_textures;
 
         for (unsigned int j = 0; j < focus_gui_element.fonts.size(); j++)
         {
             const SquareBox::GWOM::Text& focus_font_info = focus_gui_element.fonts[j];
-            auto fb_font_info_color = SquareBox::DSUGUI::Ivec4(focus_font_info.color.x, focus_font_info.color.y, focus_font_info.color.z, focus_font_info.color.w);
-            fb_gui_element_fonts.push_back(SquareBox::DSUGUI::CreateFontInfo(builder,
+            auto fb_font_info_color = SquareBox::DSUGUIV1::Ivec4(focus_font_info.color.x, focus_font_info.color.y, focus_font_info.color.z, focus_font_info.color.w);
+            fb_gui_element_fonts.push_back(SquareBox::DSUGUIV1::CreateFontInfo(builder,
                 &fb_font_info_color,
                 focus_font_info.font_index,
                 builder.CreateString(std::string(focus_font_info.text)),
@@ -27,17 +27,17 @@ bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::st
                 focus_font_info.text_to_box_height_scale,
                 focus_font_info.opacity,
                 static_cast<int>(focus_font_info.justification)
-                )
+            )
             );
         }
 
-        for (unsigned int j = 0;  j < focus_gui_element.textures.size();  j++)
+        for (unsigned int j = 0; j < focus_gui_element.textures.size(); j++)
         {
             const SquareBox::GWOM::TextureInfo& focus_texture_info = focus_gui_element.textures[j];
-            auto focus_texture_info_color = SquareBox::DSUGUI::Ivec4(focus_texture_info.color.x, focus_texture_info.color.y, focus_texture_info.color.z, focus_texture_info.color.w);
-            auto fb_texture_info_uv_rect = SquareBox::DSUGUI::Vec4(focus_texture_info.uv_rect.x, focus_texture_info.uv_rect.y, focus_texture_info.uv_rect.z, focus_texture_info.uv_rect.w);
+            auto focus_texture_info_color = SquareBox::DSUGUIV1::Ivec4(focus_texture_info.color.x, focus_texture_info.color.y, focus_texture_info.color.z, focus_texture_info.color.w);
+            auto fb_texture_info_uv_rect = SquareBox::DSUGUIV1::Vec4(focus_texture_info.uv_rect.x, focus_texture_info.uv_rect.y, focus_texture_info.uv_rect.z, focus_texture_info.uv_rect.w);
 
-            fb_gui_element_textures.push_back(SquareBox::DSUGUI::CreateTextureInfo(builder, 
+            fb_gui_element_textures.push_back(SquareBox::DSUGUIV1::CreateTextureInfo(builder,
                 static_cast<int>(focus_texture_info.texture_type),
                 focus_texture_info.texture_index,
                 focus_texture_info.tile_sheet_index,
@@ -47,8 +47,8 @@ bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::st
                 focus_texture_info.opacity
             ));
         }
-        auto temp_vec2 = SquareBox::DSUGUI::Vec2(focus_gui_element.location_ratio.x, focus_gui_element.location_ratio.y);
-        fb_gui_elements.push_back(SquareBox::DSUGUI::CreateGUIElement(builder,
+        auto temp_vec2 = SquareBox::DSUGUIV1::Vec2(focus_gui_element.location_ratio.x, focus_gui_element.location_ratio.y);
+        fb_gui_elements.push_back(SquareBox::DSUGUIV1::CreateGUIElement(builder,
             static_cast<int>(focus_gui_element.shape),
             static_cast<int>(focus_gui_element.state),
             focus_gui_element.id,
@@ -63,45 +63,46 @@ bool SquareBox::GWOM::OldGuiReaderWriter::saveGuiLayerDataAsBinary(const std::st
             focus_gui_element.is_alive,
             builder.CreateVector(fb_gui_element_fonts),
             builder.CreateVector(fb_gui_element_textures)
-            ));
+        ));
     }
 
-    std::vector<flatbuffers::Offset<SquareBox::DSUGUI::GLTexture>> fb_single_textures;
+    std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::GLTexture>> fb_single_textures;
     for (unsigned int i = 0; i < gui_layer_.single_textures.size(); i++)
     {
         const SquareBox::AssetManager::GLTexture& current_single_texture = gui_layer_.single_textures[i];
-        auto temp_vec2 = SquareBox::DSUGUI::Ivec2(current_single_texture.tiling.x, current_single_texture.tiling.y);
-        fb_single_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
+        auto temp_vec2 = SquareBox::DSUGUIV1::Ivec2(current_single_texture.tiling.x, current_single_texture.tiling.y);
+        fb_single_textures.push_back(SquareBox::DSUGUIV1::CreateGLTexture(builder,
             builder.CreateString(current_single_texture.asset_file_path),
             builder.CreateString(current_single_texture.display_name),
             &temp_vec2
-            ));
+        ));
     }
 
-    std::vector<flatbuffers::Offset<SquareBox::DSUGUI::GLTexture>> fb_tiled_textures;
+    std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::GLTexture>> fb_tiled_textures;
     for (unsigned int i = 0; i < gui_layer_.tiled_textures.size(); i++)
     {
         const SquareBox::AssetManager::GLTexture& current_tiled_texture = gui_layer_.tiled_textures[i];
-        auto temp_vec2 = SquareBox::DSUGUI::Ivec2(current_tiled_texture.tiling.x, current_tiled_texture.tiling.y);
-        fb_tiled_textures.push_back(SquareBox::DSUGUI::CreateGLTexture(builder,
+        auto temp_vec2 = SquareBox::DSUGUIV1::Ivec2(current_tiled_texture.tiling.x, current_tiled_texture.tiling.y);
+        fb_tiled_textures.push_back(SquareBox::DSUGUIV1::CreateGLTexture(builder,
             builder.CreateString(current_tiled_texture.asset_file_path),
             builder.CreateString(current_tiled_texture.display_name),
             &temp_vec2
         ));
     }
 
-    std::vector<flatbuffers::Offset<SquareBox::DSUGUI::SpriteFont>> fb_sprite_fonts;
+    std::vector<flatbuffers::Offset<SquareBox::DSUGUIV1::SpriteFont>> fb_sprite_fonts;
     for (unsigned int i = 0; i < gui_layer_.sprite_fonts.size(); i++)
     {
         const SquareBox::RenderEngine::SpriteFont& focus_sprite_font = gui_layer_.sprite_fonts[i];
-        fb_sprite_fonts.push_back(SquareBox::DSUGUI::CreateSpriteFont(builder,
+        fb_sprite_fonts.push_back(SquareBox::DSUGUIV1::CreateSpriteFont(builder,
             builder.CreateString(focus_sprite_font.getFontFilePath()),
             builder.CreateString(focus_sprite_font.getDisplayName()),
             focus_sprite_font.getFontSize()
-            ));
+        ));
     }
+    SquareBox::DSUGUIV1::Vec2 fb_editing_screen_dimensions(gui_layer_.editing_screen_dimensions.x, gui_layer_.editing_screen_dimensions.y);
 
-    auto complete_layer=SquareBox::DSUGUI::CreateSquareBoxGuiLayer(builder, builder.CreateVector(fb_gui_elements), builder.CreateVector(fb_single_textures), builder.CreateVector(fb_tiled_textures), builder.CreateVector(fb_sprite_fonts));
+    auto complete_layer = SquareBox::DSUGUIV1::CreateSquareBoxGuiLayer(builder, builder.CreateVector(fb_gui_elements), builder.CreateVector(fb_single_textures), builder.CreateVector(fb_tiled_textures), builder.CreateVector(fb_sprite_fonts), &fb_editing_screen_dimensions);
 
     builder.Finish(complete_layer);
 
@@ -119,7 +120,7 @@ bool SquareBox::GWOM::OldGuiReaderWriter::loadGuiLayerDataAsBinary(const std::st
     char* dataBuffer = new char[fileInfo.second];
     dataBuffer = fileInfo.first;
 
-    auto complete_layer = SquareBox::DSUGUI::GetSquareBoxGuiLayer(dataBuffer);
+    auto complete_layer = SquareBox::DSUGUIV1::GetSquareBoxGuiLayer(dataBuffer);
     gui_layer_.gui_elements.clear();
 
     auto fb_gui_elements = complete_layer->gui_elements();
@@ -191,46 +192,49 @@ bool SquareBox::GWOM::OldGuiReaderWriter::loadGuiLayerDataAsBinary(const std::st
 
         gui_layer_.gui_elements.push_back(gui_element);
     }
-        gui_layer_.single_textures.clear();
+    gui_layer_.single_textures.clear();
 
-        auto fb_single_textures = complete_layer->single_textures();
+    auto fb_single_textures = complete_layer->single_textures();
 
-        for (unsigned int i = 0; i < fb_single_textures->size(); i++)
-        {
-            auto fb_single_texture = fb_single_textures->Get(i);
-            SquareBox::AssetManager::GLTexture single_texture;
-            single_texture.asset_file_path = fb_single_texture->assets_file_path()->str();
-            single_texture.display_name = fb_single_texture->display_name()->str();
-            single_texture.tiling.x = fb_single_texture->tiling()->x();
-            single_texture.tiling.y = fb_single_texture->tiling()->y();
-            gui_layer_.single_textures.push_back(single_texture);
-        }
+    for (unsigned int i = 0; i < fb_single_textures->size(); i++)
+    {
+        auto fb_single_texture = fb_single_textures->Get(i);
+        SquareBox::AssetManager::GLTexture single_texture;
+        single_texture.asset_file_path = fb_single_texture->assets_file_path()->str();
+        single_texture.display_name = fb_single_texture->display_name()->str();
+        single_texture.tiling.x = fb_single_texture->tiling()->x();
+        single_texture.tiling.y = fb_single_texture->tiling()->y();
+        gui_layer_.single_textures.push_back(single_texture);
+    }
 
-        gui_layer_.tiled_textures.clear();
-        auto fb_tiled_textures = complete_layer->tiled_textures();
+    gui_layer_.tiled_textures.clear();
+    auto fb_tiled_textures = complete_layer->tiled_textures();
 
-        for (unsigned int i = 0; i < fb_tiled_textures->size(); i++)
-        {
-            auto fb_tiled_texture = fb_tiled_textures->Get(i);
-            SquareBox::AssetManager::GLTexture tiled_texture;
-            tiled_texture.asset_file_path = fb_tiled_texture->assets_file_path()->str();
-            tiled_texture.display_name = fb_tiled_texture->display_name()->str();
-            tiled_texture.tiling.x = fb_tiled_texture->tiling()->x();
-            tiled_texture.tiling.y = fb_tiled_texture->tiling()->y();
-            gui_layer_.tiled_textures.push_back(tiled_texture);
-        }
+    for (unsigned int i = 0; i < fb_tiled_textures->size(); i++)
+    {
+        auto fb_tiled_texture = fb_tiled_textures->Get(i);
+        SquareBox::AssetManager::GLTexture tiled_texture;
+        tiled_texture.asset_file_path = fb_tiled_texture->assets_file_path()->str();
+        tiled_texture.display_name = fb_tiled_texture->display_name()->str();
+        tiled_texture.tiling.x = fb_tiled_texture->tiling()->x();
+        tiled_texture.tiling.y = fb_tiled_texture->tiling()->y();
+        gui_layer_.tiled_textures.push_back(tiled_texture);
+    }
 
-        gui_layer_.sprite_fonts.clear();
-        auto fb_sprite_fonts = complete_layer->sprite_fonts();
+    gui_layer_.sprite_fonts.clear();
+    auto fb_sprite_fonts = complete_layer->sprite_fonts();
 
-        for (unsigned int i = 0; i < fb_sprite_fonts->size(); i++)
-        {
-            auto fb_sprite_font = fb_sprite_fonts->Get(i);
-            SquareBox::RenderEngine::SpriteFont sprite_font;
-            sprite_font.setProperties(fb_sprite_font->font_path()->str(),fb_sprite_font->display_name()->str(),fb_sprite_font->font_size());
-            gui_layer_.sprite_fonts.push_back(sprite_font);
-        }
+    for (unsigned int i = 0; i < fb_sprite_fonts->size(); i++)
+    {
+        auto fb_sprite_font = fb_sprite_fonts->Get(i);
+        SquareBox::RenderEngine::SpriteFont sprite_font;
+        sprite_font.setProperties(fb_sprite_font->font_path()->str(), fb_sprite_font->display_name()->str(), fb_sprite_font->font_size());
+        gui_layer_.sprite_fonts.push_back(sprite_font);
+    }
 
+    auto fb_editing_screen_dimensions = complete_layer->editing_screen_dimensions();
+    gui_layer_.editing_screen_dimensions.x = fb_editing_screen_dimensions->x();
+    gui_layer_.editing_screen_dimensions.y = fb_editing_screen_dimensions->y();
     delete[] dataBuffer;
     return true;
 }

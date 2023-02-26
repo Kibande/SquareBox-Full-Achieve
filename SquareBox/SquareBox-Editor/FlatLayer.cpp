@@ -1383,8 +1383,7 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 					/*
 					we update the cluster objects uv coords here .if it is a freelance cluster Object
 					*/
-					glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_cluster_object_ptr->texture_info.tile_sheet_index, glm::ivec2(0));
-
+					glm::vec4 uvRect = selected_tile_sheet_texture.getUVReactAtIndex(m_current_cluster_object_ptr->texture_info.tile_sheet_index, m_current_cluster_object_ptr->texture_info.inversions);
 					if (m_current_cluster_object_ptr->controller_type == SquareBox::ControlledTypeEnum::freelance) {
 						m_current_cluster_object_ptr->texture_info.uv_rect = uvRect;
 					}
@@ -1416,6 +1415,19 @@ void FlatLayer::onGUILeftPanelDraw(std::vector<SquareBox::GWOM::Layer>& layers_,
 						m_current_cluster_object_ptr->texture_info.tile_sheet_index = 0;
 					}
 
+					ImGui::Spacing();
+					ImGui::Text("X Inverted: "); ImGui::SameLine();
+					bool inversion_state = static_cast<bool>(m_current_cluster_object_ptr->texture_info.inversions.x);
+					ImGui::Checkbox("###is_x_inverted", &inversion_state);
+					m_current_cluster_object_ptr->texture_info.inversions.x = static_cast<int>(inversion_state);
+
+					inversion_state = static_cast<bool>(m_current_cluster_object_ptr->texture_info.inversions.y);
+
+					ImGui::Text("Y Inverted: "); ImGui::SameLine();
+					ImGui::Checkbox("###is_y_inverted", &inversion_state);
+					m_current_cluster_object_ptr->texture_info.inversions.y = static_cast<int>(inversion_state);
+
+					ImGui::Spacing();
 				}
 				else {
 					ImGui::Combo("TileSheet", &m_selected_tile_sheet_texture_index, "Empty", active_layer.tiled_textures.size());
