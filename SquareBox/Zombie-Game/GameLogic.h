@@ -57,4 +57,5 @@ private:
 
 	ICollisionAgent * m_collision_agent_ptr = nullptr;
 	std::vector<SquareBox::GWOM::Layer> m_layers_backup;
+
 };

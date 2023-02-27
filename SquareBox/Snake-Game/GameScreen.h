@@ -1,10 +1,8 @@
 #pragma once
 #include <SquareBox-Core/SquareBoxGameEngine.h>
-#include "Snake.h"
-#include "Wave.h"
-#include "GameObjects.h"
-#include "PlayerInputs.h"
 #include "ScreenIndicies.h"
+#include "GameLogic.h"
+
 
 class GameScreen: public SquareBox::IGameScreen
 {
@@ -32,49 +30,20 @@ public:
 	SquareBox::Camera::ParallelCamera m_camera;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
 
-	Snake snake;
-	std::list<Bonus> deadBonus;
-	std::list<Wave> waves;
-	int world_width;
-	int world_height;
-
-	SquareBox::AudioSystem::AudioEngine m_audio_engine;
-
-	SquareBox::Utilities m_utilities;
-
-	long tick = 0;
-	int bouns_shock_wave_rate = 2000; // in milliseconds
-	int score = 0;
-
-	int choosingVx = 1;
-	int choosingVy = 0;
-	std::list<Bomb> bombs;
-
-	bool danger=false, waiting=false;
-	int bombCount = 0;
-	int dangerCount = 0;
-	double yScore = 0;
-	bool newScore = false;
-
-	SquareBox::GWOM::Text scoreText, scoreTransition, warning;
+	SnakeGame::GameLogic m_game_logic;
 
 	int heightScore = 40;
 
-	bool gameOver = false;
-
-	SquareBox::Timer speedClock, bonusClock, timer,dangerClock;
-
-	PlayerInputs player_inputs;
-
 	SquareBox::AssetManager::GLTexture m_box_texture;
 	SquareBox::AssetManager::GLTexture m_circle_texture;
-	Bonus bonus;
-	SquareBox::AudioSystem::Music music;
-	SquareBox::AudioSystem::SoundBank bip_sound_bank;
-	SquareBox::AudioSystem::SoundBank boom_sound_bank;
-	SquareBox::AudioSystem::SoundBank bouns_sound_bank;
-	SquareBox::AudioSystem::SoundBank lose_sound_bank;
-	std::vector<WavePoint> map;
 	double m_time = 0.0f;
+	SquareBox::Timer timer;
+
+	SquareBox::GWOM::Text warning;
+
+private:
+
+	SnakeGame::Move determineMovementDirection();
+
 };
 

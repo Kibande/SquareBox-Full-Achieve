@@ -101,6 +101,7 @@ void GameLogic::update(float delta_time_, bool fire_, std::vector<SquareBox::GWO
 
 
 
+
 void GameLogic::dispose()
 {
 	m_human.dispose();
