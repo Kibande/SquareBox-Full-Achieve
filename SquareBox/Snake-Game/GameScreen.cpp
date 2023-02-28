@@ -35,12 +35,11 @@ void GameScreen::onEntry()
 
 
 	warning.setString("WARNING <!>");
+	// set up the size of the world
+	int world_width = m_game_ptr->getWindow()->getScreenWidth() * 0.1f;
+	int world_height = m_game_ptr->getWindow()->getScreenHeight() * 0.1f;
 
-
-	m_game_logic.init(m_game_ptr);
-
-
-
+	m_game_logic.init(m_game_ptr,0,0, world_width, world_height);
 
 	//create some game textures on the fly
 	const int width = 1000;

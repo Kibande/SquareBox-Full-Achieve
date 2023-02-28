@@ -17,7 +17,7 @@ namespace SnakeGame {
 	{
 	public:
 
-		void init(SquareBox::IMainGame* game_ptr_);
+		void init(SquareBox::IMainGame* game_ptr_,int x_orign, int y_orign,int width_,int height_);
 		void update(float delta_time_, bool fire_, Move snake_move_);
 		void dispose();
 		void restart();

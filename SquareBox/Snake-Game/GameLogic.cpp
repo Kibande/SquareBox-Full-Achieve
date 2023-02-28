@@ -1,16 +1,14 @@
 #include "GameLogic.h"
 namespace SnakeGame {
 
-	void GameLogic::init(SquareBox::IMainGame* game_ptr_)
+	void GameLogic::init(SquareBox::IMainGame* game_ptr_, int x_orign, int y_orign, int width_, int height_)
 	{
 		m_audio_engine.init();
 		m_utilities.init();
 		m_game_ptr = game_ptr_;
 
-		// set up the size of the world
-		world_width = m_game_ptr->getWindow()->getScreenWidth() * 0.1f;
-		world_height = m_game_ptr->getWindow()->getScreenHeight() * 0.1f;
-
+		world_width = width_;
+		world_height = height_;
 		snake = Snake(world_width * 0.5f, world_height * 0.5f);
 
 		waves.push_front(Wave(world_width * 0.5f, world_height * 0.5f, 30, 1));
@@ -43,8 +41,6 @@ namespace SnakeGame {
 		Wave::surround = &map;
 
 		score = 0;
-
-
 		bonus = Bonus(rand() % (int)(world_width * 0.8), rand() % (int)(world_height * 0.8));
 	}
 
