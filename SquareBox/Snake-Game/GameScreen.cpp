@@ -31,6 +31,7 @@ void GameScreen::onEntry()
 	m_camera.setPosition(screen_dimensions * 0.5f);
 	m_camera.setScale(1.0f);
 
+
 	m_sprite_font.initWithName("font.ttf", 16);
 
 
@@ -64,13 +65,92 @@ void GameScreen::onEntry()
 	m_box_texture = SquareBox::AssetManager::TextureManager::createTextureFromFileBuffer(fileBuffer, width, height);
 
 	delete[] data; // since the data is stored on the gpu
+
+	//game stats gui
+	m_snake_game_home_gui_elements_coordinates[m_central_button] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_right_arrow] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_left_arrow] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_up_arrow] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_down_arrow] = -1;
+
+	m_snake_game_home_gui_elements_coordinates[m_menu_button] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_pause_play] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_shoot_button] = -1;
+	m_snake_game_home_gui_elements_coordinates[m_score_board] = -1;
+
+	m_snake_game_home_gui_elements_coordinates[score] = -1;
+	m_snake_game_home_gui_elements_coordinates[life_bar_border] = -1;
+	m_snake_game_home_gui_elements_coordinates[life_bar_body] = -1;
+
+	m_snake_game_home_gui.init(m_game_ptr, m_snake_game_home_gui_elements_coordinates, "Assets/Guis/snake_game_home_gui.gui");
+
+
 }
 
 void GameScreen::update(const float& deltaTime_)
 {
 	m_time = timer.Elapsed();
 	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-	m_game_logic.update(deltaTime_, false, determineMovementDirection());
+
+	m_snake_game_home_gui.update(m_camera,1.0f);
+
+	//GUI
+	SnakeGame::Move registred_snake_movement = SnakeGame::Move::NONE;
+
+	if (show_mobile_controls) {
+		//controls independent updates
+
+		SquareBox::GWOM::GUIElement& gui_central_button = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_central_button)->second);
+		SquareBox::GWOM::GUIElement& gui_right_arrow = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_right_arrow)->second);
+		SquareBox::GWOM::GUIElement& gui_left_arrow = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_left_arrow)->second);
+		SquareBox::GWOM::GUIElement& gui_up_arrow = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_up_arrow)->second);
+		SquareBox::GWOM::GUIElement& gui_down_arrow = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_down_arrow)->second);
+
+		SquareBox::GWOM::GUIElement& gui_menu_button = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_menu_button)->second);
+		SquareBox::GWOM::GUIElement& gui_pause_play = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_pause_play)->second);
+		SquareBox::GWOM::GUIElement& gui_shoot_button = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_shoot_button)->second);
+		SquareBox::GWOM::GUIElement& gui_score_board = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(m_score_board)->second);
+		SquareBox::GWOM::GUIElement& gui_score = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(score)->second);
+		SquareBox::GWOM::GUIElement& gui_life_bar_border = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(life_bar_border)->second);
+		SquareBox::GWOM::GUIElement& gui_life_bar_body = m_snake_game_home_gui.getGuiElementByIndex(m_snake_game_home_gui_elements_coordinates.find(life_bar_body)->second);
+
+
+		if (gui_right_arrow.state == SquareBox::GUIElementStateEnum::ACTIVE) {
+			registred_snake_movement = SnakeGame::Move::RIGHT;
+		}
+		else if (gui_left_arrow.state == SquareBox::GUIElementStateEnum::ACTIVE) {
+			registred_snake_movement = SnakeGame::Move::LEFT;
+		}
+		else if (gui_up_arrow.state == SquareBox::GUIElementStateEnum::ACTIVE) {
+			registred_snake_movement = SnakeGame::Move::UP;
+		}
+		else if (gui_down_arrow.state == SquareBox::GUIElementStateEnum::ACTIVE) {
+			registred_snake_movement = SnakeGame::Move::DOWN;
+		}
+	}
+	else {
+		if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_a)))
+		{
+			registred_snake_movement = SnakeGame::Move::LEFT;
+		}
+		else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_d)))
+		{
+			registred_snake_movement = SnakeGame::Move::RIGHT;
+		}
+		else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_w)))
+		{
+			registred_snake_movement = SnakeGame::Move::UP;
+		}
+		else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_s)))
+		{
+			registred_snake_movement= SnakeGame::Move::DOWN;
+		}
+
+	}
+
+	m_game_logic.update(deltaTime_, false, registred_snake_movement);
+
+
 }
 
 void GameScreen::draw()
@@ -198,6 +278,20 @@ void GameScreen::draw()
 	IGameScreen::uploadCameraInfo(&m_texture_program, &m_camera, "P");
 	m_sprite_batch.renderBatch();
 	m_texture_program.unuse();
+
+
+	//drawing Gui
+	if (show_mobile_controls) {
+		m_sprite_batch.begin(SquareBox::RenderEngine::GlyphSortType::NONE);
+		m_snake_game_home_gui.draw(m_camera, m_sprite_batch);
+		m_sprite_batch.end();
+		m_texture_program.use();
+		preUpdateShader(&m_texture_program, "mySampler");
+		uploadCameraInfo(&m_texture_program, &m_camera, "P");
+		m_sprite_batch.renderBatch();
+		m_texture_program.unuse();
+	}
+
 }
 
 void GameScreen::onExit()
@@ -212,24 +306,3 @@ void GameScreen::destroy()
 	m_sprite_font.dispose();
 }
 
-SnakeGame::Move GameScreen::determineMovementDirection()
-{
-	if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_a)))
-	{
-		return SnakeGame::Move::LEFT;
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_d)))
-	{
-		return SnakeGame::Move::RIGHT;
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_w)))
-	{
-		return SnakeGame::Move::UP;
-	}
-	else if (m_game_ptr->getInputDevice()->isInputIdReceived(static_cast<int>(SquareBox::KeyBoardEnum::KEY_s)))
-	{
-		return SnakeGame::Move::DOWN;
-	}
-
-	return SnakeGame::Move::NONE;
-}

@@ -10,7 +10,7 @@ namespace SquareBox {
 		{
 		public:
 			void init(SquareBox::IMainGame* game_, std::map<int, int>& gui_element_coordinates_, std::string gui_file_path_);
-			void update(SquareBox::Camera::ParallelCamera& game_camera_);
+			void update(SquareBox::Camera::ParallelCamera& game_camera_, float visable_area_ratio);
 			void draw(SquareBox::Camera::ParallelCamera& game_camera_, SquareBox::RenderEngine::SpriteBatch& sprite_batch_);
 			void setGUIElementLocationRatio(glm::vec2 pointer_coordinates_, int gui_element_index_);
 			SquareBox::GWOM::GUIElement& getGuiElementByIndex(int index_) { return m_gui_layer.gui_elements[index_]; };

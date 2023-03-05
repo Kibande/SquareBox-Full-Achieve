@@ -32,10 +32,9 @@ namespace SquareBox {
 		}
 	}
 
-	void GUIWrapper::update(SquareBox::Camera::ParallelCamera& game_camera_)
+	void GUIWrapper::update(SquareBox::Camera::ParallelCamera& game_camera_, float visable_area_ratio=0.9f)
 	{
 		glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
-		float visable_area_ratio = 0.9f;
 		glm::vec2 working_area_center(screen_dimensions.x * 0.5f, screen_dimensions.y * 0.5f);
 		glm::vec2 visable_area_dimenions(screen_dimensions.x * visable_area_ratio, screen_dimensions.y * visable_area_ratio);
 
@@ -58,7 +57,9 @@ namespace SquareBox {
 
 			for (unsigned int j = 0; j < m_gui_layer.gui_elements.size(); j++)
 			{
+			
 				SquareBox::GWOM::GUIElement& focus_gui_element = m_gui_layer.gui_elements[j];
+
 				if (m_utilities.isInBox(pointer_in_world, m_visiable_dest_rect)) {
 					guiElementShapeShellSetter(focus_gui_element);
 					if (m_current_gui_element_shape_shell_ptr->containtsPoint(focus_gui_element, pointer_in_world, m_visiable_dest_rect)) {
@@ -67,6 +68,9 @@ namespace SquareBox {
 #ifndef SQB_PLATFORM_ANDROID
 						if (m_game_ptr->getInputDevice()->isInputIdBeingReceived(static_cast<int>(SquareBox::MouseEnum::LEFT_CLICK))) {
 							focus_gui_element.state = SquareBox::GUIElementStateEnum::ACTIVE;
+							if (focus_gui_element.id == 1) {
+								int i = focus_gui_element.id * 34;
+							}
 						}
 #else
 
