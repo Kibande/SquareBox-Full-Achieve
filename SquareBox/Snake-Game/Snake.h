@@ -6,19 +6,19 @@
 
 struct SnakeNode
 {
-    int x, y;
-    double c=0.0, maxC=0.0;
-    SnakeNode(int arg_x, int arg_y, double arg_maxC=10) : x(arg_x), y(arg_y), maxC(arg_maxC) {}
+    signed x, y;
+    double node_size=0.0, max_node_size=0.0;
+    SnakeNode(signed arg_x, signed arg_y, double arg_maxC=10) : x(arg_x), y(arg_y), max_node_size(arg_maxC) {}
 };
 
 class Snake
 {
 public:
     Snake() {};
-    Snake(int arg_x, int arg_y);
+    Snake(signed arg_x, signed arg_y);
 
     void update();
-    void progress(const int word_width, const int world_height);
+    void progress(const signed orign_x, const signed orign_y, const signed word_width, const signed world_height);
     void kill() {_snake.clear();}
     void draw(SquareBox::RenderEngine::SpriteBatch  & renderer,float heightScore,int texture_id_);
     void addNode(int x, int y);

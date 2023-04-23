@@ -980,8 +980,9 @@ void LevelEditor::drawGUI()
 
 
 		if (m_layers[m_active_layer_index].layer_type == SquareBox::LayerTypeEnum::TiledLayer) {
-		ImGui::Text("TAB + ARROW KEY               :  Duplicated selected tiles in a particular direction");
-		ImGui::Text("F1  + ARROW KEY               :  Tiles out the texture map into the world");
+			ImGui::Text("TAB + direction key           :  Duplicated selected tiles in a particular direction");
+			ImGui::Text("F1  + direction key           :  Tiles out the texture map into the world");
+			ImGui::Text("The direction keys are q,w,e,a,d,z,x and c");
 		}
 		else if (m_layers[m_active_layer_index].layer_type == SquareBox::LayerTypeEnum::FlatLayer) {
 			ImGui::Text("\nCluster Mode");

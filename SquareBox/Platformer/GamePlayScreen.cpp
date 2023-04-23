@@ -2,12 +2,12 @@
 
 int GamePlayScreen::getNextScreenIndex() const
 {
-	return 0;
+	return m_nextScreenIndex;
 }
 
 int GamePlayScreen::getPreviousScreenIndex() const
 {
-	return 0;
+	return m_previousScreenIndex;
 }
 
 void GamePlayScreen::build()
@@ -16,51 +16,24 @@ void GamePlayScreen::build()
 
 void GamePlayScreen::onEntry()
 {
-	m_texture_program.init();
-	m_texture_program.compileShaders("Assets/Shaders/colorShading.vert", "Assets/Shaders/colorShading.frag");
-	m_texture_program.addAttribute("vertextPosition");
-	m_texture_program.addAttribute("vertextColor");
-	m_texture_program.addAttribute("vertextUV");
-	m_texture_program.linkShaders();
 
 	m_sprite_batch.init();
-	m_layer.camera.init(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	m_layer.camera.setPosition(glm::vec2(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight())*0.5f);
 
+	m_texture_program.init();
+	m_texture_program.compileDefaultTextureShaders();
+	m_texture_program.addDefaultTextureAttributes();
+	m_texture_program.linkShaders();
+	glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
+	m_camera.init(screen_dimensions);
 
-	nLevelWidth = 64;
-	nLevelHeight = 16;
-	
-	sLevel.append("................................................................");
-	sLevel.append("................................................................");
-	sLevel.append(".......ooooo....................................................");
-	sLevel.append("........ooo.....................................................");
-	sLevel.append(".......................########.................................");
-	sLevel.append(".....BB?BBBB?BB.......###..............#.#......................");
-	sLevel.append("....................###................#.#......................");
-	sLevel.append("...................####.........................................");
-	sLevel.append("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG.##############.....########");
-	sLevel.append("...................................#.#...............###........");
-	sLevel.append("........................############.#............###...........");
-	sLevel.append("........................#............#.........###..............");
-	sLevel.append("........................#.############......###.................");
-	sLevel.append("........................#................###....................");
-	sLevel.append("........................#################.......................");
-	sLevel.append("................................................................");
+	m_camera.setPosition(screen_dimensions * 0.5f);
+	m_camera.setScale(1.0f);
 }
 
 void GamePlayScreen::update(const float & deltaTime_)
 {
-	int nTileWidth = 16;
-	int nTileHeight = 16;
 
-	int nVisibleTilesX = m_window_ptr->getScreenWidth() / nTileWidth;
-	int nVisibleTilesY = m_window_ptr->getScreenHeight() / nTileHeight;
-
-	 
-
-	m_layer.camera.update(m_window_ptr->getScreenWidth(), m_window_ptr->getScreenHeight());
-	m_window_ptr->update();
+	m_camera.update(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 }
 
 void GamePlayScreen::draw()
@@ -69,20 +42,23 @@ void GamePlayScreen::draw()
 
 void GamePlayScreen::onExit()
 {
+	
 	m_sprite_batch.begin();
+
+	// make the draw calls here
+
 	m_sprite_batch.end();
 
-	//sprite draws should be done here
-
 	m_texture_program.use();
-	preUpdateShader(&m_texture_program,"mySampler");
-	uploadCameraInfo(&m_texture_program, &m_layer.camera, "P");
+	IGameScreen::preUpdateShader(&m_texture_program, "mySampler");
+	IGameScreen::uploadCameraInfo(&m_texture_program, &m_camera, "P");
 	m_sprite_batch.renderBatch();
 	m_texture_program.unuse();
 }
 
 void GamePlayScreen::destroy()
 {
-	m_texture_program.dispose();
 	m_sprite_batch.dispose();
+	m_texture_program.dispose();
+	m_sprite_font.dispose();
 }

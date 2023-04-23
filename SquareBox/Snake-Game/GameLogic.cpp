@@ -9,39 +9,42 @@ namespace SnakeGame {
 
 		world_width = width_;
 		world_height = height_;
-		snake = Snake(world_width * 0.5f, world_height * 0.5f);
+		orign_x = x_orign;
+		orign_y = y_orign;
 
-		waves.push_front(Wave(world_width * 0.5f, world_height * 0.5f, 30, 1));
+		snake = Snake((x_orign + world_width) * 0.5f, (y_orign + world_height) * 0.5f);
+
+		waves.push_front(Wave((x_orign + world_width) * 0.5f, (y_orign + world_height) * 0.5f, 30, 1));
 		waves.front().ampl = 400;
 
-		music = SquareBox::AudioSystem::Music("Assets/Audio/ambience.ogg");
+		music = SquareBox::AudioSystem::Music("Assets/Audio/ambience.wav");
 
 		m_audio_engine.loadMusic(music);
 		music.play(-1);
 
-		bip_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bip", "Assets/Audio/bip.flac"));
+		bip_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bip", "Assets/Audio/bip.wav"));
 		m_audio_engine.loadSoundBank(bip_sound_bank);
 
-		boom_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("boom", "Assets/Audio/boom.ogg"));
+		boom_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("boom", "Assets/Audio/boom.wav"));
 		m_audio_engine.loadSoundBank(boom_sound_bank);
 
-		bouns_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bonus", "Assets/Audio/bonus.flac"));
+		bouns_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("bonus", "Assets/Audio/bonus.wav"));
 		m_audio_engine.loadSoundBank(bouns_sound_bank);
 
-		lose_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("lose", "Assets/Audio/lose.flac"));
+		lose_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("lose", "Assets/Audio/lose.wav"));
 		m_audio_engine.loadSoundBank(lose_sound_bank);
 
 		srand(time(NULL));
 
-		for (int i = 0; i < world_width; ++i)
+		for (int i = orign_x; i < orign_x+world_width; ++i)
 		{
-			for (int j = 0; j < world_height; ++j) { map.push_back(WavePoint(i, j)); }
+			for (int j = orign_y; j < orign_y +world_height; ++j) { map.push_back(WavePoint(i, j)); }
 		}
 
 		Wave::surround = &map;
 
 		score = 0;
-		bonus = Bonus(rand() % (int)(world_width * 0.8), rand() % (int)(world_height * 0.8));
+		bonus = Bonus(rand() % (int)(orign_x + world_width * 0.8), rand() % (int)(orign_y+ world_height * 0.8));
 	}
 
 
@@ -110,8 +113,7 @@ namespace SnakeGame {
 
 			for (int i(0); i < simultaneous; ++i)
 			{
-
-				bombs.push_back(Bomb(rand() % (int)(world_width * 0.8), rand() % (int)(world_height * 0.8)));
+				bombs.push_back(Bomb(rand() % (int)(orign_x + world_width * 0.8), rand() % (int)(orign_y + world_height * 0.8)));
 			}
 
 			danger = true;
@@ -139,7 +141,7 @@ namespace SnakeGame {
 
 				if (bombCount > 0)
 				{
-					bombs.push_back(Bomb(rand() % (int)(world_width * 0.8), rand() % (int)(world_height * 0.8)));
+					bombs.push_back(Bomb(rand() % (int)(orign_x+ world_width * 0.8), rand() % (int)(orign_y + world_height * 0.8)));
 					bombCount--;
 				}
 			}
@@ -176,12 +178,12 @@ namespace SnakeGame {
 
 				deadBonus.push_front(bonus);
 
-				bonus = Bonus(rand() % (int)(world_width * 0.8), rand() % (int)(world_height * 0.8));
+				bonus = Bonus(rand() % (int)(orign_x + world_width * 0.8), rand() % (int)(orign_y + world_height * 0.8));
 				score++;
 			}
 			else
 			{
-				snake.progress(world_width, world_height);
+				snake.progress(orign_x,orign_y,world_width, world_height);
 
 				if (!(tick % 6))
 				{

@@ -3,7 +3,7 @@
 class GamePlayScreen :public SquareBox::IGameScreen
 {
 public:
-	GamePlayScreen(SquareBox::RenderEngine::Window * window_ptr_) :m_window_ptr(window_ptr_) {};
+	GamePlayScreen(){};
 	// Inherited via IGameScreen
 	virtual int getNextScreenIndex() const override;
 	virtual int getPreviousScreenIndex() const override;
@@ -15,18 +15,13 @@ public:
 	virtual void destroy() override;
 
 private:
-	SquareBox::RenderEngine::Window * m_window_ptr;
 
-	//texture stuff
+	int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
+	int m_previousScreenIndex = SCREEN_INDEX_NO_SCREEN;
+
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
+	SquareBox::RenderEngine::SpriteFont m_sprite_font;
+	SquareBox::Camera::ParallelCamera m_camera;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
-
-	//our layer
-	SquareBox::GWOM::Layer m_layer;
-
-	// Level storage
-	std::string sLevel;
-	int nLevelWidth;
-	int nLevelHeight;
 };
 

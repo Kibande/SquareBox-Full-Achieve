@@ -70,7 +70,6 @@ private:
 
 	bool show_mobile_controls = true;
 
-
 	// set up the size of the world
 	int world_width;
 	int world_height;

@@ -13,6 +13,7 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\SquareBoxGameEngine.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Utilities.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\GUIWrapper.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-Core\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SquareBox\SquareBox-Core\IGameScreen.cpp" />

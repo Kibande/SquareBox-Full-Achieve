@@ -20,7 +20,7 @@ public:
 	void getUp(Space* space);
 	void moveX(int orientation);
 	void moveY(int orientation);
-
+	
 	void selectGun(int n);
 	void selectNextGun();
 	void selectPreviousGun();
@@ -31,7 +31,7 @@ public:
 	void changeState(PlayerState* newState);
 
 	static const int standingHeight = 48;
-	static const int standingWidht = 18;
+	static const int standingWidth = 18;
 	static const int crouchedHeight = 36;
 	static const int floorSlidingHeight = 22;
 	static const int floorSlidingWidth = 46;
@@ -63,5 +63,13 @@ public:
 
 	string getAmmoString() override;
 	string getFocusString() override;
+
+
+	// commet this out if you want the player to be able to take damage on their health.
+	void takeHit(int damage) {
+			
+	}
+
+
 };
 

@@ -25,14 +25,14 @@ namespace SquareBox {
 
 			for (auto it = gui_element_coordinates_.begin(); it != gui_element_coordinates_.end(); it++)
 			{
-				if ((*it).first == focus_gui_element.id) {
+				if ((*it).first == focus_gui_element.id && focus_gui_element.is_alive) {
 					(*it).second = i;
 				}
 			}
 		}
 	}
 
-	void GUIWrapper::update(SquareBox::Camera::ParallelCamera& game_camera_, float visable_area_ratio=0.9f)
+	void GUIWrapper::update(SquareBox::Camera::ParallelCamera& game_camera_, float visable_area_ratio)
 	{
 		glm::vec2 screen_dimensions(m_game_ptr->getWindow()->getScreenWidth(), m_game_ptr->getWindow()->getScreenHeight());
 		glm::vec2 working_area_center(screen_dimensions.x * 0.5f, screen_dimensions.y * 0.5f);

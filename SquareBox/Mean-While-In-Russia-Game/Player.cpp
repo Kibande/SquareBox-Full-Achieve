@@ -6,7 +6,7 @@
 #include <sstream>
 
 Player::Player(float x, float y, set<int> gunsInventory, map<string, int> ammoInventory, int nGun, Game* game) :
-		Character("res/player_idle.png", x, y, standingWidht, standingHeight, maxHealth, game, headHeight) {
+		Character("res/player_idle.png", x, y, standingWidth, standingHeight, maxHealth, game, headHeight) {
 	for (int i = 0; i < 8; i++) {
 		this->gunsInventory[i] = gunsInventory.find(i) != gunsInventory.end() ? GunFactory::forNumber(i, this, game) : NULL;
 	}

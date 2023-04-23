@@ -46,6 +46,7 @@
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\ScreenList.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\sqbpch.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\SquareBoxGameEngine.h" />
+    <ClInclude Include="..\..\SquareBox\SquareBox-Core\Timer.h" />
     <ClInclude Include="..\..\SquareBox\SquareBox-Core\Utilities.h" />
   </ItemGroup>
   <ItemGroup>

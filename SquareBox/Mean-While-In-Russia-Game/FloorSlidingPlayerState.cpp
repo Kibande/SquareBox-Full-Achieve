@@ -29,7 +29,7 @@ void FloorSlidingPlayerState::update(Player* player) {
 		slideEnded = true;
 		// Comprobamos si tiene espacio encima para levantarse
 		float yToCheck = player-> y - (player->standingHeight - player->floorSlidingHeight) / 2;
-		if (!space->isRectFree(player->x, yToCheck, player->standingWidht, player->standingHeight)) {
+		if (!space->isRectFree(player->x, yToCheck, player->standingWidth, player->standingHeight)) {
 			// Si no tiene espacio se sigue deslizando hasta que lo encuentre
 			player->vx = endSpeed * (player->vx > 0 ? 1 : -1);
 			return;
@@ -47,21 +47,21 @@ void FloorSlidingPlayerState::afterStateChange(Player* player) {
 	player->height = player->floorSlidingHeight;
 	player->width = player->floorSlidingWidth;
 	player->y += (player->standingHeight - player->floorSlidingHeight) / 2;
-	player->x += (player->floorSlidingWidth - player->standingWidht) / 2 * orientation;
+	player->x += (player->floorSlidingWidth - player->standingWidth) / 2 * orientation;
 }
 
 void FloorSlidingPlayerState::beforeStateChange(Player* player) {
 	animation->reset();
 	player->vx = 0;
 	player->height = player->standingHeight;
-	player->width = player->standingWidht;
+	player->width = player->standingWidth;
 	player->y -= (player->standingHeight - player->floorSlidingHeight) / 2;
 }
 
 void FloorSlidingPlayerState::jump(Player* player) {
 	// Comprobamos si tiene espacio encima para levantarse
 	float yToCheck = player->y - (player->standingHeight - player->floorSlidingHeight) / 2;
-	if (space->isRectFree(player->x, yToCheck, player->standingWidht, player->standingHeight)) {
+	if (space->isRectFree(player->x, yToCheck, player->standingWidth, player->standingHeight)) {
 		PlayerState::jump(player);
 	}
 }

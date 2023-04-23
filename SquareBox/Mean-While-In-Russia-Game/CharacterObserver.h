@@ -9,8 +9,8 @@ class GunCollectable;
 class CharacterObserver
 {
 public:
-	virtual void onCharacterDead(Character* character, GunCollectable* droppedGun) {}
 	virtual void onEnemyKilled() {}
+	virtual void onCharacterDead(Character* character, GunCollectable* droppedGun) {}
 	virtual void onCharacterFire(Projectile* projectile) {}
 	virtual void onCharacterAmmoChange(Character* character) {}
 	virtual void onCharacterHealthChange(Character* character) {}

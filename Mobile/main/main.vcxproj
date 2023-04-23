@@ -305,30 +305,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\App.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\Bullet.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\GameLogic.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\Gun.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\Human.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\LayerIndicies.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\Player.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\ScreenIndicies.h" />
-    <ClInclude Include="..\..\SquareBox\Zombie-Game\Zombie.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\App.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\GameLogic.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\GameObjects.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\GameScreen.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\ScreenIndicies.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\Snake.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\SplashScreen.h" />
+    <ClInclude Include="..\..\SquareBox\Snake-Game\Wave.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\App.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\Bullet.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\GameLogic.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\GamePlayScreen.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\Gun.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\Human.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\ICollisionAgent.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\LayerIndicies.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\main.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\Player.cpp" />
-    <ClCompile Include="..\..\SquareBox\Zombie-Game\Zombie.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\App.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\GameLogic.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\GameScreen.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\main.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\Snake.cpp" />
+    <ClCompile Include="..\..\SquareBox\Snake-Game\SplashScreen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

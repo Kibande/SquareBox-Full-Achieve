@@ -58,7 +58,7 @@
             android:alwaysRetainTaskState="true"
             android:resizeableActivity="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"
+            android:screenOrientation="sensorPortrait"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             >
             <intent-filter>

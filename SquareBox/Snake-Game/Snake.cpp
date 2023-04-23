@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Snake::Snake(int arg_x, int arg_y)
+Snake::Snake(signed arg_x, signed arg_y)
 {
 	addNode(arg_x, arg_y);
 	_dead = false;
@@ -20,36 +20,61 @@ void Snake::addLife(double life)
 
 void Snake::update()
 {
-	if (_life <= 0) _dead = true;
+	if (_life <= 0) {
+		_dead = true;
+	}
 
 	// appearance of the head
-	for (SnakeNode& sn : _snake) { if (sn.c < sn.maxC) sn.c += 0.5; }
+	for (SnakeNode& sn : _snake) {
+		if (sn.node_size < sn.max_node_size) {
+			sn.node_size += 0.5;
+		}
+	}
 
 	// dead nodes being deleted
-	for (SnakeNode& sn : _deadNodes) { if (sn.c > 0) sn.c -= 0.5; }
-	_deadNodes.remove_if([](SnakeNode& sn) { return sn.c <= 0; });
+	for (SnakeNode& sn : _deadNodes) { 
+
+		if (sn.node_size > 0) { 
+		sn.node_size -= 0.5;
+		}
+	}
+	_deadNodes.remove_if([](SnakeNode& sn) { return sn.node_size <= 0; });
 
 }
 
-void Snake::progress(const int world_width,const int world_height)
+void Snake::progress(const signed orign_x, const signed orign_y,const signed world_width,const signed world_height)
 {
 	SnakeNode head = _snake.front();
 	_deadNodes.push_front(_snake.back());
 
 	head.x += _vx;
 	head.y += _vy;
-	head.x %= world_width;
-	head.y %= world_height;
 
-	if (head.x < 0) {
-		head.x += world_width;
+	if (head.x < orign_x) {
+		head.x = orign_x + world_width;
 	}
 
-	if (head.y < 0) { 
-		head.y += world_height; 
+	if (head.x > orign_x + world_width) {
+		head.x = orign_x;
 	}
 
-	checkAutoCollision();
+	if (head.y < orign_y) {
+		head.y = orign_y + world_height;
+	}
+
+	if (head.y > orign_y + world_height) {
+		head.y = orign_y;
+	}
+
+	//check for collision
+	for (SnakeNode& sn : _snake)
+	{
+		if (head.x == sn.x && head.y == sn.y) {
+			_dead = true;
+			_life = 0;
+			return;
+		}
+	}
 
 	_snake.push_front(head);
 	_snake.pop_back();
@@ -57,26 +82,17 @@ void Snake::progress(const int world_width,const int world_height)
 
 void Snake::addNode(int x, int y)
 {
-	SnakeNode newNode = SnakeNode(x, y, 10);
-	newNode.c = 10;
+	int node_size = 10;
+	SnakeNode newNode = SnakeNode(x, y, node_size);
+	newNode.node_size = node_size;
 	_snake.push_front(newNode);
 }
 
 void Snake::checkAutoCollision()
 {
-	// life colliding with body kill the snake 
+	// head colliding with body kills the snake 
 	SnakeNode& head = _snake.front();
-	int n_collision = 0;
-	for (SnakeNode& sn : _snake)
-	{
-		if (head.x == sn.x && head.y == sn.y) { n_collision++; }
-	}
 
-	if (n_collision > 1)
-	{
-		_dead = true;
-		_life = 0;
-	}
 }
 
 void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,float heightScore,int texture_id_)
@@ -102,8 +118,8 @@ void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,float heightScor
 
 		int x = sn.x * 10 + 5;
 		int y = sn.y * 10 + heightScore + 5;
-		double s = sn.c / 2.0f;
-		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
+		double size = sn.node_size / 2.0f;
+		renderer.draw(glm::vec4(glm::vec2(x, y)-glm::vec2(size)*0.5f, glm::vec2(size)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
 		i++;
 	}
 
@@ -125,8 +141,8 @@ void Snake::draw(SquareBox::RenderEngine::SpriteBatch& renderer,float heightScor
 
 		int x = sn.x * 10 + 5;
 		int y = sn.y * 10 + heightScore + 5;
-		double s = sn.c / 2.0;
-		renderer.draw(glm::vec4(glm::vec2(x, y), glm::vec2(s)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
+		double size = sn.node_size / 2.0;
+		renderer.draw(glm::vec4(glm::vec2(x, y) - glm::vec2(size) * 0.5f, glm::vec2(size)), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture_id_, 1.0f, SquareBox::RenderEngine::ColorRGBA8(r, g, b, 255));
 		i++;
 	}
 

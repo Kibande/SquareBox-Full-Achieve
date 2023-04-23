@@ -382,7 +382,7 @@ void Second_Screen::drawGUI()
 			ImGui::SameLine();
 			std::vector<char*>  vc;
 			vc.reserve(m_vec_of_texture_objects.size());
-			std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), [](const SquareBox::GWOM::ClusterObject & cluster_object_) {
+			std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), [](const SquareBox::GWOM::ClusterObject& cluster_object_) {
 				//this new here is never deleted, and is called alot, that is a problem to us 
 				auto retrived_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);
 				char* pc = new char[retrived_texture.display_name.size() + 1];
@@ -614,7 +614,7 @@ void Second_Screen::loadTextureObject(std::string file_path_, std::string file_n
 
 	m_active_texture_object_index = m_vec_of_texture_objects.size() - 1;
 	m_current_texture_object_tiling = tiling_;
-	
+
 	if (retrieved_texture.tiling.x == retrieved_texture.tiling.y) {
 		if (SquareBox::MathLib::Float::areFloatsEqual(new_texture_object.width, new_texture_object.height, 0.1)) {
 			SBX_INFO("Texture Qualifies as a square texture");
@@ -646,4 +646,3 @@ void Second_Screen::loadTextureObject(std::string file_path_, std::string file_n
 Second_Screen::~Second_Screen()
 {
 }
-

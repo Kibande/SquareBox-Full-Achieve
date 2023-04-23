@@ -39,6 +39,8 @@ namespace SnakeGame {
 		std::list<Wave> waves;
 		int world_width;
 		int world_height;
+		int orign_x;
+		int orign_y;
 		SquareBox::AudioSystem::AudioEngine m_audio_engine;
 		SquareBox::Utilities m_utilities;
 

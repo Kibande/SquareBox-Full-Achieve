@@ -31,16 +31,14 @@ void GameScreen::onEntry()
 	m_camera.setPosition(screen_dimensions * 0.5f);
 	m_camera.setScale(1.0f);
 
-
 	m_sprite_font.initWithName("font.ttf", 16);
-
-
 	warning.setString("WARNING <!>");
+
 	// set up the size of the world
 	int world_width = m_game_ptr->getWindow()->getScreenWidth() * 0.1f;
 	int world_height = m_game_ptr->getWindow()->getScreenHeight() * 0.1f;
 
-	m_game_logic.init(m_game_ptr,0,0, world_width, world_height);
+	m_game_logic.init(m_game_ptr,0,0 + world_height*.32f, world_width, world_height *0.5f);
 
 	//create some game textures on the fly
 	const int width = 1000;
@@ -59,7 +57,6 @@ void GameScreen::onEntry()
 			i += 4;
 		}
 	}
-
 
 	auto  fileBuffer = std::pair<float*, int>(data, length);
 	m_box_texture = SquareBox::AssetManager::TextureManager::createTextureFromFileBuffer(fileBuffer, width, height);

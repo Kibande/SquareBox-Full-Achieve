@@ -46,7 +46,7 @@ int TiledLayer::onLayerInitGui(SquareBox::GWOM::Layer& layer_)
 		float layer_x_origin = 0 - m_layer_width * 0.5f;
 		float layer_y_origin = 0 - m_layer_height * 0.5f;
 		ImGui::Text("Layer Origin  :  %.3f  ,%.3f", layer_x_origin, layer_y_origin);
-
+		ImGui::Text("Num Tiles     :  %d", m_layer_height > 0 && m_layer_width > 0 && m_layer_tile_size > 0 ? static_cast<int>(std::ceil(static_cast<float>(m_layer_height / m_layer_tile_size))) * static_cast<int>(std::ceil(static_cast<float>(m_layer_width / m_layer_tile_size))) :NULL);
 		ImGui::Text("Tile Size     :"); ImGui::SameLine();
 		ImGui::InputFloat("###layertileszie", &m_layer_tile_size);
 

@@ -21,7 +21,7 @@ private:
 
 	virtual void onEntry() override;
 
-	virtual void update(const float & deltaTime_) override;
+	virtual void update(const float& deltaTime_) override;
 
 	virtual void draw() override;
 
@@ -35,8 +35,8 @@ private:
 
 	void showMenuMain();
 
-	void loadTextureObject(std::string file_path_,std::string file_name_, glm::vec2 tiling_);
-	SquareBox::IShape * m_current_shape_ptr;
+	void loadTextureObject(std::string file_path_, std::string file_name_, glm::vec2 tiling_);
+	SquareBox::IShape* m_current_shape_ptr;
 	SquareBox::Utilities m_utilities;
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
@@ -56,7 +56,7 @@ private:
 	int m_next_screen_index = SCREEN_INDEX_NO_SCREEN;
 	int m_previous_screen_index = SCREEN_INDEX_NO_SCREEN;
 	bool m_show_grid_lines = true;
-	float m_screen_texture_height_ratio =0.8f; //got through trial and error on my pc
+	float m_screen_texture_height_ratio = 0.8f; //got through trial and error on my pc
 
 	std::vector<SquareBox::GWOM::ClusterObject> m_vec_of_texture_objects;
 	//storing the loaded textures as objects since cluster objects have alot of inbuilt

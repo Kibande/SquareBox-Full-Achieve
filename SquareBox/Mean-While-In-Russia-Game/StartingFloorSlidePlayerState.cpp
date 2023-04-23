@@ -29,8 +29,8 @@ void StartingFloorSlidePlayerState::update(Player* player) {
 		// Comprueba si hay espacio en frente del jugador para deslizarse
 		// Para ello calcula el rectángulo que ocupará el jugador a la derecha
 		// o a la izquierda y comprueba si hay algún actor estático con el que se solape
-		float widthDelta = player->floorSlidingWidth - player->standingWidht;
-		float xDelta = (widthDelta / 2 + player->standingWidht / 2) * (player->vx > 0 ? 1 : -1);
+		float widthDelta = player->floorSlidingWidth - player->standingWidth;
+		float xDelta = (widthDelta / 2 + player->standingWidth / 2) * (player->vx > 0 ? 1 : -1);
 		float xToCheck = player->x + xDelta;
 		float yDelta = player->standingHeight / 2 - player->floorSlidingHeight / 2;
 		float yToCheck = player->y + yDelta;
