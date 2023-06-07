@@ -5,6 +5,7 @@
 #include <SquareBox-Core/Essentials.h>
 #include <SquareBox-Logger/Logger.h>
 #include <glm/glm.hpp>
+#include<vector>
 namespace SquareBox {
 	namespace AudioSystem {
 		class Music
@@ -43,8 +44,14 @@ namespace SquareBox {
 			int getActiveChannel() {
 				return m_active_channel;
 			}
+
+
 		private:
+			int audioLength;
+			std::vector<double> audioData;
+			std::vector<double> magnitude;
 			Mix_Music* m_music = nullptr;
+
 			std::string m_file_path;
 			char * m_data = nullptr;
 			int m_data_length = 0;

@@ -84,10 +84,16 @@ namespace SquareBox {
 							SBX_CORE_ERROR("Failed to load SoundEffect file {}  error : {} ", sound.m_file_path, std::string(Mix_GetError()));
 						}
 					}
-					//cache the chuck
 					sound.m_chunk = chunk;
-					m_effect_map[sound.m_file_path] = chunk;
+					sound.audioLength = chunk->alen;
+					sound.audioData= std::vector<double>(sound.audioLength, 0.0);
+					std::memcpy(sound.audioData.data(), sound.m_chunk->abuf, sound.audioLength);
 					
+					//// Perform FFT analysis
+					//sound.magnitude = fft(sound.audioData);
+
+					//cache the chuck
+					m_effect_map[sound.m_file_path] = chunk;
 				}
 				else {
 					//else it is already cached
@@ -125,6 +131,8 @@ namespace SquareBox {
 						music.m_is_music_loaded = true;
 					}
 				}
+				
+
 
 				//cache the chuck
 				music.m_music = mixMusic;
@@ -229,5 +237,6 @@ namespace SquareBox {
 				(quered_channels > 2) ? "surround" : (quered_channels > 1) ? "stereo" : "mono",
 				m_buffer_size);
 		}
+
 	}
 }

@@ -368,7 +368,7 @@ void Second_Screen::drawGUI()
 			else if (m_target_tile_index >= retrieved_texture_max_index) {
 				m_target_tile_index = retrieved_texture_max_index - 1;
 			}
-			glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_target_tile_index);
+			glm::vec4 uvRect = retrieved_texture.getUVReactAtIndex(m_target_tile_index,glm::ivec2(1));
 
 			ImGui::Text("X : %.3f", uvRect.x);
 			ImGui::Text("Y : %.3f", uvRect.y);
@@ -378,10 +378,10 @@ void Second_Screen::drawGUI()
 
 			ImGui::NewLine();
 
-			ImGui::Text("Name : ");
+			ImGui::Text("Name: : ");
 			ImGui::SameLine();
 			std::vector<char*>  vc;
-			vc.reserve(m_vec_of_texture_objects.size());
+			vc.reserve(m_vec_of_texture_objects.size());      
 			std::transform(m_vec_of_texture_objects.begin(), m_vec_of_texture_objects.end(), std::back_inserter(vc), [](const SquareBox::GWOM::ClusterObject& cluster_object_) {
 				//this new here is never deleted, and is called alot, that is a problem to us 
 				auto retrived_texture = SquareBox::AssetManager::TextureManager::getTextureById(cluster_object_.texture_info.texture_id);

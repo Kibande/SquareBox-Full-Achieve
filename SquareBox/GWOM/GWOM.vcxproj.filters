@@ -18,6 +18,9 @@
     <ClInclude Include="DSUGUIV1_generated.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DSUGUIV2_generated.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="DSUGWOMV1_generated.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -75,9 +78,6 @@
     <ClInclude Include="WorldCluster.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="DSUGUIV2_generated.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grid.cpp">
@@ -106,10 +106,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DSUGUIV2.fbs">
+    <None Include="DSUGUIV1.fbs">
       <Filter>Docs</Filter>
     </None>
-    <None Include="DSUGUIV1.fbs">
+    <None Include="DSUGUIV2.fbs">
       <Filter>Docs</Filter>
     </None>
     <None Include="DSUGWOM.fbs">

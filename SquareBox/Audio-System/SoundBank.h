@@ -56,6 +56,7 @@ namespace SquareBox {
 				return m_active_channel;
 			}
 			glm::vec2 orign;
+			int active_sound_effect_index = 0;
 			std::vector<SoundEffect> sound_effects;
 		private:
 			SquareBox::FallOffEnum m_fall_off;

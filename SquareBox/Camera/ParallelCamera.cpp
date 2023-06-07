@@ -34,7 +34,7 @@ namespace SquareBox {
 			if (m_screen_width != screen_width_ || m_screen_height != screen_height_) {
 				//only do when we get a new screen resolution
 
-				//adjusting position_ accordinlgly
+				//adjusting position_ accordingly
 				m_position.x = (m_position.x / m_screen_width) * screen_width_;
 				m_position.y = (m_position.y / m_screen_height) * screen_height_;
 
@@ -51,15 +51,15 @@ namespace SquareBox {
 				//build our own orthoMatrix when the screen width or Height changes
 				m_ortho_matrix = glm::ortho(0.0f, (float)m_screen_width, 0.0f, (float)m_screen_height);
 
-				//create a vector that will encode the transalation
+				//create a vector that will encode the translation
 				glm::vec3 translate(-m_position.x + m_screen_width * 0.5f, -m_position.y + m_screen_height * 0.5f, 0.0f);//The Modal Matrix
 
 				m_camera_matrix = glm::translate(m_ortho_matrix, translate);
 
-				// Camere Scale
-				//scale the transalation
+				// Camera Scale
+				//scale the translation
 
-				//create a vector that will encode the scalling
+				//create a vector that will encode the scaling
 				glm::vec3 scale(m_scale, m_scale, 0.0f);//The Projection Matrix
 				m_camera_matrix = glm::scale(glm::mat4(1.0f), scale) * m_camera_matrix;
 				m_needs_matrix_update = false;

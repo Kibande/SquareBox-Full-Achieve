@@ -27,10 +27,10 @@ void SquareBox::AnimationSystem::IAnimation::setCurrentAnimationSpecification(in
 		bool animationDefined = false;
 		for (unsigned int i = 0; i < vec_of_animation_specification.size(); i++)
 		{
-			//get the animation squence for this movestate
+			//get the animation sequence for this move-state
 			if (vec_of_animation_specification[i].specification_id == specification_id_)
 			{
-				//make it our current, we we shall get all reference values
+				//make it our current, we shall get all reference values
 				m_current_animation_specification_index = i;
 				m_animeTime = 0.0f;
 				m_currentTileIndex = vec_of_animation_specification[m_current_animation_specification_index].startTile; // this helps with time dependants
@@ -49,7 +49,7 @@ void SquareBox::AnimationSystem::IAnimation::deleteAnimationSpecificationById(in
 	bool animationDefined = false;
 	for (unsigned int i = 0; i < vec_of_animation_specification.size(); i++)
 	{
-		//get the animation squence for this movestate
+		//get the animation sequence for this movestate
 		if (vec_of_animation_specification[i].specification_id == specification_id_)
 		{
 			animationDefined = true;

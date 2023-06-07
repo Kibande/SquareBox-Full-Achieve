@@ -268,6 +268,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiFileBrowser.h" />
+    <ClInclude Include="TextEditor.h" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
@@ -281,6 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGuiFileBrowser.cpp" />
+    <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />

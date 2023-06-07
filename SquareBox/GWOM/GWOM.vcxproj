@@ -301,8 +301,8 @@
     <ClCompile Include="TileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DSUGUIV2.fbs" />
     <None Include="DSUGUIV1.fbs" />
+    <None Include="DSUGUIV2.fbs" />
     <None Include="DSUGWOM.fbs" />
     <None Include="DSUGWOMV1.fbs" />
     <None Include="DSUString.fbs" />

@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL/include/SDL_mixer.h>
 #include <string>
+#include<vector>
 namespace SquareBox {
 	namespace AudioSystem {
 		class SoundEffect
@@ -16,8 +17,12 @@ namespace SquareBox {
 
 			friend class AudioEngine;
 			friend class SoundBank;
+			int audioLength;
+			std::vector<double> audioData;
+			std::vector<double> magnitude;
 		private:
 			Mix_Chunk* m_chunk = nullptr;
+		
 			std::string m_file_path;
 			std::string m_unique_name;
 			int channel = 0;

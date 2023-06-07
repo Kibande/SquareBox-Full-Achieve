@@ -16,14 +16,14 @@ SquareBox::AudioSystem::SoundBank::~SoundBank()
 
 void SquareBox::AudioSystem::SoundBank::play(int loops, int sound_effect_index_)
 {
-	
 	if (sound_effects.size() > 0) {
 		static std::mt19937 randomEngine(static_cast<unsigned int>(time(nullptr)));
 		std::uniform_int_distribution<unsigned int> randonIndex(0, sound_effects.size() - 1);
+		active_sound_effect_index = sound_effect_index_ == -1 ? randonIndex(randomEngine) : sound_effect_index_;
 
 		static int m_last_sound_effect_channel = 0;
 		//We shall randomly select a sound to play
-		SoundEffect & sound = sound_effects[sound_effect_index_==-1?randonIndex(randomEngine): sound_effect_index_];
+		SoundEffect & sound = sound_effects[active_sound_effect_index];
 		m_active_channel = Mix_PlayChannel(-1, sound.m_chunk, loops);
 		if (m_active_channel == -1) {
 			//if the there was no available channel
@@ -49,10 +49,11 @@ void SquareBox::AudioSystem::SoundBank::timedPlay(int milliseconds_, int loops, 
 	if (sound_effects.size() > 0) {
 		static std::mt19937 randomEngine(static_cast<unsigned int>(time(nullptr)));
 		std::uniform_int_distribution<unsigned int> randonIndex(0, sound_effects.size() - 1);
+		active_sound_effect_index = sound_effect_index_ == -1 ? randonIndex(randomEngine) : sound_effect_index_;
 
 		static int m_last_sound_effect_channel = 0;
 		//We shall randomly select a sound to play
-		SoundEffect& sound = sound_effects[sound_effect_index_ == -1 ? randonIndex(randomEngine) : sound_effect_index_];
+		SoundEffect& sound = sound_effects[active_sound_effect_index];
 		m_active_channel = Mix_PlayChannelTimed(-1, sound.m_chunk, loops, milliseconds_);
 		if (m_active_channel == -1) {
 			//if the there was no available channel

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{C196CD9C-2D76-4C38-368E-D70EA2ECB299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{89565304-F535-D29F-FE4D-5D766AAC3801}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnimationEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomConsole.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorEnums.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor_Assistant.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderChangeTracker.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IsometricLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerTypeInterface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenIndices.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptEditor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TiledLayer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Welcome_Screen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AnimationEditor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor_Assistant.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="FolderChangeTracker.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIEditor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IsometricLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEditor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptEditor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TiledLayer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Welcome_Screen.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

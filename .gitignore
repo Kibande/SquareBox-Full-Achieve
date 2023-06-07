@@ -21,6 +21,11 @@ SquareBox/Zombie-Game/Assets/
 SquareBox/Zombie-Game 2 to be kept/
 SquareBox/Zombie-Game Oris/
 
+
+Engine Projects/.vs/
+Engine Projects/bin/
+Engine Projects/bin-int/
+
 # text files and Log Files
 *.txt
 *.log

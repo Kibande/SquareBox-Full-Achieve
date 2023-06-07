@@ -1,5 +1,0 @@
-#pragma once
-const int WELCOME_SCREEN_INDEX = 0;
-const int LEVEL_EDITOR_SCREEN_INDEX= 1;
-const int GUI_EDITOR_SCREEN_INDEX = 2;
-const int ANIMATION_EDITOR_SCREEN_INDEX = 3;
