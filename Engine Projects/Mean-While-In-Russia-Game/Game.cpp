@@ -29,7 +29,7 @@ Game::Game() {
 	SDL_SetWindowTitle(window, "Meanwhile In Russia");
 	SquareBox::AssetManager::IOManager::freePixelData(pixel_buffer);
 
-	// Escalado de im�genes de calidad 
+	// HIGH quality image scaling
 	// https://wiki.libsdl.org/SDL_HINT_RENDER_SCALE_QUALITY
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
@@ -37,7 +37,7 @@ Game::Game() {
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 	Mix_VolumeMusic(50);
 
-	// fuentes
+	
 	TTF_Init();
 
 
@@ -50,7 +50,7 @@ Game::Game() {
 
 	changeLayer(IntroLayer::instance(this));
 
-	loopActive = true; // bucle activo
+	loopActive = true; 
 	loop();
 }
 
@@ -68,11 +68,11 @@ void Game::loop() {
 void Game::loopStep() {
 	int initTick = SDL_GetTicks();
 
-	// Controles
+	
 	layer->processControls();
-	// Actualizar elementos
+
 	layer->update();
-	// Dibujar
+
 	layer->draw();
 	
 	int endTick = SDL_GetTicks();

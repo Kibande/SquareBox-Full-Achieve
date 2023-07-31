@@ -73,7 +73,7 @@ namespace SquareBox
 		{
 		public:
 			// A connection is "owned" by either a server or a client, and its
-			// behaviour is slightly different bewteen the two.
+			// behavior is slightly different between the two.
 			enum class owner
 			{
 				server,
@@ -89,7 +89,7 @@ namespace SquareBox
 
 				if (m_nOwnerType == owner::server) {
 
-					// Connection is Server -> Client , construct random data for thr client
+					// Connection is Server -> Client , construct random data for the client
 					// to transform and send back for validation
 					m_nHandShakeOut = uint64_t(std::chrono::system_clock::now().time_since_epoch().count());
 				
@@ -131,7 +131,7 @@ namespace SquareBox
 
 						WriteValidation();
 
-						//Next , issue a task to sit and wait asynchronosly for precisely
+						//Next , issue a task to sit and wait asynchronously for precisely
 						//the validation data sent back from the client
 						ReadValidation(server);
 					}
@@ -153,7 +153,7 @@ namespace SquareBox
 							//Was : ReadHeader();
 
 							//first thing server will do is send packet to be validated
-							//so wait for tha and respond
+							//so wait for than and respond
 							ReadValidation();
 						}
 					});
@@ -178,7 +178,7 @@ namespace SquareBox
 
 			}
 
-			// ASYNC - Send a message, connections are one-to-one so no need to specifiy
+			// ASYNC - Send a message, connections are one-to-one so no need to specify
 			// the target, for a client, the target is the server and vice versa
 			void Send(const message<T>& msg)
 			{
@@ -224,7 +224,7 @@ namespace SquareBox
 						}
 						else
 						{
-							// ...it didnt, so we are done with this message. Remove it from 
+							// ...it didn't, so we are done with this message. Remove it from 
 							// the outgoing message queue
 							m_qMessagesOut.pop_front();
 
@@ -238,7 +238,7 @@ namespace SquareBox
 					}
 					else
 					{
-						// ...asio failed to write the message, we could analyse why but 
+						// ...asio failed to write the message, we could analyze why but 
 						// for now simply assume the connection has died by closing the
 						// socket. When a future attempt to write to this client fails due
 						// to the closed socket, it will be tidied up.
@@ -303,7 +303,7 @@ namespace SquareBox
 						}
 						else
 						{
-							// it doesn't, so add this bodyless message to the connections
+							// it doesn't, so add this body-less message to the connections
 							// incoming message queue
 							AddToIncomingMessageQueue();
 						}
@@ -345,7 +345,7 @@ namespace SquareBox
 			// Once a full message is received, add it to the incoming queue
 			void AddToIncomingMessageQueue()
 			{
-				// Shove it in queue, converting it to an "owned message", by initialising
+				// Shove it in queue, converting it to an "owned message", by initializing
 				// with the a shared pointer from this connection object
 				if (m_nOwnerType == owner::server)
 					m_qMessagesIn.push_back({ this->shared_from_this(), m_msgTemporaryIn });
@@ -353,7 +353,7 @@ namespace SquareBox
 					m_qMessagesIn.push_back({ nullptr, m_msgTemporaryIn });
 
 				// We must now prime the asio context to receive the next message. It 
-				// wil just sit and wait for bytes to arrive, and the message construction
+				// we shall just sit and wait for bytes to arrive, and the message construction
 				// process repeats itself. Clever huh?
 				ReadHeader();
 			}
@@ -393,7 +393,7 @@ namespace SquareBox
 
 					if (!ec) {
 
-						/* Servers expects the clients decrption while Clients expect the data to decrytp*/
+						/* Servers expects the clients description while Clients expect the data to decrypt*/
 					
 						if (m_nOwnerType == owner::server) {
 
@@ -402,14 +402,14 @@ namespace SquareBox
 								std::cout << "Client Validated" << std::endl;
 								server->OnClientValidated(this->shared_from_this());
 
-								// sit waiting to recieve data from the client
+								// sit waiting to receive data from the client
 								ReadHeader();
 							}
 							else {
 								std::cout << "Client Disconnected (fail Validation)" << std::endl;
 								m_socket.close();
 								/* a nice thing to add here would be a way to track the clients connection attempts 
-								An tempolarly ban a client after a given number of attempts
+								An temporally ban a client after a given number of attempts
 								*/
 							}
 						}

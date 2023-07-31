@@ -1,16 +1,14 @@
 #pragma once
 
-// Todas las librerias de SDL y otras utilidades
 #include <iostream>
 #include <string>
 using namespace std;
 #include <SDL/include/SDL.h>
 #include <SDL/include/SDL_ttf.h>
 #include <map>
-#include <SDL/include/SDL_mixer.h> // libreria de audio
+#include <SDL/include/SDL_mixer.h>
 #include "WAVAudio.h"
 
-// Valores generales
 #define WIDTH 960
 #define HEIGHT 640
 #define TEXT_SIZE 26
@@ -34,9 +32,9 @@ public:
 	void loop();
 	void loopStep();
 	void changeLayer(Layer* layer);
-	SDL_Window* window; // ventana
-	SDL_Renderer* renderer; // renderizador
-	bool loopActive; // Juego activo
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	bool loopActive; 
 	Layer* layer;
 
 	int frameRate = 30;

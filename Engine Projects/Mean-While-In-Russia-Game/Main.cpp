@@ -1,5 +1,5 @@
 #include "Game.h"
-#undef main  //esto es para quitar el main que hay en la Librería SDL_main
+#undef main
 
 int main() {
 	Game* game = new Game();

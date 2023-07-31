@@ -16,8 +16,6 @@ public:
 	virtual void draw() override;
 	virtual void onExit() override;
 	virtual void destroy() override;
-	bool CheckLua(lua_State* L, int r);
-
 private:
 	//we need a camera
 	SquareBox::Camera::ParallelCamera m_camera;

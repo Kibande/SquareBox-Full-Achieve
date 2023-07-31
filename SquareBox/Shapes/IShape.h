@@ -1,7 +1,7 @@
 #pragma once
 #include <GWOM/Entities.h>
 #include <Render-Engine/RenderingEngine.h>
-#include<glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 namespace SquareBox {
 	namespace InputManager {
@@ -14,7 +14,7 @@ namespace SquareBox {
 	{
 	public:
 		virtual ~IShape() {};
-		//the assistant handles determing the draw calls
+		//the assistant handles determining the draw calls
 		virtual void draw(const SquareBox::GWOM::ClusterObject& clusterObject_, SquareBox::RenderEngine::SpriteBatch & spriteBatch_,int opacity_=100) = 0;
 		virtual void keepTrackOfPosition(SquareBox::GWOM::ClusterObject& clusterObject_) = 0;
 		/*
@@ -56,9 +56,9 @@ namespace SquareBox {
 	by the help of our physics engine
 	while  for non physics bodies we have to hustle it out here ,our aim is to make the selection
 	way feel the  same and we have that for the edges,chains and circles
-	boxes have a circular selectabale radius inside them , this radius orignates
+	boxes have a circular selectable radius inside them , this radius originates
 	from the center
 	capsule are selectable through their circles and boxes
 
-	edges,chains are only selectable through there end points wether with or without physics
+	edges,chains are only selectable through there end points whether with or without physics
 */

@@ -13,5 +13,4 @@ class App :
 	//GamePlayScreen Pointer
 	std::unique_ptr<GamePlayeScreen> m_game_play_screen = nullptr;
 
-	int kibande_var = 3;
 };
