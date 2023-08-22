@@ -118,13 +118,13 @@ namespace SquareBox {
 				m_window.destory();//sdl clean up
 #ifndef SQB_PLATFORM_ANDROID
 
-				for (unsigned int i = 0; i < m_vec_of_media_players.size(); i++)
-				{
-					if (m_vec_of_media_players[i] != nullptr) {
-						m_vec_of_media_players[i]->dispose();
-						delete m_vec_of_media_players[i];//release MediaPlayer Memory
-					}
-				}
+				//for (unsigned int i = 0; i < m_vec_of_media_players.size(); i++)
+				//{
+				//	if (m_vec_of_media_players[i] != nullptr) {
+				//		m_vec_of_media_players[i]->dispose();
+				//		delete m_vec_of_media_players[i];//release MediaPlayer Memory
+				//	}
+				//}
 #endif // !SQB_PLATFORM_ANDROID
 			}
 			m_is_running = false;
@@ -157,18 +157,18 @@ namespace SquareBox {
 			return false;
 		}
 #ifndef SQB_PLATFORM_ANDROID
-		if (m_video_decorder == SquareBox::VideoDecorderEnum::Vlc) {
-			SquareBox::MediaPlayer::VLCplayer*tempPlayer = new SquareBox::MediaPlayer::VLCplayer();
-			tempPlayer->init();
-			m_vec_of_media_players.push_back(tempPlayer);
-		}
-		else if (m_video_decorder == SquareBox::VideoDecorderEnum::None) {
-			//do nothing
-		}
-		else {
-			SBX_CORE_CRITICAL("Unsupported Input Device");
-			return false;
-		}
+		//if (m_video_decorder == SquareBox::VideoDecorderEnum::Vlc) {
+		//	SquareBox::MediaPlayer::VLCplayer*tempPlayer = new SquareBox::MediaPlayer::VLCplayer();
+		//	tempPlayer->init();
+		//	m_vec_of_media_players.push_back(tempPlayer);
+		//}
+		//else if (m_video_decorder == SquareBox::VideoDecorderEnum::None) {
+		//	//do nothing
+		//}
+		//else {
+		//	SBX_CORE_CRITICAL("Unsupported Input Device");
+		//	return false;
+		//}
 #endif
 		if (!initSystems()) return false;
 		onInit();

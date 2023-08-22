@@ -57,7 +57,7 @@ Engine Projects/bin-int/
 *.lai
 *.la
 *.a
-*.lib
+# *.lib i want to keep the downloaded static libraries
 
 # Executables
 *.exe

@@ -8,12 +8,12 @@ Space::Space(float gravity) {
 
 void Space::update() {
     for (auto const& actor : dynamicActors) {
-        // máxima velocidad de caída por gravedad
+        // maximum velocity of free fall due to gravity
         if (actor->gravity() && actor->vy < 35) {
             actor->vy = actor->vy + gravity;
         }
 
-        // Aun no se han detectado choques
+        // No collisions have been detected yet
         actor->collisionTop = false;
         actor->collisionDown = false;
         actor->collisionRight = false;
@@ -21,11 +21,11 @@ void Space::update() {
         actor->outLeft = true;
         actor->outRight = true;
 
-        // MoverDerecha / izquierda
+        // Move to the right / left
         if (actor->vx > 0) updateMoveRight(actor, actor->vx, true);
         if (actor->vx < 0) updateMoveLeft(actor, actor->vx, true);
 
-        // Mover Arriba / Abajo
+        // Move to the top /down
         if (actor->vy > 0) updateMoveDown(actor, actor->vy, true);
         if (actor->vy < 0) updateMoveTop(actor, actor->vy, true);
     }
@@ -33,7 +33,7 @@ void Space::update() {
 
 void Space::updateMoveRight(Actor* dynamicAct, float vx, bool restrict) {
     float possibleMovement = vx;
-    // El mejor "idealmente" vx partimos de ese
+    // The best 'ideally' vx we start from that
 
     for (auto const& staticAct : staticActors) {
         if (dynamicAct != staticAct) {

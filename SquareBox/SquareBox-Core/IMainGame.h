@@ -24,31 +24,32 @@ namespace SquareBox {
 		const int getGameLoopElapsedSeconds() const {
 			return m_game_loop_elapsed_seconds;
 		}
+
 		
 		SquareBox::InputManager::IInputDevice * getInputDevice() { return m_input_manager; }
 		SquareBox::RenderEngine::Window* getWindow() { return &m_window; }
 #ifndef SQB_PLATFORM_ANDROID
 
-		SquareBox::MediaPlayer::IPlayer * getVideoPlayer(unsigned int index = 0) {
-			if (index >= 0 && index < m_vec_of_media_players.size()) {
-				return m_vec_of_media_players[index];
-			}
-			else {
-				return nullptr;
-			}
-		}
+		//SquareBox::MediaPlayer::IPlayer * getVideoPlayer(unsigned int index = 0) {
+		//	if (index >= 0 && index < m_vec_of_media_players.size()) {
+		//		return m_vec_of_media_players[index];
+		//	}
+		//	else {
+		//		return nullptr;
+		//	}
+		//}
 #endif // !SQB_PLATFORM_ANDROID
 
 		void createNewMediaPlayer() {
 #ifndef SQB_PLATFORM_ANDROID
-			if (m_video_decorder == SquareBox::VideoDecorderEnum::Vlc && m_vec_of_media_players[0] != nullptr) {
-				SquareBox::MediaPlayer::VLCplayer * tempPlayer = new SquareBox::MediaPlayer::VLCplayer;
-				tempPlayer->copyVLcInstance(static_cast<SquareBox::MediaPlayer::VLCplayer *>(m_vec_of_media_players[0])->getVlcInstance());
-				m_vec_of_media_players.push_back(tempPlayer);
-			}
-			else {
-				SBX_CORE_ERROR("Can only create multiple  VLCPlayers \n");
-			}
+			//if (m_video_decorder == SquareBox::VideoDecorderEnum::Vlc && m_vec_of_media_players[0] != nullptr) {
+			//	SquareBox::MediaPlayer::VLCplayer * tempPlayer = new SquareBox::MediaPlayer::VLCplayer;
+			//	tempPlayer->copyVLcInstance(static_cast<SquareBox::MediaPlayer::VLCplayer *>(m_vec_of_media_players[0])->getVlcInstance());
+			//	m_vec_of_media_players.push_back(tempPlayer);
+			//}
+			//else {
+			//	SBX_CORE_ERROR("Can only create multiple  VLCPlayers \n");
+			//}
 #endif // !SQB_PLATFORM_ANDROID
 		}
 		void abortExit() {
@@ -85,7 +86,7 @@ namespace SquareBox {
 		SquareBox::RenderEngine::Window m_window;
 		SquareBox::InputManager::IInputDevice *m_input_manager = nullptr;
 #ifndef SQB_PLATFORM_ANDROID
-		std::vector<SquareBox::MediaPlayer::IPlayer *>m_vec_of_media_players;
+		//std::vector<SquareBox::MediaPlayer::IPlayer *>m_vec_of_media_players;
 #endif
 		int m_start_up_window_height = 100;
 		int m_start_up_window_width = 100;

@@ -5,10 +5,10 @@
 #include <Camera/Camera.h>
 #include <GWOM/GWOM.h>
 #include <Input-Manager/InputManager.h>
-#ifndef SQB_PLATFORM_ANDROID
-#include <Media-Player/MediaPlayer.h>
-#else
-#endif // !SQB_PLATFORM_ANDROID
+//#ifndef SQB_PLATFORM_ANDROID
+//#include <Media-Player/MediaPlayer.h>
+//#else
+//#endif // !SQB_PLATFORM_ANDROID
 #include <Network-Manager/NetworkManager.h>
 #include <Physics-Collision-Engine/PhysicsCollisionEngine.h>
 #include <Render-Engine/RenderingEngine.h>

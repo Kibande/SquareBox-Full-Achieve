@@ -38,37 +38,37 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -140,14 +140,15 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86;$(SolutionDir)\vendor\lib\Debug\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86;$(SolutionDir)\vendor\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,14 +163,15 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32sd.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86_64;$(SolutionDir)\vendor\lib\Debug\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Debug-windows-x86_64;$(SolutionDir)\vendor\lib\x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,6 +188,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,8 +196,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86;$(SolutionDir)\vendor\lib\Release\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86;$(SolutionDir)\vendor\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -211,6 +214,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -218,8 +222,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;glew32s.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86_64;$(SolutionDir)\vendor\lib\Release\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Release-windows-x86_64;$(SolutionDir)\vendor\lib\x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|Win32'">
@@ -236,6 +240,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -243,8 +248,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86;$(SolutionDir)\vendor\lib\Dist\windows-x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86;$(SolutionDir)\vendor\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -261,6 +266,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,8 +274,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;Media-Player.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_net.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;libvlc.x64.lib;libvlccore.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86_64;$(SolutionDir)\vendor\lib\Dist\windows-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AI.lib;Animation-System.lib;Audio-System.lib;Camera.lib;GWOM.lib;ImGui.lib;MathLib.lib;Input-Manager.lib;Network-Manager.lib;Shapes.lib;GUI.lib;SquareBox-Logger.lib;Physics-Collision-Engine.lib;Render-Engine.lib;Asset-Manager.lib;Box2D.lib;Lua.lib;Efsw.lib;SDL2main.lib;SDL2.lib;SDL2_mixer.lib;SDL2_ttf.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\libs\Dist-windows-x86_64;$(SolutionDir)\vendor\lib\x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -330,9 +336,6 @@
     </ProjectReference>
     <ProjectReference Include="..\GUI\GUI.vcxproj">
       <Project>{2AEC870B-96F5-877C-1F71-9E7C8B79937C}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Media-Player\Media-Player.vcxproj">
-      <Project>{7F08F9D9-6B6B-887E-14F1-C03400335401}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SquareBox-Logger\SquareBox-Logger.vcxproj">
       <Project>{2C11C0E3-180A-DF35-413C-C4BA2D94BE41}</Project>

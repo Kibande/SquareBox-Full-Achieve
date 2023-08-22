@@ -42,10 +42,8 @@ project "SquareBox-Core"
 	libdirs
 	{
 	    "$(SolutionDir)/bin/libs/"..outputdir.."/",
-		"$(SolutionDir)/vendor/lib/%{cfg.buildcfg}/%{cfg.system}-%{cfg.architecture}/"
+		"$(SolutionDir)/vendor/lib/%{cfg.architecture}/"
 	}
-
-
 
 
 
@@ -71,7 +69,7 @@ project "SquareBox-Core"
 			"Network-Manager",
 			"Shapes",
 			"GUI",
-			"Media-Player",
+--			"Media-Player",
 			"SquareBox-Logger",
 			"Physics-Collision-Engine",
 			"Render-Engine",
@@ -90,7 +88,7 @@ project "SquareBox-Core"
 			"Network-Manager.lib",
 			"Shapes.lib",
 			"GUI.lib",
-			"Media-Player.lib",
+--			"Media-Player.lib",
 			"SquareBox-Logger.lib",
 			"Physics-Collision-Engine.lib",
 			"Render-Engine.lib",
@@ -100,20 +98,10 @@ project "SquareBox-Core"
 			"Efsw.lib",
 			"SDL2main.lib",
 			"SDL2.lib",
-			"SDL2_net.lib",
 			"SDL2_mixer.lib",
 			"SDL2_ttf.lib",
 			"opengl32.lib",
-			"glfw3.lib",
-			"avcodec.lib",
-			"avformat.lib",
-			"avutil.lib",
-			"avdevice.lib",
-			"avfilter.lib",
-			"postproc.lib",
-			"swresample.lib",
-			"swscale.lib",
-			
+			"glfw3.lib"
 		}
 	-- configurations for static glew
 	filter "configurations:Debug"
@@ -122,12 +110,12 @@ project "SquareBox-Core"
 	filter "configurations:Release"
 		links{"glew32s.lib"}
 
-	filter "platforms:x86"
-		links{"libvlc.lib","libvlccore.lib"}
+--	filter "platforms:x86"
+--		links{"libvlc.lib","libvlccore.lib"}
 
 
-	filter "platforms:x86_64"
-		links{"libvlc.x64.lib","libvlccore.x64.lib"}
+--	filter "platforms:x86_64"
+--		links{"libvlc.x64.lib","libvlccore.x64.lib"}
 
 	filter "configurations:Debug"
 		defines { "SQBCORE_DEBUG" }
