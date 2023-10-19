@@ -80,7 +80,7 @@ namespace SquareBox {
 															 this clusterObject pointer will then point to a new clusterObject*/
 															/* 
 															---new comment----
-															the old comment is not clear but this is what i was
+															the old comment is not clear on its on but this is what i was
 															able to pick from it.
 															this points to the cluster object that we are acting upon , either adding to worldClusters
 															vector or rebirthing.

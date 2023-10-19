@@ -33,7 +33,7 @@ namespace SquareBox {
 			//limit the FPS TO the maxFPS
 
 			//check if we need to limit the FPS
-			if (1000.0f / _maxFPS > frameTime) {
+			if (1000.0f / _maxFPS > frameTime) { // if the frames are being drawn faster than we anticapted
 				//delay the programe
 				SDL_Delay((Uint32)(1000.0f / _maxFPS - frameTime));
 			}
