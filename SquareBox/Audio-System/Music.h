@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL/include/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include <string>
 #include <map>
 #include <SquareBox-Core/Essentials.h>
@@ -61,6 +61,7 @@ namespace SquareBox {
 			float m_max_radius;
 			int m_active_channel = -1;
 			bool m_is_music_loaded = false;
+			bool m_temp = true;
 		};
 	};
 };

@@ -47,6 +47,7 @@ namespace SquareBox {
 			}
 			m_font_path = font_file_;
 			TTF_Font* f = TTF_OpenFontRW(SDL_RWFromFile(m_font_path.c_str(), "rb"), 1, m_font_size);
+
 			if (f == nullptr) {
 				SBX_CORE_CRITICAL("Failed to open TTF font {} ", m_font_path);
 				return;
@@ -123,6 +124,8 @@ namespace SquareBox {
 
 					SDL_Surface* glyphSurface = TTF_RenderGlyph_Blended(f, (char)(cs + gi), fg);
 
+					SBX_GLCall(glPixelStorei(GL_UNPACK_ROW_LENGTH, glyphSurface->pitch / glyphSurface->format->BytesPerPixel));
+
 					// Pre-multiplication occurs here
 					unsigned char* sp = (unsigned char*)glyphSurface->pixels;
 					int cp = glyphSurface->w * glyphSurface->h * 4;
@@ -144,6 +147,9 @@ namespace SquareBox {
 					glyphSurface = nullptr;
 
 					lx += glyphRects[gi].z + padding;
+
+					
+
 				}
 				ly += _fontHeight + padding;
 			}
@@ -183,6 +189,8 @@ namespace SquareBox {
 			delete[] bestPartition;
 			m_is_initialised = true;
 			TTF_CloseFont(f);
+
+			SBX_GLCall(glPixelStorei(GL_UNPACK_ROW_LENGTH, 0));
 		}
 		void SpriteFont::setProperties(std::string font_file_, std::string font_display_name_, int font_size_)
 		{

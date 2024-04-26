@@ -1,4 +1,5 @@
 #include "GameLogic.h"
+#include "GameLogic.h"
 
 void GameLogic::init(SquareBox::IMainGame* game_ptr_, SquareBox::GWOM::Grid* collision_grid_ptr_, std::vector<SquareBox::GWOM::Layer>& layers_, SquareBox::Camera::ParallelCamera& game_play_camera_, std::pair<int, std::pair<int, int>>& player_coordinates_)
 {
@@ -42,61 +43,64 @@ void GameLogic::init(SquareBox::IMainGame* game_ptr_, SquareBox::GWOM::Grid* col
 
 }
 
+
 void GameLogic::update(float delta_time_, bool fire_, std::vector<SquareBox::GWOM::Layer>& layers_)
 {
 	SquareBox::GWOM::ClusterObject& player_cluster_object = layers_[m_player_coordinates.first].world_clusters[m_player_coordinates.second.first].cluster_objects[m_player_coordinates.second.second];
 
 	m_gun.update(delta_time_, fire_, player_cluster_object.position, player_cluster_object.direction, layers_, m_collision_grid_ptr);
 
-	for (int y = 0; y < m_collision_grid_ptr->getNumYCells(); y++)
-	{
-		for (int x = 0; x < m_collision_grid_ptr->getNumXCells(); x++)
-		{
-			SquareBox::GWOM::Cell* current_cell = m_collision_grid_ptr->getCell(x,y);
-			for (unsigned int i = 0; i < current_cell->member_cordinates.size(); i++)
-			{
-				//check collision with the other cell members
-				checkCollisionCellCollision(delta_time_, layers_, current_cell->member_cordinates[i], current_cell->index, i + 1);
-			}
-		}
-	}
-
-	//for (size_t i = 0; i < total_cells; i++) {
-
-	//	int x = i % m_collision_grid_ptr->getNumXCells();
-	//	int y = i / m_collision_grid_ptr->getNumXCells();
-
-
-	//	// Loop through all balls in a cell
-	//	for (size_t j = 0; j < current_cell->member_cordinates.size(); j++) {
-	//		std::pair<int, std::pair<int, int>> & current_cell_member_coordinates = current_cell->member_cordinates[j];
-
-	//		//check collision with the current cell
-	//		/// Update with the residing cell
-	//		checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates,current_cell->index, j+1);
-
-	//		/// Update collision with neighbor cells
-	//		if (x > 0) {
-	//			// Left
-	//			checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y)->index, 0);
-
-	//			if (y > 0) {
-	//				/// Top left
-	//				checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y - 1)->index, 0);
-
-	//			}
-	//			if (y < m_collision_grid_ptr->getNumYCells() - 1) {
-	//				// Bottom left
-	//				checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y + 1)->index, 0);
-
-	//			}
-	//		}
-	//		// Up cell
-	//		if (y > 0) {
-	//			checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x, y - 1)->index, 0);
+	//for (int y = 0; y < m_collision_grid_ptr->getNumYCells(); y++)
+	//{
+	//	for (int x = 0; x < m_collision_grid_ptr->getNumXCells(); x++)
+	//	{
+	//		SquareBox::GWOM::Cell* current_cell = m_collision_grid_ptr->getCell(x,y);
+	//		for (unsigned int i = 0; i < current_cell->member_cordinates.size(); i++)
+	//		{
+	//			//check collision with the other cell members
+	//			checkCollisionCellCollision(delta_time_, layers_, current_cell->member_cordinates[i], current_cell->index, i + 1);
 	//		}
 	//	}
 	//}
+
+	int total_cells = m_collision_grid_ptr->getNumXCells() * m_collision_grid_ptr->getNumYCells();
+
+	for (size_t i = 0; i < total_cells; i++) {
+
+		int x = i % m_collision_grid_ptr->getNumXCells();
+		int y = i / m_collision_grid_ptr->getNumXCells();
+		SquareBox::GWOM::Cell* current_cell = m_collision_grid_ptr->getCell(x, y);
+
+		// Loop through all balls in a cell
+		for (size_t j = 0; j < current_cell->member_cordinates.size(); j++) {
+			std::pair<int, std::pair<int, int>> & current_cell_member_coordinates = current_cell->member_cordinates[j];
+
+			//check collision with the current cell
+			/// Update with the residing cell
+			checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates,current_cell->index, j+1);
+
+			/// Update collision with neighbor cells
+			if (x > 0) {
+				// Left
+				checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y)->index, 0);
+
+				if (y > 0) {
+					/// Top left
+					checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y - 1)->index, 0);
+
+				}
+				if (y < m_collision_grid_ptr->getNumYCells() - 1) {
+					// Bottom left
+					checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x - 1, y + 1)->index, 0);
+
+				}
+			}
+			// Up cell
+			if (y > 0) {
+				checkCollisionCellCollision(delta_time_, layers_, current_cell_member_coordinates, m_collision_grid_ptr->getCell(x, y - 1)->index, 0);
+			}
+		}
+	}
 }
 
 
@@ -207,6 +211,7 @@ void GameLogic::initLayers(std::vector<SquareBox::GWOM::Layer>& layers_,std::pai
 			{
 				const std::pair<int, int> focus_layer_tile_coordinates = focus_layer_tiles[j];
 				const SquareBox::GWOM::Tile* focus_tile_ptr = focus_layer.tile_system.getTile(focus_layer_tile_coordinates.first, focus_layer_tile_coordinates.second);
+				
 				if (focus_tile_ptr->key != -1) {
 					/* where this layers newly crafted cluster objects should be kept */
 					//the conversion
@@ -330,9 +335,18 @@ void GameLogic::loadLevel(const char * file_path_, std::vector<SquareBox::GWOM::
 	float width_ratio = SquareBox::MathLib::Float::divideAndGetFloat(editing_screen_dimensions.x , total);
 	float scale_ratio = SquareBox::MathLib::Float::divideAndGetFloat(active_camera_scale , total);
 
+
+	// since the phone is expected to be in landscape where the height is going to be the longest side
+#ifdef SQB_PLATFORM_ANDROID
+	float one_unit = SquareBox::MathLib::Float::divideAndGetFloat(m_game_ptr->getWindow()->getMaxMaxScreenHeight(), width_ratio);
+#else
 	float one_unit = SquareBox::MathLib::Float::divideAndGetFloat(m_game_ptr->getWindow()->getMaxMaxScreenWidth() , width_ratio);
+#endif // SQB_PLATFORM_ANDROID
+
 	
 	float new_scale = one_unit * scale_ratio;
+
+
 	game_play_camera_.setScale(new_scale);
 
 	game_play_camera_.setPosition(active_camera_position);

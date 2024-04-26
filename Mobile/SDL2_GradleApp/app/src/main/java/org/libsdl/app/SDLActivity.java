@@ -165,26 +165,10 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         return new String[] {
             "hidapi",
             "SDL2",
-            "SDL2_ttf",
-            "SDL2_image",
-            "SDL2_mixer",
-            "SquareBox_Logger",
-            "Asset_Manager",
-            "Input_Manager",
-            "Render_Engine",
-			"Audio_System",
-			"MathLib",
-			"Lua",
-			"Box2D",
-			"Physics_Collision_Engine",
-			"GWOM",
-			"Shapes",
-			"AI",
-			"Animation_System",
-            "GUI",
-			"Camera",
-			"SquareBox_Core",
+            // "SDL2_image",
+            // "SDL2_mixer",
             // "SDL2_net",
+            // "SDL2_ttf",
             "main"
         };
     }
@@ -312,6 +296,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         setContentView(mLayout);
 
         setWindowStyle(false);
+
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(this);
 
         // Get filename from "Open with" of another application
@@ -372,8 +357,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (!mHasMultiWindow) {
             resumeNativeThread();
         }
-
-
     }
 
     @Override
@@ -437,16 +420,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
            SDLActivity.handleNativeState();
            nativeFocusChanged(true);
-
-		   	//custom code to hide the action and status bar
-			View decorderView = getWindow().getDecorView();
-			// Hide the status bar.
-			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-			decorderView.setSystemUiVisibility(uiOptions);
-			// Remember that you should never show the action bar if the
-			// status bar is hidden, so hide that too if necesary.
-			//ActionBar actionBar = getActionBar();
-			//actionBar.hide();
 
         } else {
            nativeFocusChanged(false);
@@ -685,8 +658,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.INVISIBLE;
                                 window.getDecorView().setSystemUiVisibility(flags);
                                 window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-								
                                 window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                                 SDLActivity.mFullscreenModeActive = true;
                             } else {
@@ -1487,7 +1458,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.INVISIBLE;
 
                 SDLActivity.this.getWindow().getDecorView().setSystemUiVisibility(flags);
-
             }
         }
     };

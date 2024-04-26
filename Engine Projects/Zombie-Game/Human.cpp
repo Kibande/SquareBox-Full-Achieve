@@ -6,10 +6,9 @@ void Human::init()
 
 void Human::setUp(SquareBox::GWOM::ClusterObject & human_cluster_object)
 {
-	std::mt19937 randomEngine = std::mt19937(time(nullptr));
-	std::uniform_real_distribution<float> randDir = std::uniform_real_distribution<float>(-direction_range, direction_range);
-	//Get radom direction
-	human_cluster_object.direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
+	
+	//Get random direction
+	human_cluster_object.direction = glm::vec2(SquareBox::MathLib::Random::Float(), SquareBox::MathLib::Random::Float());
 	//Make sure direction isn't zero
 	if (human_cluster_object.direction.length() == 0) {
 		human_cluster_object.direction = glm::vec2(1.0f, 0.0f);
@@ -32,16 +31,17 @@ void Human::update(float delta_time_, std::pair<int, std::pair<int, int>> & clus
 
 	human_cluster_object.position += human_cluster_object.direction * human_cluster_object.speed * delta_time_;
 
-	// Randomly change direction every 20 frames
+	// Randomly > 20 & < 250 random frames
 	float random_number = SquareBox::MathLib::Random::Float()*98682;
 	if ((random_number>20 && random_number<250)) {
-		human_cluster_object.direction = glm::rotate(human_cluster_object.direction, randRotate(randomEngine));
+		human_cluster_object.direction = glm::rotate(human_cluster_object.direction, SquareBox::MathLib::Random::Float());
 	}
 	
 	//collide with the tiles near us
 	if (collideWithTiles(delta_time_, human_cluster_object, LayerIndicies::bricks_layer_index, layers_)) {
 		human_cluster_object.direction = glm::rotate(human_cluster_object.direction, randRotate(randomEngine));
 	}
+
 	for (auto i = start_index_; i < vector_of_cell_members.size(); i++)
 	{
 		SquareBox::GWOM::ClusterObject & refreshed_human_cluster_object = layers_[cluster_object_coordinates_.first].world_clusters[cluster_object_coordinates_.second.first].cluster_objects[cluster_object_coordinates_.second.second];

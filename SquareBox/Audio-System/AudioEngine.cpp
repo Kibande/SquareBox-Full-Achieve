@@ -1,6 +1,6 @@
 #include "AudioEngine.h"
 #include<SquareBox-Logger/Logger.h>
-#include <SDL/include//SDL.h>
+#include <SDL.h>
 
 namespace SquareBox {
 	namespace AudioSystem {

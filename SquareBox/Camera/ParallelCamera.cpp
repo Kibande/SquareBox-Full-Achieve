@@ -48,7 +48,8 @@ namespace SquareBox {
 
 			if (m_needs_matrix_update) {
 				//Camera2D Translation
-				//build our own orthoMatrix when the screen width or Height changes
+				//build our own orthoMatrix when the screen width or Height changes or when the screen loads up the first time
+				// because the matrix still needs to be calculated
 				m_ortho_matrix = glm::ortho(0.0f, (float)m_screen_width, 0.0f, (float)m_screen_height);
 
 				//create a vector that will encode the translation
@@ -104,11 +105,11 @@ namespace SquareBox {
 			glm::vec2 scaledScreenDimensions = glm::vec2(m_screen_width, m_screen_height) / (m_scale);
 
 			// The minimum distance before a collision occurs
-			const float MIN_DISTANCE_X = dimensions_.x / 2.0f + scaledScreenDimensions.x / 2.0f;
-			const float MIN_DISTANCE_Y = dimensions_.y / 2.0f + scaledScreenDimensions.y / 2.0f;
+			const float MIN_DISTANCE_X = dimensions_.x * 0.5f + scaledScreenDimensions.x * 0.5f;
+			const float MIN_DISTANCE_Y = dimensions_.y * 0.5f + scaledScreenDimensions.y * 0.5f;
 
 			// Center position of the parameters
-			glm::vec2 centerPos = m_position + dimensions_ / 2.0f;
+			glm::vec2 centerPos = m_position + dimensions_ * 0.5f;
 			// Center position of the camera
 			glm::vec2 centerCameraPos = m_position;
 			// Vector from the input to the camera

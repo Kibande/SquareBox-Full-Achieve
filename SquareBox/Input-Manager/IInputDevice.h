@@ -2,7 +2,7 @@
 #include<unordered_map>
 #include <utility>
 #include<glm/glm.hpp>
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #include<vector>
 namespace SquareBox {
 	namespace InputManager {
@@ -30,6 +30,10 @@ namespace SquareBox {
 
 			///	return true if the key is held down , or touch screen pressed
 			bool isInputIdBeingReceived(unsigned int key_id_);
+
+			bool isInputIdBeingReceived(unsigned int key_id_1, unsigned int key_id_2) {
+				return isInputIdBeingReceived(key_id_1) + isInputIdBeingReceived(key_id_2);
+			}
 
 			///	return true if the key was just pressed , or touch screen touched
 			bool isInputIdReceived(unsigned int key_id_);

@@ -68,8 +68,8 @@ public:
 		this is the players location in the layers system
 
 	*/
-	bool m_object_show_coordinates = false;
-	bool m_show_grid = false;
+	bool m_object_show_coordinates = true;
+	bool m_show_grid = true;
 	
 
 	/* 

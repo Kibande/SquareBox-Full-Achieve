@@ -2,7 +2,7 @@
 
 #include "Game.h"
 
-#include <SDL/include/SDL_render.h>
+#include <SDL_render.h>
 #include <cstring>
 #include <ctime>
 

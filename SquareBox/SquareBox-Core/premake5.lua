@@ -31,8 +31,9 @@ project "SquareBox-Core"
 
 	includedirs
 	{
-	 "$(SolutionDir)/",
+	  "$(SolutionDir)/",
 	  "$(SolutionDir)/vendor/include/",
+	  "$(SolutionDir)/vendor/SDL2-2.30.2/include/",
 	  "$(SolutionDir)/Glew/glew-2.2.0/include/",
 	  "$(SolutionDir)/Glfw/glfw-3.3.2/include/",
 	  "$(SolutionDir)/vendor/include/ffmpeg"
@@ -42,7 +43,10 @@ project "SquareBox-Core"
 	libdirs
 	{
 	    "$(SolutionDir)/bin/libs/"..outputdir.."/",
-		"$(SolutionDir)/vendor/lib/%{cfg.architecture}/"
+		"$(SolutionDir)/vendor/lib/%{cfg.architecture}/",
+		"$(SolutionDir)/vendor/SDL2_mixer-2.8.0/lib/%{cfg.architecture}/",
+		"$(SolutionDir)/vendor/SDL2_ttf-2.22.0/lib/%{cfg.architecture}/",
+		"$(SolutionDir)/vendor/SDL2-2.30.2/lib/%{cfg.architecture}/"
 	}
 
 

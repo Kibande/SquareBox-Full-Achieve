@@ -1,21 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\SquareBox\Snake-Game\App.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\GameLogic.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\GameObjects.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\GameScreen.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\ScreenIndicies.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\Snake.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\SplashScreen.h" />
-    <ClInclude Include="..\..\SquareBox\Snake-Game\Wave.h" />
+    <Filter Include="src">
+      <UniqueIdentifier>{177f4a1d-e76a-448f-b4ef-2d63ab6a4109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{beb4735a-acc4-4eb9-8542-93b6320712af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\Snake-Game\App.cpp" />
-    <ClCompile Include="..\..\SquareBox\Snake-Game\GameLogic.cpp" />
-    <ClCompile Include="..\..\SquareBox\Snake-Game\GameScreen.cpp" />
-    <ClCompile Include="..\..\SquareBox\Snake-Game\main.cpp" />
-    <ClCompile Include="..\..\SquareBox\Snake-Game\Snake.cpp" />
-    <ClCompile Include="..\..\SquareBox\Snake-Game\SplashScreen.cpp" />
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\Zombie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\Player.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\LayerIndicies.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\ICollisionAgent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\Human.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\Gun.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\GamePlayScreen.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\GameLogic.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\Bullet.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine Projects\Zombie-Game\App.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\Zombie.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\ScreenIndicies.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\Player.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\LayerIndicies.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\ICollisionAgent.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\Human.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\Gun.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\GamePlayScreen.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\GameLogic.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\Bullet.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Engine Projects\Zombie-Game\App.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

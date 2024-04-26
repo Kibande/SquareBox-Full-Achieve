@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL/include/SDL.h>
-#include <SDL/include/SDL_mixer.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
 #ifdef SQB_PLATFORM_ANDROID
 using namespace std;
 //solving for undeclared identifier 'isfinite in b2_math.h, we need a better fix

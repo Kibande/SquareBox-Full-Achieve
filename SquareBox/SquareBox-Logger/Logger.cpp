@@ -2,7 +2,7 @@
 #include <spdlog/sinks/android_sink.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include "spdlog/sinks/stdout_color_sinks.h"
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #ifdef SQB_PLATFORM_ANDROID
 #include <GLES3/gl3.h>
 #include <GLES3/gl3ext.h>

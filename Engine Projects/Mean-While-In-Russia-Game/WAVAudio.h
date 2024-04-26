@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL/include/SDL_mixer.h> // libreria de audio
+#include <SDL_mixer.h> // libreria de audio
 #include "Audio.h"
 
 class WAVAudio : public Audio

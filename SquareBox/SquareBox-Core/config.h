@@ -9,7 +9,7 @@
 //#include <Media-Player/MediaPlayer.h>
 //#else
 //#endif // !SQB_PLATFORM_ANDROID
-#include <Network-Manager/NetworkManager.h>
+//#include <Network-Manager/NetworkManager.h>
 #include <Physics-Collision-Engine/PhysicsCollisionEngine.h>
 #include <Render-Engine/RenderingEngine.h>
 #include <SquareBox-Logger/Logger.h>

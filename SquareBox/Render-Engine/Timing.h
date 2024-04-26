@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 namespace SquareBox {
 	namespace RenderEngine {
 		class FpsLimiter
@@ -13,10 +13,10 @@ namespace SquareBox {
 			Uint32 end();
 		private:
 			void calculateFPS();
-			Uint32 _maxFPS;
-			Uint32 _startTicks;
-			Uint32 _fps;
-			Uint32 _frameTime;
+			Uint32 _maxFPS = 0;
+			Uint32 _startTicks = 0;
+			Uint32 _fps = 0;
+			Uint32 _frameTime = 0;
 		};
 	}
 }

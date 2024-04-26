@@ -1,7 +1,7 @@
 #include "ImageLoader.h"
 #include <SquareBox-Logger/Logger.h>
 #include "IOManager.h"
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #include <fstream>
 #include <stdio.h>
 #include "stb_image.h"

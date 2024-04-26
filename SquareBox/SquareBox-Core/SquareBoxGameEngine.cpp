@@ -1,5 +1,5 @@
 #include "SquareBoxGameEngine.h"
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #ifdef SQB_PLATFORM_ANDROID
 #include <GLES3/gl3.h>
 #include <GLES3/gl3ext.h>

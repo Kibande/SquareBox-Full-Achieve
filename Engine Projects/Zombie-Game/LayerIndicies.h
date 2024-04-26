@@ -35,7 +35,7 @@ public:
 		while the layer names are used at load time , to be able to idenitiy which layer is currently
 		being loaded.
 
-		This is import because a different kind of setup maybe required depending on the layers contents
+		This is important because a different kind of setup maybe required depending on the layers contents
 
 		The layer names should match the names given to the layers in the Editor while the indcies should match the ones
 		given to the layers in the Editor

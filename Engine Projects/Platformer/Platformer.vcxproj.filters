@@ -9,6 +9,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -23,6 +26,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Sources</Filter>
     </ClCompile>

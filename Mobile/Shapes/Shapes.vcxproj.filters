@@ -25,4 +25,7 @@
     <ClCompile Include="..\..\SquareBox\Shapes\TopCapsuleShape.cpp" />
     <ClCompile Include="..\..\SquareBox\Shapes\IShape.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Render-Engine\Render-Engine.vcxproj" />
+  </ItemGroup>
 </Project>

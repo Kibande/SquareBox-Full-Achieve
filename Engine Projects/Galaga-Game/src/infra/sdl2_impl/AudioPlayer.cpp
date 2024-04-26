@@ -1,6 +1,6 @@
 #include <map>
 #include <memory>
-#include <SDL2/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include "infra/Util.hpp"
 #include "infra/Resources.hpp"
 #include "infra/media_layer/AudioPlayer.hpp"

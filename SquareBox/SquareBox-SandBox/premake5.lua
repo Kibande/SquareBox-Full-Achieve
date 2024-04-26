@@ -33,10 +33,10 @@ project "SquareBox-SandBox"
 	{
 	  "$(SolutionDir)/",
 	  "$(SolutionDir)/vendor/include/",
+	  "$(SolutionDir)/vendor/SDL2-2.30.2/include/",
 	  "$(SolutionDir)/Glew/glew-2.2.0/include/",
 	  "$(SolutionDir)/Glfw/glfw-3.3.2/include/",
 	  "$(SolutionDir)/vendor/include/ffmpeg"
-
 	}
 
 	libdirs 

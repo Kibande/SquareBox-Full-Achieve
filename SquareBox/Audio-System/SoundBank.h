@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "SoundEffect.h"
-#include <SDL/include/SDL_mixer.h>
+#include <SDL_mixer.h>
 
 namespace SquareBox {
 	namespace AudioSystem {

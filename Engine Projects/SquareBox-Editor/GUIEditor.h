@@ -52,6 +52,8 @@ private:
 
 	void updateState();//updates the state that the gui is in
 
+	void adaptAllStatesToAUniformState();
+
 	void guiElementShapeShellSetter(const SquareBox::GWOM::GUIElement& gui_element_);
 
 	void setCurrentGuiElementPtrLocationRatio();
@@ -59,6 +61,8 @@ private:
 	void cleanOutGUILayer();
 
 	void createNewGUILayer();
+
+	
 
 	SquareBox::Utilities m_utilities;
 	SquareBox::RenderEngine::SpriteBatch m_sprite_batch;
@@ -107,4 +111,9 @@ private:
 	int m_font_size = 32;
 	bool m_active_selecting = true;//this helps us be able to interact with the GUI like the user would
 	char m_buffer[100];
+
+	int m_edit_states_individually = 1;
+	
+	SquareBox::GWOM::Text m_text;
+	SquareBox::GWOM::TextureInfo m_texture_info;
 };

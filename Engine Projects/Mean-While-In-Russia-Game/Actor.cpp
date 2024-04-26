@@ -67,6 +67,6 @@ bool Actor::containsPoint(int pointX, int pointY) {
 		pointX >= x - width / 2;
 }
 
-bool Actor::gravity() { 
-	return true; 
+bool Actor::gravity() {
+	return true;
 }

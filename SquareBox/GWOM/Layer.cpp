@@ -9,7 +9,8 @@ std::pair<int, glm::vec4> SquareBox::GWOM::Layer::getTextureIdAndUvReactFromKey(
 		std::map<int, SquareBox::GWOM::SubTexture>::iterator sub_texture_it = sub_textures_table.find(key_);
 		if (sub_texture_it == sub_textures_table.end()) {
 			/*
-				can happen when we have placed a tile in a world with no loaded textures
+				can happen when we have placed a tile in a world with no loaded textures this results into
+				a black tile being drawn.
 			*/
 		}
 		else {

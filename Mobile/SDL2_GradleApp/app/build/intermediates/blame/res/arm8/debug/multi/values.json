@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\build\\intermediates\\res\\merged\\arm8\\debug\\values\\values.xml",
+        "outputFile": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\build\\intermediates\\res\\merged\\arm8\\debug\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,13 +11,13 @@
                     "endOffset": 96
                 },
                 "from": {
-                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
+                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 153,
+                        "startOffset": 157,
                         "endColumn": 45,
-                        "endOffset": 194
+                        "endOffset": 198
                     }
                 }
             },
@@ -30,13 +30,13 @@
                     "endOffset": 143
                 },
                 "from": {
-                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
+                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
-                        "startOffset": 55,
+                        "startOffset": 57,
                         "endColumn": 46,
-                        "endOffset": 97
+                        "endOffset": 99
                     }
                 }
             },
@@ -49,13 +49,13 @@
                     "endOffset": 194
                 },
                 "from": {
-                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
+                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\colors.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
-                        "startOffset": 102,
+                        "startOffset": 105,
                         "endColumn": 50,
-                        "endOffset": 148
+                        "endOffset": 151
                     }
                 }
             },
@@ -64,17 +64,17 @@
                     "startLine": 5,
                     "startColumn": 4,
                     "startOffset": 199,
-                    "endColumn": 44,
-                    "endOffset": 239
+                    "endColumn": 51,
+                    "endOffset": 246
                 },
                 "from": {
-                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\strings.xml",
+                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
                         "startOffset": 57,
-                        "endColumn": 44,
-                        "endOffset": 97
+                        "endColumn": 51,
+                        "endOffset": 104
                     }
                 }
             },
@@ -82,20 +82,20 @@
                 "to": {
                     "startLine": 6,
                     "startColumn": 4,
-                    "startOffset": 244,
-                    "endLine": 16,
+                    "startOffset": 251,
+                    "endLine": 8,
                     "endColumn": 12,
-                    "endOffset": 868
+                    "endOffset": 379
                 },
                 "from": {
-                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\styles.xml",
+                    "file": "D:\\Programming\\Projects\\Cpp\\SquareBox-Full-Achieve\\Mobile\\SDL2_GradleApp\\app\\src\\main\\res\\values\\styles.xml",
                     "position": {
-                        "startLine": 2,
+                        "startLine": 3,
                         "startColumn": 4,
-                        "startOffset": 55,
-                        "endLine": 12,
+                        "startOffset": 57,
+                        "endLine": 5,
                         "endColumn": 12,
-                        "endOffset": 679
+                        "endOffset": 187
                     }
                 }
             }

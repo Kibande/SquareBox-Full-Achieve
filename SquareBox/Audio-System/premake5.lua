@@ -30,7 +30,8 @@ project "Audio-System"
 	includedirs
 	{
 	  "$(SolutionDir)/",
-	  "$(SolutionDir)/vendor/include/"
+	  "$(SolutionDir)/vendor/include/",
+	  "$(SolutionDir)/vendor/SDL2-2.30.2/include/"
 	}
 
 	libdirs

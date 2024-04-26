@@ -37,7 +37,7 @@ namespace SquareBox {
 
 			/*ints*/
 			int layer_index = 0;// index of the parent layer, this is not stored in our saved levels
-			int cluster_index; //index of the parent cluster
+			int cluster_index = 0; //index of the parent cluster
 			int index = 0;     // index in the cluster
 			int deletion_index = -1; //negative one means that this body has not yet been deleted
 			float life_span = 10.0f;

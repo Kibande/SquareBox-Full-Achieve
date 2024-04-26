@@ -3,14 +3,14 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#include <SDL/include/SDL.h>
-#include <SDL/include/SDL_ttf.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
 #include <map>
-#include <SDL/include/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include "WAVAudio.h"
 
-#define WIDTH 960
-#define HEIGHT 640
+constexpr auto WIDTH = 960;
+constexpr auto HEIGHT = 640;
 #define TEXT_SIZE 26
 #define TEXT_BORDER 2
 

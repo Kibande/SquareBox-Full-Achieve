@@ -3,7 +3,7 @@
 
 
 #include <Falcon/InputOutput/InputManager.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <Box2D/Box2D.h>
 #include "Component.h"
 #include "BodyComponent.h"

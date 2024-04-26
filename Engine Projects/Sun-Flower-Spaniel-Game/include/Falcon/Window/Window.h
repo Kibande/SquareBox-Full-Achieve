@@ -1,7 +1,7 @@
 #ifndef FALCONLATINUM_WINDOW_H
 #define FALCONLATINUM_WINDOW_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <GL/glew.h>
 #include <string>
 namespace Falcon {

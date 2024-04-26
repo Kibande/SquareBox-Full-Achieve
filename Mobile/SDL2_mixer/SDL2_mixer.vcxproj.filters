@@ -9,66 +9,84 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\SquareBox\vendor\include\SDL_mixer\SDL_mixer.h">
+    <ClInclude Include="..\libsdl\SDL2_mixer-2.8.0\include\SDL_mixer.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_wav.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\utils.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_timidity.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\music.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_opus.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\mixer.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_ogg.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\effects_internal.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_nativemidi.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\effect_stereoreverse.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mpg123.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\effect_position.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_modplug.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_xmp.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mikmod.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_wavpack.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_mad.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_wav.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_fluidsynth.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_timidity.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_flac.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_opus.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music_cmd.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_ogg_stb.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\music.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_ogg.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\mixer.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_nativemidi.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\load_voc.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_mpg123.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\load_aiff.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_modplug.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effects_internal.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_minimp3.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effect_stereoreverse.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_gme.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\SquareBox\vendor\include\SDL_mixer\effect_position.c">
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_fluidsynth.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_flac.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_drflac.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\music_cmd.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\mp3utils.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\load_voc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libsdl\SDL2_mixer-2.8.0\src\codecs\load_aiff.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

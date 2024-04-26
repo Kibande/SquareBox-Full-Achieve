@@ -23,5 +23,7 @@ private:
 	SquareBox::RenderEngine::SpriteFont m_sprite_font;
 	SquareBox::Camera::ParallelCamera m_camera;
 	SquareBox::RenderEngine::GLSLProgram m_texture_program;
+
+	SquareBox::GWOM::Layer m_layer;
 };
 

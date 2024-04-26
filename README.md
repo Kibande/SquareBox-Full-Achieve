@@ -14,3 +14,8 @@ Feel free to reach out if you have anything to say.
 
 
 
+Copy SDL_mixer.h and SDL_ttf.h into the main SDL_folder
+Rename the SDL lib folders from  x64 to x86_64
+
+
+

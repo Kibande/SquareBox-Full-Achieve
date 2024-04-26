@@ -28,7 +28,7 @@ namespace SquareBox {
 			//this is the rotated version
 
 		   //lets get the vertices that represent our sprite centered at the m_origin
-			glm::vec2 halfDims(destRect.z / 2.0f, destRect.w / 2.0f);
+			glm::vec2 halfDims(destRect.z * 0.5f, destRect.w * 0.5f);
 
 			//Get points centered at m_origin
 			glm::vec2 top_left(-halfDims.x, halfDims.y);

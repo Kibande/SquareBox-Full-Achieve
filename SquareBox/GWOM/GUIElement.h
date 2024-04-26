@@ -23,9 +23,11 @@ namespace SquareBox {
 			float radius_ratio = 0.0f;
 			float angle = 0.0f;
 			bool is_alive = false;
+			bool draw_perfect_square = false; 
+			int perfect_square_dimensions = 0;
 			bool is_to_be_deleted = false;
-			std::vector<Text> fonts = std::vector<Text>(6, Text());//	the number of memebers should match the possible states
-			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of memebers should match the possible states
+			std::vector<Text> fonts = std::vector<Text>(6, Text());//	the number of members should match the possible states
+			std::vector<TextureInfo> textures = std::vector<TextureInfo>(6, TextureInfo());//	the number of members should match the possible states
 			//	state count.
 		};
 	};

@@ -1,6 +1,6 @@
 #pragma once
 #include"IInputDevice.h"
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #include<vector>
 namespace SquareBox {
 	namespace InputManager {

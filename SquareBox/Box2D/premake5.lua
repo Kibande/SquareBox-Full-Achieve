@@ -31,6 +31,7 @@ project "Box2D"
 	{
 	  "$(SolutionDir)/",
 	  "$(SolutionDir)/vendor/include/",
+	  "$(SolutionDir)/vendor/SDL2-2.30.2/include/",
 	  "$(SolutionDir)/Box2D/include/",
 	  "$(SolutionDir)/Box2D/src/"
 	}

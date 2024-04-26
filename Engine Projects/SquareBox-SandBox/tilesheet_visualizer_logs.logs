@@ -1,5 +1,5 @@
-[22:40:32] [info] SQUAREBOX: ***** openGL version 3.0.0 - Build 31.0.101.2111 **** 
+[08:56:59] [info] SQUAREBOX: ***** openGL version 3.0.0 - Build 31.0.101.2111 **** 
 
-[22:40:34] [info] SQUAREBOX: Live Loaded  Texture Buffer Texture 
-[22:40:48] [info] SQUAREBOX: Live Loaded  Texture  D:/Programming/Projects/Cpp/SquareBox-Full-Achieve/Engine Projects/SquareBox-SandBox/Assets/Textures/triangle 2.png 
-[22:40:48] [info] APP: Texture Qualifies as a square texture
+[08:56:59] [info] SQUAREBOX: Live Loaded  Texture Buffer Texture 
+[08:57:00] [error] SQUAREBOX: Failed to load support for some audio formats D:\Programming\Projects\Cpp\SquareBox-Full-Achieve\SquareBox\Audio-System\AudioEngine.cpp 50 
+[08:57:00] [error] SQUAREBOX: Mix_Init error Couldn't open timidity.cfg : 

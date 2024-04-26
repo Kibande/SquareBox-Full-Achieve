@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL/include/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include <string>
 #include<vector>
 namespace SquareBox {

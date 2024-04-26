@@ -36,6 +36,7 @@ project "Wenova-Game"
 	{
 	  engineSourceCodeFilePath.."SquareBox/",
 	  engineSourceCodeFilePath.."SquareBox/vendor/include/",
+	  engineSourceCodeFilePath.."SquareBox/vendor/SDL2-2.30.2/include/",
 	  engineSourceCodeFilePath.."SquareBox/Glew/glew-2.2.0/include/",
 	  engineSourceCodeFilePath.."SquareBox/Glfw/glfw-3.3.2/include/",
 	  engineSourceCodeFilePath.."SquareBox/vendor/include/ffmpeg"

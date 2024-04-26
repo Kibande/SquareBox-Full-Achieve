@@ -24,7 +24,7 @@ void App::addScreens()
 	m_screen_list->addScreen(m_fourth_screen.get());
 
 	//Our starting Screen
-	m_screen_list->setScreen(m_second_screen->getScreenIndex());
+	m_screen_list->setScreen(m_fourth_screen->getScreenIndex());
 }
 
 void App::onExit()

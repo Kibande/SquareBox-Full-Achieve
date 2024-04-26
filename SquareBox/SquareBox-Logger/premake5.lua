@@ -31,6 +31,7 @@ project "SquareBox-Logger"
 	{
 
 	  "$(SolutionDir)/vendor/include/",
+	  "$(SolutionDir)/vendor/SDL2-2.30.2/include/",
  	  "$(SolutionDir)/Glew/glew-2.2.0/include/"
 	}
 

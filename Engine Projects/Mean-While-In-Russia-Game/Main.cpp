@@ -1,4 +1,6 @@
 #include "Game.h"
+#include<Windows.h>
+
 #undef main
 
 int main() {

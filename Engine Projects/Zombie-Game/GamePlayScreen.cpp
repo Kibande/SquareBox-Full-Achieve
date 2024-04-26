@@ -112,7 +112,7 @@ void GamePlayScreen::onEntry()
 	m_input_audio_format_flags |= static_cast<int>(SquareBox::AudioInputFormatEnum::OPUS_FORMAT);
 	m_audio_engine.init(m_input_audio_format_flags, MIX_DEFAULT_FREQUENCY, SquareBox::AudioOutputFormatEnum::S16_AUDIO_OUTPUT, SquareBox::AudioChannlesEnum::STEREO, 4096);
 
-	m_music = SquareBox::AudioSystem::Music("Assets/Audio/Stranded.ogg");
+	m_music = SquareBox::AudioSystem::Music("Assets/Audio/Stranded.mp3");
 	m_audio_engine.loadMusic(m_music);
 
 	m_sound_bank.sound_effects.push_back(SquareBox::AudioSystem::SoundEffect("Sound Effect 1", "Assets/Audio/cg1.wav"));
@@ -281,7 +281,8 @@ void GamePlayScreen::update(const float& deltaTime_)
 		//update our deplayed status
 		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_humans_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "HUMANS %d", m_layers[LayerIndicies::humans_layer_index].alive_cluster_objects.size());
 		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_zombie_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "ZOMBIES %d", m_layers[LayerIndicies::zombies_layer_index].alive_cluster_objects.size());
-		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_bullets_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "BULLETS %d", m_layers[LayerIndicies::ammunition_layer_index].alive_cluster_objects.size());
+		//sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_bullets_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "BULLETS %d", m_layers[LayerIndicies::ammunition_layer_index].alive_cluster_objects.size());
+		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_bullets_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "ZOOM %.2f DPI %.2f", m_game_play_camera.getScale(), m_game_ptr->getWindow()->getDDPI());
 		sprintf(m_game_stats_huds_and_gui.getGuiElementByIndex(m_game_stats_gui_elements_coordinates.find(m_fps_text_gui_id)->second).fonts[static_cast<int>(SquareBox::GUIElementStateEnum::DEFAULT)].text, "FPS %d", m_game_ptr->getFps());
 	}
 	

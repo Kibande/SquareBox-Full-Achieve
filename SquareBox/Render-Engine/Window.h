@@ -7,7 +7,7 @@
 #include<GL/glew.h>
 #endif
 
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #include<string>
 #include "ColorRGBA8.h"
 #include <SquareBox-Logger/Logger.h>

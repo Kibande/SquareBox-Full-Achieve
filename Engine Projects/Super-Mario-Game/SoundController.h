@@ -1,7 +1,7 @@
 #ifndef SoundController_H
 #define SoundController_H
 
-#include <SDL/include/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include <array>
 
 class Player;

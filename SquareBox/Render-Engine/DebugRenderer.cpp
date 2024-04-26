@@ -94,7 +94,7 @@ namespace SquareBox {
 			unsigned i = (unsigned)m_verts.size();//the location of the first vertex we shall be modifiying
 			m_verts.resize(m_verts.size() + 4);
 			//lets get the vertices that represent our sprite centered at the m_origin
-			glm::vec2 halfDims(destRect.z / 2.0f, destRect.w / 2.0f);
+			glm::vec2 halfDims(destRect.z * 0.5f, destRect.w * 0.5f);
 
 			//Get points centered at m_origin
 			glm::vec2 top_left(-halfDims.x, halfDims.y);
@@ -145,7 +145,7 @@ namespace SquareBox {
 				destRect = glm::vec4(destRect_.x, destRect_.y, destRect_.z, destRect_.w - destRect_.z*0.5f);
 			}
 
-			glm::vec2 halfDims(destRect.z / 2.0f, destRect.w / 2.0f);
+			glm::vec2 halfDims(destRect.z * 0.5f, destRect.w * 0.5f);
 
 			//Get points centered at m_origin
 			glm::vec2 top_left(-halfDims.x, halfDims.y);
@@ -164,19 +164,19 @@ namespace SquareBox {
 
 			if (fullCpasule) {
 				//top Circle
-				drawCircle(glm::vec2(float(top_left_corner.x + top_right_corner.x) / 2, float(top_left_corner.y + top_right_corner.y) / 2), color, sqrt(pow(top_right_corner.x - top_left_corner.x, 2) + pow(top_right_corner.y - top_left_corner.y, 2)*1.0) / 2.0f);
+				drawCircle(glm::vec2(float(top_left_corner.x + top_right_corner.x) / 2, float(top_left_corner.y + top_right_corner.y) / 2), color, sqrt(pow(top_right_corner.x - top_left_corner.x, 2) + pow(top_right_corner.y - top_left_corner.y, 2)*1.0) * 0.5f);
 				//bottom
-				drawCircle(glm::vec2(float(bottom_left_corner.x + bottom_right_corner.x) / 2, float(bottom_left_corner.y + bottom_right_corner.y) / 2), color, sqrt(pow(bottom_right_corner.x - bottom_left_corner.x, 2) + pow(bottom_right_corner.y - bottom_left_corner.y, 2)*1.0) / 2.0f);
+				drawCircle(glm::vec2(float(bottom_left_corner.x + bottom_right_corner.x) / 2, float(bottom_left_corner.y + bottom_right_corner.y) / 2), color, sqrt(pow(bottom_right_corner.x - bottom_left_corner.x, 2) + pow(bottom_right_corner.y - bottom_left_corner.y, 2)*1.0) * 0.5f);
 			}
 			else {
 				if (topCapsule) {
 					//top Circle
-					drawCircle(glm::vec2(float(top_left_corner.x + top_right_corner.x) / 2, float(top_left_corner.y + top_right_corner.y) / 2), color, sqrt(pow(top_right_corner.x - top_left_corner.x, 2) + pow(top_right_corner.y - top_left_corner.y, 2)*1.0) / 2.0f);
+					drawCircle(glm::vec2(float(top_left_corner.x + top_right_corner.x) / 2, float(top_left_corner.y + top_right_corner.y) / 2), color, sqrt(pow(top_right_corner.x - top_left_corner.x, 2) + pow(top_right_corner.y - top_left_corner.y, 2)*1.0) * 0.5f);
 				}
 				else
 				{
 					//bottom
-					drawCircle(glm::vec2(float(bottom_left_corner.x + bottom_right_corner.x) / 2, float(bottom_left_corner.y + bottom_right_corner.y) / 2), color, sqrt(pow(bottom_right_corner.x - bottom_left_corner.x, 2) + pow(bottom_right_corner.y - bottom_left_corner.y, 2)*1.0) / 2.0f);
+					drawCircle(glm::vec2(float(bottom_left_corner.x + bottom_right_corner.x) / 2, float(bottom_left_corner.y + bottom_right_corner.y) / 2), color, sqrt(pow(bottom_right_corner.x - bottom_left_corner.x, 2) + pow(bottom_right_corner.y - bottom_left_corner.y, 2)*1.0) * 0.5f);
 				}
 			}
 		}

@@ -24,6 +24,10 @@ namespace SquareBox {
 			void setScale(float x_, float y_) {
 				scale = glm::vec2(x_, y_);
 			}
+			void setSize(int size_) {
+				size = size_;
+			}
+
 			glm::ivec4 color = glm::ivec4(255, 255, 255, 255);
 			glm::vec2 position;
 			glm::vec2 scale;
@@ -32,6 +36,7 @@ namespace SquareBox {
 			bool show_text = false;
 			float text_to_box_height_scale = 1.0f;
 			int opacity = 100;
+			int size = 32;
 			SquareBox::JustificationEnum justification = SquareBox::JustificationEnum::MIDDLE;
 		};
 	};

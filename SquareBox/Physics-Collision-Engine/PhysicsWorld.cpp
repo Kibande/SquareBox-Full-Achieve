@@ -312,7 +312,7 @@ namespace SquareBox {
 		{
 			clusterObject_.physics_properties->dimensions = glm::vec2(clusterObject_.width, clusterObject_.height);
 			b2PolygonShape boxShape;
-			boxShape.SetAsBox(clusterObject_.width / 2.0f, clusterObject_.height / 2.0f);
+			boxShape.SetAsBox(clusterObject_.width * 0.5f, clusterObject_.height * 0.5f);
 			clusterObject_.physics_properties->shape = &boxShape;
 			createFixtureForBody(clusterObject_);
 		}
@@ -349,7 +349,7 @@ namespace SquareBox {
 			b2PolygonShape boxShape;
 
 			//shrinck the box appropriatly, these measurements will be doubled behind the scenes
-			boxShape.SetAsBox(dimensions.x / 2.0f, (dimensions.y - dimensions.x) / 2.0f);
+			boxShape.SetAsBox(dimensions.x * 0.5f, (dimensions.y - dimensions.x) * 0.5f);
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &boxShape;
@@ -363,7 +363,7 @@ namespace SquareBox {
 
 			//the Shape
 			b2CircleShape circleShape;
-			circleShape.m_radius = dimensions.x / 2.0f;
+			circleShape.m_radius = dimensions.x * 0.5f;
 
 			//Definition
 			b2FixtureDef circleDef;
@@ -373,11 +373,11 @@ namespace SquareBox {
 			circleDef.restitution = clusterObject_.restitution;
 
 			//Bottom Circle
-			circleShape.m_p.Set(0.0f, (-dimensions.y + dimensions.x) / 2.0f);
+			circleShape.m_p.Set(0.0f, (-dimensions.y + dimensions.x) * 0.5f);
 			clusterObject_.physics_properties->fixtures[1] = clusterObject_.physics_properties->body->CreateFixture(&circleDef);
 
 			//Top Circle
-			circleShape.m_p.Set(0.0f, (dimensions.y - dimensions.x) / 2.0f);
+			circleShape.m_p.Set(0.0f, (dimensions.y - dimensions.x) * 0.5f);
 			clusterObject_.physics_properties->fixtures[2] = clusterObject_.physics_properties->body->CreateFixture(&circleDef);
 			clusterObject_.physics_properties->body->ResetMassData();
 		}
@@ -404,7 +404,7 @@ namespace SquareBox {
 			b2PolygonShape boxShape;
 
 			//shrinck the box appropriatly, these measurements will be doubled behind the scenes
-			boxShape.SetAsBox(dimensions.x / 2.0f, (dimensions.y - dimensions.x * 0.5f) / 2.0f);
+			boxShape.SetAsBox(dimensions.x * 0.5f, (dimensions.y - dimensions.x * 0.5f) * 0.5f);
 
 			b2FixtureDef fixtureDef;
 			fixtureDef.shape = &boxShape;
@@ -418,7 +418,7 @@ namespace SquareBox {
 
 			//the Shape
 			b2CircleShape circleShape;
-			circleShape.m_radius = dimensions.x / 2.0f;
+			circleShape.m_radius = dimensions.x * 0.5f;
 
 			//Definition
 			b2FixtureDef circleDef;
@@ -428,7 +428,7 @@ namespace SquareBox {
 			circleDef.restitution = clusterObject_.restitution;
 
 			//Top Circle
-			circleShape.m_p.Set(0.0f, (dimensions.y - dimensions.x) / 2.0f);
+			circleShape.m_p.Set(0.0f, (dimensions.y - dimensions.x) * 0.5f);
 			clusterObject_.physics_properties->fixtures[1] = clusterObject_.physics_properties->body->CreateFixture(&circleDef);
 			clusterObject_.physics_properties->body->ResetMassData();
 		}

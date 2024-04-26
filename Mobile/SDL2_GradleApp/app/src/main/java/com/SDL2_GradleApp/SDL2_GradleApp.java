@@ -10,7 +10,6 @@ public class SDL2_GradleApp extends SDLActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-		/** this will invoke the sdl native code **/
         super.onCreate(savedInstanceState);
     }
 }

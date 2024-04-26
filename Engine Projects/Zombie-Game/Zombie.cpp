@@ -36,6 +36,20 @@ void Zombie::update(float delta_time_, std::pair<int, std::pair<int, int>> & clu
 		//move the zombie towards its target
 		zombie_cluster_object.position += zombie_cluster_object.direction * zombie_cluster_object.speed * delta_time_;
 	}
+	else {
+		//move the zombie randomly like a human would
+
+		std::mt19937 randomEngine(time(nullptr));
+		std::uniform_real_distribution<float> randRotate(-rotation_angle_range, rotation_angle_range);
+
+		zombie_cluster_object.position += zombie_cluster_object.direction * zombie_cluster_object.speed * delta_time_;
+
+		// Randomly > 20 & < 250 random frames
+		float random_number = SquareBox::MathLib::Random::Float() * 98682;
+		if ((random_number > 20 && random_number < 250)) {
+			zombie_cluster_object.direction = glm::rotate(zombie_cluster_object.direction, SquareBox::MathLib::Random::Float());
+		}
+	}
 
 	for (auto i = start_index_; i < vector_of_cell_members.size(); i++)
 	{

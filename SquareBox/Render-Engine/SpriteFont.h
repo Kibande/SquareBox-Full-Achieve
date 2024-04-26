@@ -2,10 +2,10 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <vector>
-#include <SDL/include/SDL_ttf.h>
+#include <SDL_ttf.h>
 #include "Vertex.h"
 #include "SpriteBatch.h"
-#include <SDL/include/SDL.h>
+#include <SDL.h>
 #include <SquareBox-Logger/Logger.h>
 #include <SquareBox-Core/enums.h>
 namespace SquareBox {

@@ -11,7 +11,7 @@ ICollisionAgent::~ICollisionAgent()
 
 bool ICollisionAgent::collideAgent(const float delta_time_, SquareBox::GWOM::ClusterObject& cluster_object_a_, SquareBox::GWOM::ClusterObject& cluster_object_b_)
 {
-    // make sure these are valide colliisions
+    // make sure these are valid colliisions
 
     if (!cluster_object_a_.is_alive || !cluster_object_b_.is_alive) {
         return false;
@@ -47,8 +47,8 @@ bool ICollisionAgent::collideAgent(const float delta_time_, SquareBox::GWOM::Clu
         glm::vec2 collisionDepthVec = glm::normalize(distVec) * collisionDepth;
 
         // Push them in opposite directions
-        cluster_object_a_.position += collisionDepthVec / 2.0f;
-        cluster_object_b_.position -= collisionDepthVec / 2.0f;
+        cluster_object_a_.position += collisionDepthVec *0.5f;
+        cluster_object_b_.position -= collisionDepthVec * 0.5f;
         return true;
     }
     return false;
@@ -67,6 +67,7 @@ bool ICollisionAgent::collideWithTiles(const float delta_time_, SquareBox::GWOM:
 	glm::vec2 bottom_right_corner = glm::vec2(new_cluster_object_dest_rect.x + new_cluster_object_dest_rect.z, new_cluster_object_dest_rect.y);
 	glm::vec2 top_right_corner = glm::vec2(new_cluster_object_dest_rect.x + new_cluster_object_dest_rect.z, new_cluster_object_dest_rect.y + new_cluster_object_dest_rect.w);
 	glm::vec2 top_left_corner = glm::vec2(new_cluster_object_dest_rect.x, new_cluster_object_dest_rect.y + new_cluster_object_dest_rect.w);
+
 
 	// check if this will result into a collision
 	auto destination_tile = layers_[target_tiled_layer_].tile_system.getTile(bottom_left_corner);
@@ -103,10 +104,10 @@ void ICollisionAgent::collideWithTile(const float delta_time_, SquareBox::GWOM::
 {
     /*
         the value of delta time is not being considered because we want collisions to be immdieatly resolved
-        considering delta timw during collisions just gave us problems
+        considering delta time during collisions just gave us problems
     
     */
-    const float TILE_RADIUS = (float)tile_width_ / 2.0f;
+    const float TILE_RADIUS = (float)tile_width_ *0.5f;
     // The minimum distance before a collision occurs
     const float MIN_DISTANCE = cluster_object_.radius + TILE_RADIUS;
 

@@ -15,22 +15,7 @@
     <ClInclude Include="First_Screen.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Fourth_Screen.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenIndices.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Second_Screen.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Thrid_Screen.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,18 +24,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="First_Screen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Fourth_Screen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Second_Screen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Thrid_Screen.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">

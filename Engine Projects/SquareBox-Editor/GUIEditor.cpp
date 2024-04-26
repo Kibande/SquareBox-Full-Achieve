@@ -115,7 +115,8 @@ void GUIEditor::update(const float& deltaTime_)
 			this is the hack that i have come up with to solve the issue of imgui freezing up 
 			and not allowing any more user input, this block of code  forces it to start
 			taking user input but it disoragnises sdls input manager 
-			so this function only helps you be able to save your work
+			so this function only helps you be able to save your work 
+			but a restart of the program is needed after you have used it
 			
 			*/
 		}
@@ -444,10 +445,10 @@ void GUIEditor::drawGUI()
 	ImGui_ImplSDL2_NewFrame(m_game_ptr->getWindow()->getWindowPointerForImGui());
 	ImGui::NewFrame();
 	showMenuMain();
-	ImGuiWindowFlags physics_tab_window_flags = 0;
-	physics_tab_window_flags |= ImGuiWindowFlags_NoMove;
-	bool* physics_tab_open = false;
-	ImGui::Begin("Control Panel", physics_tab_open, physics_tab_window_flags);
+	ImGuiWindowFlags properties_tab_window_flags = 0;
+	properties_tab_window_flags |= ImGuiWindowFlags_NoMove;
+	bool* properties_tab_open = false;
+	ImGui::Begin("Properties Panel", properties_tab_open, properties_tab_window_flags);
 
 	ImGui::SetWindowPos(ImVec2(m_game_ptr->getWindow()->getScreenWidth() - ImGui::GetWindowWidth() - 2, m_main_menu_bar_height));
 	{
@@ -550,10 +551,22 @@ void GUIEditor::drawGUI()
 
 					ImGui::Separator();
 
+					ImGui::RadioButton("Individual", &m_edit_states_individually, 1); ImGui::SameLine();
+					ImGui::RadioButton("All", &m_edit_states_individually, 0);
+
+					ImGui::Spacing();
 					//display our shapes names
 					int beforeState = m_selected_gui_element_state_index;
 					ImGui::Text("State     : "); ImGui::SameLine();
-					ImGui::Combo("###GUIElementState", &m_selected_gui_element_state_index, m_gui_element_states_labels_ptr, 6);
+					if (!m_edit_states_individually) {
+						ImGui::BeginDisabled();
+						adaptAllStatesToAUniformState();
+						ImGui::Combo("###GUIElementState", &m_selected_gui_element_state_index, m_gui_element_states_labels_ptr, 6);
+						ImGui::EndDisabled();
+					}
+					else {
+						ImGui::Combo("###GUIElementState", &m_selected_gui_element_state_index, m_gui_element_states_labels_ptr, 6);
+					}
 
 					if (beforeState != m_selected_gui_element_state_index) {
 						m_current_gui_element_ptr->state = static_cast<SquareBox::GUIElementStateEnum>(m_selected_gui_element_state_index);
@@ -587,10 +600,22 @@ void GUIEditor::drawGUI()
 							ImGui::Spacing();
 
 							if (focus_shape_ptr->needs_height_width) {
-								ImGui::Text("Height    : "); ImGui::SameLine();
-								ImGui::InputFloat("###b_h", &m_current_gui_element_ptr->height_ratio, 0.05f, 0, "%.3f");
-								ImGui::Text("Width     : "); ImGui::SameLine();
-								ImGui::InputFloat("###b_w", &m_current_gui_element_ptr->width_ratio, 0.05f, 0, "%.3f");
+								ImGui::Checkbox("###draw_perfect_square", &m_current_gui_element_ptr->draw_perfect_square);
+								
+								if (m_current_gui_element_ptr->draw_perfect_square) {
+									ImGui::Text("Square    : "); ImGui::SameLine();
+									ImGui::InputInt("###perfect_square_dimensions", &m_current_gui_element_ptr->perfect_square_dimensions, m_visiable_dest_rect.z * 0.01, m_visiable_dest_rect.z*0.1);
+									m_current_gui_element_ptr->height_ratio = SquareBox::MathLib::Float::divideAndGetFloat(m_current_gui_element_ptr->perfect_square_dimensions, m_visiable_dest_rect.w);
+									m_current_gui_element_ptr->width_ratio = SquareBox::MathLib::Float::divideAndGetFloat(m_current_gui_element_ptr->perfect_square_dimensions, m_visiable_dest_rect.z);
+								}
+								else {
+									ImGui::Text("Height    : "); ImGui::SameLine();
+									ImGui::InputFloat("###b_h", &m_current_gui_element_ptr->height_ratio, 0.05f, 0, "%.3f");
+									ImGui::Text("Width     : "); ImGui::SameLine();
+									ImGui::InputFloat("###b_w", &m_current_gui_element_ptr->width_ratio, 0.05f, 0, "%.3f");
+								}
+								
+
 							}
 							if (focus_shape_ptr->needs_radius) {
 								ImGui::Text("Radius    : "); ImGui::SameLine();
@@ -682,6 +707,9 @@ void GUIEditor::drawGUI()
 								if (ImGui::Button("Load Single Texture")) {
 									m_show_open_single_texture_file_dialog = true;
 								}
+
+							
+								
 							}
 							else {
 
@@ -779,6 +807,7 @@ void GUIEditor::drawGUI()
 									m_show_open_tile_sheet_texture_file_dialog = true;
 								}
 							}
+
 							ImGui::EndTabItem();
 						}
 						if (ImGui::BeginTabItem("Font")) {
@@ -796,6 +825,9 @@ void GUIEditor::drawGUI()
 
 								ImGui::Text("Fonts     : "); ImGui::SameLine();
 								ImGui::Combo("###Font", &m_selected_font_index, &vc[0], m_gui_layer.sprite_fonts.size());
+								if (m_current_gui_element_ptr) {
+									ImGui::Text("Size      : %d", m_current_gui_element_ptr->fonts[m_selected_font_index].size);
+								}
 								m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].font_index = m_selected_font_index;
 
 							}
@@ -805,6 +837,10 @@ void GUIEditor::drawGUI()
 							}
 
 
+							ImGui::Text("New Font Size:");
+							ImGui::Text("Size      : "); ImGui::SameLine();
+							ImGui::InputInt("###new font size", &m_font_size);
+
 							if (ImGui::Button("Load Font File")) {
 
 								m_show_open_font_file_dialog = true;
@@ -812,6 +848,8 @@ void GUIEditor::drawGUI()
 							ImGui::EndTabItem();
 						}
 
+						ImGui::NewLine();
+						ImGui::NewLine();
 						ImGui::EndTabBar();
 					}
 				}
@@ -907,6 +945,9 @@ void GUIEditor::drawGUI()
 
 										having a index system would be great, so thats something i will work on next
 										because with it , i can even have a select button here with me
+
+
+										but then again, i can just have a for loop lopping through the ids like i currently have 
 
 									*/
 								}
@@ -1044,6 +1085,7 @@ void GUIEditor::drawGUI()
 			SquareBox::RenderEngine::SpriteFont temp_sprite_font;
 			temp_sprite_font.initWithFilePath(m_file_dialog.selected_path, m_font_size);
 			temp_sprite_font.setDisplayName(m_file_dialog.selected_fn);
+
 			//first confirm that we don't have this font already
 			bool isAlreadyPresent = false;
 
@@ -1164,7 +1206,7 @@ void GUIEditor::showMenuMain()
 void GUIEditor::updateState()
 {
 	m_selected_gui_element_shape_index = static_cast<int>(m_current_gui_element_ptr->shape);
-	m_selected_gui_element_state_index = m_selected_gui_element_state_index;
+	//m_selected_gui_element_state_index = m_selected_gui_element_state_index;
 	
 	if (m_current_gui_element_ptr->textures[m_selected_gui_element_state_index].texture_type == SquareBox::TextureEnum::SINGLE) {
 		//Singles
@@ -1176,6 +1218,26 @@ void GUIEditor::updateState()
 	}
 
 	m_selected_font_index = m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index].font_index;
+}
+
+void GUIEditor::adaptAllStatesToAUniformState()
+{
+
+	if (m_current_gui_element_ptr) {
+
+		for (auto i = 0; i < m_current_gui_element_ptr->textures.size(); i++)
+		{
+
+			if (i!= m_selected_gui_element_state_index) {
+				// update the texture
+				m_current_gui_element_ptr->textures[i] = m_current_gui_element_ptr->textures[m_selected_gui_element_state_index];
+
+				//update the font details
+				m_current_gui_element_ptr->fonts[i] = m_current_gui_element_ptr->fonts[m_selected_gui_element_state_index];
+			}
+		}
+
+	}
 }
 
 void GUIEditor::guiElementShapeShellSetter(const SquareBox::GWOM::GUIElement& gui_element_)

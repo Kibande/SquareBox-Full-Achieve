@@ -19,8 +19,8 @@ namespace SquareBox {
 		glm::vec4 PhysicsProperties::getBoxCoordinates()
 		{
 			glm::vec4 destRect;
-			destRect.x = body->GetPosition().x - dimensions.x / 2.0f;
-			destRect.y = body->GetPosition().y - dimensions.y / 2.0f;
+			destRect.x = body->GetPosition().x - dimensions.x * 0.5f;
+			destRect.y = body->GetPosition().y - dimensions.y * 0.5f;
 			destRect.z = dimensions.x;
 			destRect.w = dimensions.y;
 			return destRect;
@@ -129,8 +129,8 @@ namespace SquareBox {
 			if (fullCapsule) {
 				//The Box, we shall reconstruct the capsule form this
 				glm::vec4 destRect;
-				destRect.x = body->GetPosition().x - dimensions.x / 2.0f;//we are pushing to the actual center of the box
-				destRect.y = body->GetPosition().y - (dimensions.y - dimensions.x) / 2.0f;//we are accounting for the shricked the box's height
+				destRect.x = body->GetPosition().x - dimensions.x * 0.5f;//we are pushing to the actual center of the box
+				destRect.y = body->GetPosition().y - (dimensions.y - dimensions.x) * 0.5f;//we are accounting for the shricked the box's height
 				destRect.z = dimensions.x;
 				destRect.w = dimensions.y - dimensions.x;//Shrick
 
@@ -139,8 +139,8 @@ namespace SquareBox {
 			else {
 				//The Box
 				glm::vec4 destRect;
-				destRect.x = body->GetPosition().x - dimensions.x / 2.0f;//we are pushing to the actual center of the box
-				destRect.y = body->GetPosition().y - (dimensions.y - (dimensions.x * 0.5f)) / 2.0f;//we are accounting for the shricked the box's height
+				destRect.x = body->GetPosition().x - dimensions.x * 0.5f;//we are pushing to the actual center of the box
+				destRect.y = body->GetPosition().y - (dimensions.y - (dimensions.x * 0.5f)) * 0.5f;//we are accounting for the shricked the box's height
 				destRect.z = dimensions.x;
 				destRect.w = dimensions.y - (dimensions.x * 0.5f);//Shrick
 
@@ -276,7 +276,7 @@ namespace SquareBox {
 						//Check if the points are below this object
 						for (unsigned i = 0; i < b2_maxManifoldPoints; i++)
 						{
-							if (manifold.points[i].y < body->GetPosition().y - dimensions.y / 2.0f + dimensions.x / 2.0f + 0.01f) {
+							if (manifold.points[i].y < body->GetPosition().y - dimensions.y * 0.5f + dimensions.x * 0.5f + 0.01f) {
 								return true;
 								break;
 							}

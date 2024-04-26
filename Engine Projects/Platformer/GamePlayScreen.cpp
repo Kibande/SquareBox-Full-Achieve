@@ -2,6 +2,7 @@
 
 int GamePlayScreen::getNextScreenIndex() const
 {
+
 	return m_nextScreenIndex;
 }
 
@@ -28,6 +29,9 @@ void GamePlayScreen::onEntry()
 
 	m_camera.setPosition(screen_dimensions * 0.5f);
 	m_camera.setScale(1.0f);
+
+
+	m_layer.camera.init(0,0);
 }
 
 void GamePlayScreen::update(const float & deltaTime_)

@@ -1,9 +1,9 @@
 #ifndef SDL_Utility_H
 #define SDL_Utility_H
 
-#include <SDL/include/SDL.h>
-#include <SDL/include/SDL_main.h>
-#include <SDL/include/SDL_image.h>
+#include <SDL.h>
+#include <SDL_main.h>
+#include <SDL_image.h>
 #include <string>
 
 void drawSurface(SDL_Surface* display, SDL_Surface* sprite, int x, int y);
